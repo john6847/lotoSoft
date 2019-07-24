@@ -1,0 +1,11 @@
+package com.b.r.loteriab.r.Model.Enums;
+
+public enum Configuration {
+    COMBINATION_TYPE_PAYED_PRICE,
+    COMBINATION_TYPE_ENABLED,
+    COMBINATION_MAX_PRICE,
+    COMBINATION_ENABLED,
+    SHIFT_CLOSE_DATE,
+    GROUPS_ENABLED,
+    POS_ENABLED
+}

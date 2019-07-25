@@ -23,7 +23,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAll(Pageable pageable);
     Page<Ticket> findAllByEnabled(Pageable pageable, boolean enabled);
 
-    @Query("SELECT MAX(e.sequence) FROM Ticket t")
+    @Query("SELECT MAX(t.sequence) FROM Ticket t")
     int selectMaxSequence();
 
 }

@@ -19,7 +19,7 @@ public class Sale implements Serializable{
     private Date date;
     private int saleStatus;
     private double totalAmount;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,  mappedBy = "sale")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sale")
     private List<SaleDetail> saleDetails;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "pos_id")

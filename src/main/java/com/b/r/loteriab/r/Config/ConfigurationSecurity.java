@@ -53,7 +53,6 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/home","/css/**", "/js/**").permitAll() //permitiendo llamadas a esas urls.
                 .antMatchers("/dbconsole/**").permitAll()
                 .antMatchers("/draw/**","/combinationType/**", "/seller/**", "/pos/**","/configuration").hasAnyRole("ADMIN", "SUPER_ADMIN")
-//                .anyRequest().authenticated()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/api/**").access("hasAnyRole('ROLE_SELLER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
                 .antMatchers("/", "/login", "/logout").permitAll()

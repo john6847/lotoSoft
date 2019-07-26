@@ -50,20 +50,23 @@ public class RestApiController {
     @Autowired
     private ApiService apiService;
 
+    @Autowired
+    private SaleRepository saleRepository;
+
 
     @Autowired
     private CombinationTypeRepository combinationTypeRepository;
 
-    private static final String ACCECPT_TYPE= "application/json";
+    private static final String ACCECPT_TYPE = "application/json";
 
     @GetMapping(value = "/user", produces = ACCECPT_TYPE)
-    public ResponseEntity<String[]> getUsers(){
-        String [] users = {"Dany", "Widzer", "Ketya"};
+    public ResponseEntity<String[]> getUsers() {
+        String[] users = {"Dany", "Widzer", "Ketya"};
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
-    public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm){
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
         System.out.println(vm.toString());
         Pos pos = posRepository.findBySerialAndEnabled(vm.getSerial(), true);
@@ -90,31 +93,31 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-        if (user == null){
+        if (user == null) {
             sampleResponse.setMessage("Itilizatè sa pa egziste");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
-        
+
         Seller seller = sellerRepository.findByUserId(user.getId());
         if (seller == null) {
             sampleResponse.setMessage("Vandè sa pa egziste");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         } else {
-            if(!seller.isEnabled()) {
+            if (!seller.isEnabled()) {
                 sampleResponse.setMessage("Vandè sa pa gen pèmisyon konekte");
                 return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
             }
         }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        if (!bCryptPasswordEncoder.matches(vm.getPassword(), user.getPassword())){
+        if (!bCryptPasswordEncoder.matches(vm.getPassword(), user.getPassword())) {
             sampleResponse.setMessage("Modpas sa pa bon");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
         user.setToken(Helper.createToken(128));
         userRepository.save(user);
         sampleResponse.setMessage("Konekte avèk siksè");
-        sampleResponse.getBody().put("token",user.getToken());
+        sampleResponse.getBody().put("token", user.getToken());
         sampleResponse.getBody().put("pos", pos);
         sampleResponse.getBody().put("seller", seller);
         sampleResponse.getBody().put("shifts", shiftRepository.findAll());
@@ -124,39 +127,51 @@ public class RestApiController {
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/sale",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
-    public ResponseEntity<Object> authenticate(@RequestBody SaleViewModel vm, @RequestHeader("token") String token){
+    @RequestMapping(value = "/sale", method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    public ResponseEntity<Object> authenticate(@RequestBody SaleViewModel vm, @RequestHeader("token") String token) {
         SampleResponse sampleResponse = new SampleResponse();
-        if (token.isEmpty()){
+        System.out.println("TOken: "+token);
+        if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByToken(token) == null){
+        if (userRepository.findUsersByToken(token) == null) {
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
         Shift shift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, vm.getShift().getEnterprise().getId());
         if (!shift.getId().equals(vm.getShift().getId())) {
-            sampleResponse.getMessages().add("Tiraj "+ vm.getShift().getName()+ " pa aktive kounya, vant sa ap pase pou tiraj "+ shift.getName());
+            sampleResponse.getMessages().add("Tiraj " + vm.getShift().getName() + " pa aktive kounya, vant sa ap pase pou tiraj " + shift.getName());
         }
 
         boolean haveMax = false;
-        for (SaleDetailViewModel saleDetailViewModel: vm.getSaleDetails()){
+        for (SaleDetailViewModel saleDetailViewModel : vm.getSaleDetails()) {
             Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeId(saleDetailViewModel.getCombination(), saleDetailViewModel.getCombinationTypeId());
             if ((combination.getSaleTotal() + saleDetailViewModel.getPrice()) >= combination.getMaxPrice()) {
                 haveMax = true;
-                sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " depase pri maksimom ou ka vann li an retirel pou ka kontinye.");
+                sampleResponse.getMessages().add("Konbinezon " + saleDetailViewModel.getCombination() + " depase pri maksimom ou ka vann li an retirel pou ka kontinye.");
             }
         }
-        if (haveMax){
+        if (haveMax) {
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
-        Sale sale = apiService.mapSale(vm);
-
+        Sale sale = apiService.mapSale(vm,shift);
+        Sale savedSale = saleRepository.save(sale);
 //        TODO: Saving Sale and return ticket to the seller
+        sampleResponse.getBody().put("ticket", savedSale.getTicket());
+
+        //        TODO: save the seller percentage on every sale
+        //        Seller seller = sellerRepository.findSellerById(vm.getSeller().getId());
+        //
+        //        if (seller.getPaymentType() == PaymentType.PERCENTAGE.ordinal()){
+        //            double amountBySale = (sale.getTotalAmount()* seller.getPercentageCharged())/100;
+        //            seller.setMonthlyPercentagePayment();
+        //        }
+
+        //        TODO: Saving Sale and return ticket to the seller
 
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }

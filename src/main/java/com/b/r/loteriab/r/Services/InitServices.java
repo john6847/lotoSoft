@@ -54,7 +54,7 @@ public class InitServices {
         createRoles();
         createShift();
         createCombinationType();
-//        createCombinations();
+        createCombinations();
         securityServices.crearUsuarioAdmin();
     }
 

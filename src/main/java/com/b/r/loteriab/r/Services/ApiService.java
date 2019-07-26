@@ -30,11 +30,11 @@ public class ApiService {
     @Autowired
     private Helper helper;
 
-    public Sale mapSale(SaleViewModel vm) {
+    public Sale mapSale(SaleViewModel vm,Shift shift) {
         Sale sale = new Sale();
         sale.setSaleDetails(new ArrayList<>());
         sale.setEnabled(true);
-        sale.setShift(vm.getShift());
+        sale.setShift(shift);
         sale.setDate(new Date());
         sale.setSaleStatus(SaleSatus.SAVING.ordinal());
         Enterprise enterprise = enterpriseRepository.findEnterpriseById(vm.getEnterprise().getId());

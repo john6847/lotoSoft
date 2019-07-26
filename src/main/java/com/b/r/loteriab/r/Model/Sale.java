@@ -15,12 +15,13 @@ public class Sale implements Serializable{
     private Long id;
     @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
-    private Shift shift; // tanda
+    private Shift shift;
     private Date date;
+
     private int saleStatus;
     private double totalAmount;
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sale")
-    private List<SaleDetail> saleDetails;
+    private List<SaleDetail> saleDetails; // TODO: Set fetch type
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "pos_id")
     private Pos pos;

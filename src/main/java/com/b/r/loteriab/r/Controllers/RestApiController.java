@@ -161,6 +161,7 @@ public class RestApiController {
         Sale sale = apiService.mapSale(vm,shift);
         Sale savedSale = saleRepository.save(sale);
 //        TODO: Saving Sale and return ticket to the seller
+        sampleResponse.setMessage("Ticket a kreye san okenn pwoblem.");
         sampleResponse.getBody().put("ticket", savedSale.getTicket());
 
         //        TODO: save the seller percentage on every sale

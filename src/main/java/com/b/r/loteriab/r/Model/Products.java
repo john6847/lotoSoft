@@ -1,5 +1,8 @@
 package com.b.r.loteriab.r.Model;
 
+import com.b.r.loteriab.r.Model.Serializers.CombinationTypeSerializer;
+import com.b.r.loteriab.r.Model.Serializers.ProductSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Data
+@JsonSerialize(using = ProductSerializer.class)
 public class Products implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

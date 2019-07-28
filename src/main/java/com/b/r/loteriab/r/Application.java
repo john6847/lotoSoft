@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 @EntityScan(basePackages = "com.b.r.loteriab.r")
 public class Application {
 

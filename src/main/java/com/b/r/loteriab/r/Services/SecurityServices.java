@@ -37,8 +37,6 @@ public class SecurityServices implements UserDetailsService {
     //Para encriptar la información.
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    //cualquier cosa...
-
     /**
      * Creando el usuario por defecto y su rol.
      */

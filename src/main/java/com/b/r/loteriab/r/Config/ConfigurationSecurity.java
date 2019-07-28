@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -45,6 +47,9 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
+                .addFilterBefore(authenticationFilter(),
+                        UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
@@ -59,8 +64,8 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/login") //indicando la ruta que estaremos utilizando.
-                    .successHandler(customAuthenticationSuccessHandler)
-                    .failureUrl("/login?error") //en caso de fallar puedo indicar otra pagina.
+//                    .successHandler(customAuthenticationSuccessHandler)
+//                    .failureUrl("/login?error") //en caso de fallar puedo indicar otra pagina.
                     .permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -74,6 +79,20 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
 
         http.headers().frameOptions().disable();
     }
+
+
+    public SimpleAuthenticationFilter authenticationFilter() throws Exception {
+        SimpleAuthenticationFilter filter = new SimpleAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationFailureHandler(failureHandler());
+        filter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler);
+        return filter;
+    }
+
+    public SimpleUrlAuthenticationFailureHandler failureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login?error");
+    }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {

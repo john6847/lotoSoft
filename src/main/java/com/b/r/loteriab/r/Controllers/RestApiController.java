@@ -10,6 +10,7 @@ import com.b.r.loteriab.r.Services.ApiService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -114,9 +115,11 @@ public class RestApiController {
             sampleResponse.setMessage("Modpas sa pa bon");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
+
         user.setToken(Helper.createToken(128));
         userRepository.save(user);
         sampleResponse.setMessage("Konekte avèk siksè");
+
         sampleResponse.getBody().put("token", user.getToken());
         sampleResponse.getBody().put("pos", pos);
         sampleResponse.getBody().put("seller", seller);

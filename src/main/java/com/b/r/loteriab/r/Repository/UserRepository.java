@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
     Users findByUsername(String username);
-//    Users findUsersByUsernameAndMacAddress(String username, String macAdrress);
+    Users findUsersByUsernameAndEnterpriseName(String username, String enterprise);
 
     Users findUsersById(Long id);
 
@@ -29,6 +29,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     Page<Users> findAllByEnabled(Pageable pageable, boolean state);
     List<Users> findAllByEnabled(Boolean enabled);
+
+
 
 
     String q1 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id " +

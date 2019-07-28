@@ -3,8 +3,11 @@ package com.b.r.loteriab.r.Config;
 /**
  * Created by Dany on 25/04/2019.
  */
+import com.b.r.loteriab.r.Model.TenantContext;
 import com.b.r.loteriab.r.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -33,6 +36,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         session.setAttribute("username", authUser.getUsername());
         session.setAttribute("user", usersService.findUserByUsername(authUser.getUsername()));
 
+        System.out.println(TenantContext.getUserContextPerUserId().get(authUser.getUsername()));
         //set our response to OK status
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
@@ -40,4 +44,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         //we will redirect the user after successfully login
         httpServletResponse.sendRedirect("home");
     }
+
+
 }

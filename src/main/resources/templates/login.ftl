@@ -45,8 +45,12 @@
       <div class="login-wrap">
         <p class="login-img"><i class="icon_lock_alt"></i></p>
         <div class="input-group">
+          <span class="input-group-addon"><i class="icon_building"></i></span>
+          <input type="text" class="form-control" name="enterprise" id="enterprise" placeholder="Non Antrepriz la" required autofocus>
+        </div>
+        <div class="input-group">
           <span class="input-group-addon"><i class="icon_profile"></i></span>
-          <input type="text" class="form-control" name="username" id="username" placeholder="Non Itilizatè" required autofocus>
+          <input type="text" class="form-control" name="username" id="username" placeholder="Non Itilizatè" required>
         </div>
         <div class="input-group">
           <span class="input-group-addon"><i class="icon_key_alt"></i></span>
@@ -64,9 +68,6 @@
         <div class="col-xs-12">
         <#if error??>
             <p style="color: red">${error}</p>
-        </#if>
-        <#if success??>
-            <p style="color: green">${success}</p>
         </#if>
         </div>
     </div>

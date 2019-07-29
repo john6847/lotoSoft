@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 @ControllerAdvice
 @RequestMapping("/user")
-@Secured({"ROLE_SUPER_ADMIN"})
+@Secured({"ROLE_SUPER_ADMIN", "ROLE_SUPER_MEGA_ADMIN"})
 public class UserController {
     @Autowired
     private UsersService usersService;

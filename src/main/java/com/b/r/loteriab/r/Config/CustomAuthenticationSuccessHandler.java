@@ -38,7 +38,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         HttpSession session = httpServletRequest.getSession();
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         session.setAttribute("username", authUser.getUsername());
-        session.setAttribute("enterprise", enterpriseRepository.findById(TenantContext.getUserContextPerUserId().get(authUser.getUsername())));
+        session.setAttribute("enterprise", enterpriseRepository.findEnterpriseById(TenantContext.getUserContextPerUserId().get(authUser.getUsername())));
         //set our response to OK status
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 

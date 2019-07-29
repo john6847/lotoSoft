@@ -30,6 +30,8 @@ public class EnterpriseController {
     public String index(Model model,  HttpServletRequest request) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
+        model.addAttribute("user", user);
+
         return "/index/enterprise.index";
     }
 

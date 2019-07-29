@@ -25,7 +25,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
     Page<Ticket> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
 
-    @Query("SELECT MAX(e.sequence) FROM Ticket t where t.enterprise = :enterprise")
+    @Query("SELECT max(t.sequence) FROM Ticket t where t.enterprise = :enterprise")
     int selectMaxSequence(@Param("enterprise")Enterprise enterprise);
 
 }

@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Services;
 
 
 import com.b.r.loteriab.r.Model.Address;
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Groups;
 import com.b.r.loteriab.r.Repository.AddressRepository;
 import com.b.r.loteriab.r.Repository.GroupsRepository;
@@ -46,7 +47,7 @@ public class GroupsService {
         return result;
     }
 
-    public Result save(Groups groups){
+    public Result save(Groups groups, Enterprise enterprise){
         Result result = validateModel(groups);
         if (!result.isValid()){
             return result;
@@ -56,6 +57,7 @@ public class GroupsService {
             if (address!=null){
                 groups.setAddress(address);
             }
+            groups.setEnterprise(enterprise);
             groups.setCreationDate(new Date());
             groups.setModificationDate(new Date());
             groups.setEnabled(true);
@@ -70,21 +72,17 @@ public class GroupsService {
         groupRepository.deleteById(id);
     }
 
-    public List <Groups> findAll(){
-        return groupRepository.findAll();
+    public List <Groups> findAllGroups(Long enterpriseId){
+        return groupRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public List<Groups> findAllGroups(){
-        return groupRepository.findAll();
+    public Groups findGroupsById (Long id, Long enterpriseId) {
+        return groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Groups findGroupsById (Long id) {
-        return groupRepository.findGroupsById(id);
-    }
-
-    public Result deleteGroupsById(Long id){
+    public Result deleteGroupsById(Long id, Long enterpriseId){
         Result result = new Result();
-        Groups groups = groupRepository.findGroupsById(id);
+        Groups groups = groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);
         if(groups == null) {
             result.add("Gwoup sa pa egziste");
             return result;
@@ -98,12 +96,12 @@ public class GroupsService {
     }
 
 
-    public Page<Groups> findAllGroupByState(int page, int itemPerPage, Boolean state){
+    public Page<Groups> findAllGroupByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return groupRepository.findAllByEnabled(pageable,state);
+            return groupRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
         }
-        return groupRepository.findAll(pageable);
+        return groupRepository.findAllByEnterpriseId(pageable, enterpriseId);
     }
 
 }

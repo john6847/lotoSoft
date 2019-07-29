@@ -13,27 +13,26 @@ import java.util.List;
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    Seller findSellerById(Long id);
-    Seller findSellerByIdAndEnabled(Long id,boolean enabled);
+    Seller findSellerByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Seller findSellerByIdAndEnabledAndEnterpriseId(Long id,boolean enabled, Long enterpriseId);
 
-//    Seller findByName(String name);
-//    Seller findByNameAndEnabled(String name, boolean enabled);
-    Page<Seller> findAll(Pageable pageable);
-    Page<Seller> findAllByEnabled(Pageable pageable, boolean enabled);
-    List<Seller> findAllByEnabled(boolean enabled);
+    Page<Seller> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+    Page<Seller> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
+    List<Seller> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
+    List<Seller> findAllByEnterpriseId(Long enterpriseId);
 
     Seller save(Seller seller);
 
-    Seller findByUserId(Long id);
+    Seller findByUserIdAndEnterpriseId(Long id, Long enterpriseId);
 
-    List<Seller> findAllByGroupsId(Long id);
+    List<Seller> findAllByGroupsIdAndEnterpriseId(Long id, Long enterpriseId);
 
-    void deleteSellerById(Long id);
+    void deleteSellerByIdAndEnterpriseId(Long id,Long enterpriseId);
 
     String q1 = "SELECT * FROM seller s, groups g\n" +
             " WHERE s.groups_id Is NULL \n" +
             " AND s.id NOT IN (SELECT gr.PARENT_SELLER_ID FROM groups gr)\n" +
-            " AND s.enabled =?1";
+            " AND s.enabled =?1 AND s.enterprise_id=?2";
     @Query(value = q1, nativeQuery = true)
-    List<Seller> selectAllSellers(boolean enabled);//
+    List<Seller> selectAllSellersByEnterpriseId(boolean enabled,Long enterpriseId);//
 }

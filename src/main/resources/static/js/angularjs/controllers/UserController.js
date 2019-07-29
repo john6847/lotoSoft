@@ -89,7 +89,10 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
             UserService.fetchAllUsers()
                 .then(
                     function (d) {
-                        $scope.users = d;
+                        if (d === null || d === undefined)
+                            $scope.users = [];
+                        else
+                            $scope.users = d;
                     },
                     function (errorResponse) {
                         console.error(errorResponse);
@@ -100,7 +103,10 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
             UserService.fetchAllUsersFiltered(pageno, itemsPerPage, state)
                 .then(
                     function (d) {
-                        $scope.users = d.content;
+                        if (d === null || d === undefined)
+                            $scope.users = [];
+                        else
+                            $scope.users = d.content;
                     },
                     function (errorResponse) {
                         console.error(errorResponse);

@@ -190,8 +190,6 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
         ConfigurationService.fetchAllCombination($scope.itemsPerPage, combination)
             .then(
                 function (d) {
-                    console.log(d)
-                    console.log($scope.combinationField.combinations)
                     groupItem(d);
                 },
                 function (errorResponse) {

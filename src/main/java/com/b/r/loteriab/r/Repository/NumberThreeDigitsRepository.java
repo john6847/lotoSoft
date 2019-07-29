@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Dany on 04/05/2019.
  */
@@ -16,7 +18,7 @@ public interface NumberThreeDigitsRepository extends JpaRepository<NumberThreeDi
 
     Page<NumberThreeDigits> findAll(Pageable pageable);
 
-    void deleteById(Long id);
+    List<NumberThreeDigits> findAll();
 
     NumberThreeDigits save(NumberThreeDigits numberThreeDigits);
 }

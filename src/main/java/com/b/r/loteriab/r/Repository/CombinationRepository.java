@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Repository;
 
 import com.b.r.loteriab.r.Model.Combination;
 import com.b.r.loteriab.r.Model.CombinationType;
+import com.b.r.loteriab.r.Model.Enterprise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,11 +29,11 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "INNER JOIN number_three_digits n ON n.id = c.number_three_digits_id " +
             "INNER JOIN combination_type ct ON ct.id = c.combination_type_id " +
             "INNER JOIN products p ON ct.products_id = p.id " +
-            "WHERE n.number_in_string_format LIKE ?1 || '%' AND p.name = ?3 ORDER BY c.sequence " +
+            "WHERE n.number_in_string_format LIKE ?1 || '%' AND p.name = ?3 AND c.enterprise_id=?4 ORDER BY c.sequence " +
             "LIMIT ?2";
 
     @Query(value = q1, nativeQuery = true)
-    <T>List<T>selectAllByNumberThreeDigits(String numberInStringFormat, int limit, String type, Class<T> classType);
+    <T>List<T>selectAllByNumberThreeDigitsByEnterpriseId(String numberInStringFormat, int limit, String type, Long enterpriseId, Class<T> classType);
 
     String q2 = "SELECT " +
             "       c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED, " +
@@ -43,11 +44,11 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "INNER JOIN combination_number_two_digits cn ON cn.combination_id = c.id " +
             "INNER JOIN combination_type ct ON ct.id = c.combination_type_id " +
             "INNER JOIN products p ON ct.products_id = p.id " +
-            "WHERE n.number_in_string_format LIKE ?1 || '%' AND p.name = ?3 ORDER BY c.sequence " +
+            "WHERE n.number_in_string_format LIKE ?1 || '%' AND p.name = ?3 AND c.enterprise_id=?4 ORDER BY c.sequence " +
             "LIMIT ?2";
 
     @Query(value = q2, nativeQuery = true)
-    <T>List<T> selectAllByNumberTwoDigits(String numberInStringFormat, int limit, String type, Class<T> classType);
+    <T>List<T> selectAllByNumberTwoDigitsByEnterpriseId(String numberInStringFormat, int limit, String type, Long enterpriseId, Class<T> classType);
 
     String q3 ="SELECT\n" +
         "             c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED,\n" +
@@ -71,10 +72,10 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
         "                                  (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn\n" +
         "                                   WHERE cn.COMBINATION_ID = c.id\n" +
         "                                     AND cn.NUMBER_TWO_DIGITS_ID = n.id))\n" +
-        "                                       AND p.name = ?4 ORDER BY c.sequence LIMIT ?3";
+        "                                       AND p.name = ?4 AND c.enterprise_id=?5 ORDER BY c.sequence LIMIT ?3";
 
     @Query(value = q3, nativeQuery = true)
-    <T>List<T> selectAllByNumberTwoDigitsAndNumberThreeDigits(String numberInStringFormatTwoDigits, String numberInStringFormatThreeDigits, int limit, String type, Class<T> classType);
+    <T>List<T> selectAllByNumberTwoDigitsAndNumberThreeDigitsByEnterpriseId(String numberInStringFormatTwoDigits, String numberInStringFormatThreeDigits, int limit, String type, Long enterpriseId, Class<T> classType);
 
     String q4 ="SELECT   " +
             "            c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED, " +
@@ -95,10 +96,10 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "                      (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn " +
             "                       WHERE cn.COMBINATION_ID = c.id " +
             "                         AND cn.NUMBER_TWO_DIGITS_ID = n.id)) " +
-            "                           AND p.name =?4 ORDER BY c.sequence LIMIT ?3";
+            "                           AND p.name =?4 AND c.enterpriseId=?5 ORDER BY c.sequence LIMIT ?3";
 
     @Query(value = q4, nativeQuery = true)
-    <T>List<T> selectAllByNumberTwoDigitsAndNumberTwoDigits(String numberInStringFormat, String numberInStringFormat1, int limit, String type, Class<T> classType);
+    <T>List<T> selectAllByNumberTwoDigitsAndNumberTwoDigitsByEnterpriseId(String numberInStringFormat, String numberInStringFormat1, int limit, String type, Long enterpriseId, Class<T> classType);
 
     String q5 ="SELECT  " +
             "            c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED, " +
@@ -119,10 +120,10 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "                      (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn " +
             "                       WHERE cn.COMBINATION_ID = c.id " +
             "                         AND cn.NUMBER_TWO_DIGITS_ID = n.id)) " +
-            "                           AND (p.name =?4 OR p.name = ?5) ORDER BY c.sequence LIMIT ?3 ";
+            "                           AND (p.name =?4 OR p.name = ?5) AND c.enterprise_id=?6 ORDER BY c.sequence LIMIT ?3 ";
 
     @Query(value = q5, nativeQuery = true)
-    <T>List<T> selectAllByNumberTwoDigitsAndNumberTwoDigitsAndType(String numberInStringFormat, String numberInStringFormat1, int limit, String type1, String type2, Class<T> classType);
+    <T>List<T> selectAllByNumberTwoDigitsAndNumberTwoDigitsAndTypeAndEnterpriseId(String numberInStringFormat, String numberInStringFormat1, int limit, String type1, String type2, Long enterpriseId, Class<T> classType);
 
     String q6 ="SELECT\n" +
             "    c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED,\n" +
@@ -138,13 +139,13 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "    INNER JOIN products p\n" +
             "    ON ct.products_id = p.id\n" +
             "\n" +
-            "    AND nd.NUMBER_IN_STRING_FORMAT IN (?1)\n" +
-            "    AND (p.name =?2 OR p.name = ?3)\n" +
+            "    WHERE nd.NUMBER_IN_STRING_FORMAT IN (?1)\n" +
+            "    AND (p.name =?2 OR p.name = ?3) AND c.enterprise_id=?4\n" +
             "GROUP BY combinationId\n" +
             "HAVING COUNT(combinationId) = 2";
 
     @Query(value = q6, nativeQuery = true)
-    <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeLOTOANDOPSYON(String numberInStringFormat, String type1, String type2, Class<T> classType);
+    <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeLOTOANDOPSYONAndEnterpriseId(String numberInStringFormat, String type1, String type2, Long enterpriseId, Class<T> classType);
 
     String q7 ="SELECT\n" +
             "    c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED,\n" +
@@ -160,22 +161,19 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "    INNER JOIN products p\n" +
             "    ON ct.products_id = p.id\n" +
             "\n" +
-            "    AND nd.NUMBER_IN_STRING_FORMAT IN (?1)\n" +
-            "    AND (p.name =?2)\n" +
+            "    WHERE nd.NUMBER_IN_STRING_FORMAT IN (?1)\n" +
+            "    AND (p.name =?2) AND c.enterprise_id=?3\n" +
             "GROUP BY combinationId\n" +
             "HAVING COUNT(combinationId) = 2";
 
     @Query(value = q7, nativeQuery = true)
-    <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeMARYAJ(String numberInStringFormat, String type1, Class<T> classType);
+    <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeMARYAJAndEnterpriseId(String numberInStringFormat, String type1, Long enterpriseId, Class<T> classType);
 
+    List<Combination> findAllByCombinationTypeProductsNameAndEnterpriseId(String Name, Long enterpriseId); // TODO:
 
-    void deleteById(Long id);
+    List<Combination> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
 
-    List<Combination> findAllByCombinationType_ProductsName(String Name);
-
-    List<Combination> findAllByEnabled(boolean enabled);
-
-    List<Combination> findByCombinationTypeProductsNameOrderBySequenceDesc(String name);
+    List<Combination> findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(Long enterpriseId, String name );
 
 //
 //    String q1 = " SELECT sequence FROM combination " +
@@ -187,13 +185,13 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Combination save (Combination combination);
 
     @Modifying
-    @Query("UPDATE Combination c SET c.maxPrice = :maxPrice, c.enabled= :enabled WHERE c.combinationType = :combinationType")
-    int updateCombinationMaxPrice(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("maxPrice") double maxPrice);
+    @Query("UPDATE Combination c SET c.maxPrice = :maxPrice, c.enabled= :enabled WHERE c.combinationType = :combinationType AND c.enterprise= :enterprise")
+    int updateCombinationMaxPrice(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("maxPrice") double maxPrice, @Param("enterprise")Enterprise enterprise);
 
     @Modifying
-    @Query("UPDATE Combination c SET c.enabled = :enabled  WHERE c.combinationType  = :combinationType")
-    int updateCombinationState(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled);
+    @Query("UPDATE Combination c SET c.enabled = :enabled  WHERE c.combinationType  = :combinationType AND c.enterprise= :enterprise")
+    int updateCombinationState(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("enterprise")Enterprise enterprise);
 
-    Combination findByResultCombinationAndCombinationTypeId(String resultCombination, long combinationTypeId);
+    Combination findByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, long combinationTypeId, Long enterpriseId);
 }
 

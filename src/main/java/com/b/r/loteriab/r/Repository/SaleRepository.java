@@ -11,12 +11,12 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     Sale save(Sale sale);
 
-    Sale findSaleById(Long id);
-    Sale findSaleByIdAndEnabled(Long id, boolean enabled);
+    Sale findSaleByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Sale findSaleByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
 
-    List<Sale> findAll();
+    List<Sale> findAllByEnterpriseId(Long enterpriseId);
 
-    Page<Sale> findAll(Pageable pageable);
+    Page<Sale> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
     Page<Sale> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
 
 //    @Query("SELECT MAX(e.sequence) FROM Sale t")

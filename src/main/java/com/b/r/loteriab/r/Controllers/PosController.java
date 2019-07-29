@@ -1,12 +1,14 @@
 package com.b.r.loteriab.r.Controllers;
 
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Services.PosService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @ControllerAdvice
 @RequestMapping("/pos")
+@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class PosController {
     @Autowired
     private PosService posService;
@@ -27,94 +30,125 @@ public class PosController {
 
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
-        model.addAttribute("allPos", posService.findAllPos());
-        return "/index/pos.index";
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+            model.addAttribute("allPos", posService.findAllPos(enterprise.getId()));
+            return "/index/pos.index";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade machin yo");
+        return "access-denied";
     }
 
 
-    @RequestMapping("/create")
+    @GetMapping("/create")
     public String createPos(HttpServletRequest request, Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        model.addAttribute("pos", new Pos());
-        return "/create/pos";
+            model.addAttribute("pos", new Pos());
+            return "/create/pos";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye machin sa");
+        return "access-denied";
     }
 
     @PostMapping("/create")
     public String savePos(@ModelAttribute("pos") Pos pos, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        Result result = posService.savePos(pos);
-        if(!result.isValid()){
-            redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
-            return "redirect:/pos/create";
+            Result result = posService.savePos(pos, enterprise);
+            if (!result.isValid()) {
+                redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
+                return "redirect:/pos/create";
+            }
+            model.addAttribute("allPos", posService.findAllPos(enterprise.getId()));
+            return "redirect:/pos";
         }
-        model.addAttribute("allPos", posService.findAllPos());
-        return "redirect:/pos";
+        model.addAttribute("error", "Ou pa ka anrejistre machin sa a koz itilizatè ou sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye machin sa");
+        return "access-denied";
     }
 
-    @RequestMapping("/update/{id}")
+    @GetMapping("/update/{id}")
     public String updatePos(@PathVariable("id") Long id,HttpServletRequest request,Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error","Nimewo pos sa pa egziste, cheche on lot");
-            return "404";
+            if (id <= 0) {
+                model.addAttribute("error", "Nimewo pos sa pa egziste, cheche on lot");
+                return "404";
+            }
+
+            Pos pos = posService.findPosById(id, enterprise.getId());
+
+            if (pos == null) {
+                model.addAttribute("error", "Nimewo pos sa pa egziste, cheche on lot");
+                return "404";
+            }
+
+            model.addAttribute("pos", pos);
+            return "/update/pos";
         }
-
-        Pos pos = posService.findPosById(id);
-
-        if(pos == null){
-            model.addAttribute("error","Nimewo pos sa pa egziste, cheche on lot");
-            return "404";
-        }
-
-        model.addAttribute("pos", pos);
-        return "/update/pos";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye machin sa");
+        return "access-denied";
     }
 
     @PostMapping("/update")
     public String updatePos(@ModelAttribute("pos") Pos pos,HttpServletRequest request, Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        Result result = posService.updatePos(pos);
-        if(!result.isValid()){
-            model.addAttribute("error", "Pos la pa modifye, eseye ankò");
-            return "redirect:/pos/update/"+ pos.getId();
+            Result result = posService.updatePos(pos, enterprise);
+            if (!result.isValid()) {
+                model.addAttribute("error", "Pos la pa modifye, eseye ankò");
+                return "redirect:/pos/update/" + pos.getId();
+            }
+
+            model.addAttribute("allPos", posService.findAllPos(enterprise.getId()));
+            return "redirect:/pos";
         }
-
-        model.addAttribute("allPos", posService.findAllPos());
-        return "redirect:/pos";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye machin sa");
+        return "access-denied";
     }
 
     @RequestMapping("/delete/{id}")
     public String deletePos(HttpServletRequest request,Model model,@PathVariable("id") Long id){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error","Pos sa pa agziste, antre on lot");
-            return "404";
+            if (id <= 0) {
+                model.addAttribute("error", "Pos sa pa agziste, antre on lot");
+                return "404";
+            }
+            Result result = posService.deletePosById(id, enterprise.getId());
+
+            if (!result.isValid()) {
+                model.addAttribute("error", result.getLista().get(0).getMessage());
+            }
+
+
+            return "redirect:/pos";
         }
-        Result result =  posService.deletePosById(id);
-
-        if(!result.isValid()){
-            model.addAttribute("error", result.getLista().get(0).getMessage());
-        }
-
-
-        return "redirect:/pos";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou elimne machin sa");
+        return "access-denied";
     }
+
 }

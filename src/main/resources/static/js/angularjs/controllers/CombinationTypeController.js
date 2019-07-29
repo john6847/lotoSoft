@@ -37,7 +37,10 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
         CombinationTypeService.fetchAllCombinationTypes()
             .then(
                 function (d) {
-                   $scope.combinationTypes = d;
+                    if (d === null || d === undefined)
+                        $scope.combinationTypes = [];
+                    else
+                        $scope.combinationTypes = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -48,8 +51,10 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
         CombinationTypeService.fetchAllCombinationTypesFiltered(pageno,itemsPerPage,state)
             .then(
                 function (d) {
-                   $scope.combinationTypes = d.content;
-                    console.log(d)
+                    if (d === null || d === undefined)
+                        $scope.combinationTypes = [];
+                    else
+                       $scope.combinationTypes = d.content;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -60,7 +65,10 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
         CombinationTypeService.fetchAllCombinationTypesSize(state)
             .then(
                 function (d) {
-                   $scope.totalCount = d;
+                    if (d=== 0 || d === null || d === undefined)
+                        $scope.totalCount = 0;
+                    else
+                        $scope.totalCount = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -71,7 +79,11 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
         CombinationTypeService.fetchAllProducts()
             .then(
                 function (d) {
-                   $scope.products = d;
+                    if (d === null || d === undefined)
+                        $scope.products = [];
+                    else
+                        $scope.products = d;
+
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

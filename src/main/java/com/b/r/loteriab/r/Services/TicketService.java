@@ -14,17 +14,17 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    private Ticket findById(Long id){return ticketRepository.findTicketById(id);}
-    private Ticket findByIdAndEnabled(Long id,boolean enabled){
-        return ticketRepository.findTicketByIdAndEnabled(id,enabled);
+    private Ticket findById(Long id, Long enterpriseId){return ticketRepository.findTicketByIdAndEnterpriseId(id, enterpriseId);}
+    private Ticket findByIdAndEnabled(Long id,boolean enabled, Long enterpriseId){
+        return ticketRepository.findTicketByIdAndEnabledAndEnterpriseId(id,enabled, enterpriseId);
     }
 
-    private Ticket findBySerial(String serial){
-        return ticketRepository.findBySerial(serial);
+    private Ticket findBySerial(String serial, Long enterpriseId){
+        return ticketRepository.findBySerialAndEnterpriseId(serial, enterpriseId);
     }
 
-    private Ticket findBySerialAndEnabled(String serial,boolean enabled){
-        return ticketRepository.findBySerialAndEnabled(serial,enabled);
+    private Ticket findBySerialAndEnabled(String serial,boolean enabled, Long enterpriseId){
+        return ticketRepository.findBySerialAndEnabledAndEnterpriseId(serial,enabled, enterpriseId);
     }
 
 

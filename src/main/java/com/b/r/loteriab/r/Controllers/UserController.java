@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Controllers;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.Roles;
 import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.Users;
@@ -23,7 +24,7 @@ import java.util.List;
 @Controller
 @ControllerAdvice
 @RequestMapping("/user")
-@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+@Secured({"ROLE_SUPER_ADMIN"})
 public class UserController {
     @Autowired
     private UsersService usersService;
@@ -37,34 +38,44 @@ public class UserController {
   * */
     @GetMapping("/{type}")
     public String index(Model model,  HttpServletRequest request, @PathVariable long type) {
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if (type > 1)
-            return "/index/user-super-admin.index";
-        return "/index/user.index";
+            if (type > 1)
+                return "/index/user-super-admin.index";
+            return "/index/user.index";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade Itilizatè  ou yo");
+        return "access-denied";
     }
 
-    @RequestMapping("/{type}/create")
+    @GetMapping("/{type}/create")
     public String createUser(HttpServletRequest request, @PathVariable int type, Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if (type <= 0){
-            type = 1;
+            if (type <= 0) {
+                type = 1;
+            }
+
+            if (type == 2) {
+                model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
+                model.addAttribute("isSuperAdmin", true);
+            } else {
+                model.addAttribute("isSuperAdmin", false);
+            }
+
+            model.addAttribute("users", new Users());
+            return "/create/user";
         }
-
-        if (type == 2){
-            model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
-            model.addAttribute("isSuperAdmin", true);
-        } else {
-            model.addAttribute("isSuperAdmin", false);
-        }
-
-        model.addAttribute("users", new Users());
-        return "/create/user";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");
+        return "access-denied";
     }
 
     @PostMapping("/create")
@@ -76,80 +87,88 @@ public class UserController {
                            @RequestParam(value = "isSupervisor", defaultValue = "off") String isSupervisor,
                            @RequestParam(value = "isCollector", defaultValue = "off") String isCollector,
                            HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
 
-
-        if(!confirmPassword.equals(users.getPassword())){
-            redirectAttributes.addFlashAttribute("error", "Modpas yo sipoze menm");
-            if (isSuperAdmin.equals("on"))
-                return "redirect:/user/2/create";
-            return "redirect:/user/1/create";
-        }
-
-        if(usersService.findUserByUsername(users.getUsername())!=null){
-            redirectAttributes.addFlashAttribute("error", "non ititilizatè a egziste deja");
-            if (isSuperAdmin.equals("on"))
-                return "redirect:/user/2/create";
-            return "redirect:/user/1/create";
-        }
-
-        if (isSuperAdmin.equals("off")){
-            if(isAdmin.equals("off") && isSeller.equals("off") && isSupervisor.equals("off") && isCollector.equals("off")) {
-                redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
+            if (!confirmPassword.equals(users.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "Modpas yo sipoze menm");
+                if (isSuperAdmin.equals("on"))
+                    return "redirect:/user/2/create";
                 return "redirect:/user/1/create";
             }
-            users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector));
-        }
+
+            if (usersService.findUserByUsernameAndEnterpriseId(users.getUsername(), enterprise.getId()) != null) {
+                redirectAttributes.addFlashAttribute("error", "non ititilizatè a egziste deja");
+                if (isSuperAdmin.equals("on"))
+                    return "redirect:/user/2/create";
+                return "redirect:/user/1/create";
+            }
+
+            if (isSuperAdmin.equals("off")) {
+                if (isAdmin.equals("off") && isSeller.equals("off") && isSupervisor.equals("off") && isCollector.equals("off")) {
+                    redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
+                    return "redirect:/user/1/create";
+                }
+                users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector));
+            }
 
 
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        Result result = usersService.saveUsers(users, isSuperAdmin);
-        if(!result.isValid()){
-            redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
+            Result result = usersService.saveUsers(users, isSuperAdmin, enterprise);
+            if (!result.isValid()) {
+                redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
+                if (isSuperAdmin.equals("on"))
+                    return "redirect:/user/2/create";
+                return "redirect:/user/1/create";
+            }
+
             if (isSuperAdmin.equals("on"))
-                return "redirect:/user/2/create";
-            return "redirect:/user/1/create";
+                return "redirect:/user/2";
+            return "redirect:/user/1";
         }
-
-        if (isSuperAdmin.equals("on"))
-            return "redirect:/user/2";
-        return "redirect:/user/1";
-
+        model.addAttribute("error", "Ou pa ka anrejistre itilizatè sa a koz itilizatè ou sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");
+        return "access-denied";
     }
 
     @GetMapping("/{type}/update/{id}")
     public String getDraw(@PathVariable("id")Long id,  @PathVariable("type") int type, HttpServletRequest request, Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error", "Nimewo Itilizatè sa pa egziste, cheche on lòt");
-            return "404";
+            if (id <= 0) {
+                model.addAttribute("error", "Nimewo Itilizatè sa pa egziste, cheche on lòt");
+                return "404";
+            }
+
+            Users users = usersService.findUser(id, enterprise.getId());
+
+            if (type <= 0) {
+                type = 1;
+            }
+
+            if (type == 2) {
+                model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
+                model.addAttribute("isSuperAdmin", true);
+            } else {
+                model.addAttribute("isSuperAdmin", false);
+            }
+
+            if (users == null) {
+                model.addAttribute("error", "Itilizatè sa pa egziste, cheche on lòt");
+                return "404";
+            }
+
+            model.addAttribute("users", users);
+            return "/update/user";
         }
-
-        Users users = usersService.findUser(id);
-
-        if (type <= 0){
-            type = 1;
-        }
-
-        if (type == 2){
-            model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
-            model.addAttribute("isSuperAdmin", true);
-        } else {
-            model.addAttribute("isSuperAdmin", false);
-        }
-
-        if(users== null){
-            model.addAttribute("error", "Itilizatè sa pa egziste, cheche on lòt");
-            return "404";
-        }
-
-        model.addAttribute("users", users);
-        return "/update/user";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye itilizatè sa");
+        return "access-denied";
     }
 
     @PostMapping("/update")
@@ -161,39 +180,44 @@ public class UserController {
                              @RequestParam(value = "isCollector", defaultValue = "off") String isCollector,
                              @RequestParam("id") Long id, HttpServletRequest request,
                              Model model,  RedirectAttributes redirectAttributes){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if (isSuperAdmin.equals("off")){
-            if(isSeller.equals("off") && isAdmin.equals("off") && isSupervisor.equals("off") && isCollector.equals("off")) {
-                redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
-                return "redirect:/user/1/update/"+ user.getId();
+            if (isSuperAdmin.equals("off")) {
+                if (isSeller.equals("off") && isAdmin.equals("off") && isSupervisor.equals("off") && isCollector.equals("off")) {
+                    redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
+                    return "redirect:/user/1/update/" + user.getId();
+                }
+                users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector));
             }
-            users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector));
-        }
 
-        if (id > 0) {
-            users.setId(id);
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Nimewo itilizatè sa pa bon, reeseye ankò");
+            if (id > 0) {
+                users.setId(id);
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Nimewo itilizatè sa pa bon, reeseye ankò");
+                if (isSuperAdmin.equals("on"))
+                    return "redirect:/user/2";
+                return "redirect:/user/1";
+            }
+
+
+            Result result = usersService.updateUsers(users, isSuperAdmin, enterprise.getId());
+            if (!result.isValid()) {
+                redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
+                if (isSuperAdmin.equals("on"))
+                    return "redirect:/user/2/update/" + user.getId();
+                return "redirect:/user/1/update/" + user.getId();
+            }
+
             if (isSuperAdmin.equals("on"))
                 return "redirect:/user/2";
             return "redirect:/user/1";
         }
-
-
-        Result result = usersService.updateUsers(users, isSuperAdmin);
-        if(!result.isValid()){
-            redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
-            if (isSuperAdmin.equals("on"))
-                return "redirect:/user/2/update/"+ user.getId();
-            return "redirect:/user/1/update/"+ user.getId();
-        }
-
-        if (isSuperAdmin.equals("on"))
-            return "redirect:/user/2";
-        return "redirect:/user/1";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye itilizatè sa");
+        return "access-denied";
     }
 
     @DeleteMapping("/{type}/delete/{id}")
@@ -201,22 +225,27 @@ public class UserController {
                              Model model,
                              @PathVariable("id") Long id,
                              @PathVariable("type") int type){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error", "Itilizatè sa pa egziste, antre on lòt");
-            return "404";
-        }
+            if (id <= 0) {
+                model.addAttribute("error", "Itilizatè sa pa egziste, antre on lòt");
+                return "404";
+            }
 
-        Result result = usersService.deleteUserById(id);
-        if(!result.isValid()){
-            model.addAttribute("error", result.getLista().get(0).getMessage());
+            Result result = usersService.deleteUserById(id, enterprise.getId());
+            if (!result.isValid()) {
+                model.addAttribute("error", result.getLista().get(0).getMessage());
+            }
+            if (type > 1)
+                return "redirect:/user/2";
+            return "redirect:/user/1";
         }
-        if (type > 1)
-            return "redirect:/user/2";
-        return "redirect:/user/1";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou elimne itilizatè sa");
+        return "access-denied";
     }
 
     private List<Role> getListRoles (String isAdmin, String isSeller, String isSupervisor, String isCollector){

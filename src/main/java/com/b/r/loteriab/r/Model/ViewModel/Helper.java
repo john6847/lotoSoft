@@ -40,7 +40,7 @@ public class Helper {
             return Pair.with("BR-"+enterprise.getName().substring(0,2).toUpperCase()+"000000000000001", Long.valueOf(1));
         }
 
-        long sequence = ticketRepository.selectMaxSequence();
+        long sequence = ticketRepository.selectMaxSequence(enterprise);
         sequence += 1;
         String sequenceString = String.valueOf(sequence);
         String nextSequence = "BR-"+enterprise.getName().substring(0,2).toUpperCase()+

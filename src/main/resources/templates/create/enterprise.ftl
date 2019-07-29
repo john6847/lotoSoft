@@ -39,7 +39,7 @@
                         <div class="alert alert-danger" role="alert">${error}</div>
                     </#if>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <section class="panel">
                         <header class="panel-heading">
                             Antrepriz
@@ -52,6 +52,40 @@
                                         <input type="text" class="form-control round-input" id="name" name="name" minlength="2" required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kantite Anplwaye</label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                        <input type="number" class="form-control round-input" id="numberOfEmployee" name="numberOfEmployee" min="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Telefon</label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                        <input type="text" class="form-control round-input" id="phone" name="phone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">RNC</label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                        <input type="text" class="form-control round-input" id="rnc" name="rnc">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Logo Url</label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                        <input type="text" class="form-control round-input" id="logoUrl" name="logoUrl">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Sub Domain</label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                        <input type="text" class="form-control round-input" id="subDomain" name="subDomain">
+                                    </div>
+                                </div>
+<#--                                https://bootsnipp.com/snippets/Zk2Pz-->
+
                                 <div class="form-group">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
                                         <div class="row">

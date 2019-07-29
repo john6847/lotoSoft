@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Services;
 
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
 import com.b.r.loteriab.r.Validation.Result;
@@ -30,7 +31,7 @@ public class ShiftService {
         return result;
     }
 
-    public Result saveShift(Shift shift){
+    public Result saveShift(Shift shift, Enterprise enterprise){
         Result result = validateModel(shift);
         if (!result.isValid()){
             return result;
@@ -40,6 +41,7 @@ public class ShiftService {
             shift.setOpenTime(shift.getOpenTime());
             shift.setCloseTime(shift.getCloseTime());
             shift.setEnabled(true);
+            shift.setEnterprise(enterprise);
             shiftRepository.save(shift);
         }catch (Exception ex){
             result.add("Pa ka aktyalize reeseye ankò");
@@ -47,13 +49,13 @@ public class ShiftService {
         return  result;
     }
 
-    public Result updateShift(Shift shift) {
+    public Result updateShift(Shift shift, Long enterpriseId) {
         Result result = new Result();
         if (!result.isValid()){
             return result;
         }
 
-        Shift currentShift = shiftRepository.findShiftById(shift.getId());
+        Shift currentShift = shiftRepository.findShiftByIdAndEnterpriseId(shift.getId(), enterpriseId);
         currentShift.setName(shift.getName());
         currentShift.setOpenTime(shift.getOpenTime());
         currentShift.setCloseTime(shift.getCloseTime());
@@ -62,21 +64,17 @@ public class ShiftService {
         try {
             shiftRepository.save(currentShift);
         }catch (Exception ex){
-            result.add("Pa ka aktyalize reeseye ankò");
+            result.add("Tip tiraj la pa ka aktyalize reeseye ankò");
         }
         return  result;
     }
 
-    public void deleteShiftId(Long id){
-        shiftRepository.deleteById(id);
+    public Shift findShiftById(Long id, Long enterpriseId){
+        return shiftRepository.findShiftByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Shift findShiftId(Long id){
-        return shiftRepository.findShiftById(id);
-    }
-
-    public ArrayList<Shift> findAll(){
-        return (ArrayList<Shift>)shiftRepository.findAll();
+    public ArrayList<Shift> findAllByEnterpriseId(Long enterpriseId){
+        return (ArrayList<Shift>)shiftRepository.findAllByEnterpriseId(enterpriseId);
     }
 
 }

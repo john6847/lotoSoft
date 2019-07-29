@@ -15,69 +15,57 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
+    Users findByUsernameAndEnterpriseId(String username, Long enterpriseId);
+    Users findByUsernameAndEnterpriseName(String username, String enterprise);
     Users findByUsername(String username);
-    Users findUsersByUsernameAndEnterpriseName(String username, String enterprise);
-
-    Users findUsersById(Long id);
 
     Users findUsersByToken(String token);
 
-    Page<Users> findAll(Pageable pageable);
+    Users findUsersByIdAndEnterpriseId(Long id, Long enterpriseId);
+
+    Page<Users> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
 
 
-    List<Users>findAll();
+    List<Users>findAllByEnterpriseId(Long enterpriseId);
 
-    Page<Users> findAllByEnabled(Pageable pageable, boolean state);
-    List<Users> findAllByEnabled(Boolean enabled);
-
-
+    Page<Users> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean state, Long enterpriseId);
+    List<Users> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId);
 
 
     String q1 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id " +
-            "WHERE u.id NOT IN (SELECT s.user_id FROM Seller s) and r.name = ?1 and u.enabled =?2";
+            "WHERE u.id NOT IN (SELECT s.user_id FROM Seller s) and r.name = ?1 and u.enabled =?2 and u.enterprise_id=?3";
     @Query(value = q1, nativeQuery = true)
-    List<Users> selectUserByNameAndEnabled(String name, boolean enabled);
+    List<Users> selectUserByNameAndEnabledAndEnterpriseId(String name, boolean enabled, Long enterpriseId);
 
     String q2 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id " +
-            "WHERE r.name=?1";
+            "WHERE r.name=?1 and u.enterprise_id=?2";
     @Query(value = q2, nativeQuery = true)
-    List<Users> selectUserSuperAdmin(String name);
+    List<Users> selectUserSuperAdminAndEnterpriseId(String name, Long enterpriseId);
 
     String q3 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
-            "WHERE r.name=?1 and order by ?#{#pageable}";
+            "WHERE r.name=?1 and enterprise_id=?2 and order by ?#{#pageable}";
     @Query(value = q3, nativeQuery = true)
-    Page<Users> selectUserSuperAdmin(String name, Pageable pageable);
+    Page<Users> selectUserSuperAdminAndEnterpriseId(String name, Long enterprise_id,  Pageable pageable);
 
     String q4 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
-            "WHERE r.name=?1  and u.enabled =?2 and order by ?#{#pageable}";
+            "WHERE r.name=?1  and u.enabled =?2 and enterprise_id=?3 and order by ?#{#pageable}";
     @Query(value = q4, nativeQuery = true)
-    Page<Users> selectUserSuperAdminAndEnabled(String name, boolean state, Pageable pageable);
+    Page<Users> selectUserSuperAdminAndEnabledAndEterpriseId(String name, boolean state, Long enterpriseId, Pageable pageable);
 
     String q5 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2))";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) and u.enterprise_id =?3";
     @Query(value = q5, nativeQuery = true)
-    List<Users> selectAllUserExceptSuperAdmin(String name, String name1);
+    List<Users> selectAllUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId);
 
     String q6 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) and order by ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) and enterprise_id=?3 and order by ?#{#pageable}";
     @Query(value = q6, nativeQuery = true)
-    Page<Users> selectUserExceptSuperAdmin(String name, String name1, Pageable pageable);
+    Page<Users> selectUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId, Pageable pageable);
 
     String q7 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) u.enabled =?3 and order by ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) u.enabled =?3 and enterprise_id=?4 and order by ?#{#pageable}";
     @Query(value = q7, nativeQuery = true)
-    Page<Users> selectUserExceptSuperAdminAndEnabled(String name, String name1, boolean state, Pageable pageable);
+    Page<Users> selectUserExceptSuperAdminAndEnabledAndEnterpriseId(String name, String name1, boolean state, Long enterpriseId, Pageable pageable);
 
-//    SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id
-//
-//            WHERE
-//--           r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2))
-//
-//    r.Name NOT IN ('ROLE_SUPER_ADMIN', 'ROLE_SUPER_MEGA_ADMIN')
-//
-//    GROUP BY r.id, u.id;
-//
-//    HAVING COUNT(r.id) = 1
-
-    void deleteById(Long id);
+    void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
 }

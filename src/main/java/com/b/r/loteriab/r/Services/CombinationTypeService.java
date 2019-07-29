@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Services;
 
 import com.b.r.loteriab.r.Model.CombinationType;
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
 import com.b.r.loteriab.r.Repository.CombinationTypeRepository;
 import com.b.r.loteriab.r.Validation.Result;
@@ -32,7 +33,7 @@ public class CombinationTypeService {
         }
         return  combinationType;
     }
-    public Result saveCombinationType (CombinationType combinationType){
+    public Result saveCombinationType (CombinationType combinationType, Enterprise enterprise){
         combinationType = cleanModel(combinationType);
         Result result = validateModel(combinationType);
         if (!result.isValid()){
@@ -40,6 +41,7 @@ public class CombinationTypeService {
         }
 
         try {
+            combinationType.setEnterprise(enterprise);
             combinationType.setEnabled(true);
             combinationType.setCreationDate(new Date());
             combinationType.setModificationDate(new Date());
@@ -67,7 +69,7 @@ public class CombinationTypeService {
                 return result;
             }
 
-        CombinationType currentCombinationType = combinationTypeRepository.findCombinationTypeById(combinationType.getId());
+        CombinationType currentCombinationType = combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(combinationType.getId(), combinationType.getEnterprise().getId());
         currentCombinationType.setProducts(combinationType.getProducts());
         if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
             currentCombinationType.setPayedPriceFirstDraw(combinationType.getPayedPriceFirstDraw());
@@ -80,7 +82,7 @@ public class CombinationTypeService {
         currentCombinationType.setModificationDate(new Date ());
 
         try {
-            combinationTypeRepository.findCombinationTypeById(combinationType.getId());
+            combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(combinationType.getId(),combinationType.getEnterprise().getId());
         }catch (Exception ex){
             result.add("Konbinezon an pa ka aktyalize reeseye ankò");
         }
@@ -88,9 +90,9 @@ public class CombinationTypeService {
     }
 
 
-    public Result deleteCombinationTypeId(Long id){
+    public Result deleteCombinationTypeIdAndEnterpriseId(Long id, Long enterpriseId){
         Result result = new Result();
-        CombinationType combinationType = combinationTypeRepository.findCombinationTypeById(id);
+        CombinationType combinationType = combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(id, enterpriseId);
         if(combinationType == null) {
             result.add("Konbinezon sa ou bezwen elimine a pa egziste");
             return result;
@@ -103,27 +105,27 @@ public class CombinationTypeService {
         return result;
     }
 
-    public Page<CombinationType> findAllCombinationType(int page, int itemPerPage, Boolean state){
+    public Page<CombinationType> findAllCombinationTypeByEnterpriseId(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if (state!= null){
-            return combinationTypeRepository.findAllByEnabled(pageable, state);
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseId(pageable, state, enterpriseId);
         }
-        return combinationTypeRepository.findAll(pageable);
+        return combinationTypeRepository.findAllByEnterpriseId(pageable, enterpriseId);
     }
 
-    public CombinationType findCombinationTypeById(Long id){
-        return combinationTypeRepository.findCombinationTypeById(id);
+    public CombinationType findCombinationTypeByIdAndEntepriseId(Long id,Long enterpriseId){
+        return combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public List<CombinationType> findall (){
-        return combinationTypeRepository.findAll();
+    public List<CombinationType> findallByEnterpriseId (Long enterpriseId){
+        return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public List<CombinationType> findAllByEnabled(Boolean enabled){
+    public List<CombinationType> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return combinationTypeRepository.findAllByEnabled(enabled);
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
-        return combinationTypeRepository.findAll();
+        return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
     }
 
 }

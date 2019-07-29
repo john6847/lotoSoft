@@ -4,6 +4,7 @@ package com.b.r.loteriab.r.Config;
  * Created by Dany on 25/04/2019.
  */
 import com.b.r.loteriab.r.Model.TenantContext;
+import com.b.r.loteriab.r.Repository.EnterpriseRepository;
 import com.b.r.loteriab.r.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -26,6 +27,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private EnterpriseRepository enterpriseRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         //do some logic here if you want something to be done whenever
@@ -34,9 +38,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         HttpSession session = httpServletRequest.getSession();
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         session.setAttribute("username", authUser.getUsername());
-        session.setAttribute("user", usersService.findUserByUsername(authUser.getUsername()));
-
-        System.out.println(TenantContext.getUserContextPerUserId().get(authUser.getUsername()));
+        session.setAttribute("enterprise", enterpriseRepository.findById(TenantContext.getUserContextPerUserId().get(authUser.getUsername())));
         //set our response to OK status
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 

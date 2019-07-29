@@ -1,6 +1,5 @@
 package com.b.r.loteriab.r.Controllers;
 
-import com.b.r.loteriab.r.Model.TenantContext;
 import com.b.r.loteriab.r.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +16,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(
             @RequestParam(value = "error", required = false) String error,
-            @RequestParam(value = "logout", required = false) String logout,
-            @RequestParam(value = "username", defaultValue = "") String username
-    ) {
+            @RequestParam(value = "logout", required = false) String logout) {
 
         ModelAndView model = new ModelAndView();
         if (error != null) {
@@ -29,8 +26,6 @@ public class LoginController {
         if (logout != null) {
             model.addObject("msg", "Sesyon an fèmen korèkteman.");
         }
-
-        System.out.println("Usernameeeeeeeeeeeeeeee: "+username);
         model.setViewName("login");
 
         return model;

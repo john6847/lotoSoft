@@ -42,15 +42,15 @@ public class ApiService {
         for (SaleDetailViewModel saleDetailVM: vm.getSaleDetails()){
             SaleDetail saleDetail = new SaleDetail();
             saleDetail.setEnabled(true);
-            Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeId(saleDetailVM.getCombination(), saleDetailVM.getCombinationTypeId());
+            Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(saleDetailVM.getCombination(), saleDetailVM.getCombinationTypeId(), enterprise.getId());
             saleDetail.setCombination(combination);
             saleDetail.setEnterprise(enterprise);
             saleDetail.setPrice(saleDetailVM.getPrice());
             sale.getSaleDetails().add(saleDetail);
         }
-        sale.setPos(posRepository.findPosById(vm.getPos().getId()));
+        sale.setPos(posRepository.findPosByIdAndEnterpriseId(vm.getPos().getId(), enterprise.getId()));
         sale.setEnterprise(enterprise);
-        sale.setSeller(sellerRepository.findSellerById(vm.getSeller().getId()));
+        sale.setSeller(sellerRepository.findSellerByIdAndEnterpriseId(vm.getSeller().getId(), enterprise.getId()));
         Ticket ticket =  new Ticket();
         ticket.setEnabled(true);
         ticket.setEmissionDate(new Date());

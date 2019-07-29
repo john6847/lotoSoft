@@ -41,10 +41,15 @@
   <div class="page-404">
     <p class="text-404">403</p>
 
-    <h2>Awww!!!!</h2>
+    <h2>Awww!!!!
+      <#if error??>
+        <div class="alert alert-danger" role="alert">${error}</div>
+      </#if>
+    </h2>
     <h1>Ou pa gen aksè a paj sa.
       <br><a href="/home">Retounen nan Paj Prensipal la</a>
     </h1>
+
   </div>
   <div class="credits">
           <!--

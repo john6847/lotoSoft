@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +18,24 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public long cantidadUsuario(){
-        return roleRepository.count();
-    }
-
-    public Role saveRole (Role role){
+    public Role saveRole (Role role, Enterprise enterprise){
+        // TODO: Set entterprise to entity
+        role.setEnterprise(enterprise);
         roleRepository.save(role);
+
         return role;
     }
 
-    public void elimarRolPorId(Long id){
-        roleRepository.deleteRolById(id);
+    public void deleteRoleByIdAndEnterpriseId(Long id, Long enterpriseId){
+        roleRepository.deleteRolByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Role findRoleByName (String name){
-        return roleRepository.findByName(name);
+    public Role findRoleByNameAndEnterpriseId (String name, Long enterpriseId){
+        return roleRepository.findByNameAndEnterpriseId(name, enterpriseId);
     }
 
-    public List<Role> todosRoles(){
-        return roleRepository.findAll();
+    public List<Role> findAllByEnterpriseId(Long enterpriseId){
+        return roleRepository.findAllByEnterpriseId(enterpriseId);
     }
 
 }

@@ -14,17 +14,18 @@ import java.util.List;
 @Repository
 public interface CombinationTypeRepository extends JpaRepository<CombinationType, Long> {
 
-    CombinationType findCombinationTypeById(Long id);
+    CombinationType findCombinationTypeByIdAndEnterpriseId(Long id, Long enterpriseId);
 
-    Page<CombinationType> findAllByEnabled(Pageable pageable, boolean enabled);
+    Page<CombinationType> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
 
-    Page<CombinationType> findAll(Pageable pageable);
+    Page<CombinationType> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
 
-    List<CombinationType> findAllByEnabled(boolean enabled);
+    List<CombinationType> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
+    List<CombinationType> findAllByEnterpriseId(Long enterpriseId);
 
-    void deleteById(Long id);
+    void deleteCombinationTypeById(Long id);
 
-    CombinationType findByProductsName(String name);
+    CombinationType findByProductsNameAndEnterpriseId(String name, Long enterpriseId);
 
     CombinationType save(CombinationType combinationType);
 }

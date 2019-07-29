@@ -22,7 +22,8 @@ public class Enterprise implements Serializable {
     private int numberOfEmployee;
     private String phone;
     private String rnc;
-    private String website;
+    private String logoUrl;
+    private String subDomain;
     private String identifier;
     private int sequence;
     private Date creationDate;

@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Services;
 
 import com.b.r.loteriab.r.Model.Draw;
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.NumberTwoDigits;
 import com.b.r.loteriab.r.Repository.DrawRepository;
 import com.b.r.loteriab.r.Validation.Result;
@@ -25,20 +26,21 @@ public class DrawService {
     @Autowired
     private DrawRepository drawRepository;
 
-    public Result saveDraw (Draw draw){
+    public Result saveDraw (Draw draw, Enterprise enterprise){
         Result result = validateModel(draw);
         if (!result.isValid()){
             return result;
         }
 
 
-        Draw savedDraw = drawRepository.findDrawByShiftNameAndDrawDate(draw.getShift().getName(), draw.getDrawDate());
+        Draw savedDraw = drawRepository.findDrawByShiftNameAndDrawDateAndEnterpriseId(draw.getShift().getName(), draw.getDrawDate(), enterprise.getId());
         if (savedDraw!=null){
             result.add("Tiraj sa egziste deja");
             return result;
         }
 
         try {
+            draw.setEnterprise(enterprise);
             draw.setCreationDate(new Date());
             draw.setModificationDate(new Date());
             draw.setEnabled(true);
@@ -86,12 +88,12 @@ public class DrawService {
     }
 
 
-    public Result updateDraw(Draw draw) {
+    public Result updateDraw(Draw draw, Long enterpriseId) {
         Result result = validateModel(draw);
         if (!result.isValid()){
             return result;
         }
-        List<Draw> savedDraw = drawRepository.findAllByShiftNameAndDrawDate(draw.getShift().getName(), draw.getDrawDate());
+        List<Draw> savedDraw = drawRepository.findAllByShiftNameAndDrawDateAndEnterpriseId(draw.getShift().getName(), draw.getDrawDate(), enterpriseId);
         if (savedDraw!=null){
             for (Draw sd : savedDraw){
                 if (sd.getId().longValue() != draw.getId().longValue()){
@@ -101,7 +103,7 @@ public class DrawService {
             }
         }
 
-        Draw currentDraw = drawRepository.findDrawById(draw.getId());
+        Draw currentDraw = drawRepository.findDrawByIdAndEnterpriseId(draw.getId(), enterpriseId);
         currentDraw.setModificationDate(new Date());
         currentDraw.setNumberThreeDigits(draw.getNumberThreeDigits());
         currentDraw.setNumberTwoDigits(draw.getNumberTwoDigits());
@@ -114,26 +116,26 @@ public class DrawService {
         return  result;
     }
 
-    public ArrayList<Draw> findAllDraw() {
-        return (ArrayList<Draw>) drawRepository.findAll();
+    public ArrayList<Draw> findAllDraw(Long entepriseId) {
+        return (ArrayList<Draw>) drawRepository.findAllByEnterpriseId(entepriseId);
     }
 
-    public Result deleteDrawById(Long id){
+    public Result deleteDrawById(Long id, Long entepriseId){
         Result result = new Result();
-        Draw draw = drawRepository.findDrawById(id);
+        Draw draw = drawRepository.findDrawByIdAndEnterpriseId(id, entepriseId);
         if(draw == null) {
             result.add("Tiraj sa ou bezwen elimine a pa egziste");
             return result;
         }
         try{
-            drawRepository.deleteById(id);
+            drawRepository.deleteByIdAndEnterpriseId(id, entepriseId);
         }catch (Exception ex){
             result.add("Tiraj la pa ka elimine reeseye ankò");
         }
         return result;
     }
 
-    public List<Draw> findAllDraw(int page, int itemPerPage, Boolean state, int day, int month, int year){
+    public List<Draw> findAllDraw(int page, int itemPerPage, Boolean state, int day, int month, int year, Long enterpriseId){
 
         String inputString = day + "/"+(month-1)+"/"+year;
         Date modificationDate = new Date();
@@ -146,53 +148,53 @@ public class DrawService {
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if (state != null){
            if(day > 0 && month<=0 && year <=0) {
-              return drawRepository.selectDrawByDayAndEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByDayAndEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day > 0 && month > 0 && year <=0){
-              return drawRepository.selectDrawByDayAndMonthAndEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByDayAndMonthAndEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day > 0 && month <= 0 && year >0){
-              return drawRepository.selectDrawByDayAndYearEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByDayAndYearEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day <= 0 && month > 0 && year <= 0){
-              return drawRepository.selectDrawByMonthAndEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByMonthAndEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day <= 0 && month > 0 && year > 0){
-              return drawRepository.selectDrawByMonthAndYearEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByMonthAndYearEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day <= 0 && month <= 0 && year >0){
-              return drawRepository.selectDrawByYearAndEnabled(state, modificationDate, pageable);
+              return drawRepository.selectDrawByYearAndEnabledAndEnterpriseId(state, modificationDate, enterpriseId ,pageable);
            } else if (day > 0 && month > 0 && year >0){
-              return drawRepository.findAllByEnabledAndModificationDate(state, modificationDate, pageable);
+              return drawRepository.findAllByEnabledAndModificationDateAndEnterpriseId(state, modificationDate, enterpriseId, pageable);
            } else if (day < 0 && month < 0 && year < 0){
-               return drawRepository.findAllByEnabled (pageable, state);
+               return drawRepository.findAllByEnabledAndEnterpriseId (pageable, state, enterpriseId);
            }
 
         } else {
             if(day > 0 && month<=0 && year <=0) {
-                return drawRepository.selectDrawByDay(modificationDate, pageable);
+                return drawRepository.selectDrawByDayAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day > 0 && month > 0 && year <=0){
-                return drawRepository.selectDrawByDayAndMonth(modificationDate, pageable);
+                return drawRepository.selectDrawByDayAndMonthAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day > 0 && month <= 0 && year >0){
-                return drawRepository.selectDrawByDayAndYear(modificationDate, pageable);
+                return drawRepository.selectDrawByDayAndYearAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day <= 0 && month > 0 && year <= 0){
-                return drawRepository.selectDrawByMonth(modificationDate, pageable);
+                return drawRepository.selectDrawByMonthAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day <= 0 && month > 0 && year > 0){
-                return drawRepository.selectDrawByMonthAndYear(modificationDate, pageable);
+                return drawRepository.selectDrawByMonthAndYearAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day <= 0 && month <= 0 && year >0){
-                return drawRepository.selectDrawByYear(modificationDate, pageable);
+                return drawRepository.selectDrawByYearAndEnterpriseId(modificationDate, enterpriseId ,pageable);
             } else if (day > 0 && month > 0 && year >0){
-                return drawRepository.findAllByModificationDate( modificationDate, pageable);
+                return drawRepository.findAllByModificationDateAndEnterpriseId( modificationDate, enterpriseId ,pageable);
             }
         }
-        return drawRepository.findAll ();
+        return drawRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public Draw findDrawById(Long id){
+    public Draw findDrawById(Long id, Long enterpriseId){
 
-        return drawRepository.findDrawById(id);
+        return drawRepository.findDrawByIdAndEnterpriseId(id, enterpriseId);
     }
 
-     public List<Draw> findAllDrawByEnabled(Boolean enabled){
+     public List<Draw> findAllDrawByEnabled(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return drawRepository.findAllByEnabled(enabled);
+            return drawRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
-         return drawRepository.findAll();
+         return drawRepository.findAllByEnterpriseId(enterpriseId);
      }
 
 }

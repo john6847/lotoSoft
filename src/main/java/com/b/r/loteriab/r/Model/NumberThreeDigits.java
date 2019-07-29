@@ -21,7 +21,4 @@ public class NumberThreeDigits implements Serializable {
     private String numberInStringFormat;
     private int numberInIntegerFormat;
     private boolean enabled = true;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "enterprise_id")
-    private Enterprise enterprise;
 }

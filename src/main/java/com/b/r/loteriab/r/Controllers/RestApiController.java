@@ -133,7 +133,7 @@ public class RestApiController {
     @RequestMapping(value = "/sale", method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody SaleViewModel vm, @RequestHeader("token") String token) {
         SampleResponse sampleResponse = new SampleResponse();
-        System.out.println("TOken: "+token);
+        System.out.println("Token: "+token);
         if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);

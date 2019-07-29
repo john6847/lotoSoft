@@ -23,7 +23,9 @@ public class ShiftSerializer extends StdSerializer<Shift> {
         jgen.writeStartObject();
         jgen.writeNumberField("id", value.getId());
         jgen.writeObjectField("name", value.getName());
-        jgen.writeObjectField("name", value.getName());
+        jgen.writeObjectField("openTime", value.getOpenTime());
+        jgen.writeObjectField("closeTime", value.getCloseTime());
+        jgen.writeObjectField("enabled", value.isEnabled());
         jgen.writeEndObject();
     }
 }

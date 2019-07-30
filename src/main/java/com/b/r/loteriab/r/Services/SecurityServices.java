@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
+import static java.util.Arrays.*;
+
 /**
  * Created by Dany on 22/04/2019.
  */
@@ -36,6 +38,15 @@ public class SecurityServices implements UserDetailsService {
     @Autowired
     private EnterpriseRepository enterpriseRepository;
 
+    @Autowired
+    private UsersService usersService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private EnterpriseService enterpriseService;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     /**
@@ -48,12 +59,15 @@ public class SecurityServices implements UserDetailsService {
 
             Enterprise enterprise = new Enterprise();
             enterprise.setName("BR-tenant");
-            enterpriseRepository.save(enterprise);
+            enterpriseService.saveEnterprise(enterprise);
+
             Role rolSuperMegaAdmin = new Role();
             rolSuperMegaAdmin.setName("ROLE_SUPER_MEGA_ADMIN");
 //            Role savedSuperMegaAdmin = roleRepository.findTopByOrderByIdDesc();
+            List <Role> roles = new ArrayList<>();
+            roles.add(rolSuperMegaAdmin);
             Users admin = new Users();
-            admin.setRoles(Arrays.asList(rolSuperMegaAdmin));
+            admin.setRoles(roles);
             admin.setUsername("bradmin");
             admin.setName("BR-Administrator");
             admin.setPassword(bCryptPasswordEncoder.encode("brtenant")); // Todo: Change password
@@ -63,13 +77,11 @@ public class SecurityServices implements UserDetailsService {
             userRepository.save(admin);
 
             Enterprise currentEnterprise = enterpriseRepository.findEnterpriseByName("BR-tenant");
-            Role role = roleRepository.findByName("ROLE_SUPER_MEGA_ADMIN");
-            role.getEnterprise().setId(currentEnterprise.getId());
-            roleRepository.save(role);
-
             Users savedUser = userRepository.findByUsername("bradmin");
-            savedUser.getEnterprise().setId(currentEnterprise.getId());
+            savedUser.setEnterprise(currentEnterprise);
+            savedUser.getRoles().get(0).setEnterprise(currentEnterprise);
             userRepository.save(savedUser);
+
         }
     }
 

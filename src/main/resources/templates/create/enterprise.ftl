@@ -116,7 +116,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-12">
-                                <section class="panel">
+                                <section class="panel"  style="margin-right: 10px">
                                     <header class="panel-heading">
                                         Tip Konbinezon
                                     </header>
@@ -124,31 +124,135 @@
 
                                         <div class="form-group">
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox1" checked/>
+                                                <input type="checkbox" name="bolet" id="bolet" checked/>
                                                 <label for="checkbox1">BOLET</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox2" checked/>
+                                                <input type="checkbox" name="lotoTwaChif" id="lotoTwaChif" checked/>
                                                 <label for="checkbox2">LOTO 3 CHIF</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox3" checked/>
+                                                <input type="checkbox" name="lotoKatChif" id="lotoKatChif" checked/>
                                                 <label for="checkbox3">LOTO 4 CHIF</label>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox4" checked/>
+                                                <input type="checkbox" name="opsyon" id="opsyon" checked/>
                                                 <label for="checkbox4">OPSYON</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox5" checked/>
+                                                <input type="checkbox" name="maryaj" id="maryaj" checked/>
                                                 <label for="checkbox5">MARYAJ</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
-                                                <input type="checkbox" name="checkbox" id="checkbox6" checked/>
+                                                <input type="checkbox" name="extra" id="extra"/>
                                                 <label for="checkbox6">EXTRA</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <section class="panel"  style="margin-right: 10px">
+                                    <header class="panel-heading">
+                                        Adrès
+                                    </header>
+                                    <div class="panel-body">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Peyi</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="country"
+                                                       placeholder="Antre non peyi a"
+                                                       id="country"
+                                                       maxlength="100"
+                                                       required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Vil</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="city"
+                                                       id="city"
+                                                       placeholder="Antre non vil la"
+                                                       maxlength="100"
+                                                       required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Sektè</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="sector"
+                                                       id="sector"
+                                                       placeholder="Antre non sektè a"
+                                                       maxlength="100"
+                                                       required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Rout</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="street"
+                                                       id="street"
+                                                       placeholder="Antre non rout la"
+                                                       maxlength="100"
+                                                       required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Nimewo</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="number"
+                                                       class="form-control round-input"
+                                                       name="number"
+                                                       id="number"
+                                                       placeholder="Antre non rout la"
+                                                       maxlength="100"
+                                                       required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Telefòn</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="phone"
+                                                       id="phone"
+                                                       placeholder="Antre nimewo telefòn gwoup"
+                                                       maxlength="30"
+                                                       required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Imel</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="email"
+                                                       class="form-control round-input"
+                                                       name="email"
+                                                       id="email"
+                                                       placeholder="Antre imel la"
+                                                       maxlength="30"
+                                                       required>
                                             </div>
                                         </div>
 

@@ -20,6 +20,7 @@ public class Address implements Serializable{
     private String street;
     private String number;
     private String phone;
+    private String email;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;

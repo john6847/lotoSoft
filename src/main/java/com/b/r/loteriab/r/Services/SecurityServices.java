@@ -1,8 +1,10 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.TenantContext;
 import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Repository.EnterpriseRepository;
 import com.b.r.loteriab.r.Repository.RoleRepository;
 import com.b.r.loteriab.r.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class SecurityServices implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private EnterpriseRepository enterpriseRepository;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     /**
@@ -41,18 +46,30 @@ public class SecurityServices implements UserDetailsService {
         Users userAdmin = userRepository.findByUsername("bradmin");
         if (userAdmin == null){
 
-            Role rolAdmin = roleRepository.findByName("ROLE_ADMIN");// Todo: Delete ROLE
-            Role rolSuperMegaAdmin = roleRepository.findByName("ROLE_SUPER_MEGA_ADMIN");
+            Enterprise enterprise = new Enterprise();
+            enterprise.setName("BR-tenant");
+            enterpriseRepository.save(enterprise);
+            Role rolSuperMegaAdmin = new Role();
+            rolSuperMegaAdmin.setName("ROLE_SUPER_MEGA_ADMIN");
+//            Role savedSuperMegaAdmin = roleRepository.findTopByOrderByIdDesc();
             Users admin = new Users();
+            admin.setRoles(Arrays.asList(rolSuperMegaAdmin));
             admin.setUsername("bradmin");
-            admin.setName("Administratè");
-            admin.setPassword(bCryptPasswordEncoder.encode("bradmin")); // Todo: Change password
+            admin.setName("BR-Administrator");
+            admin.setPassword(bCryptPasswordEncoder.encode("brtenant")); // Todo: Change password
             admin.setEnabled(true);
             admin.setCreationDate(new Date());
             admin.setModificationDate(new Date());
-
-            admin.setRoles(new ArrayList<>(Arrays.asList(rolAdmin, rolSuperMegaAdmin)));
             userRepository.save(admin);
+
+            Enterprise currentEnterprise = enterpriseRepository.findEnterpriseByName("BR-tenant");
+            Role role = roleRepository.findByName("ROLE_SUPER_MEGA_ADMIN");
+            role.getEnterprise().setId(currentEnterprise.getId());
+            roleRepository.save(role);
+
+            Users savedUser = userRepository.findByUsername("bradmin");
+            savedUser.getEnterprise().setId(currentEnterprise.getId());
+            userRepository.save(savedUser);
         }
     }
 

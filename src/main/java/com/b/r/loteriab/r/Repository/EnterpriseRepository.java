@@ -18,7 +18,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseById(Long id);
     Enterprise findEnterpriseByEnabledAndId(boolean enabled, Long id);
-    Pos findEnterpriseByName(String name);
+    Enterprise findEnterpriseByName(String name);
 
     Page<Enterprise> findAllByEnabled(Pageable pageable, boolean state);
     Page<Enterprise> findAll(Pageable pageable);
@@ -31,5 +31,8 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     @Query("SELECT MAX(e.sequence) FROM Enterprise e")
     int selectMaxSequence();
+
+//    @Query( value = "SELECT  from enterprise e order by e.id desc", nativeQuery =true)
+    Enterprise findTopByOrderByIdDesc();
 
 }

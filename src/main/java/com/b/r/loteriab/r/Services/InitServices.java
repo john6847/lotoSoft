@@ -51,7 +51,7 @@ public class InitServices {
         createNumberThreeDigits();
         createNumberTwoDigits();
 //        createShift();
-//        createProducts();
+        createProducts();
 //        createRoles();
 //        createCombinationType();
 //        createCombinations();

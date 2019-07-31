@@ -62,7 +62,7 @@ public class InitServices {
      * Create CombinationType on Init
      * @return
      */
-    public void createCombinationType(Enterprise enterprise) {
+    public void createCombinationType(Enterprise enterprise, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra) {
         List<Products> products = productRepository.findAll();
         if(products.size() > 0)
         {
@@ -75,32 +75,53 @@ public class InitServices {
                     combinationType.setCreationDate(new Date());
                     combinationType.setNote("");
                     combinationType.setProducts(product);
+
                     if(product.getName().equals(CombinationTypes.BOLET.name())) {
-                        combinationType.setPayedPriceFirstDraw(50);
-                        combinationType.setPayedPriceSecondDraw(20);
-                        combinationType.setPayedPriceThirdDraw(10);
-                        combinationType.setPayedPrice(0);
+                        if (bolet.equals("on")){
+                            combinationType.setPayedPriceFirstDraw(50);
+                            combinationType.setPayedPriceSecondDraw(20);
+                            combinationType.setPayedPriceThirdDraw(10);
+                            combinationType.setPayedPrice(0);
+                        } else {
+                            continue;
+                        }
 
                     }else if(product.getName().equals(CombinationTypes.MARYAJ.name())){
-                        combinationType.setPayedPrice(1000);
-                        combinationType.setPayedPriceFirstDraw(0);
-                        combinationType.setPayedPriceSecondDraw(0);
-                        combinationType.setPayedPriceThirdDraw(0);
+                        if (maryaj.equals("on")){
+                            combinationType.setPayedPrice(1000);
+                            combinationType.setPayedPriceFirstDraw(0);
+                            combinationType.setPayedPriceSecondDraw(0);
+                            combinationType.setPayedPriceThirdDraw(0);
+                        }else {
+                            continue;
+                        }
                     }else if (product.getName().equals(CombinationTypes.LOTO_TWA_CHIF.name())){
-                        combinationType.setPayedPrice(500);
-                        combinationType.setPayedPriceFirstDraw(0);
-                        combinationType.setPayedPriceSecondDraw(0);
-                        combinationType.setPayedPriceThirdDraw(0);
+                        if (lotoTwaChif.equals("on")){
+                            combinationType.setPayedPrice(500);
+                            combinationType.setPayedPriceFirstDraw(0);
+                            combinationType.setPayedPriceSecondDraw(0);
+                            combinationType.setPayedPriceThirdDraw(0);
+                        }else {
+                            continue;
+                        }
                     } else if (product.getName().equals(CombinationTypes.LOTO_KAT_CHIF.name()) || product.getName().equals(CombinationTypes.OPSYON.name())){
-                        combinationType.setPayedPrice(5000);
-                        combinationType.setPayedPriceFirstDraw(0);
-                        combinationType.setPayedPriceSecondDraw(0);
-                        combinationType.setPayedPriceThirdDraw(0);
+                        if (lotoKatChif.equals("on")){
+                            combinationType.setPayedPrice(5000);
+                            combinationType.setPayedPriceFirstDraw(0);
+                            combinationType.setPayedPriceSecondDraw(0);
+                            combinationType.setPayedPriceThirdDraw(0);
+                        }else {
+                            continue;
+                        }
                     }else if (product.getName().equals(CombinationTypes.EXTRA.name())){
-                        combinationType.setPayedPrice(25000);
-                        combinationType.setPayedPriceFirstDraw(0);
-                        combinationType.setPayedPriceSecondDraw(0);
-                        combinationType.setPayedPriceThirdDraw(0);
+                        if (extra.equals("on")){
+                            combinationType.setPayedPrice(25000);
+                            combinationType.setPayedPriceFirstDraw(0);
+                            combinationType.setPayedPriceSecondDraw(0);
+                            combinationType.setPayedPriceThirdDraw(0);
+                        }else {
+                            continue;
+                        }
                     }
                     combinationType.setEnterprise(enterprise);
                     combinationTypeRepository.save(combinationType);

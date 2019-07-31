@@ -18,6 +18,12 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private InitServices initServices;
+
+    @Autowired
+    private EnterpriseService enterpriseService;
+
     public Role saveRole (Role role, Enterprise enterprise){
         // TODO: Set entterprise to entity
         role.setEnterprise(enterprise);
@@ -36,6 +42,10 @@ public class RoleService {
 
     public List<Role> findAllByEnterpriseId(Long enterpriseId){
         return roleRepository.findAllByEnterpriseId(enterpriseId);
+    }
+
+    public void createRoleForEnterprise(String enterpriseName){
+        initServices.createRoles(enterpriseService.findEnterpriseByName(enterpriseName));
     }
 
 }

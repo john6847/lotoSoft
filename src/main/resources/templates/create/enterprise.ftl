@@ -41,114 +41,127 @@
                 </div>
                 <form class="form-horizontal form-validate" action="/enterprise/create" th:object="${enterprise}" method="post">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <section class="panel">
-                            <header class="panel-heading">
-                                Antrepriz
-                            </header>
-                            <div class="panel-body">
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz <span class="required">*</span></label>
-                                        <div class="col-lg-10   col-md-10 col-sm-10">
-                                            <input type="text" class="form-control round-input" id="name" name="name" minlength="2" required>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <section class="panel">
+                                    <header class="panel-heading">
+                                        Enfomasyon Antrepriz la
+                                    </header>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz <span class="required">*</span></label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <input type="text" class="form-control round-input" id="name" name="name" minlength="2" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kantite Anplwaye</label>
-                                        <div class="col-lg-10   col-md-10 col-sm-10">
-                                            <input type="number" class="form-control round-input" id="numberOfEmployee" name="numberOfEmployee" min="0">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kantite Anplwaye</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <input type="number" class="form-control round-input" id="numberOfEmployee" name="numberOfEmployee" min="0">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Telefon</label>
-                                        <div class="col-lg-10   col-md-10 col-sm-10">
-                                            <input type="text" class="form-control round-input" id="phone" name="phone">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Telefon</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <input type="text" class="form-control round-input" id="phone" name="phone">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">RNC</label>
-                                        <div class="col-lg-10   col-md-10 col-sm-10">
-                                            <input type="text" class="form-control round-input" id="rnc" name="rnc">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">RNC</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <input type="text" class="form-control round-input" id="rnc" name="rnc">
+                                            </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Logo Url</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <input type="text" class="form-control round-input" id="logoUrl" name="logoUrl">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Sub Domain</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text" class="form-control round-input" id="subDomain" name="subDomain">
+                                            </div>
+                                        </div>
+            <#--                                https://bootsnipp.com/snippets/Zk2Pz -->
+
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Logo Url</label>
-                                        <div class="col-lg-10   col-md-10 col-sm-10">
-                                            <input type="text" class="form-control round-input" id="logoUrl" name="logoUrl">
+                                </section>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <section class="panel">
+                                    <header class="panel-heading">
+                                        Fonksyon Nan Antrepriz la
+                                    </header>
+                                    <div class="panel-body">
+                                        <div class="form-group funkyradio">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                                <input type="checkbox" name="admin" id="admin" checked/>
+                                                <label for="admin">ADMIN</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                                <input type="checkbox" name="seller" id="seller" checked/>
+                                                <label for="seller">VANDE</label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Sub Domain</label>
-                                        <div class="col-lg-10 col-md-10 col-sm-10">
-                                            <input type="text" class="form-control round-input" id="subDomain" name="subDomain">
-                                        </div>
-                                    </div>
-    <#--                                https://bootsnipp.com/snippets/Zk2Pz-->
-
-                                    <div class="form-group">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-12 ">
-                                                    <button type="reset"
-                                                            class="btn btn-danger form-control"
-                                                            title="Efase tout done antrepriz la">
-                                                            <i class="fa fa-times"></i>
-                                                            Reyajiste
-                                                    </button>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary form-control"
-                                                            type="submit"
-                                                            title="Anrejistre tout done antrepriz la">
-                                                            <i class="fa fa-save"></i>
-                                                            Anrejistre
-                                                    </button>
-                                                </div>
+                                        <div class="form-group funkyradio">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                                <input type="checkbox" name="recollector" id="recollector" checked/>
+                                                <label for="recollector">REKOLEKTE</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                                <input type="checkbox" name="supervisor" id="supervisor" checked/>
+                                                <label for="supervisor">SIPEVIZE</label>
                                             </div>
                                         </div>
                                     </div>
-
+                                </section>
                             </div>
-
-                        </section>
+                        </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-12">
                                 <section class="panel"  style="margin-right: 10px">
                                     <header class="panel-heading">
-                                        Tip Konbinezon
+                                        Tip Konbinezon Antrepriz la Manevre
                                     </header>
-                                    <div class="panel-body funkyradio">
+                                    <div class="panel-body">
 
-                                        <div class="form-group">
+                                        <div class="form-group funkyradio">
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="bolet" id="bolet" checked/>
-                                                <label for="checkbox1">BOLET</label>
+                                                <label for="bolet">BOLET</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="lotoTwaChif" id="lotoTwaChif" checked/>
-                                                <label for="checkbox2">LOTO 3 CHIF</label>
+                                                <label for="lotoTwaChif">LOTO 3 CHIF</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="lotoKatChif" id="lotoKatChif" checked/>
-                                                <label for="checkbox3">LOTO 4 CHIF</label>
+                                                <label for="lotoKatChif">LOTO 4 CHIF</label>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group funkyradio">
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="opsyon" id="opsyon" checked/>
-                                                <label for="checkbox4">OPSYON</label>
+                                                <label for="opsyon">OPSYON</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="maryaj" id="maryaj" checked/>
-                                                <label for="checkbox5">MARYAJ</label>
+                                                <label for="maryaj">MARYAJ</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 funkyradio-info">
                                                 <input type="checkbox" name="extra" id="extra"/>
-                                                <label for="checkbox6">EXTRA</label>
+                                                <label for="extra">EXTRA</label>
                                             </div>
                                         </div>
 
@@ -162,7 +175,7 @@
                             <div class="col-12">
                                 <section class="panel"  style="margin-right: 10px">
                                     <header class="panel-heading">
-                                        Adrès
+                                        Adrès Antrepriz la
                                     </header>
                                     <div class="panel-body">
 
@@ -259,6 +272,33 @@
                                     </div>
                                 </section>
 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="breadcrumb" style="height: auto;">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <button type="reset"
+                                                    class="btn btn-danger form-control"
+                                                    title="Efase tout done antrepriz la">
+                                                <i class="fa fa-times"></i>
+                                                Reyajiste
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <button class="btn btn-primary form-control"
+                                                    type="submit"
+                                                    title="Anrejistre tout done antrepriz la">
+                                                <i class="fa fa-save"></i>
+                                                Anrejistre
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@ package com.b.r.loteriab.r.Services;
 import com.b.r.loteriab.r.Model.CombinationType;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
+import com.b.r.loteriab.r.Model.Products;
 import com.b.r.loteriab.r.Repository.CombinationTypeRepository;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ import java.util.List;
 public class CombinationTypeService {
     @Autowired
     private CombinationTypeRepository combinationTypeRepository;
+
+    @Autowired
+    private InitServices initServices;
+
+    @Autowired
+    private EnterpriseService enterpriseService;
+
     private CombinationType cleanModel (CombinationType combinationType) {
         if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
             combinationType.setPayedPrice(0);
@@ -126,6 +134,10 @@ public class CombinationTypeService {
             return combinationTypeRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
         return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
+    }
+
+    public void initCombinationTypeForEnterprise (String enterpriseName, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra){
+        initServices.createCombinationType(enterpriseService.findEnterpriseByName(enterpriseName), bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
     }
 
 }

@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_SUPER_MEGA_ADMIN"}) // TODO: Delete role supermega
 public class GlobalRestController {
     @Autowired
     private DrawService drawService;
@@ -455,7 +455,7 @@ public class GlobalRestController {
      * @return enterpriseList
      */
 
-    @GetMapping(value = "/enterprise/", produces = ACCECPT_TYPE)
+    @GetMapping(value = "/enterprises/", produces = ACCECPT_TYPE)
     public ResponseEntity<List<Enterprise>> getEnterpriseList(){
         List<Enterprise> enterprises = enterpriseService.findAllEnterprise();
         if (enterprises.isEmpty())
@@ -468,7 +468,7 @@ public class GlobalRestController {
      * @param state
      * @return size
      */
-    @GetMapping(value = "/enterprise/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
+    @GetMapping(value = "/enterprises/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
     public ResponseEntity<Page<Enterprise>> getEnterpriseListFiltered(
             @PathVariable("items")int items,
             @PathVariable("page")int page,

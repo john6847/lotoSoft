@@ -78,6 +78,7 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
         EnterpriseService.fetchAllEnterprise()
             .then(
                 function (d) {
+                    console.log('ALL THHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRREEEEEE');
                     $scope.enterprises = d;
                     console.log(d);
                 },
@@ -90,6 +91,7 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
         EnterpriseService.fetchAllEnterpriseFiltered(pageno, itemsPerPage, state)
             .then(
                 function (d) {
+                    console.log('Filtered THHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRREEEEEE');
                     $scope.enterprises = d.content;
                     console.log(d);
                 },

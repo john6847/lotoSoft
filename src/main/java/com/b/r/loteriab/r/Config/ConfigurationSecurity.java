@@ -59,7 +59,7 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/dbconsole/**").permitAll()
                 .antMatchers("/draw/**","/combinationType/**", "/seller/**", "/pos/**","/configuration").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/api/**").access("hasAnyRole('ROLE_SELLER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN')")
+                .antMatchers("/api/**").access("hasAnyRole('ROLE_SELLER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN', 'ROLE_SUPER_MEGA_ADMIN')")
                 .antMatchers("/", "/login", "/logout").permitAll()
                 .and()
                 .formLogin()

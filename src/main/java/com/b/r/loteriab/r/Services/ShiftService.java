@@ -20,6 +20,11 @@ public class ShiftService {
     @Autowired
     private ShiftRepository shiftRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
+
+    @Autowired
+    private InitServices initServices;
 
     private Result validateModel (Shift shift){
         Result result = new Result();
@@ -75,6 +80,10 @@ public class ShiftService {
 
     public ArrayList<Shift> findAllByEnterpriseId(Long enterpriseId){
         return (ArrayList<Shift>)shiftRepository.findAllByEnterpriseId(enterpriseId);
+    }
+
+    public void createShiftForEnterprise(String enterpriseName){
+        initServices.createShift(enterpriseService.findEnterpriseByName(enterpriseName));
     }
 
 }

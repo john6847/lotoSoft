@@ -129,6 +129,10 @@ public class CombinationTypeService {
         return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
     }
 
+     public List<CombinationType> findAllByEnterpriseName (String enterpriseName){
+        return combinationTypeRepository.findAllByEnterpriseName(enterpriseName);
+     }
+
     public List<CombinationType> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
             return combinationTypeRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);

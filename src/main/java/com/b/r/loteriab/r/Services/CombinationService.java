@@ -27,6 +27,15 @@ public class CombinationService {
     @Autowired
     private CombinationTypeRepository combinationTypeRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
+
+    @Autowired
+    private InitServices initServices;
+
+    @Autowired
+    private CombinationTypeService combinationTypeService;
+
     public Result updateCombination (Combination combination){
         Result result = validateModel(combination);
         if (!result.isValid()){
@@ -164,6 +173,10 @@ public class CombinationService {
             return combinationRepository.updateCombinationState(combinationType, enabled, enterprise);
         }
         return combinationRepository.updateCombinationMaxPrice(combinationType, enabled, maxPrice, enterprise);
+    }
+
+    public void initCombinationForEnterprise(String enterpriseName){
+        initServices.createCombinations(enterpriseService.findEnterpriseByName(enterpriseName), combinationTypeService.findAllByEnterpriseName(enterpriseName));
     }
 
 }

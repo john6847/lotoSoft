@@ -32,6 +32,12 @@ public class EnterpriseController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private ShiftService shiftService;
+
+    @Autowired
+    private CombinationService combinationService;
+
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
         String username = request.getSession().getAttribute("username").toString();
@@ -84,15 +90,18 @@ public class EnterpriseController {
             redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
             return "redirect:/enterprise/create";
         }
+        // create shift
+        shiftService.createShiftForEnterprise(enterprise.getName());
         // create roles
-        roleService.createRoleForEnterprise(enterprise.getName());// TODO: Save roles base on the roles chosen when creating the enterprise
-        // Creatiing combinationTypes
+        roleService.createRoleForEnterprise(enterprise.getName(), admin, seller, recollector, supervisor);// TODO: Save roles base on the roles chosen when creating the enterprise
+        // Creating combinationTypes
         combinationTypeService.initCombinationTypeForEnterprise(enterprise.getName(),bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
         // creating combinations
+        combinationService.initCombinationForEnterprise(enterprise.getName());
         return "redirect:/enterprise";
     }
 
-    @RequestMapping("/update/{id}")
+    @GetMapping("/update/{id}")
     public String updateEnterprise(@PathVariable("id") Long id,HttpServletRequest request,Model model){
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);

@@ -194,14 +194,39 @@ public class InitServices {
      * Create ROLES on Init
      * @return
      */
-    public  void createRoles(Enterprise enterprise){
+    public  void createRoles(Enterprise enterprise, String admin, String seller, String recollector, String supervisor){
         List<Role> roles = roleRepository.findAllByEnterpriseId(enterprise.getId());
         if(roles.size()<=0){
             for (Roles role: Roles.values()){
-               Role newRole = new Role();
-                newRole.setName(role.name());
-                newRole.setEnterprise(enterprise);
-                roleRepository.save(newRole);
+                if(role.name().equals(Roles.ROLE_ADMIN.name())){
+                    if (admin.equals("on")){
+                       Role newRole = new Role();
+                        newRole.setName(role.name());
+                        newRole.setEnterprise(enterprise);
+                        roleRepository.save(newRole);
+                    }
+                } else if(role.name().equals(Roles.ROLE_SELLER.name())){
+                    if (seller.equals("on")){
+                       Role newRole = new Role();
+                        newRole.setName(role.name());
+                        newRole.setEnterprise(enterprise);
+                        roleRepository.save(newRole);
+                    }
+                } else if(role.name().equals(Roles.ROLE_COLLECTOR.name())){
+                    if (recollector.equals("on")){
+                       Role newRole = new Role();
+                        newRole.setName(role.name());
+                        newRole.setEnterprise(enterprise);
+                        roleRepository.save(newRole);
+                    }
+                } else if(role.name().equals(Roles.ROLE_SUPERVISOR.name())){
+                    if (supervisor.equals("on")){
+                       Role newRole = new Role();
+                        newRole.setName(role.name());
+                        newRole.setEnterprise(enterprise);
+                        roleRepository.save(newRole);
+                    }
+                }
             }
         }
     }
@@ -226,161 +251,173 @@ public class InitServices {
      * Create Combination on Init
      * @return
      */
-//    public  void createCombinations(){
-//        for (CombinationTypes combinationTypes : CombinationTypes.values()){
-//            if (combinationTypes.name().equals(CombinationTypes.BOLET.name())){
-//                saveBolet();
-//            } if (combinationTypes.name().equals(CombinationTypes.LOTO_TWA_CHIF.name())){
-//                saveLoto3();
-//            } if (combinationTypes.name().equals(CombinationTypes.LOTO_KAT_CHIF.name())){
-//                save4Chif(CombinationTypes.LOTO_KAT_CHIF.name());
-//            } if (combinationTypes.name().equals(CombinationTypes.OPSYON.name())){
-//                save4Chif(CombinationTypes.OPSYON.name());
-//            } if (combinationTypes.name().equals(CombinationTypes.MARYAJ.name())){
-//                save4Chif(CombinationTypes.MARYAJ.name());
-//            } if (combinationTypes.name().equals(CombinationTypes.EXTRA.name())){
-//                saveExtra();
-//            }
-//        }
-//    }
-//    public void saveBolet () {
-//        List<Combination> combinations = combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.BOLET.name());
-//        if(combinations.size() <= 0){
-//            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
-//            CombinationType combinationType = combinationTypeRepository.findByProductsName(CombinationTypes.BOLET.name());
-//            for (int i=0; i< numberTwoDigits.size(); i++){
-//                Combination combination = new Combination();
-//                combination.setCombinationType(combinationType);
-//                combination.setEnabled(true);
-//                combination.setMaxPrice(1000);
-//
-//                List<NumberTwoDigits> currentNumberTwoDigits =  new ArrayList<>();
-//                currentNumberTwoDigits.add(numberTwoDigits.get(i));
-//                combination.setNumberTwoDigits(currentNumberTwoDigits);
-//                combination.setSequence((long) (i+1));
-//                combinationRepository.save(combination);
-//            }
-//        }
-//    }
+    public  void createCombinations(Enterprise enterprise, List<CombinationType> combinationTypes){
 
-//    public void saveLoto3 () {
-//        List<Combination> combinations = combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.LOTO_TWA_CHIF.name());
-//        if(combinations.size() <= 0){
-//            List<NumberThreeDigits> numberThreeDigits = numberThreeDigitsRepository.findAll();
-//            long sequence = combinationRepository.findByCombinationTypeProductsNameOrderBySequenceDesc(CombinationTypes.BOLET.name()).get(0).getSequence();
-//            CombinationType combinationType = combinationTypeRepository.findByProductsName(CombinationTypes.LOTO_TWA_CHIF.name());
-//            for (int i=0; i< numberThreeDigits.size(); i++){
-//                Combination combination = new Combination();
-//                combination.setCombinationType(combinationType);
-//                combination.setEnabled(true);
-//                combination.setMaxPrice(1000);
-//                combination.setNumberThreeDigits(numberThreeDigits.get(i));
-//                combination.setSequence((sequence+ i + 1));
-//                combinationRepository.save(combination);
-//            }
-//        }
-//    }
+        for (CombinationType combinationType: combinationTypes){
+            if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
+                saveBolet(enterprise);
+            } if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_TWA_CHIF.name())){
+                saveLoto3(enterprise);
+            } if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())){
+                save4Chif(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise);
+            } if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name())){
+                save4Chif(CombinationTypes.OPSYON.name(), enterprise);
+            } if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
+                save4Chif(CombinationTypes.MARYAJ.name(), enterprise);
+            } if (combinationType.getProducts().getName().equals(CombinationTypes.EXTRA.name())){
+                saveExtra(enterprise);
+            }
+        }
+    }
+    public void saveBolet (Enterprise enterprise) {
+        List<Combination> combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.BOLET.name(), enterprise.getId());
+        if(combinations.size() <= 0){
+            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
+            CombinationType combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.BOLET.name(), enterprise.getId());
+            for (int i=0; i< numberTwoDigits.size(); i++){
+                Combination combination = new Combination();
+                combination.setCombinationType(combinationType);
+                combination.setEnabled(true);
+                combination.setMaxPrice(1000);
 
-//    public void save4Chif (String type) {
-//        List<Combination> combinations = new ArrayList<>();
-//        if (type.equals(CombinationTypes.LOTO_KAT_CHIF.name())){
-//            combinations= combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.LOTO_KAT_CHIF.name());
-//        }
-//        if (type.equals(CombinationTypes.OPSYON.name())){
-//            combinations= combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.OPSYON.name());
-//        }
-//        if (type.equals(CombinationTypes.MARYAJ.name())){
-//            combinations= combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.MARYAJ.name());
-//        }
-//        if(combinations.size() <= 0){
-//            long sequence = 0;
-//            CombinationType combinationType = new CombinationType();
-//            if (type.equals(CombinationTypes.LOTO_KAT_CHIF.name())){
-//                sequence = combinationRepository.findByCombinationTypeProductsNameOrderBySequenceDesc(CombinationTypes.LOTO_TWA_CHIF.name()).get(0).getSequence();
-//                combinationType = combinationTypeRepository.findByProductsName(CombinationTypes.LOTO_KAT_CHIF.name());
-//            }
-//            if (type.equals(CombinationTypes.OPSYON.name())){
-//                sequence =combinationRepository.findByCombinationTypeProductsNameOrderBySequenceDesc(CombinationTypes.LOTO_KAT_CHIF.name()).get(0).getSequence();
-//                combinationType= combinationTypeRepository.findByProductsName(CombinationTypes.OPSYON.name());
-//            }
-//            if (type.equals(CombinationTypes.MARYAJ.name())){
-//                sequence =combinationRepository.findByCombinationTypeProductsNameOrderBySequenceDesc(CombinationTypes.OPSYON.name()).get(0).getSequence();
-//                combinationType = combinationTypeRepository.findByProductsName(CombinationTypes.MARYAJ.name());
-//            }
-//            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
-//            List <List<NumberTwoDigits>> numbersTwoDigitsList = new ArrayList<>();
-//            numbersTwoDigitsList.add(numberTwoDigits);
-//            numbersTwoDigitsList.add(numberTwoDigits);
-//            GeneratePermutations4Chif(combinationType, numbersTwoDigitsList,sequence,0, "", 0);
+                List<NumberTwoDigits> currentNumberTwoDigits =  new ArrayList<>();
+                currentNumberTwoDigits.add(numberTwoDigits.get(i));
+                combination.setNumberTwoDigits(currentNumberTwoDigits);
+                combination.setEnterprise(enterprise);
+                combination.setResultCombination(numberTwoDigits.get(i).getNumberInStringFormat());
+                combination.setSequence((long) (i+1));
+                combinationRepository.save(combination);
+            }
+        }
+    }
+
+    public void saveLoto3 (Enterprise enterprise) {
+        List<Combination> combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.LOTO_TWA_CHIF.name(), enterprise.getId());
+        if(combinations.size() <= 0){
+            List<NumberThreeDigits> numberThreeDigits = numberThreeDigitsRepository.findAll();
+            long sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.BOLET.name()).get(0).getSequence();
+            CombinationType combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_TWA_CHIF.name(), enterprise.getId());
+            for (int i=0; i< numberThreeDigits.size(); i++){
+                Combination combination = new Combination();
+                combination.setCombinationType(combinationType);
+                combination.setEnabled(true);
+                combination.setMaxPrice(1000);
+                combination.setEnterprise(enterprise);
+                combination.setResultCombination(numberThreeDigits.get(i).getNumberInStringFormat());
+                combination.setNumberThreeDigits(numberThreeDigits.get(i));
+                combination.setSequence((sequence+ i + 1));
+                combinationRepository.save(combination);
+            }
+        }
+    }
+
+    public void save4Chif (String type, Enterprise enterprise) {
+        List<Combination> combinations = new ArrayList<>();
+        if (type.equals(CombinationTypes.LOTO_KAT_CHIF.name())){
+            combinations= combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
+        }
+        if (type.equals(CombinationTypes.OPSYON.name())){
+            combinations= combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
+        }
+        if (type.equals(CombinationTypes.MARYAJ.name())){
+            combinations= combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.MARYAJ.name(),enterprise.getId());
+        }
+        if(combinations.size() <= 0){
+            long sequence = 0;
+            CombinationType combinationType = new CombinationType();
+            if (type.equals(CombinationTypes.LOTO_KAT_CHIF.name())){
+                sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_TWA_CHIF.name()).get(0).getSequence();
+                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
+            }
+            if (type.equals(CombinationTypes.OPSYON.name())){
+                sequence =combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_KAT_CHIF.name()).get(0).getSequence();
+                combinationType= combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
+            }
+            if (type.equals(CombinationTypes.MARYAJ.name())){
+                sequence =combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(),CombinationTypes.OPSYON.name()).get(0).getSequence();
+                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.MARYAJ.name(), enterprise.getId());
+            }
+            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
+            List <List<NumberTwoDigits>> numbersTwoDigitsList = new ArrayList<>();
+            numbersTwoDigitsList.add(numberTwoDigits);
+            numbersTwoDigitsList.add(numberTwoDigits);
+            GeneratePermutations4Chif(combinationType, enterprise, numbersTwoDigitsList,sequence,0, "", 0);
+        }
+    }
+
+    public void saveExtra (Enterprise enterprise) {
+        List<Combination> combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.EXTRA.name(), enterprise.getId());
+        if(combinations.size() <= 0){
+            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
+            List<NumberThreeDigits> numberThreeDigits = numberThreeDigitsRepository.findAll();
+            CombinationType combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.EXTRA.name(), enterprise.getId());
+            long sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(),CombinationTypes.MARYAJ.name()).get(0).getSequence();
+            List <List<Object>> numbersObject = new ArrayList<>();
+            List<Object> objectsThreeDigits = new ArrayList<>(numberThreeDigits);
+            List<Object> objectsTwoDigits = new ArrayList<>(numberTwoDigits);
+
+            numbersObject.add(objectsThreeDigits);
+            numbersObject.add(objectsTwoDigits);
+            GeneratePermutations5Chif(combinationType, enterprise, numbersObject ,sequence,0, "", 0);
+        }
+    }
+
+    private void GeneratePermutations4Chif(CombinationType combinationType, Enterprise enterprise, List<List<NumberTwoDigits>> Lists, long sequence, int depth, String current, int currentIndex)
+    {
+        if(depth == Lists.size())
+        {
+            Combination combination = new Combination();
+            combination.setCombinationType(combinationType);
+            combination.setEnabled(true);
+            combination.setEnterprise(enterprise);
+            combination.setMaxPrice(1000);
+            String [] cur = current.split("/");
+            combination.setNumberTwoDigits(Arrays.asList(Lists.get(0).get(Integer.parseInt(cur[0])), Lists.get(0).get(Integer.parseInt(cur[1]))));
+            if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
+                combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat()+"x"+ Lists.get(0).get(Integer.parseInt(cur[1])).getNumberInStringFormat());
+            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name()) || combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())){
+                combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat()+" "+ Lists.get(0).get(Integer.parseInt(cur[1])));
+            }
+            combination.setSequence((sequence + 1));
+            combinationRepository.save(combination);
+            return;
+        }
+
+        for(int i = 0; i < Lists.get(depth).size(); ++i)
+        {
+            if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
+                if (i > 0 && depth == 0)
+                    currentIndex = i;
+
+                if(i == 0 && depth > 0)
+                    i = currentIndex;
+            }
+            GeneratePermutations4Chif(combinationType, enterprise, Lists, (sequence+depth+1),depth + 1, current + i + "/", currentIndex);
+        }
+    }
 //
-//        }
-//    }
-//
-//    public void saveExtra () {
-//        List<Combination> combinations = combinationRepository.findAllByCombinationType_ProductsName(CombinationTypes.EXTRA.name());
-//        if(combinations.size() <= 0){
-//            List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
-//            List<NumberThreeDigits> numberThreeDigits = numberThreeDigitsRepository.findAll();
-//            CombinationType combinationType = combinationTypeRepository.findByProductsName(CombinationTypes.EXTRA.name());
-//            long sequence = combinationRepository.findByCombinationTypeProductsNameOrderBySequenceDesc(CombinationTypes.MARYAJ.name()).get(0).getSequence();
-//            List <List<Object>> numbersObject = new ArrayList<>();
-//            List<Object> objectsThreeDigits = new ArrayList<>(numberThreeDigits);
-//            List<Object> objectsTwoDigits = new ArrayList<>(numberTwoDigits);
-//
-//            numbersObject.add(objectsThreeDigits);
-//            numbersObject.add(objectsTwoDigits);
-//            GeneratePermutations5Chif(combinationType, numbersObject ,sequence,0, "", 0);
-//        }
-//    }
-//
-//    private void GeneratePermutations4Chif(CombinationType combinationType, List<List<NumberTwoDigits>> Lists, long sequence, int depth, String current, int currentIndex)
-//    {
-//        if(depth == Lists.size())
-//        {
-//            Combination combination = new Combination();
-//            combination.setCombinationType(combinationType);
-//            combination.setEnabled(true);
-//            combination.setMaxPrice(1000);
-//            String [] cur = current.split("/");
-//            combination.setNumberTwoDigits(Arrays.asList(Lists.get(0).get(Integer.parseInt(cur[0])), Lists.get(0).get(Integer.parseInt(cur[1]))));
-//            combination.setSequence((sequence + 1));
-//            combinationRepository.save(combination);
-//            return;
-//        }
-//
-//        for(int i = 0; i < Lists.get(depth).size(); ++i)
-//        {
-//            if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
-//                if (i > 0 && depth == 0)
-//                    currentIndex = i;
-//
-//                if(i == 0 && depth > 0)
-//                    i = currentIndex;
-//            }
-//            GeneratePermutations4Chif(combinationType, Lists, (sequence+depth+1),depth + 1, current + i + "/", currentIndex);
-//        }
-//    }
-//
-//    private void GeneratePermutations5Chif(CombinationType combinationType, List<List<Object>> Lists, long sequence, int depth, String current, int currentIndex)
-//    {
-//        if(depth == Lists.size())
-//        {
-//            Combination combination = new Combination();
-//            combination.setCombinationType(combinationType);
-//            combination.setEnabled(true);
-//            combination.setMaxPrice(1000);
-//            String [] cur = current.split("/");
-//            combination.setNumberThreeDigits(NumberThreeDigits.class.cast(Lists.get(0).get(Integer.parseInt(cur[0]))));
-//            combination.setNumberTwoDigits(Arrays.asList(NumberTwoDigits.class.cast(Lists.get(1).get(Integer.parseInt(cur[1])))));
-//            combination.setSequence((sequence + 1));
-//            combinationRepository.save(combination);
-//            return;
-//        }
-//
-//        for(int i = 0; i < Lists.get(depth).size(); ++i)
-//        {
-//            GeneratePermutations5Chif(combinationType, Lists, (sequence+depth+1),depth + 1, current + i + "/", currentIndex);
-//        }
-//    }
+    private void GeneratePermutations5Chif(CombinationType combinationType, Enterprise enterprise, List<List<Object>> Lists, long sequence, int depth, String current, int currentIndex)
+    {
+        if(depth == Lists.size())
+        {
+            Combination combination = new Combination();
+            combination.setCombinationType(combinationType);
+            combination.setEnabled(true);
+            combination.setEnterprise(enterprise);
+            combination.setMaxPrice(1000);
+            String [] cur = current.split("/");
+            combination.setNumberThreeDigits(NumberThreeDigits.class.cast(Lists.get(0).get(Integer.parseInt(cur[0]))));
+            combination.setNumberTwoDigits(Arrays.asList(NumberTwoDigits.class.cast(Lists.get(1).get(Integer.parseInt(cur[1])))));
+            combination.setResultCombination(NumberThreeDigits.class.cast(Lists.get(0).get(Integer.parseInt(cur[0]))).getNumberInStringFormat()+" "+ NumberTwoDigits.class.cast(Lists.get(1).get(Integer.parseInt(cur[1]))).getNumberInStringFormat());
+            combination.setSequence((sequence + 1));
+            combinationRepository.save(combination);
+            return;
+        }
+
+        for(int i = 0; i < Lists.get(depth).size(); ++i)
+        {
+            GeneratePermutations5Chif(combinationType, enterprise, Lists, (sequence+depth+1),depth + 1, current + i + "/", currentIndex);
+        }
+    }
 
 }

@@ -44,8 +44,8 @@ public class RoleService {
         return roleRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public void createRoleForEnterprise(String enterpriseName){
-        initServices.createRoles(enterpriseService.findEnterpriseByName(enterpriseName));
+    public void createRoleForEnterprise(String enterpriseName, String admin, String seller, String recollector, String supervisor ){
+        initServices.createRoles(enterpriseService.findEnterpriseByName(enterpriseName), admin, seller, recollector, supervisor);
     }
 
 }

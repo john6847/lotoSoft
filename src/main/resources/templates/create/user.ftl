@@ -96,9 +96,28 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Non Ititilizatè <span class="required">*</span></label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" placeholder="Egzanp: John25" id="username" name="username" minlength="4" maxlength="20" required>
+                                        <input type="text"
+                                               class="form-control round-input"
+                                               placeholder="Egzanp: john25"
+                                               id="username"
+                                               name="username"
+                                               minlength="4"
+                                               maxlength="20"
+                                               ng-model = "username"
+                                               ng-model-options="{ debounce: 1000 }"
+                                               ng-change="usernameChange()"
+                                               required>
                                     </div>
+                                    <span class="alert alert-danger error" ng-show="userForm.username.$dirty && usernameExist">Non itilizatè sa egziste deja</span>
+                                    <span class="alert alert-danger error" ng-show="userForm.username.$dirty && usernameExist && suggestedUsername.length > 0">Eseye {{suggestedUsername[0]}} ak {{suggestedUsername[1]}}</span>
                                 </div>
+
+                                ng-model-options="{ debounce: 1000 }"
+                                ng-model = "combinationField.combination"
+                                ng-click="combinationField.showList = !combinationField.showList"
+                                ng-change="combinationChange()"
+                                placeholder="Cheche yon Konbinezon"
+
 
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Modpas<span class="required">*</span></label>

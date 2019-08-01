@@ -312,6 +312,28 @@ public class GlobalRestController {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
     }
 
+    @GetMapping(value = "/user/exist", produces = ACCECPT_TYPE)
+    public ResponseEntity<Map> getUsersList(HttpServletRequest request, @RequestParam(defaultValue = "") String username){
+        HashMap map = new HashMap();
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            if (username.isEmpty())
+            {
+                map.put("exist", false);
+                return new ResponseEntity<>(map, HttpStatus.OK);
+            }
+
+            Users user = usersService.findUserByUsername(username);
+            if (user!= null){
+                map.put("exist", true);
+                return new ResponseEntity<>(map, HttpStatus.OK);
+            }
+                map.put("exist", false);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
     /**
      * Get All users
      * * @param type

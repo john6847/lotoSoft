@@ -97,5 +97,4 @@ app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTO
                         console.error(errorResponse);
                     })
         }
-
 }]);

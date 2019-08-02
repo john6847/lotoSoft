@@ -74,6 +74,7 @@ public class EnterpriseController {
                                  @RequestParam(value = "maryaj", defaultValue = "off") String maryaj,
                                  @RequestParam(value = "extra", defaultValue = "off") String extra,
                                  @RequestParam(value = "admin", defaultValue = "off") String admin,
+                                 @RequestParam(value = "superAdmin", defaultValue = "off") String superAdmin,
                                  @RequestParam(value = "seller", defaultValue = "off") String seller,
                                  @RequestParam(value = "recollector", defaultValue = "off") String recollector,
                                  @RequestParam(value = "supervisor", defaultValue = "off") String supervisor,
@@ -93,7 +94,7 @@ public class EnterpriseController {
         // create shift
         shiftService.createShiftForEnterprise(enterprise.getName());
         // create roles
-        roleService.createRoleForEnterprise(enterprise.getName(), admin, seller, recollector, supervisor);// TODO: Save roles base on the roles chosen when creating the enterprise
+        roleService.createRoleForEnterprise(enterprise.getName(), superAdmin, admin, seller, recollector, supervisor);// TODO: Save roles base on the roles chosen when creating the enterprise
         // Creating combinationTypes
         combinationTypeService.initCombinationTypeForEnterprise(enterprise.getName(),bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
         // creating combinations

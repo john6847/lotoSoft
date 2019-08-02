@@ -194,11 +194,18 @@ public class InitServices {
      * Create ROLES on Init
      * @return
      */
-    public  void createRoles(Enterprise enterprise, String admin, String seller, String recollector, String supervisor){
+    public  void createRoles(Enterprise enterprise, String superadmin, String admin, String seller, String recollector, String supervisor){
         List<Role> roles = roleRepository.findAllByEnterpriseId(enterprise.getId());
         if(roles.size()<=0){
             for (Roles role: Roles.values()){
-                if(role.name().equals(Roles.ROLE_ADMIN.name())){
+                if(role.name().equals(Roles.ROLE_SUPER_ADMIN.name())){
+                    if (superadmin.equals("on")){
+                        Role newRole = new Role();
+                        newRole.setName(role.name());
+                        newRole.setEnterprise(enterprise);
+                        roleRepository.save(newRole);
+                    }
+                } else if(role.name().equals(Roles.ROLE_ADMIN.name())){
                     if (admin.equals("on")){
                        Role newRole = new Role();
                         newRole.setName(role.name());

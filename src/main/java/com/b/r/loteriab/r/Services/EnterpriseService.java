@@ -82,6 +82,10 @@ public class EnterpriseService {
         return (ArrayList<Enterprise>)enterpriseRepository.findAll();
     }
 
+    public ArrayList<Enterprise> selectAllEnterpriseExcept(){
+        return (ArrayList<Enterprise>)enterpriseRepository.selectAllEnterpriseExcept("BR-tenant");
+    }
+
     public Page<Enterprise> findAllEnterpriseByState(int page, int itemPerPage, Boolean state){
         Pageable pageable = PageRequest.of(page, itemPerPage);
         if(state != null){

@@ -101,11 +101,15 @@
                                     </header>
                                     <div class="panel-body">
                                         <div class="form-group funkyradio">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-warning">
+                                                <input type="checkbox" name="superAdmin" id="superAdmin" checked/>
+                                                <label for="admin">SUPERADMIN</label>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-warning">
                                                 <input type="checkbox" name="admin" id="admin" checked/>
                                                 <label for="admin">ADMIN</label>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 funkyradio-warning">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-warning">
                                                 <input type="checkbox" name="seller" id="seller" checked/>
                                                 <label for="seller">VANDE</label>
                                             </div>

@@ -74,7 +74,7 @@ public class UsersService {
                 result.add("Ou dwe rantre non antrepriz la", "enterprise");
             }
 
-            Role superAdmin = roleServices.findRoleByNameAndEnterpriseId("ROLE_SUPER_ADMIN", enterprise.getId());
+            Role superAdmin = roleServices.findRoleByNameAndEnterpriseId("ROLE_SUPER_ADMIN", user.getEnterprise().getId());
             if (superAdmin == null){
                 result.add("Rol super admin nan pa egziste");
                 return result;
@@ -94,7 +94,9 @@ public class UsersService {
         }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        user.setEnterprise(enterprise);
+        if (isSuperAdmin.equals("off")){
+            user.setEnterprise(enterprise);
+        }
         user.setCreationDate(new Date());
         user.setModificationDate(new Date());
         user.setEnabled(true);
@@ -169,7 +171,9 @@ public class UsersService {
         }
 
         currentUser.setName(user.getName());
-        currentUser.setEnterprise(user.getEnterprise());
+        if (isSuperAdmin.equals("on")){
+            currentUser.setEnterprise(user.getEnterprise());
+        }
         currentUser.setUsername(user.getUsername());
         try {
             usersRepository.save(currentUser);

@@ -343,6 +343,7 @@ public class GlobalRestController {
     public ResponseEntity<List<Users>> getUsersSuperAdminList(HttpServletRequest request){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
+            // TODO: Find all created client
             List<Users> users = usersService.findAllUsersSuperAdminAndEnterpriseId(enterprise.getId());
             if (users.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -393,7 +394,7 @@ public class GlobalRestController {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
             Page<Users> users = usersService.findAllUsersByStateSuperAdmin(page, items, getState(state), enterprise.getId());
-
+// TODO: Find all created client
             if (users == null)
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(users, HttpStatus.OK);

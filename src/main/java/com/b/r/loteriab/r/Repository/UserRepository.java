@@ -25,7 +25,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     Page<Users> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
 
-
     List<Users>findAllByEnterpriseId(Long enterpriseId);
 
     Page<Users> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean state, Long enterpriseId);

@@ -65,7 +65,7 @@ public class UserController {
             }
 
             if (type == 2) {
-                model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
+                model.addAttribute("enterprises", enterpriseService.selectAllEnterpriseExcept());
                 model.addAttribute("isSuperAdmin", true);
             } else {
                 model.addAttribute("isSuperAdmin", false);
@@ -125,8 +125,9 @@ public class UserController {
                 return "redirect:/user/1/create";
             }
 
-            if (isSuperAdmin.equals("on"))
+            if (isSuperAdmin.equals("on")){
                 return "redirect:/user/2";
+            }
             return "redirect:/user/1";
         }
         model.addAttribute("error", "Ou pa ka anrejistre itilizatè sa a koz itilizatè ou sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");
@@ -153,7 +154,7 @@ public class UserController {
             }
 
             if (type == 2) {
-                model.addAttribute("enterprises", enterpriseService.findAllEnterprise());
+                model.addAttribute("enterprises", enterpriseService.selectAllEnterpriseExcept());
                 model.addAttribute("isSuperAdmin", true);
             } else {
                 model.addAttribute("isSuperAdmin", false);

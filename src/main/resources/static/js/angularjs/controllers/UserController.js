@@ -88,13 +88,6 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
         if ($scope.username !== ''){
             fetchUser($scope.username);
         }
-        if($scope.usernameExist){
-            for (var i=0 ; i< 2; i++){
-                var random = Math.floor(Math.random() * (100 - 1)) + 1;
-                $scope.suggestedUsername.push($scope.username + random);
-            }
-        }
-        console.log($scope.usernameExist);
     };
 
     fetchAllUser();
@@ -137,12 +130,23 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
                     function (d) {
                         if (d === null || d === undefined)
                             $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
-                        else
+                        else{
                             $scope.usernameExist = d.exist;
+                            generateSuggestion();
+                        }
                     },
                     function (errorResponse) {
                         console.error(errorResponse);
                     })
+        }
+
+        function generateSuggestion() {
+            if($scope.usernameExist){
+                for (var i=0 ; i< 2; i++){
+                    var random = Math.floor(Math.random() * (100 - 1)) + 1;
+                    $scope.suggestedUsername.push($scope.username + random);
+                }
+            }
         }
 
 }]);

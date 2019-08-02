@@ -44,12 +44,12 @@
                 </div>
             </div>
             <div class="row">
+                <#if error??>
+                    <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger" role="alert">${error}</div>
+                    </div>
+                </#if>
                 <div class="col-lg-12">
-                        <#if error??>
-                            <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
-                                <div class="alert alert-danger" role="alert">${error}</div>
-                            </div>
-                        </#if>
                     <section class="panel">
                         <header class="panel-heading">
                             <#if isSuperAdmin?? >
@@ -107,17 +107,10 @@
                                                ng-model-options="{ debounce: 1000 }"
                                                ng-change="usernameChange()"
                                                required>
+                                        <span style="color: red;" ng-show="userForm.username.$dirty && usernameExist">Non itilizatè sa pa apropriye!! </span>
+                                        <span style="color: red;" ng-show="userForm.username.$dirty && usernameExist && suggestedUsername.length > 0">Eseye <b> {{suggestedUsername[0]}}</b> oubyen <b>{{suggestedUsername[1]}}</b></span>
                                     </div>
-                                    <span class="alert alert-danger error" ng-show="userForm.username.$dirty && usernameExist">Non itilizatè sa egziste deja</span>
-                                    <span class="alert alert-danger error" ng-show="userForm.username.$dirty && usernameExist && suggestedUsername.length > 0">Eseye {{suggestedUsername[0]}} ak {{suggestedUsername[1]}}</span>
                                 </div>
-
-                                ng-model-options="{ debounce: 1000 }"
-                                ng-model = "combinationField.combination"
-                                ng-click="combinationField.showList = !combinationField.showList"
-                                ng-change="combinationChange()"
-                                placeholder="Cheche yon Konbinezon"
-
 
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Modpas<span class="required">*</span></label>
@@ -169,6 +162,7 @@
                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
+                                                        ng-disabled="usernameExist"
                                                         title="Anrejistre tout done itilizatè sa">
                                                         <i class="fa fa-save"></i>
                                                         Anrejistre

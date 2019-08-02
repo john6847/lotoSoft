@@ -11,7 +11,7 @@
 
       <#if user??>
         <#list user.roles as rol>
-          <#if rol.name=="ROLE_ADMIN">
+          <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
             <li class="sub-menu">
               <a href="javascript:;" class="">
                 <i class="icon_document_alt"></i>

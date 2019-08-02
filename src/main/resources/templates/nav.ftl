@@ -284,9 +284,13 @@
 <#--            <li>-->
 <#--              <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>-->
 <#--            </li>-->
-            <li>
-              <a href="/user/create"><i class="icon_mail_alt"></i>Kreye Itilizatè</a>
-            </li>
+            <#list user.roles as rol>
+              <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
+              <li>
+                <a href="/user/create"><i class="icon_mail_alt"></i>Kreye Itilizatè</a>
+              </li>
+              </#if>
+            </#list>
 <#--            <li>-->
 <#--              <a href="#"><i class="icon_clock_alt"></i> Timeline</a>-->
 <#--            </li>-->

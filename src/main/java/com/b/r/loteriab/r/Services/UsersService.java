@@ -125,8 +125,8 @@ public class UsersService {
         return usersRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public List<Users> findAllUsersSuperAdminAndEnterpriseId(Long enterpriseId){
-        return usersRepository.selectUserSuperAdminAndEnterpriseId(Roles.ROLE_SUPER_ADMIN.name(), enterpriseId);
+    public List<Users> findAllUsersSuperAdmin(){
+        return usersRepository.selectUserSuperAdmin(Roles.ROLE_SUPER_ADMIN.name());
     }
 
     public List<Users> findAllUsersExceptSuperAdminAndEnterpriseId(Long enterpriseId){
@@ -207,12 +207,12 @@ public class UsersService {
         return usersRepository.selectUserExceptSuperAdminAndEnterpriseId(Roles.ROLE_SUPER_ADMIN.name(), Roles.ROLE_SUPER_MEGA_ADMIN.name(),enterpriseId,pageable);
     }
 
-    public Page<Users> findAllUsersByStateSuperAdmin(int page, int itemPerPage, Boolean state, Long enterpriseId){
+    public Page<Users> findAllUsersByStateSuperAdmin(int page, int itemPerPage, Boolean state){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return usersRepository.selectUserSuperAdminAndEnabledAndEterpriseId(Roles.ROLE_SUPER_ADMIN.name(), state, enterpriseId, pageable);
+            return usersRepository.selectUserSuperAdminAndEnabled(Roles.ROLE_SUPER_ADMIN.name(), state, pageable);
         }
-        return usersRepository.selectUserSuperAdminAndEnterpriseId(Roles.ROLE_SUPER_ADMIN.name(), enterpriseId, pageable);
+        return usersRepository.selectUserSuperAdmin(Roles.ROLE_SUPER_ADMIN.name(), pageable);
     }
 
 

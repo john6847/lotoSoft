@@ -37,19 +37,19 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     List<Users> selectUserByNameAndEnabledAndEnterpriseId(String name, boolean enabled, Long enterpriseId);
 
     String q2 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id " +
-            "WHERE r.name=?1 and u.enterprise_id=?2";
+            "WHERE r.name=?1";
     @Query(value = q2, nativeQuery = true)
-    List<Users> selectUserSuperAdminAndEnterpriseId(String name, Long enterpriseId);
+    List<Users> selectUserSuperAdmin(String name);
 
     String q3 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
-            "WHERE r.name=?1 and enterprise_id=?2 and order by ?#{#pageable}";
+            "WHERE r.name=?1 and order by ?#{#pageable}";
     @Query(value = q3, nativeQuery = true)
-    Page<Users> selectUserSuperAdminAndEnterpriseId(String name, Long enterprise_id,  Pageable pageable);
+    Page<Users> selectUserSuperAdmin(String name,  Pageable pageable);
 
     String q4 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
-            "WHERE r.name=?1  and u.enabled =?2 and enterprise_id=?3 and order by ?#{#pageable}";
+            "WHERE r.name=?1  and u.enabled =?2 and order by ?#{#pageable}";
     @Query(value = q4, nativeQuery = true)
-    Page<Users> selectUserSuperAdminAndEnabledAndEterpriseId(String name, boolean state, Long enterpriseId, Pageable pageable);
+    Page<Users> selectUserSuperAdminAndEnabled(String name, boolean state, Pageable pageable);
 
     String q5 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
             "WHERE r.NAME IN (select rol.NAME from role rol where rol.name NOT IN (?1, ?2)) and u.enterprise_id =?3";

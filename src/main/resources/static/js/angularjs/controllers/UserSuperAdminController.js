@@ -78,6 +78,8 @@ app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTO
                             $scope.users = [];
                         else
                             $scope.users = d;
+
+                        console.log(d)
                     },
                     function (errorResponse) {
                         console.error(errorResponse);
@@ -92,6 +94,7 @@ app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTO
                             $scope.users = [];
                         else
                             $scope.users = d.content;
+                        console.log(d)
                     },
                     function (errorResponse) {
                         console.error(errorResponse);

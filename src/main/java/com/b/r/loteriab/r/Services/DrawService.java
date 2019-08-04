@@ -44,7 +44,6 @@ public class DrawService {
             return result;
         }
 
-
         Draw savedDraw = drawRepository.findDrawByShiftNameAndDrawDateAndEnterpriseId(draw.getShift().getName(), draw.getDrawDate(), enterprise.getId());
         if (savedDraw!=null){
             result.add("Tiraj sa egziste deja");
@@ -56,8 +55,17 @@ public class DrawService {
             draw.setCreationDate(new Date());
             draw.setModificationDate(new Date());
             draw.setEnabled(true);
+            draw.setAmountLost(0.0);
+            draw.setAmountWon(0.0);
+            draw.setAmountSold(0.0);
             drawRepository.save(draw);
-            determineWonTicket(draw);
+
+            Draw currentDraw = drawRepository.findTopByEnterpriseIdOrderByEnterpriseIdDesc(enterprise.getId());
+            currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
+            determineWonTicket(draw, false);
+            currentDraw.setAmountLost(determineAmountWonForSoldTicket(draw).getAmountLost());
+            currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
+            drawRepository.save(currentDraw);
         }catch (Exception ex){
             result.add("Tiraj la pa ka anrejistre reeseye ankò");
         }
@@ -122,6 +130,10 @@ public class DrawService {
         currentDraw.setNumberTwoDigits(draw.getNumberTwoDigits());
         currentDraw.setShift(draw.getShift());
         try {
+            currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
+            determineWonTicket(draw, true);
+            currentDraw.setAmountLost(determineAmountWonForSoldTicket(draw).getAmountLost());
+            currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
             drawRepository.save(currentDraw);
         }catch (Exception ex){
             result.add("Tiraj la pa ka aktyalize reeseye ankò");
@@ -210,7 +222,26 @@ public class DrawService {
          return drawRepository.findAllByEnterpriseId(enterpriseId);
      }
 
-     public void determineWonTicket(Draw draw){
+     private Draw determineAmountForSoldTicket(Draw draw){
+         List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
+
+         for (Sale sale: sales){
+             draw.setAmountSold(draw.getAmountSold()+sale.getTotalAmount());
+         }
+         return  draw;
+     }
+
+    private Draw determineAmountWonForSoldTicket(Draw draw){
+        List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
+
+        for (Sale sale: sales){
+            if (sale.getTicket().isWon()){
+                draw.setAmountSold(draw.getAmountLost()+ sale.getTicket().getAmountWon());
+            }
+        }
+        return  draw;
+    }
+     public void determineWonTicket(Draw draw, boolean updating){
         List<CombinationType> combinationTypes = combinationTypeService.findallByEnterpriseId(draw.getEnterprise().getId());
         List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
 
@@ -227,14 +258,27 @@ public class DrawService {
                         amoutWon += youwon.getValue0();
                     }
                 }
-                if (won) {
-                    sales.get(i).getTicket().setWon(won);
-                    sales.get(i).getTicket().setAmountWon(amoutWon);
-                    saleRepository.save(sales.get(i));
+                if (!updating){
+                    if (won) {
+                        sales.get(i).getTicket().setWon(won);
+                        sales.get(i).getTicket().setAmountWon(amoutWon);
+                        saleRepository.save(sales.get(i));
+                    }
+                }else {
+                    if (won) {
+                        sales.get(i).getTicket().setWon(won);
+                        sales.get(i).getTicket().setAmountWon(amoutWon);
+                        saleRepository.save(sales.get(i));
+                    } else {
+                        sales.get(i).getTicket().setWon(won);
+                        sales.get(i).getTicket().setAmountWon(0.0);
+                        for (int x = 0; x <sales.get(i).getSaleDetails().size(); i++){
+                            sales.get(i).getSaleDetails().get(x).setWon(false);
+                        }
+                        saleRepository.save(sales.get(i));
+                    }
                 }
             }
-
-
 
         }
      }

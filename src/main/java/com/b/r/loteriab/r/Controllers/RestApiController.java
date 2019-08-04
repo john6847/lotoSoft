@@ -294,7 +294,6 @@ public class RestApiController {
     }
 
 
-
     @RequestMapping(value = "/ticket/won",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> findWonTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {

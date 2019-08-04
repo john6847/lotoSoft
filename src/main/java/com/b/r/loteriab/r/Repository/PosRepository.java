@@ -33,11 +33,11 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
     Pos findByMacAddressAndEnterpriseId (String macAddress,Long enterpriseId);
     Pos findPosByDescriptionAndEnterpriseId(String description, Long enterpriseId);
 
-    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s) and p.enterprise_id=?2 and p.enabled =?1";
+    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s and s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
     @Query(value = q1, nativeQuery = true)
     List<Pos> selectAllFreeAndEnabledPosByEnterpriseId(boolean enabled, Long enterpriseId);
 
-    String q2 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b) and p.enterprise_id=?2 and p.enabled =?1";
+    String q2 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b and b.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
     @Query(value = q2, nativeQuery = true)
     List<Pos> selectAllFreeAndEnabledPosForBankByEnterpriseId(boolean enabled, Long enterpriseId);
 
@@ -46,7 +46,7 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
     @Query(value = q3, nativeQuery = true)
     List<Pos> selectPosRealtedToSeller(Long sellerId, Long enterpriseId, boolean enabled);
 
-    String q4 ="SELECT p.ID, p.DESCRIPTION FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel) and s.enterprise_id=?2 and s.enabled =?1";
+    String q4 ="SELECT p.ID, p.DESCRIPTION FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b and b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel and sel.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
     @Query(value = q4, nativeQuery = true)
     List<Pos> selectAllPosFreeFromBankAndByEnterpriseId(boolean enabled, Long enterpriseId);
 

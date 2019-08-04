@@ -20,5 +20,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     void deleteRolByIdAndEnterpriseId(Long id, Long enterpriseId);
 
 //    @Query(nativeQuery =true, value = "select * from role e order by e.id desc")
-    Role findTopByOrderByIdDesc ();
+//    Role findTopByOrderByIdDesc ();
 }

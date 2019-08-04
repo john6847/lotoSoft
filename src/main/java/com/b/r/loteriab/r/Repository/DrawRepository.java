@@ -1,5 +1,7 @@
 package com.b.r.loteriab.r.Repository;
 
+import com.b.r.loteriab.r.Model.Bank;
+import com.b.r.loteriab.r.Model.Combination;
 import com.b.r.loteriab.r.Model.Draw;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +27,7 @@ public interface DrawRepository extends JpaRepository<Draw, Long> {
 
     Draw findDrawByShiftNameAndDrawDateAndEnterpriseId(String shiftName, Date date, Long enterpriseId);
 
+    Draw findTopByEnterpriseIdOrderByEnterpriseIdDesc(Long enterpriseId);
 
     List<Draw>findAllByShiftNameAndDrawDateAndEnterpriseId(String shiftName,Date drawDate, Long enterpriseId);
 

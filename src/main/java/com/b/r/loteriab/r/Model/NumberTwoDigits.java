@@ -16,8 +16,5 @@ public class NumberTwoDigits implements Serializable{
     private Long id;
     private String numberInStringFormat;
     private int numberInIntegerFormat;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "enterprise_id")
-    private Enterprise enterprise;
     private boolean enabled = true;
 }

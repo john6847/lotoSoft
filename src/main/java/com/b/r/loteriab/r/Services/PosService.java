@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Repository.PosRepository;
 import com.b.r.loteriab.r.Validation.Result;
@@ -23,6 +24,8 @@ public class PosService {
     @Autowired
     private PosRepository posRepository;
 
+    @Autowired
+    private  EnterpriseService enterpriseService;
 
     private Result validateModel (Pos pos){
         Result result = new Result();
@@ -39,25 +42,19 @@ public class PosService {
             result.add("Serial la pa ka vid", "serial");
         }
 
-        if (posRepository.findByMacAddress(pos.getMacAddress())!= null){
+        if (posRepository.findByMacAddressAndEnterpriseId(pos.getMacAddress(), pos.getEnterprise().getId())!= null){
             result.add("Mac Address la egziste deja", "macAddress");
         }
 
-        if (posRepository.findPosBySerial(pos.getSerial())!= null){
+        if (posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId())!= null){
             result.add("Serial la egziste deja pou yon lot machin", "serial");
         }
-
-//        verifying if desctription already exist for that company's machine
-//        get enterprise from session
-//        HttpSession session = httpServletRequest.getSession();
-//        if (posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), )!= null){
-//            result.add("Serial la egziste deja pou yon lot machin", "serial");
-//        }
 
         return result;
     }
 
-    public Result savePos(Pos pos){
+    public Result savePos(Pos pos, Enterprise enterprise){
+        pos.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         Result result = validateModel(pos);
         if (!result.isValid()){
             return result;
@@ -73,13 +70,13 @@ public class PosService {
         return  result;
     }
 
-    public Result updatePos(Pos pos) {
+    public Result updatePos(Pos pos, Enterprise enterprise) {
         Result result = validateModel(pos);
         if (!result.isValid()){
             return result;
         }
 
-        Pos currentPos = posRepository.findPosById(pos.getId());
+        Pos currentPos = posRepository.findPosByIdAndEnterpriseId(pos.getId(), enterprise.getId());
         currentPos.setDescription(pos.getDescription());
         currentPos.setModificationDate(new Date());
         currentPos.setMacAddress(pos.getMacAddress());
@@ -92,55 +89,62 @@ public class PosService {
         return  result;
     }
 
-    public void deletePosId(Long id){
-        posRepository.deleteById(id);
+    public void deletePosId(Long id, Long enterpriseId){
+        posRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public ArrayList<Pos> findAllPos(){
-        return (ArrayList<Pos>)posRepository.findAll();
+    public ArrayList<Pos> findAllPos(Long enterpriseId){
+        return (ArrayList<Pos>)posRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public Page<Pos> findAllPosByState(int page, int itemPerPage, Boolean state){
+    public Page<Pos> findAllPosByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return posRepository.findAllByEnabled(pageable,state);
+            return posRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
         }
-        return posRepository.findAll(pageable);
+        return posRepository.findAllByEnterpriseId(pageable, enterpriseId);
     }
 
-    public Page<Pos> findAllPosEnabled(int page, int itemPerPage){
-        Pageable pageable = new PageRequest(page,itemPerPage);
-        return posRepository.findAllByEnabled(pageable, true);
+    public Pos findPosById(Long id, Long enterpriseId){
+        return posRepository.findPosByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Pos findPosById(Long id){
-        return posRepository.findPosById(id);
+    public Pos findPosByIdAndEnabled(Long id, boolean enabled, Long enterpriseId){
+        return posRepository.findPosByIdAndEnabledAndEnterpriseId(id, enabled, enterpriseId);
     }
 
-    public Pos findPosByIdAndEnabled(Long id, boolean enabled){
-        return posRepository.findPosByIdAndEnabled(id, enabled);
-    }
-
-    public List<Pos> findPosByEnabled(Boolean enabled){
+    public List<Pos> findPosByEnabled(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return posRepository.findAllByEnabled(enabled);
+            return posRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
-        return posRepository.findAll();
+        return posRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public List<Pos> findAllFreePosByEnabled(boolean enabled){
-        return posRepository.selectAllFreeAndEnabledPos(enabled);
+    public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId){
+        List<Pos> pos = posRepository.selectPosRealtedToSeller(sellerId, enterpriseId, true);
+
+        if (pos == null){
+            pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
+        }
+        return pos;
     }
 
-    public Result deletePosById(Long id){
+    public List<Pos> findAllFreePosByEnabled(boolean enabled, Long enterpriseId){
+        return posRepository.selectAllFreeAndEnabledPosByEnterpriseId(enabled, enterpriseId);
+    }
+    public List<Pos> findAllFreePosFromBankByEnabled(boolean enabled, Long enterpriseId){
+        return posRepository.selectAllFreeAndEnabledPosForBankByEnterpriseId(enabled, enterpriseId);
+    }
+
+    public Result deletePosById(Long id, Long enterpriseId){
         Result result = new Result();
-        Pos pos = posRepository.findPosById(id);
+        Pos pos = posRepository.findPosByIdAndEnterpriseId(id, enterpriseId);
         if(pos == null) {
             result.add("Machin sa ou bezwen elimine a pa egziste");
             return result;
         }
         try{
-            posRepository.deleteById(id);
+            posRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
         }catch (Exception ex){
             result.add("Machin la pa ka elimine reeseye ankò");
         }

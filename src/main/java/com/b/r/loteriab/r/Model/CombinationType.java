@@ -15,7 +15,6 @@ import java.util.Date;
  */
 @Entity
 @Data
-@JsonSerialize(using = CombinationTypeSerializer.class)
 public class CombinationType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

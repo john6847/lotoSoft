@@ -1,16 +1,14 @@
 package com.b.r.loteriab.r.Controllers;
 
 
-import com.b.r.loteriab.r.Model.Address;
-import com.b.r.loteriab.r.Model.Groups;
-import com.b.r.loteriab.r.Model.Seller;
-import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.GroupsService;
 import com.b.r.loteriab.r.Services.SellerService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +20,7 @@ import java.util.List;
 @Controller
 @ControllerAdvice
 @RequestMapping("/group")
+@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class GroupController {
     @Autowired
     private GroupsService groupService;
@@ -38,26 +37,35 @@ public class GroupController {
 
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
-        return "/index/group.index";
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+            return "/index/group.index";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade gwoup yo");
+        return "access-denied";
     }
 
 
-    @RequestMapping("/create")
+    @GetMapping("/create")
     public String createGroup(HttpServletRequest request, Model model){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
-
-        if(groupService.findAllGroups().size()<= 0){
-            model.addAttribute("sellers", sellerService.findAllSellers());
-        }else {
-            model.addAttribute("sellers", sellerService.selectAllSellers());
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+            if (groupService.findAllGroups(enterprise.getId()).size() <= 0) {
+                model.addAttribute("sellers", sellerService.findAllSellersByEnterpriseId(enterprise.getId())); // TODO: Change
+            } else {
+                model.addAttribute("sellers", sellerService.selectAllSellers(enterprise.getId())); // TODO: Change
+            }
+            model.addAttribute("group", new Groups());
+            return "/create/group";
         }
-        model.addAttribute("group", new Groups());
-        return "/create/group";
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade gwoup yo");
+        return "access-denied";
     }
 
     @PostMapping("/create")
@@ -67,49 +75,58 @@ public class GroupController {
                             @RequestParam(value = "sector", defaultValue = "") String sector,
                             @RequestParam(value = "phone", defaultValue = "") String phone,
                             HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
 
-        group.setAddress(createAddres(country, city, sector, phone));
-        Result result = groupService.save(group);
-        if(!result.isValid()){
-            redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
-            return "redirect:/group/create";
+            group.setAddress(createAddres(country, city, sector, phone));
+            Result result = groupService.save(group, enterprise);
+            if (!result.isValid()) {
+                redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
+                return "redirect:/group/create";
+            }
+            model.addAttribute("allGroup", groupService.findAllGroups(enterprise.getId()));
+            return "redirect:/group";
         }
-        model.addAttribute("allGroup", groupService.findAllGroups());
-        return "redirect:/group";
+        model.addAttribute("error", "Ou pa ka anrejistre gwoup an koz itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye gwoup an");
+        return "access-denied";
     }
 
-    @RequestMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteGroup(HttpServletRequest request,
                               Model model,@PathVariable("id") Long id,
                               RedirectAttributes redirectAttributes){
-        String username = request.getSession().getAttribute("username").toString();
-        Users user = usersService.findUserByUsername(username);
-        model.addAttribute("user", user);
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+            if (id <= 0) {
+                redirectAttributes.addFlashAttribute("error", "Group sa pa agziste, antre on lot");
+                return "redirect:/group";
+            }
+            Result result = groupService.deleteGroupsById(id, enterprise.getId());
+            List<Seller> sellers = sellerService.findAllSellerByGroupsId(id, enterprise.getId());
 
-        if(id <= 0){
-            redirectAttributes.addFlashAttribute("error","Group sa pa agziste, antre on lot");
-            return "redirect:/group";
-        }
-        Result result =  groupService.deleteGroupsById(id);
-        List<Seller> sellers = sellerService.findAllSellerByGroupsId(id);
-
-        for (Seller seller: sellers) {
-            if (seller.getGroups()!= null) {
-                if (seller.getGroups().getId().equals(id)){
-                    seller.setGroups(null);
-                    sellerRepository.save(seller);
+            for (Seller seller : sellers) {
+                if (seller.getGroups() != null) {
+                    if (seller.getGroups().getId().equals(id)) {
+                        seller.setGroups(null);
+                        sellerRepository.save(seller);
+                    }
                 }
             }
-        }
 
-        if(!result.isValid()){
-            model.addAttribute("error", result.getLista().get(0).getMessage());
-        }
+            if (!result.isValid()) {
+                model.addAttribute("error", result.getLista().get(0).getMessage());
+            }
 
-        return "redirect:/group";
+            return "redirect:/group";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye gwoup an");
+        return "access-denied";
     }
 
     private Address createAddres( String country, String city, String sector,String phone){

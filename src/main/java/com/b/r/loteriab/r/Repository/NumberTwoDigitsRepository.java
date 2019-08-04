@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Dany on 04/05/2019.
  */
@@ -15,8 +17,7 @@ public interface NumberTwoDigitsRepository extends JpaRepository<NumberTwoDigits
     NumberTwoDigits findNumberTwoDigitsById(Long id);
 
     Page<NumberTwoDigits> findAll(Pageable pageable);
-
-    void deleteById(Long id);
+    List<NumberTwoDigits> findAll();
 
     NumberTwoDigits save(NumberTwoDigits numberTwoDigits);
 }

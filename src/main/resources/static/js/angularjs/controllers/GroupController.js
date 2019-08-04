@@ -61,7 +61,10 @@ app.controller("groupController", ['$http','$scope', 'GroupService','DTOptionsBu
             GroupService.fetchAllGroups()
                 .then(
                     function (d) {
-                        $scope.groups = createAddress(d);
+                        if (d === null || d === undefined)
+                            $scope.groups = [];
+                        else
+                            $scope.groups = createAddress(d);
                     },
                     function (errorResponse) {
                         console.error(errorResponse);
@@ -72,8 +75,10 @@ app.controller("groupController", ['$http','$scope', 'GroupService','DTOptionsBu
             GroupService.fetchAllGroupsFiltered(pageno, itemsPerPage, state)
                 .then(
                     function (d) {
-                        $scope.groups = createAddress(d.content);
-                        console.log($scope.groups)
+                        if (d === null || d === undefined)
+                            $scope.groups = [];
+                        else
+                            $scope.groups = createAddress(d.content);
                     },
                     function (errorResponse) {
                         console.error(errorResponse);

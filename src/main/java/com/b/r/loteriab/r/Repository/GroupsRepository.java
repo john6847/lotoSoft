@@ -14,21 +14,17 @@ import java.util.List;
 @Repository
 public interface GroupsRepository extends JpaRepository<Groups, Long> {
 
-    Groups findGroupsById(Long id);
-    Groups findGroupsByIdAndEnabled(Long id, boolean enabled);
-    Page<Groups> findAll(Pageable pageable);
-    Page<Groups> findAllByEnabled(Pageable pageable, boolean enabled);
-    List<Groups> findAllByEnabled(boolean enabled);
+    Groups findGroupsByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Groups findGroupsByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
+    Page<Groups> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+    List<Groups> findAllByEnterpriseId(Long enterpriseId);
+    Page<Groups> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
+    List<Groups> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
 
 
     void deleteById(Long id);
 
-    Groups findByParentSellerId(Long id);
-
-/*    String q1 = "SELECT * FROM seller s INNER JOIN groups g ON g.id = s.groups_id" +
-            "WHERE g.id NOT IN (SELECT sel.group_id FROM seller sel) and g.parent_seller_id IS NULL";
-    @Query(value = q1, nativeQuery = true)
-    List<Groups> selectGroups(String name, boolean enabled);//*/
+    Groups findByParentSellerIdAndEnterpriseId(Long id, Long enterpriseId);
 
     Groups save(Groups groups);
 }

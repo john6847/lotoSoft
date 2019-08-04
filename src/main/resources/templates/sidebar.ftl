@@ -11,7 +11,7 @@
 
       <#if user??>
         <#list user.roles as rol>
-          <#if rol.name=="ROLE_ADMIN">
+          <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
             <li class="sub-menu">
               <a href="javascript:;" class="">
                 <i class="icon_document_alt"></i>
@@ -33,6 +33,9 @@
                 </li>
                 <li>
                   <a class="" title="Ajoute nouvo Gwoup" href="/group/create">Gwoup</a>
+                </li>
+                <li>
+                  <a class="" title="Ajoute nouvo Bank" href="/bank/create">Bank</a>
                 </li>
               </ul>
             </li>
@@ -57,6 +60,9 @@
                 </li>
                 <li>
                   <a class="" title="Gade Gwoup yo" href="/group">Gwoup</a>
+                </li>
+                <li>
+                  <a class="" title="Gade Bank yo" href="/bank">Bank</a>
                 </li>
               </ul>
             </li>

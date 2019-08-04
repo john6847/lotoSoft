@@ -39,5 +39,8 @@ public class Combination implements Serializable {
     @Min(value = 1)
     private long sequence;
     private boolean enabled;
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
 
 }

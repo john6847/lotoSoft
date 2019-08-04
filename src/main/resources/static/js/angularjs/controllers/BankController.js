@@ -1,13 +1,15 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 'DTOptionsBuilder', function ($http, EnterpriseService, $scope, DTOptionsBuilder) {
-    $scope.enterprises = [];
+app.controller("bankController", ['$http', 'BankService', '$scope', 'DTOptionsBuilder', function ($http, BankService, $scope, DTOptionsBuilder) {
+    $scope.banks = [];
+    $scope.pos = [];
     $scope.serial = '';
     $scope.pageno = 1;
     $scope.totalCount = 0;
     $scope.itemsPerPage = 1000;
     $scope.state = 1;
+    $scope.selectedSeller = null;
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDisplayLength(5)
@@ -41,6 +43,21 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
                     bSmart: true
                 },
                 {
+                    type: 'text',
+                    bRegex: true,
+                    bSmart: true
+                },
+                {
+                    type: 'text',
+                    bRegex: true,
+                    bSmart: true
+                },
+                {
+                    type: 'text',
+                    bRegex: true,
+                    bSmart: true
+                },
+                {
                     type: 'select',
                     bRegex: false,
                     values: ['Wi','Non']
@@ -54,52 +71,56 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
         });
 
 
-
-    $scope.isTrue = function (val) {
-        return val === true
-    };
-
-    $scope.isNull = function (val) {
-        return val === null
-    };
-
-
-    fetchAllEnterprise();
+    fetchAllBank();
 
     $scope.getData = function () {
-        $scope.pos = [];
+        $scope.banks = [];
         $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
 
-
-        fetchAllEnterpriseFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
+        fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 
-    function fetchAllEnterprise() {
-        EnterpriseService.fetchAllEnterprise()
+    $scope.sellerChange = function (){
+        if ($scope.selectedSeller){
+            fetchPos($scope.selectedSeller);
+        }
+    };
+
+    function fetchPos(selectedSeller) {
+        PosService.fetchPosBySeller(selectedSeller.id)
             .then(
                 function (d) {
-                    console.log('ALL THHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRREEEEEE');
-                    $scope.enterprises = d;
-                    console.log(d);
+                    if (d === null || d === undefined)
+                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+                    else{
+                        $scope.pos = d;
+                    }
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
 
-    function fetchAllEnterpriseFiltered(pageno, itemsPerPage, state) {
-        EnterpriseService.fetchAllEnterpriseFiltered(pageno, itemsPerPage, state)
+    function fetchAllBank() {
+        BankService.fetchAllBank()
             .then(
                 function (d) {
-                    console.log('Filtered THHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRREEEEEE');
-                    $scope.enterprises = d.content;
-                    console.log(d);
+                    $scope.banks = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
 
-
+    function fetchAllBankFiltered(pageno, itemsPerPage, state) {
+        BankService.fetchAllBankFiltered(pageno, itemsPerPage, state)
+            .then(
+                function (d) {
+                    $scope.banks = d.content;
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                })
+    }
 
 }]);

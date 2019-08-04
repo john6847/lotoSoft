@@ -15,6 +15,7 @@
 
 <!-- Bootstrap CSS -->
 <link href="/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/css/customStyle.css" rel="stylesheet" />
 <!-- bootstrap theme -->
 <link href="/css/bootstrap-theme.css" rel="stylesheet" />
 <!--external css-->

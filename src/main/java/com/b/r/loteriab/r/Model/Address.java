@@ -15,14 +15,12 @@ public class Address implements Serializable{
     private String country;
     private String sector;
     private String city;
-    private String urbanization;
+    private String region;
     private String zipCode;
     private String street;
-    private String number;
+    private int number;
     private String phone;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "enterprise_id")
-    private Enterprise enterprise;
+    private String email;
     private Date creationDate;
     private Date modificationDate;
 }

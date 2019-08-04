@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.PaymentType;
 import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Repository.SellerRepository;
@@ -21,6 +22,8 @@ public class SellerService {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
 
     private Result validateModel (Seller seller){
         Result result = new Result();
@@ -33,7 +36,7 @@ public class SellerService {
         return result;
     }
 
-    public Result saveSeller (Seller seller, String useMonthlyPayment){
+    public Result saveSeller (Seller seller, String useMonthlyPayment, Enterprise enterprise){
         Result result = validateModel(seller);
         if (useMonthlyPayment.equals("on")){
             if (seller.getAmountCharged() <= 0){
@@ -50,6 +53,7 @@ public class SellerService {
             return result;
         }
         int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal(): PaymentType.PERCENTAGE.ordinal();
+        seller.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         seller.setPaymentType(payment);
         seller.setCreationDate(new Date());
         seller.setModificationDate(new Date());
@@ -63,7 +67,7 @@ public class SellerService {
         return  result;
     }
 
-    public Result updateSeller(Seller seller,String useMonthlyPayment) {
+    public Result updateSeller(Seller seller,String useMonthlyPayment, Long enterpriseId) {
         Result result = new Result();
         if (useMonthlyPayment.equals("on")){
             if (seller.getAmountCharged() <= 0){
@@ -81,7 +85,7 @@ public class SellerService {
             return result;
         }
 
-        Seller currentSeller = sellerRepository.findSellerById(seller.getId());
+        Seller currentSeller = sellerRepository.findSellerByIdAndEnterpriseId(seller.getId(), enterpriseId);
         currentSeller.setModificationDate(new Date());
         currentSeller.setLastPaymentDate(seller.getLastPaymentDate());
         currentSeller.setAmountCharged(seller.getAmountCharged());
@@ -96,56 +100,52 @@ public class SellerService {
         return  result;
     }
 
-    public Seller findSellerById(Long id){return sellerRepository.findSellerById(id);}
-    public Seller findSellerIdAndEnabled(Long id,boolean enabled){
-        return sellerRepository.findSellerByIdAndEnabled(id,enabled);
+    public Seller findSellerById(Long id,Long enterpriseId){return sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);}
+
+    public Seller findSellerByIdAndEnabled(Long id, boolean enabled, Long enterpriseId){
+        return sellerRepository.findSellerByIdAndEnabledAndEnterpriseId(id,enabled,enterpriseId);
     }
 
-    public ArrayList<Seller> findAllSellers() {
-        return (ArrayList<Seller>) sellerRepository.findAll();
+    public ArrayList<Seller> findAllSellersByEnterpriseId(Long enterpriseId) {
+        return (ArrayList<Seller>) sellerRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public ArrayList<Seller> findAllSellerByGroupsId(Long id) {
-        return (ArrayList<Seller>) sellerRepository.findAllByGroupsId(id);
+    public ArrayList<Seller> findAllSellerByGroupsId(Long id, Long enterpriseId) {
+        return (ArrayList<Seller>) sellerRepository.findAllByGroupsIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Page<Seller> findAllSellers(int page, int itemPerPage){
-        Pageable pageable = new PageRequest(page,itemPerPage);
-        return sellerRepository.findAll(pageable);
-    }
-
-    public Result deleteSellerById(Long id){
+    public Result deleteSellerById(Long id, Long enterpriseId){
         Result result = new Result();
-        Seller draw = sellerRepository.findSellerById(id);
+        Seller draw = sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
         if(draw == null) {
             result.add("Vandè sa ou bezwen elimine a pa egziste");
             return result;
         }
         try{
-            sellerRepository.deleteById(id);
+            sellerRepository.deleteSellerByIdAndEnterpriseId(id, enterpriseId);
         }catch (Exception ex){
             result.add("Vandè a pa ka elimine reeseye ankò");
         }
-        sellerRepository.deleteSellerById(id);
+        sellerRepository.deleteSellerByIdAndEnterpriseId(id,enterpriseId);
         return result;
     }
-    public List<Seller> findAllSellerByEnabled(Boolean enabled){
+    public List<Seller> findAllSellerByEnabled(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return sellerRepository.findAllByEnabled(enabled);
+            return sellerRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
-        return sellerRepository.findAll();
+        return sellerRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public Page <Seller> findAllSellerByState(int page, int itemPerPage, Boolean state){
+    public Page <Seller> findAllSellerByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return sellerRepository.findAllByEnabled(pageable,state);
+            return sellerRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
         }
-        return sellerRepository.findAll(pageable);
+        return sellerRepository.findAllByEnterpriseId(pageable, enterpriseId);
     }
 
-     public List <Seller> selectAllSellers(){
-            return sellerRepository.selectAllSellers(true);
+     public List <Seller> selectAllSellers(Long enterpriseId){
+            return sellerRepository.selectAllSellersByEnterpriseId(true, enterpriseId);
         }
 
 }

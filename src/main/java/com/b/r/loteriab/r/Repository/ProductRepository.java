@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Products, Long> {
     List<Products> findAllByName(String name);
+    List<Products> findAll ();
 }

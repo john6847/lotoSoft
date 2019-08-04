@@ -35,5 +35,9 @@ public class Draw implements Serializable{
     private Date creationDate;
     private Date modificationDate;
     private boolean enabled;
+    private Double amountSold;
+    private Double amountWon;
+    private Double amountLost;
+
 
 }

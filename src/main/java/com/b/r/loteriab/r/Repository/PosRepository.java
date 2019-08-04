@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Repository;
 
+import com.b.r.loteriab.r.Model.Bank;
 import com.b.r.loteriab.r.Model.Pos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,24 +16,39 @@ import java.util.List;
 @Repository
 public interface PosRepository extends JpaRepository<Pos, Long> {
 
-    Pos findPosById(Long id);
-    Pos findPosByIdAndEnabled(Long id, boolean enabled);
+    Pos findPosByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Pos findPosByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
 
-    Page<Pos> findAllByEnabled(Pageable pageable, boolean state);
-    Page<Pos> findAll(Pageable pageable);
-    List<Pos> findAllByEnabled(Boolean enabled);
+    Page<Pos> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean state, Long enterpriseId);
+    Page<Pos> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+    List <Pos> findAllByEnterpriseId(Long enterpriseId);
+    List<Pos> findAllByEnabledAndEnterpriseId(Boolean enabled,Long enterpriseId);
 
-    void deleteById(Long id);
+    void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
 
     Pos save (Pos pos);
 
-    Pos findPosBySerial (String serial);
-    Pos findBySerialAndEnabled (String serial, boolean enabled);
-    Pos findByMacAddress (String macAddress);
-//    Control if that description exist for an enterprise pos
+    Pos findPosBySerialAndEnterpriseId (String serial, Long enterpriseId);
+    Pos findBySerialAndEnabledAndEnterpriseId (String serial, boolean enabled, Long enterpriseId);
+    Pos findByMacAddressAndEnterpriseId (String macAddress,Long enterpriseId);
     Pos findPosByDescriptionAndEnterpriseId(String description, Long enterpriseId);
 
-    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s) and p.enabled =?1";
+    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s and s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
     @Query(value = q1, nativeQuery = true)
-    List<Pos> selectAllFreeAndEnabledPos(boolean enabled);
+    List<Pos> selectAllFreeAndEnabledPosByEnterpriseId(boolean enabled, Long enterpriseId);
+
+    String q2 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b and b.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
+    @Query(value = q2, nativeQuery = true)
+    List<Pos> selectAllFreeAndEnabledPosForBankByEnterpriseId(boolean enabled, Long enterpriseId);
+
+
+    String q3 = "Select p.ID, p.DESCRIPTION from seller s right join pos p on p.id = s.POS_ID where s.id = ?1 and s.enterprise_id=?2 and s.enabled =?3";
+    @Query(value = q3, nativeQuery = true)
+    List<Pos> selectPosRealtedToSeller(Long sellerId, Long enterpriseId, boolean enabled);
+
+    String q4 ="SELECT p.ID, p.DESCRIPTION FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b and b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel and sel.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
+    @Query(value = q4, nativeQuery = true)
+    List<Pos> selectAllPosFreeFromBankAndByEnterpriseId(boolean enabled, Long enterpriseId);
+
+
 }

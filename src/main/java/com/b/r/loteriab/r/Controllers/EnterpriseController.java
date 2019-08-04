@@ -3,8 +3,7 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Users;
-import com.b.r.loteriab.r.Services.EnterpriseService;
-import com.b.r.loteriab.r.Services.UsersService;
+import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Secured("ROLE_SUPER_MEGA_ADMIN")
@@ -25,11 +26,24 @@ public class EnterpriseController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private CombinationTypeService combinationTypeService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private ShiftService shiftService;
+
+    @Autowired
+    private CombinationService combinationService;
 
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
+        model.addAttribute("user", user);
+
         return "/index/enterprise.index";
     }
 
@@ -45,20 +59,50 @@ public class EnterpriseController {
     }
 
     @PostMapping("/create")
-    public String saveEnterprise(@ModelAttribute("enterprise") Enterprise enterprise, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+    public String saveEnterprise(@ModelAttribute("enterprise") Enterprise enterprise,
+                                 @RequestParam(value = "country", defaultValue = "") String country,
+                                 @RequestParam(value = "city", defaultValue = "") String  city,
+                                 @RequestParam(value = "sector", defaultValue = "") String  sector,
+                                 @RequestParam(value = "street", defaultValue = "") String street,
+                                 @RequestParam(value = "number") int number,
+                                 @RequestParam(value = "phone", defaultValue = "") String phone,
+                                 @RequestParam(value = "email", defaultValue = "") String email,
+                                 @RequestParam(value = "bolet", defaultValue = "off") String  bolet,
+                                 @RequestParam(value = "lotoTwaChif", defaultValue = "off") String  lotoTwaChif,
+                                 @RequestParam(value = "lotoKatChif", defaultValue = "off") String lotoKatChif,
+                                 @RequestParam(value = "opsyon", defaultValue = "off") String opsyon,
+                                 @RequestParam(value = "maryaj", defaultValue = "off") String maryaj,
+                                 @RequestParam(value = "extra", defaultValue = "off") String extra,
+                                 @RequestParam(value = "admin", defaultValue = "off") String admin,
+                                 @RequestParam(value = "superAdmin", defaultValue = "off") String superAdmin,
+                                 @RequestParam(value = "seller", defaultValue = "off") String seller,
+                                 @RequestParam(value = "recollector", defaultValue = "off") String recollector,
+                                 @RequestParam(value = "supervisor", defaultValue = "off") String supervisor,
+                                 HttpServletRequest request,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes){
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
+        enterprise.setAddress(enterpriseService.buildAddress (country, city, sector, street, number, phone, email));
         Result result = enterpriseService.saveEnterprise(enterprise);
         if(!result.isValid()){
             redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
             return "redirect:/enterprise/create";
         }
+        // create shift
+        shiftService.createShiftForEnterprise(enterprise.getName());
+        // create roles
+        roleService.createRoleForEnterprise(enterprise.getName(), superAdmin, admin, seller, recollector, supervisor);// TODO: Save roles base on the roles chosen when creating the enterprise
+        // Creating combinationTypes
+        combinationTypeService.initCombinationTypeForEnterprise(enterprise.getName(),bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
+        // creating combinations
+        combinationService.initCombinationForEnterprise(enterprise.getName());
         return "redirect:/enterprise";
     }
 
-    @RequestMapping("/update/{id}")
+    @GetMapping("/update/{id}")
     public String updateEnterprise(@PathVariable("id") Long id,HttpServletRequest request,Model model){
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
@@ -113,4 +157,5 @@ public class EnterpriseController {
 
         return "redirect:/enterprise";
     }
+
 }

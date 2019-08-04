@@ -2,10 +2,7 @@ package com.b.r.loteriab.r.Model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,10 +19,14 @@ public class Enterprise implements Serializable {
     private int numberOfEmployee;
     private String phone;
     private String rnc;
-    private String website;
+    private String logoUrl;
+    private String subDomain;
     private String identifier;
     private int sequence;
     private Date creationDate;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
     private Date ModificationDate;
     private boolean enabled;
 }

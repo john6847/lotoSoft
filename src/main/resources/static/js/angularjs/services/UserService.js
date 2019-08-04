@@ -9,9 +9,23 @@ angular.module('lottery')
         fetchAllUsersSuperAdmin: fetchAllUsersSuperAdmin,
         fetchAllUsersFiltered: fetchAllUsersFiltered,
         fetchAllUsersFilteredSuperAdmin: fetchAllUsersFilteredSuperAdmin,
-        // fetchAllUsersSize:fetchAllUsersSize
+        fetchUser: fetchUser
     };
 
+
+    function fetchUser(username) {
+
+        var deferred = $q.defer();
+        $http.get("/api/user/exist", {params: {username: username}})
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                }, function (errResponse) {
+                    console.error(errResponse);
+                    deferred.reject(errResponse);
+                });
+        return deferred.promise;
+    }
 
     function fetchAllUsers() {
 

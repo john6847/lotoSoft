@@ -3,16 +3,15 @@
  */
 'use strict';
 angular.module('lottery')
-    .factory('EnterpriseService', ['$http', '$q', function ($http, $q) {
+    .factory('BankService', ['$http', '$q', function ($http, $q) {
         return {
-            fetchAllEnterprise: fetchAllEnterprise,
-            fetchAllEnterpriseFiltered: fetchAllEnterpriseFiltered
+            fetchAllBank: fetchAllBank,
+            fetchAllBankFiltered: fetchAllBankFiltered
         };
 
-
-        function fetchAllEnterprise() {
+        function fetchAllBank() {
             var deferred = $q.defer();
-            $http.get("/api/enterprises/")
+            $http.get("/api/bank/")
                 .then(
                     function (response) {
                         deferred.resolve(response.data);
@@ -23,10 +22,10 @@ angular.module('lottery')
             return deferred.promise;
         }
 
-        function fetchAllEnterpriseFiltered(pageno,itemsPerPage,state) {
+        function fetchAllBankFiltered(pageno,itemsPerPage,state) {
             var deferred = $q.defer();
 
-            $http.get("/api/enterprises/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state)
+            $http.get("/api/bank/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state)
                 .then(
                     function (response) {
                         deferred.resolve(response.data);
@@ -36,4 +35,5 @@ angular.module('lottery')
                     });
             return deferred.promise;
         }
+
     }]);

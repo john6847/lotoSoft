@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Data
-@JsonSerialize(using = UserSerializer.class)
 public class Users implements Serializable{// extends User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +33,7 @@ public class Users implements Serializable{// extends User
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
     private boolean enabled;
 }

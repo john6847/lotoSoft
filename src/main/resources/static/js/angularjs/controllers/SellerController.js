@@ -3,8 +3,6 @@
  */
 app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptionsBuilder','Constants',function ($http, SellerService, $scope,DTOptionsBuilder,Constants) {
     $scope.sellers = [];
-    $scope.subSellers = [];
-    $scope.parentSellers= [];
 
     $scope.haveUser = false;
     $scope.haveGroup = false;
@@ -91,9 +89,10 @@ app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptions
         SellerService.fetchAllSellers()
             .then(
                 function (d) {
-                    $scope.sellers = d;
-                    $scope.subSellers = d;
-                    $scope.parentSellers= d;
+                    if (d === null || d === undefined)
+                        $scope.sellers = [];
+                    else
+                        $scope.sellers = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -105,7 +104,10 @@ app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptions
         SellerService.fetchAllSellersFiltered(pageno,itemsPerPage,state)
             .then(
                 function (d) {
-                    $scope.sellers = d.content;
+                    if (d === null || d === undefined)
+                        $scope.sellers = [];
+                    else
+                        $scope.sellers = d.content;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -116,7 +118,10 @@ app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptions
         SellerService.fetchAllSellersSize(state)
             .then(
                 function (d) {
-                    $scope.totalCount = d;
+                    if (d === 0 || d === null || d === undefined)
+                        $scope.sellers = 0;
+                    else
+                        $scope.totalCount = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

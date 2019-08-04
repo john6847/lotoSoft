@@ -13,11 +13,16 @@ public class Ticket implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serial;
+    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "shift_id")
+    private Shift shift; // tanda
     private Date emissionDate;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     private boolean completed;
+    private boolean won;
     private boolean enabled;
+    private double amountWon;
     public long sequence;
 }

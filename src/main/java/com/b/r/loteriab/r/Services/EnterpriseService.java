@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Address;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.ViewModel.Helper;
 import com.b.r.loteriab.r.Repository.EnterpriseRepository;
@@ -81,6 +82,10 @@ public class EnterpriseService {
         return (ArrayList<Enterprise>)enterpriseRepository.findAll();
     }
 
+    public ArrayList<Enterprise> selectAllEnterpriseExcept(){
+        return (ArrayList<Enterprise>)enterpriseRepository.selectAllEnterpriseExcept("BR-tenant");
+    }
+
     public Page<Enterprise> findAllEnterpriseByState(int page, int itemPerPage, Boolean state){
         Pageable pageable = PageRequest.of(page, itemPerPage);
         if(state != null){
@@ -91,6 +96,9 @@ public class EnterpriseService {
 
     public Enterprise findEnterpriseById(Long id){
         return enterpriseRepository.findEnterpriseById(id);
+    }
+    public Enterprise findEnterpriseByName(String name){
+        return enterpriseRepository.findEnterpriseByName(name);
     }
 
     public Enterprise findEnterpriseByIdAndEnabled(Long id, boolean enabled){
@@ -110,5 +118,32 @@ public class EnterpriseService {
             result.add("Machin la pa ka elimine reeseye ankò");
         }
         return result;
+    }
+
+    public Address buildAddress (String country, String city, String sector, String street, int number, String phone, String email){
+
+        Address address = new Address();
+        if (!country.isEmpty()){
+            address.setCountry(country);
+        }
+        if (!city.isEmpty()){
+            address.setCity(city);
+        }
+        if (!sector.isEmpty()){
+            address.setSector(sector);
+        }
+        if (number!=0){
+            address.setNumber(number);
+        }
+        if (!street.isEmpty()){
+            address.setStreet(street);
+        }
+        if (!phone.isEmpty()){
+            address.setPhone(phone);
+        }
+        if (!email.isEmpty()){
+            address.setEmail(email);
+        }
+        return address;
     }
 }

@@ -29,6 +29,9 @@ public class GroupsService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
+
     private Result validateModel (Groups groups){
         Result result = new Result();
 
@@ -57,7 +60,7 @@ public class GroupsService {
             if (address!=null){
                 groups.setAddress(address);
             }
-            groups.setEnterprise(enterprise);
+            groups.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
             groups.setCreationDate(new Date());
             groups.setModificationDate(new Date());
             groups.setEnabled(true);

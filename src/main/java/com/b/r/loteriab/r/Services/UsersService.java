@@ -30,6 +30,8 @@ public class UsersService {
     private UserRepository usersRepository;
     @Autowired
     private RoleService roleServices;
+    @Autowired
+    private EnterpriseService enterpriseService;
 
     private Result validateModel (Users users){
         Result result = new Result();
@@ -82,20 +84,11 @@ public class UsersService {
 
             user.setRoles(new ArrayList<Role>());
             user.getRoles().add(superAdmin);
-        } else {
-            List<Role> roles = roleServices.findAllByEnterpriseId(enterprise.getId());
-            for (Role role : roles){
-                for (int i =0; i < user.getRoles().size(); i++){
-                    if (user.getRoles().get(i).getName().equals(role.getName())){
-                        user.getRoles().get(i).setId(role.getId());
-                    }
-                }
-            }
         }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (isSuperAdmin.equals("off")){
-            user.setEnterprise(enterprise);
+            user.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         }
         user.setCreationDate(new Date());
         user.setModificationDate(new Date());

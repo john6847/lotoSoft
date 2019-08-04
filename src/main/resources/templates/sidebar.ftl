@@ -34,6 +34,9 @@
                 <li>
                   <a class="" title="Ajoute nouvo Gwoup" href="/group/create">Gwoup</a>
                 </li>
+                <li>
+                  <a class="" title="Ajoute nouvo Bank" href="/bank/create">Bank</a>
+                </li>
               </ul>
             </li>
             <li class="sub-menu">
@@ -57,6 +60,9 @@
                 </li>
                 <li>
                   <a class="" title="Gade Gwoup yo" href="/group">Gwoup</a>
+                </li>
+                <li>
+                  <a class="" title="Gade Bank yo" href="/bank">Bank</a>
                 </li>
               </ul>
             </li>

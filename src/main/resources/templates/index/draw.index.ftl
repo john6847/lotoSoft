@@ -44,7 +44,7 @@
                   <div class="col-lg-4 col-md-4 col-sm-4">
                     Tiraj
                   </div>
-                  <div class="col-lg-8" ng-init="getData()">
+                  <div class="col-lg-8">
                     <div class="row text-right">
                       <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row">

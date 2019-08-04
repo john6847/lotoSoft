@@ -22,6 +22,8 @@ public class SellerService {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
 
     private Result validateModel (Seller seller){
         Result result = new Result();
@@ -51,7 +53,7 @@ public class SellerService {
             return result;
         }
         int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal(): PaymentType.PERCENTAGE.ordinal();
-        seller.setEnterprise(enterprise);
+        seller.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         seller.setPaymentType(payment);
         seller.setCreationDate(new Date());
         seller.setModificationDate(new Date());

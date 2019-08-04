@@ -41,6 +41,7 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
                         $scope.combinationTypes = [];
                     else
                         $scope.combinationTypes = d;
+                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -55,6 +56,8 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
                         $scope.combinationTypes = [];
                     else
                        $scope.combinationTypes = d.content;
+                    console.log(d.content)
+
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

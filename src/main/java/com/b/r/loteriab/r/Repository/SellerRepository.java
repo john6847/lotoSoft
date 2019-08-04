@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Repository;
 
 
+import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Seller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +35,9 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
             " AND s.id NOT IN (SELECT gr.PARENT_SELLER_ID FROM groups gr)\n" +
             " AND s.enabled =?1 AND s.enterprise_id=?2";
     @Query(value = q1, nativeQuery = true)
-    List<Seller> selectAllSellersByEnterpriseId(boolean enabled,Long enterpriseId);//
+    List<Seller> selectAllSellersByEnterpriseId(boolean enabled,Long enterpriseId);
+
+    String q2 ="SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b) and s.enterprise_id=?3 and s.enabled =?2";
+    @Query(value = q2, nativeQuery = true)
+    List<Seller> selectAllSellersFreeFromBankByEnterpriseId(boolean enabled, Long enterpriseId);
 }

@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_SUPER_MEGA_ADMIN"}) // TODO: Delete role supermega
+@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN", "ROLE_SUPER_MEGA_ADMIN"})
 public class GlobalRestController {
     @Autowired
     private DrawService drawService;
@@ -429,6 +429,23 @@ public class GlobalRestController {
             return posService.findPosByEnabled(getState(state), enterprise.getId()).size();
         }
         return 0;
+    }
+
+    /**
+     * Get All Pos By seller
+     * @param sellerId
+     * @return size
+     */
+    @GetMapping(value = "/pos/find/seller/{id}", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Pos>> getAllPosBySeller(@PathVariable("id")Long sellerId, HttpServletRequest request){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<Pos> pos = posService.findPosBySellerId(sellerId, enterprise.getId());
+            if (pos.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(pos, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
     }
 
     /**

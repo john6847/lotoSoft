@@ -24,6 +24,8 @@ public class PosService {
     @Autowired
     private PosRepository posRepository;
 
+    @Autowired
+    private  EnterpriseService enterpriseService;
 
     private Result validateModel (Pos pos){
         Result result = new Result();
@@ -52,12 +54,12 @@ public class PosService {
     }
 
     public Result savePos(Pos pos, Enterprise enterprise){
+        pos.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         Result result = validateModel(pos);
         if (!result.isValid()){
             return result;
         }
         try {
-            pos.setEnterprise(enterprise);
             pos.setCreationDate(new Date());
             pos.setModificationDate(new Date());
             pos.setEnabled(true);
@@ -118,8 +120,20 @@ public class PosService {
         return posRepository.findAllByEnterpriseId(enterpriseId);
     }
 
+    public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId){
+        List<Pos> pos = posRepository.selectPosRealtedToSeller(sellerId, enterpriseId, true);
+
+        if (pos == null){
+            pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
+        }
+        return pos;
+    }
+
     public List<Pos> findAllFreePosByEnabled(boolean enabled, Long enterpriseId){
         return posRepository.selectAllFreeAndEnabledPosByEnterpriseId(enabled, enterpriseId);
+    }
+    public List<Pos> findAllFreePosFromBankByEnabled(boolean enabled, Long enterpriseId){
+        return posRepository.selectAllFreeAndEnabledPosForBankByEnterpriseId(enabled, enterpriseId);
     }
 
     public Result deletePosById(Long id, Long enterpriseId){

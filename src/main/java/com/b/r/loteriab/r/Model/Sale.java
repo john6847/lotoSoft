@@ -19,12 +19,12 @@ public class Sale implements Serializable{
     private Date date;
     private int saleStatus;
     private double totalAmount;
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sale")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sale", orphanRemoval = true)
     private List<SaleDetail> saleDetails;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pos_id")
     private Pos pos;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

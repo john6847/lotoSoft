@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Data
-@JsonSerialize(using = UserSerializer.class)
 public class Users implements Serializable{// extends User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

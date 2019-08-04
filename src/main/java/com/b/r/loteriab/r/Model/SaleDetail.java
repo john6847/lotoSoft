@@ -22,4 +22,5 @@ public class SaleDetail implements Serializable{
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     private boolean enabled;
+    private boolean won;
 }

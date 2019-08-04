@@ -7,7 +7,8 @@ angular.module('lottery')
         return {
             fetchAllPos: fetchAllPos,
             fetchAllPosSize:fetchAllPosSize,
-            fetchAllPosFiltered: fetchAllPosFiltered
+            fetchAllPosFiltered: fetchAllPosFiltered,
+            fetchPosBySeller : fetchPosBySeller
         };
 
 
@@ -41,6 +42,19 @@ angular.module('lottery')
         function fetchAllPosSize(state) {
             var deferred = $q.defer();
             $http.get("/api/pos/find/size/state/"+state)
+                .then(
+                    function (response) {
+                        deferred.resolve(response.data);
+                    }, function (errResponse) {
+                        console.error(errResponse);
+                        deferred.reject(errResponse);
+                    });
+            return deferred.promise;
+        }
+
+        function fetchPosBySeller(id) {
+            var deferred = $q.defer();
+            $http.get("/api/pos/find/seller/"+ id)
                 .then(
                     function (response) {
                         deferred.resolve(response.data);

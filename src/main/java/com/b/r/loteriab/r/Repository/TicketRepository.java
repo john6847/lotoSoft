@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
@@ -27,5 +28,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("SELECT max(t.sequence) FROM Ticket t where t.enterprise = :enterprise")
     int selectMaxSequence(@Param("enterprise")Enterprise enterprise);
+
+    List<Ticket> findAllByWonTrueAndEnterpriseIdAndEmissionDateAndShiftId(Long enterpriseId, Date emissionDate, Long shiftId);
 
 }

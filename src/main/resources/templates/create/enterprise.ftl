@@ -103,7 +103,7 @@
                                         <div class="form-group funkyradio">
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-warning">
                                                 <input type="checkbox" name="superAdmin" id="superAdmin" checked/>
-                                                <label for="admin">SUPERADMIN</label>
+                                                <label for="superAdmin">SUPERADMIN</label>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-warning">
                                                 <input type="checkbox" name="admin" id="admin" checked/>
@@ -191,8 +191,18 @@
                                                        name="country"
                                                        placeholder="Antre non peyi a"
                                                        id="country"
-                                                       maxlength="100"
-                                                       required>
+                                                       maxlength="100">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Depatman</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text"
+                                                       class="form-control round-input"
+                                                       name="region"
+                                                       id="region"
+                                                       placeholder="Antre non depatman an"
+                                                       maxlength="100">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -203,8 +213,7 @@
                                                        name="city"
                                                        id="city"
                                                        placeholder="Antre non vil la"
-                                                       maxlength="100"
-                                                       required>
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -216,8 +225,7 @@
                                                        name="sector"
                                                        id="sector"
                                                        placeholder="Antre non sektè a"
-                                                       maxlength="100"
-                                                       required>
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -229,8 +237,7 @@
                                                        name="street"
                                                        id="street"
                                                        placeholder="Antre non rout la"
-                                                       maxlength="100"
-                                                       required>
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -242,8 +249,7 @@
                                                        name="number"
                                                        id="number"
                                                        placeholder="Antre non rout la"
-                                                       maxlength="100"
-                                                       required>
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -255,8 +261,7 @@
                                                        name="phone"
                                                        id="phone"
                                                        placeholder="Antre nimewo telefòn gwoup"
-                                                       maxlength="30"
-                                                       required>
+                                                       maxlength="30">
                                             </div>
                                         </div>
 
@@ -268,8 +273,7 @@
                                                        name="email"
                                                        id="email"
                                                        placeholder="Antre imel la"
-                                                       maxlength="30"
-                                                       required>
+                                                       maxlength="30">
                                             </div>
                                         </div>
 

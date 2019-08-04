@@ -82,6 +82,8 @@ public class InitServices {
                             combinationType.setPayedPriceSecondDraw(20);
                             combinationType.setPayedPriceThirdDraw(10);
                             combinationType.setPayedPrice(0);
+                            combinationType.setCreationDate(new Date());
+                            combinationType.setModificationDate(new Date());
                         } else {
                             continue;
                         }
@@ -92,6 +94,8 @@ public class InitServices {
                             combinationType.setPayedPriceFirstDraw(0);
                             combinationType.setPayedPriceSecondDraw(0);
                             combinationType.setPayedPriceThirdDraw(0);
+                            combinationType.setCreationDate(new Date());
+                            combinationType.setModificationDate(new Date());
                         }else {
                             continue;
                         }
@@ -101,6 +105,8 @@ public class InitServices {
                             combinationType.setPayedPriceFirstDraw(0);
                             combinationType.setPayedPriceSecondDraw(0);
                             combinationType.setPayedPriceThirdDraw(0);
+                            combinationType.setCreationDate(new Date());
+                            combinationType.setModificationDate(new Date());
                         }else {
                             continue;
                         }
@@ -110,6 +116,8 @@ public class InitServices {
                             combinationType.setPayedPriceFirstDraw(0);
                             combinationType.setPayedPriceSecondDraw(0);
                             combinationType.setPayedPriceThirdDraw(0);
+                            combinationType.setCreationDate(new Date());
+                            combinationType.setModificationDate(new Date());
                         }else {
                             continue;
                         }
@@ -119,6 +127,8 @@ public class InitServices {
                             combinationType.setPayedPriceFirstDraw(0);
                             combinationType.setPayedPriceSecondDraw(0);
                             combinationType.setPayedPriceThirdDraw(0);
+                            combinationType.setCreationDate(new Date());
+                            combinationType.setModificationDate(new Date());
                         }else {
                             continue;
                         }
@@ -383,7 +393,7 @@ public class InitServices {
             if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
                 combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat()+"x"+ Lists.get(0).get(Integer.parseInt(cur[1])).getNumberInStringFormat());
             } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name()) || combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())){
-                combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat()+" "+ Lists.get(0).get(Integer.parseInt(cur[1])));
+                combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat()+" "+ Lists.get(0).get(Integer.parseInt(cur[1])).getNumberInStringFormat());
             }
             combination.setSequence((sequence + 1));
             combinationRepository.save(combination);

@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Repository;
 
+import com.b.r.loteriab.r.Model.Bank;
 import com.b.r.loteriab.r.Model.Pos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,4 +36,19 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
     String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s) and p.enterprise_id=?2 and p.enabled =?1";
     @Query(value = q1, nativeQuery = true)
     List<Pos> selectAllFreeAndEnabledPosByEnterpriseId(boolean enabled, Long enterpriseId);
+
+    String q2 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b) and p.enterprise_id=?2 and p.enabled =?1";
+    @Query(value = q2, nativeQuery = true)
+    List<Pos> selectAllFreeAndEnabledPosForBankByEnterpriseId(boolean enabled, Long enterpriseId);
+
+
+    String q3 = "Select p.ID, p.DESCRIPTION from seller s right join pos p on p.id = s.POS_ID where s.id = ?1 and s.enterprise_id=?2 and s.enabled =?3";
+    @Query(value = q3, nativeQuery = true)
+    List<Pos> selectPosRealtedToSeller(Long sellerId, Long enterpriseId, boolean enabled);
+
+    String q4 ="SELECT p.ID, p.DESCRIPTION FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel) and s.enterprise_id=?2 and s.enabled =?1";
+    @Query(value = q4, nativeQuery = true)
+    List<Pos> selectAllPosFreeFromBankAndByEnterpriseId(boolean enabled, Long enterpriseId);
+
+
 }

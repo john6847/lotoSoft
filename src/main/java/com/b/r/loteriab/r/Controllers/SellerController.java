@@ -47,6 +47,8 @@ public class SellerController {
     @Autowired
     private GroupsRepository groupsRepository;
 
+    @Autowired
+    private EnterpriseService enterpriseService;
 
     @GetMapping("")
     public String index(Model model,  HttpServletRequest request) {
@@ -106,6 +108,7 @@ public class SellerController {
                 users.setUsername(username);
                 users.setPassword(bCryptPasswordEncoder.encode(password));
                 users.setEnabled(true);
+                users.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
                 Role role = roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SELLER.name(), enterprise.getId());
                 List<Role> rols = new ArrayList<>();
                 rols.add(role);

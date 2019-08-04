@@ -33,7 +33,7 @@ public class ApiService {
     public Sale mapSale(SaleViewModel vm,Shift shift) {
         Sale sale = new Sale();
         sale.setSaleDetails(new ArrayList<>());
-        sale.setEnabled(true);
+        sale.setEnabled(false);
         sale.setShift(shift);
         sale.setDate(new Date());
         sale.setSaleStatus(SaleSatus.SAVING.ordinal());
@@ -46,6 +46,7 @@ public class ApiService {
             saleDetail.setCombination(combination);
             saleDetail.setEnterprise(enterprise);
             saleDetail.setPrice(saleDetailVM.getPrice());
+            saleDetail.setWon(false);
             sale.getSaleDetails().add(saleDetail);
         }
         sale.setPos(posRepository.findPosByIdAndEnterpriseId(vm.getPos().getId(), enterprise.getId()));
@@ -56,6 +57,9 @@ public class ApiService {
         ticket.setEmissionDate(new Date());
         ticket.setEnterprise(enterprise);
         ticket.setCompleted(false);
+        ticket.setWon(false);
+        ticket.setShift(shift);
+        ticket.setAmountWon(0);
         Pair<String, Long> ticketSerial = helper.createNewTicketSerial(enterprise);
         ticket.setSerial(ticketSerial.getValue0());
         ticket.setSequence(ticketSerial.getValue1());

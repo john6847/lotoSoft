@@ -206,7 +206,7 @@ public class RestApiController {
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}/",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> completeSale(@RequestHeader("token") String token,@PathVariable("enterpriseId")Long enterpriseId, @PathVariable("id")Long ticketId){
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()){

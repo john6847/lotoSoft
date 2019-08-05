@@ -1,6 +1,9 @@
 #New route
 - http://178.128.148.98:3200/home
 
+# Quick Run
+- http://appsdeveloperblog.com/run-spring-boot-app-from-a-command-line/
+
 # lotoSoft
 - git pull
 - mvn compile

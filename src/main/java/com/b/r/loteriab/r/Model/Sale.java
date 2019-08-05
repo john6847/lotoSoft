@@ -15,11 +15,14 @@ public class Sale implements Serializable{
     private Long id;
     @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
-    private Shift shift; // tanda
+    private Shift shift;
     private Date date;
     private int saleStatus;
     private double totalAmount;
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "sale", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "sale", orphanRemoval = true)
+    @JoinTable(name = "sale_Sale_details",
+    joinColumns = {@JoinColumn(name = "sale_id",referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "saleDetails_id",referencedColumnName = "id")})
     private List<SaleDetail> saleDetails;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pos_id")

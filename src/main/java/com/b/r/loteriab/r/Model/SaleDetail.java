@@ -17,6 +17,9 @@ public class SaleDetail implements Serializable{
     @JoinColumn(name = "combination_id")
     private Combination combination;
     @ManyToOne
+    @JoinTable(name = "sale_Sale_details",
+            joinColumns = {@JoinColumn(name = "saleDetails_id",referencedColumnName = "id",insertable = false,updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "sale_id",referencedColumnName = "id",insertable = false,updatable = false)})
     private Sale sale;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")

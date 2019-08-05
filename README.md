@@ -3,6 +3,8 @@
 
 # Quick Run
 - http://appsdeveloperblog.com/run-spring-boot-app-from-a-command-line/
+- mvn spring-boot:run
+
 
 # lotoSoft
 - git pull

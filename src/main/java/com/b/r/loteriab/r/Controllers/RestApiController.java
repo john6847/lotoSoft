@@ -72,7 +72,8 @@ public class RestApiController {
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm){
         SampleResponse sampleResponse = new SampleResponse();
         System.out.println(vm.toString());
-        Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseId(vm.getSerial(), true, vm.getEnterprise().getId());
+        Enterprise enterprise = enterpriseRepository.findEnterpriseByName(vm.getEnterpriseName());
+        Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseId(vm.getSerial(), true, enterprise.getId());
         if (pos == null) {
             System.out.println("Pos null");
             sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
@@ -90,7 +91,7 @@ public class RestApiController {
 //            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
 //        }
 
-        Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(), vm.getEnterprise().getId());
+        Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(),enterprise.getId());
         if (vm.getUsername().isEmpty() || vm.getPassword().isEmpty()) {
             sampleResponse.setMessage("Itilizatè oubyen modpas la pa bon");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
@@ -101,7 +102,7 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
         
-        Seller seller = sellerRepository.findByUserIdAndEnterpriseId(user.getId(), vm.getEnterprise().getId());
+        Seller seller = sellerRepository.findByUserIdAndEnterpriseId(user.getId(), enterprise.getId());
         if (seller == null) {
             sampleResponse.setMessage("Vandè sa pa egziste");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
@@ -123,9 +124,9 @@ public class RestApiController {
         sampleResponse.getBody().put("token",user.getToken());
         sampleResponse.getBody().put("pos", pos);
         sampleResponse.getBody().put("seller", seller);
-        sampleResponse.getBody().put("shifts", shiftRepository.findAllByEnterpriseId(vm.getEnterprise().getId()));
-        sampleResponse.getBody().put("CombinationTypes", combinationTypeRepository.findAllByEnterpriseId(vm.getEnterprise().getId()));
-        sampleResponse.getBody().put("combination", combinationRepository.findAllByEnabledAndEnterpriseId(false, vm.getEnterprise().getId()));
+        sampleResponse.getBody().put("shifts", shiftRepository.findAllByEnterpriseId(enterprise.getId()));
+        sampleResponse.getBody().put("CombinationTypes", combinationTypeRepository.findAllByEnterpriseId(enterprise.getId()));
+        sampleResponse.getBody().put("combination", combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId()));
 
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }

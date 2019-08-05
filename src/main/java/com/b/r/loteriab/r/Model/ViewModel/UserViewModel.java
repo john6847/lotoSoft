@@ -8,6 +8,6 @@ public class UserViewModel {
     private String username;
     private String password;
     private String serial;
-    private Enterprise enterprise;
+    private String enterpriseName;
     private String role;
 }

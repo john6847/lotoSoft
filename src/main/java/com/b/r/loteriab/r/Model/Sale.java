@@ -19,7 +19,7 @@ public class Sale implements Serializable{
     private Date date;
     private int saleStatus;
     private double totalAmount;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "sale", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinTable(name = "sale_Sale_details",
     joinColumns = {@JoinColumn(name = "sale_id",referencedColumnName = "id")},
     inverseJoinColumns = {@JoinColumn(name = "saleDetails_id",referencedColumnName = "id")})

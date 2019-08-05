@@ -1,3 +1,6 @@
+#New route
+- http://178.128.148.98:3200/home
+
 # lotoSoft
 - git pull
 - mvn compile

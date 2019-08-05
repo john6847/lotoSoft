@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['$http', 'BankService', '$scope', 'DTOptionsBuilder', function ($http, BankService, $scope, DTOptionsBuilder) {
+app.controller("bankController", ['$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function ($http, BankService, PosService, $scope, DTOptionsBuilder) {
     $scope.banks = [];
     $scope.pos = [];
     $scope.serial = '';
@@ -82,12 +82,13 @@ app.controller("bankController", ['$http', 'BankService', '$scope', 'DTOptionsBu
 
     $scope.sellerChange = function (){
         if ($scope.selectedSeller){
+            console.log($scope.selectedSeller)
             fetchPos($scope.selectedSeller);
         }
     };
 
     function fetchPos(selectedSeller) {
-        PosService.fetchPosBySeller(selectedSeller.id)
+        PosService.fetchPosBySeller(selectedSeller)
             .then(
                 function (d) {
                     if (d === null || d === undefined)

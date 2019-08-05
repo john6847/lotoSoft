@@ -42,9 +42,10 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
     List<Pos> selectAllFreeAndEnabledPosForBankByEnterpriseId(boolean enabled, Long enterpriseId);
 
 
-    String q3 = "Select p.ID, p.DESCRIPTION from seller s right join pos p on p.id = s.POS_ID where s.id = ?1 and s.enterprise_id=?2 and s.enabled =?3";
+//    String q3 = "Select p.ID, p.DESCRIPTION from seller s right join pos p on p.id = s.POS_ID where s.id = ?1 and s.enterprise_id=?2 and s.enabled =?3";
+    String q3 = "Select p from pos p where not exists( select 1 from seller s where s.pos_id = p.id and s.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?3";
     @Query(value = q3, nativeQuery = true)
-    List<Pos> selectPosRealtedToSeller(Long sellerId, Long enterpriseId, boolean enabled);
+    List<Pos> selectPosRelatedToSeller(Long sellerId, Long enterpriseId, boolean enabled);
 
     String q4 ="SELECT p.ID, p.DESCRIPTION FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b where b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel where sel.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
     @Query(value = q4, nativeQuery = true)

@@ -56,16 +56,19 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Vande<span class="required">*</span></label>
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Vandè<span class="required">*</span></label>
                                             <div class="col-lg-10 col-md-10 col-sm-10">
                                                 <select class="form-control round-input selectpicker"
                                                         name="seller"
                                                         id="seller"
                                                         data-size="5"
+                                                        ng-model="selectedSeller"
+                                                        ng-change="sellerChange()"
                                                         data-none-selected-text="Chwazi Vande a"
                                                         data-allow-clear="true"
                                                         data-none-results-text="Vande sa pa egziste"
                                                         data-placeholder="Chwazi vande la">
+                                                    <option value="" selected disabled>---Chwazi yon  vandè---</option>
                                                     <#if sellers??>
                                                         <#list sellers as seller>
                                                             <option value="${seller.id}">${seller.user.name}</option>
@@ -75,7 +78,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" ng-if="selectedSeller">
                                             <label class="col-lg-2 col-md-2 col-sm-2 control-label">Machin</label>
                                             <div class="col-lg-10   col-md-10 col-sm-10">
                                                 <select class="form-control round-input"
@@ -129,8 +132,7 @@
                                                        name="city"
                                                        id="city"
                                                        placeholder="Antre non vil la"
-                                                       maxlength="100"
-                                                       >
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -142,8 +144,7 @@
                                                        name="sector"
                                                        id="sector"
                                                        placeholder="Antre non sektè a"
-                                                       maxlength="100"
-                                                       >
+                                                       maxlength="100" >
                                             </div>
                                         </div>
 
@@ -155,8 +156,7 @@
                                                        name="street"
                                                        id="street"
                                                        placeholder="Antre non rout la"
-                                                       maxlength="100"
-                                                       >
+                                                       maxlength="100" >
                                             </div>
                                         </div>
 

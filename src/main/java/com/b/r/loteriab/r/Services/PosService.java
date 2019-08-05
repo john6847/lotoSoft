@@ -121,7 +121,7 @@ public class PosService {
     }
 
     public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId){
-        List<Pos> pos = posRepository.selectPosRealtedToSeller(sellerId, enterpriseId, true);
+        List<Pos> pos = posRepository.selectPosRelatedToSeller(sellerId, enterpriseId, true);
 
         if (pos == null){
             pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);

@@ -70,7 +70,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
         "                              WHERE n.NUMBER_IN_STRING_FORMAT IN (?1)\n" +
         "                                AND NOT EXISTS\n" +
         "                                  (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn\n" +
-        "                                   WHERE cn.COMBINATION_ID = c.id\n" +
+        "                                   WHERE cn.COMBINATION_ID = c.id AND cn.enterprise_id=?5 \n" +
         "                                     AND cn.NUMBER_TWO_DIGITS_ID = n.id))\n" +
         "                                       AND p.name = ?4 AND c.enterprise_id=?5 ORDER BY c.sequence LIMIT ?3";
 
@@ -94,7 +94,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "                  WHERE n.NUMBER_IN_STRING_FORMAT IN (?1, ?2) " +
             "                    AND NOT EXISTS " +
             "                      (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn " +
-            "                       WHERE cn.COMBINATION_ID = c.id " +
+            "                       WHERE cn.COMBINATION_ID = c.id AND cn.enterprise_id=?5 " +
             "                         AND cn.NUMBER_TWO_DIGITS_ID = n.id)) " +
             "                           AND p.name =?4 AND c.enterpriseId=?5 ORDER BY c.sequence LIMIT ?3";
 
@@ -118,7 +118,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "                  WHERE n.NUMBER_IN_STRING_FORMAT IN (?1, ?2) " +
             "                    AND NOT EXISTS " +
             "                      (SELECT * FROM COMBINATION_NUMBER_TWO_DIGITS cn " +
-            "                       WHERE cn.COMBINATION_ID = c.id " +
+            "                       WHERE cn.COMBINATION_ID = c.id AND cn.enterprise_id=?6 " +
             "                         AND cn.NUMBER_TWO_DIGITS_ID = n.id)) " +
             "                           AND (p.name =?4 OR p.name = ?5) AND c.enterprise_id=?6 ORDER BY c.sequence LIMIT ?3 ";
 

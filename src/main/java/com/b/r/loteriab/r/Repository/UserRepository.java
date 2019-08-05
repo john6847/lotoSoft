@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
 
     String q1 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id " +
-            "WHERE u.id NOT IN (SELECT s.user_id FROM Seller s and s.enterprise_id=?3) and r.name = ?1 and u.enabled =?2 and u.enterprise_id=?3";
+            "WHERE u.id NOT IN (SELECT s.user_id FROM Seller s where s.enterprise_id=?3) and r.name = ?1 and u.enabled =?2 and u.enterprise_id=?3";
     @Query(value = q1, nativeQuery = true)
     List<Users> selectUserByNameAndEnabledAndEnterpriseId(String name, boolean enabled, Long enterpriseId);
 

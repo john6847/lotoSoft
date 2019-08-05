@@ -37,7 +37,7 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     @Query(value = q1, nativeQuery = true)
     List<Seller> selectAllSellersByEnterpriseId(boolean enabled,Long enterpriseId);
 
-    String q2 ="SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b and b.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
+    String q2 ="SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b  where b.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
     @Query(value = q2, nativeQuery = true)
     List<Seller> selectAllSellersFreeFromBankByEnterpriseId(boolean enabled, Long enterpriseId);
 }

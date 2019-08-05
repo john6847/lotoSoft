@@ -12,7 +12,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@JsonSerialize(using = SellerSerializer.class)
 public class Seller implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

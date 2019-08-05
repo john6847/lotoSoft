@@ -206,7 +206,7 @@ public class RestApiController {
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}/",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> completeSale(@RequestHeader("token") String token,@PathVariable("enterpriseId")Long enterpriseId, @PathVariable("id")Long ticketId){
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()){
@@ -230,7 +230,7 @@ public class RestApiController {
     // pay ticket
 
 
-    @RequestMapping(value = "/ticket/won/enterprise/{enterpriseId}/seller/{sellerId}",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/ticket/won/enterprise/{enterpriseId}/seller/{sellerId}", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> getWonTicket(@RequestHeader("token") String token,@PathVariable("enterpriseId")Long enterpriseId, @PathVariable("sellerId")Long sellerId) {
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()) {

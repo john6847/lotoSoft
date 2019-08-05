@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Ticket implements Serializable{
     @JoinColumn(name = "shift_id")
     private Shift shift; // tanda
     private Date emissionDate;
+    @JsonIgnore // TODO: Recordar decirle eso a Dany
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;

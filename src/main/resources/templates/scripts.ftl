@@ -19,7 +19,7 @@
 <!-- colorpicker -->
 
 <!-- bootstrap-wysiwyg -->
-<script type="text/javascript" src="/dist/angular-datatable/plugins/jquery-dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/dist/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/js/angular.js"></script>
 <script src="/js/jquery.hotkeys.js"></script>
 <script src="/js/bootstrap-wysiwyg.js"></script>

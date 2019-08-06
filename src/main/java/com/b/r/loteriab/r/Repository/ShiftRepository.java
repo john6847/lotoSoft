@@ -13,6 +13,7 @@ import java.util.List;
 public interface ShiftRepository extends JpaRepository<Shift, Long> {
 
     Shift findShiftByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Shift findShiftByNameAndEnterpriseId(String name, Long enterpriseId);
     List<Shift> findAllByEnterpriseId(Long enterpriseId);
     Shift findShiftByEnabledAndEnterpriseId (boolean state, Long enterpriseId);
 

@@ -25,7 +25,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 //    @Query("SELECT MAX(e.sequence) FROM Sale t")
 //    int selectMaxSequence();
 
-    List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndDateAfter(Long enterpriseId, Long sellerId, Date date);
+    List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(Long enterpriseId, Long sellerId, Long shiftId, Date startDate, Date endDate);
+    List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftId(Long enterpriseId, Long sellerId, Long shifId);
 
     void deleteSaleByTicketIdAndEnterpriseId(Long ticketId, Long enterpriseId);
 }

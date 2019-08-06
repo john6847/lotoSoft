@@ -1,11 +1,13 @@
 package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.ViewModel.*;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Helper;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.WebSocketHandler;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -230,31 +234,6 @@ public class RestApiController {
     // pay ticket
 
 
-    @GetMapping(value = "/ticket/won/enterprise/{enterpriseId}/seller/{sellerId}", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
-    public ResponseEntity<Object> getWonTicket(@RequestHeader("token") String token,@PathVariable("enterpriseId")Long enterpriseId, @PathVariable("sellerId")Long sellerId) {
-        SampleResponse sampleResponse = new SampleResponse();
-        if (token.isEmpty()) {
-            sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
-            return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
-        }
-
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId) == null) {
-            sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
-            return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DATE, -7);
-        Date dateBefore7Days = cal.getTime();
-
-        List<Sale> winningSales =  saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndDateAfter(enterpriseId, sellerId, dateBefore7Days);
-
-        sampleResponse.getBody().put("wonSales", winningSales);
-        return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
-    }
-
-
     // delete wrong ticket after 5 minutes
     @GetMapping(value = "/ticket/delete/enterprise/{enterpriseId}/ticket/{ticketId}", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> deleteTicket (@RequestHeader("token") String token,
@@ -295,7 +274,7 @@ public class RestApiController {
     }
 
 
-    @RequestMapping(value = "/ticket/won",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/ticket/won", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> findWonTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
@@ -309,10 +288,77 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        List<Ticket> tickets = ticketRepository.findAllByWonTrueAndEnterpriseIdAndEmissionDateAndShiftId(vm.getEnterprise().getId(), vm.getEmissionDate(), vm.getShift().getId());
+        if (vm.getShift().getId() > 0 ){
+            Shift shift = shiftRepository.findShiftByIdAndEnterpriseId( vm.getShift().getId(), vm.getEnterprise().getId());
+            String closeDateMaten;
+            String closeDateSoir;
 
-        sampleResponse.getBody().put("tickets", tickets);
+            if (shift.equals(Shifts.Maten.name())){
+                closeDateSoir = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime();
+                Date dateFromStringMaten = new Date();
+                Date dateFromStringSoir = new Date();
+                try {
+                    dateFromStringSoir = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(closeDateSoir);
+                    dateFromStringMaten = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(shift.getCloseTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(dateFromStringSoir, dateFromStringMaten, -1);
+
+                sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+
+                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
+            } else {
+                closeDateMaten = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime();
+                Date dateFromStringMaten = new Date();
+                Date dateFromStringSoir = new Date();
+                try {
+                    dateFromStringMaten = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(closeDateMaten);
+                    dateFromStringSoir = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(shift.getCloseTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(dateFromStringMaten, dateFromStringSoir, 0);
+
+                sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
+            }
+
+        }
+
+        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftId(vm.getEnterprise().getId(),vm.getSeller().getId(), vm.getShift().getId()));
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
+
     //  Amount earned by seller
+    private Pair<Date, Date> getStartDateAndEndDate (Date start, Date end, int dayToSubstract){
+        String timeStart = Helper.getTimeFromDate(start, "12");
+        String hh = timeStart.split(":")[0];
+        String mm = timeStart.split(":")[1];
+        String ss = timeStart.split(":")[2];
+        Calendar calStart = Calendar.getInstance();
+        calStart.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hh));
+        calStart.set(Calendar.MINUTE,Integer.parseInt(mm));
+        calStart.set(Calendar.SECOND,Integer.parseInt(ss));
+        calStart.set(Calendar.MILLISECOND,0);
+        Date startDate = calStart.getTime();
+        if (dayToSubstract < 0){
+            startDate = Helper.addDays(startDate, -1);
+        }
+
+        String timeSoir = Helper.getTimeFromDate(end, "12");
+        hh = timeSoir.split(":")[0];
+        mm = timeSoir.split(":")[1];
+        ss = timeSoir.split(":")[2];
+        Calendar calSoir = Calendar.getInstance();
+        calSoir.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hh));
+        calSoir.set(Calendar.MINUTE,Integer.parseInt(mm));
+        calSoir.set(Calendar.SECOND,Integer.parseInt(ss));
+        calSoir.set(Calendar.MILLISECOND,0);
+        Date endDate = calSoir.getTime();
+
+        return  Pair.with(startDate, endDate);
+    }
 }

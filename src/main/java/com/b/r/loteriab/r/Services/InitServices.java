@@ -195,6 +195,7 @@ public class InitServices {
             for (CombinationTypes combinationTypes: CombinationTypes.values()){
                 Products product = new Products();
                 product.setName(combinationTypes.name());
+                product.setEnabled(true);
                 productRepository.save(product);
             }
         }

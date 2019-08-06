@@ -256,7 +256,7 @@ public class RestApiController {
 
 
     // delete wrong ticket after 5 minutes
-    @RequestMapping(value = "/ticket/delete/enterprise/{enterpriseId}/ticket/{ticketId}",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/ticket/delete/enterprise/{enterpriseId}/ticket/{ticketId}", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> deleteTicket (@RequestHeader("token") String token,
                                                 @PathVariable("enterpriseId")Long enterpriseId,
                                                 @PathVariable("ticketId") Long ticketId) {

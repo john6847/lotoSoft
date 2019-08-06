@@ -235,32 +235,34 @@ public class RestApiController {
 
 
     // delete wrong ticket after 5 minutes
-    @GetMapping(value = "/ticket/delete/enterprise/{enterpriseId}/ticket/{ticketId}", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/ticket/delete/", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> deleteTicket (@RequestHeader("token") String token,
-                                                @PathVariable("enterpriseId")Long enterpriseId,
-                                                @PathVariable("ticketId") Long ticketId) {
+                                                @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId) == null) {
+        if (userRepository.findUsersByTokenAndEnterpriseId(token, vm.getEnterprise().getId()) == null) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        Ticket ticket = ticketRepository.findTicketByIdAndEnterpriseId(ticketId, enterpriseId);
+        Ticket ticket = ticketRepository.findTicketBySerialAndEnterpriseId(vm.getSerial(), vm.getEnterprise().getId());
 
         if (ticket == null){
             sampleResponse.setMessage("Ticket sa pa egziste");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime fiveMinutesBehind = now.minusMinutes(5);
+        Sale sale = saleRepository.findSaleByTicketIdAndEnterpriseIdAndSellerId(ticket.getId(), vm.getEnterprise().getId(), vm.getSeller().getId());
+        if (sale  == null){
+            sampleResponse.setMessage("Ou pa otorize elimine Ticket sa anko");
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
 
-        Duration duration = Duration.between(now, fiveMinutesBehind);
+        Duration duration = Duration.between(LocalDateTime.now(), sale.getDate().toInstant());
         long diff = Math.abs(duration.toMinutes());
 
         if (diff >= 5){
@@ -268,7 +270,7 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
-        saleRepository.deleteSaleByTicketIdAndEnterpriseId(ticketId, enterpriseId);
+        saleRepository.deleteSaleByTicketIdAndEnterpriseId(ticket.getId(), vm.getEnterprise().getId());
 
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
@@ -290,39 +292,18 @@ public class RestApiController {
 
         if (vm.getShift().getId() > 0 ){
             Shift shift = shiftRepository.findShiftByIdAndEnterpriseId( vm.getShift().getId(), vm.getEnterprise().getId());
-            String closeDateMaten;
-            String closeDateSoir;
-
             if (shift.equals(Shifts.Maten.name())){
-                closeDateSoir = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime();
-                Date dateFromStringMaten = new Date();
-                Date dateFromStringSoir = new Date();
-                try {
-                    dateFromStringSoir = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(closeDateSoir);
-                    dateFromStringMaten = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(shift.getCloseTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(dateFromStringSoir, dateFromStringMaten, -1);
+                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(shift.getCloseTime(), shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime(), vm.getEmissionDate(), -1);
 
                 sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
 
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             } else {
-                closeDateMaten = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime();
-                Date dateFromStringMaten = new Date();
-                Date dateFromStringSoir = new Date();
-                try {
-                    dateFromStringMaten = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(closeDateMaten);
-                    dateFromStringSoir = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(shift.getCloseTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(dateFromStringMaten, dateFromStringSoir, 0);
+                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(), vm.getEmissionDate(), 0);
 
                 sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             }
 
@@ -333,32 +314,27 @@ public class RestApiController {
     }
 
     //  Amount earned by seller
-    private Pair<Date, Date> getStartDateAndEndDate (Date start, Date end, int dayToSubstract){
-        String timeStart = Helper.getTimeFromDate(start, "12");
-        String hh = timeStart.split(":")[0];
-        String mm = timeStart.split(":")[1];
-        String ss = timeStart.split(":")[2];
-        Calendar calStart = Calendar.getInstance();
-        calStart.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hh));
-        calStart.set(Calendar.MINUTE,Integer.parseInt(mm));
-        calStart.set(Calendar.SECOND,Integer.parseInt(ss));
-        calStart.set(Calendar.MILLISECOND,0);
-        Date startDate = calStart.getTime();
-        if (dayToSubstract < 0){
-            startDate = Helper.addDays(startDate, -1);
+
+
+    private Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind,  int dayToSubstract){
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+        try {
+            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(start );
+            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        String timeSoir = Helper.getTimeFromDate(end, "12");
-        hh = timeSoir.split(":")[0];
-        mm = timeSoir.split(":")[1];
-        ss = timeSoir.split(":")[2];
-        Calendar calSoir = Calendar.getInstance();
-        calSoir.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hh));
-        calSoir.set(Calendar.MINUTE,Integer.parseInt(mm));
-        calSoir.set(Calendar.SECOND,Integer.parseInt(ss));
-        calSoir.set(Calendar.MILLISECOND,0);
-        Date endDate = calSoir.getTime();
+        String [] timeStart = Helper.getTimeFromDate(startDate, "12").split(":");
+        Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
+        if (dayToSubstract < 0){
+            resultStartDate = Helper.addDays(resultStartDate, -1);
+        }
+        String [] timeEnd = Helper.getTimeFromDate(endDate, "12").split(":");
+        Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
 
-        return  Pair.with(startDate, endDate);
+        return  Pair.with(resultStartDate, resultEndDate);
     }
 }

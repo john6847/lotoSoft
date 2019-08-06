@@ -15,6 +15,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     Sale findSaleByIdAndEnterpriseId(Long id, Long enterpriseId);
     Sale findSaleByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
     Sale findSaleByTicketIdAndEnterpriseId(Long ticketId, Long enterpriseId);
+    Sale findSaleByTicketIdAndEnterpriseIdAndSellerId(Long ticketId, Long enterpriseId, Long sellerId);
 
     List<Sale> findAllByEnterpriseId(Long enterpriseId);
     List<Sale> findAllByEnterpriseIdAndDateAndShiftId(Long enterpriseId, Date date, Long shiftId);

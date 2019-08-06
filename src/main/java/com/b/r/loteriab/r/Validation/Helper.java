@@ -50,4 +50,14 @@ public class Helper {
         cal.add(Calendar.DATE, numberDays);
         return cal.getTime();
     }
+
+    public static Date setTimeToDate(Date date, String []time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(time[0]));
+        cal.set(Calendar.MINUTE,Integer.parseInt(time[1]));
+        cal.set(Calendar.SECOND,Integer.parseInt(time[2]));
+        cal.set(Calendar.MILLISECOND,0);
+        return cal.getTime();
+    }
 }

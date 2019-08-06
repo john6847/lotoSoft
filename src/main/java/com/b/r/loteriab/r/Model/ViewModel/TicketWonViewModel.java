@@ -13,4 +13,5 @@ public class TicketWonViewModel {
     private Date emissionDate;
     private Shift shift;
     private Seller seller;
+    private String serial;
 }

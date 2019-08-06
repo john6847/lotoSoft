@@ -16,6 +16,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Ticket save(Ticket ticket);
 
     Ticket findTicketByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Ticket findTicketBySerialAndEnterpriseId(String serial, Long enterpriseId);
     Ticket findTicketByIdAndEnabledAndEnterpriseId(Long id,boolean enabled, Long enterpriseId);
 
     Ticket findBySerialAndEnterpriseId(String name, Long enterpriseId);

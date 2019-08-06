@@ -30,6 +30,9 @@ public class Helper {
     }
 
     public  static String getTimeFromDate(Date date, String shift){
+        if (date == null){
+            return "";
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat format;
@@ -39,5 +42,12 @@ public class Helper {
             format = new SimpleDateFormat("HH:mm:ss");
         }
         return format.format(calendar.getTime());
+    }
+
+    public static Date addDays(Date date, int numberDays) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, numberDays);
+        return cal.getTime();
     }
 }

@@ -235,7 +235,7 @@ public class RestApiController {
 
 
     // delete wrong ticket after 5 minutes
-    @GetMapping(value = "/ticket/delete/", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @PostMapping(value = "/ticket/delete/", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> deleteTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
@@ -313,7 +313,7 @@ public class RestApiController {
 
         }
 
-        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftId(vm.getEnterprise().getId(),vm.getSeller().getId(), vm.getShift().getId()));
+        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(vm.getEnterprise().getId(),vm.getSeller().getId()));
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 

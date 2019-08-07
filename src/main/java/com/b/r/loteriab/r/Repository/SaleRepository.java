@@ -31,7 +31,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 //    int selectMaxSequence();
 
     List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(Long enterpriseId, Long sellerId, Long shiftId, Date startDate, Date endDate);
-    List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftId(Long enterpriseId, Long sellerId, Long shifId);
+    List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(Long enterpriseId, Long sellerId);
 
     void deleteSaleByTicketIdAndEnterpriseId(Long ticketId, Long enterpriseId);
 

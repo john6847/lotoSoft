@@ -13,6 +13,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableScheduling
 @EntityScan(basePackages = "com.b.r.loteriab.r")
@@ -25,4 +28,10 @@ public class Application {
 		initServices.init();
 	}
 
+	@PostConstruct
+	public void init(){
+		// Setting Spring Boot SetTimeZone
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Port-au-Prince"));
+	}
+//	https://www.codota.com/code/java/methods/java.util.TimeZone/setDefault
 }

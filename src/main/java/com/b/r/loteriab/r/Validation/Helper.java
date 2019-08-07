@@ -59,17 +59,17 @@ public class Helper {
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(time[0]));
         cal.set(Calendar.MINUTE,Integer.parseInt(time[1]));
-        cal.set(Calendar.SECOND,Integer.parseInt(time[2]));
+        cal.set(Calendar.SECOND,Integer.parseInt("00"));
         cal.set(Calendar.MILLISECOND,0);
         return cal.getTime();
     }
-    public static Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind, int dayToSubstract){
+    public static Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind, int dayToSubstract, String format){
 
         Date startDate = new Date();
         Date endDate = new Date();
         try {
-            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(start );
-            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(end);
+            startDate = new SimpleDateFormat(format).parse(start);
+            endDate = new SimpleDateFormat(format).parse(end);
         } catch (ParseException e) {
             e.printStackTrace();
         }

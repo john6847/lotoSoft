@@ -294,13 +294,17 @@ public class RestApiController {
             Shift shift = shiftRepository.findShiftByIdAndEnterpriseId( vm.getShift().getId(), vm.getEnterprise().getId());
             if (shift.equals(Shifts.Maten.name())){
 
-                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(shift.getCloseTime(), shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime(), vm.getEmissionDate(), -1);
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(
+                        shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(),
+                        vm.getEmissionDate(), -1, "dd/MM/yyyy, HH:mm:ss a");
 
-                sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+                sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
+                        vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
 
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             } else {
-                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(), vm.getEmissionDate(), 0);
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(
+                        shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(), vm.getEmissionDate(), 0, "dd/MM/yyyy, HH:mm:ss a");
 
                 sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
 

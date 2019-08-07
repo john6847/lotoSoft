@@ -1,9 +1,13 @@
 package com.b.r.loteriab.r.Repository;
 
+import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Sale;
+import com.b.r.loteriab.r.Model.Shift;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -30,4 +34,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftId(Long enterpriseId, Long sellerId, Long shifId);
 
     void deleteSaleByTicketIdAndEnterpriseId(Long ticketId, Long enterpriseId);
+
+    @Query(value = "select * from sale s where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date >= ?3 and s.date <= ?4", nativeQuery = true)
+    List<Sale> selectAllSale(Long enterpriseId, Long shiftId, Date startDate, Date endDate); // TODO: Check query
 }

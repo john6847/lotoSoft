@@ -2,10 +2,13 @@ package com.b.r.loteriab.r.Services;
 
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
+import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.Interaces.CombinationViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.DrawViewModel;
 import com.b.r.loteriab.r.Repository.DrawRepository;
 import com.b.r.loteriab.r.Repository.SaleRepository;
+import com.b.r.loteriab.r.Repository.ShiftRepository;
+import com.b.r.loteriab.r.Validation.Helper;
 import com.b.r.loteriab.r.Validation.Result;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ public class DrawService {
 
     @Autowired
     private SaleRepository saleRepository;
+
+    @Autowired
+    private ShiftRepository shiftRepository;
 
     public Result saveDraw (Draw draw, Enterprise enterprise){
         Result result = validateModel(draw);
@@ -223,8 +229,7 @@ public class DrawService {
      }
 
      private Draw determineAmountForSoldTicket(Draw draw){
-         List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
-
+         List<Sale> sales =  getSales(draw);
          for (Sale sale: sales){
              draw.setAmountSold(draw.getAmountSold()+sale.getTotalAmount());
          }
@@ -232,8 +237,7 @@ public class DrawService {
      }
 
     private Draw determineAmountWonForSoldTicket(Draw draw){
-        List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
-
+        List<Sale> sales =  getSales(draw);
         for (Sale sale: sales){
             if (sale.getTicket().isWon()){
                 draw.setAmountSold(draw.getAmountLost()+ sale.getTicket().getAmountWon());
@@ -243,7 +247,7 @@ public class DrawService {
     }
      public void determineWonTicket(Draw draw, boolean updating){
         List<CombinationType> combinationTypes = combinationTypeService.findallByEnterpriseId(draw.getEnterprise().getId());
-        List<Sale> sales = saleRepository.findAllByEnterpriseIdAndDateAndShiftId(draw.getEnterprise().getId(), draw.getCreationDate(), draw.getShift().getId());
+         List<Sale> sales =  getSales(draw);
 
         if(!sales.isEmpty()) {
             List<DrawViewModel> drawViewModels = generateCombination(combinationTypes, draw);
@@ -373,5 +377,19 @@ public class DrawService {
             }
         }
         return  drawViewModel;
+     }
+
+     private  List<Sale> getSales(Draw draw) {
+         Pair<Date, Date> startAndEndDate;
+         if (draw.getShift().getName().equals(Shifts.Maten.name())){
+             startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), draw.getEnterprise().getId()).getCloseTime(),
+                     draw.getShift().getCloseTime(), draw.getDrawDate(), -1, "dd/MM/yyyy, HH:mm:ss");
+
+         } else {
+             startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), draw.getEnterprise().getId()).getCloseTime(),
+                     draw.getShift().getCloseTime(), draw.getDrawDate(), 0, "dd/MM/yyyy, HH:mm:ss");
+         }
+         return saleRepository.selectAllSale(draw.getEnterprise().getId(), draw.getShift().getId() ,startAndEndDate.getValue0() , startAndEndDate.getValue1());
+
      }
 }

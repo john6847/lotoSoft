@@ -1,7 +1,10 @@
 package com.b.r.loteriab.r.Validation;
 
+import org.javatuples.Pair;
+
 import java.security.SecureRandom;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,5 +62,26 @@ public class Helper {
         cal.set(Calendar.SECOND,Integer.parseInt(time[2]));
         cal.set(Calendar.MILLISECOND,0);
         return cal.getTime();
+    }
+    public static Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind, int dayToSubstract){
+
+        Date startDate = new Date();
+        Date endDate = new Date();
+        try {
+            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(start );
+            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String [] timeStart = Helper.getTimeFromDate(startDate, "12").split(":");
+        Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
+        if (dayToSubstract < 0){
+            resultStartDate = Helper.addDays(resultStartDate, -1);
+        }
+        String [] timeEnd = Helper.getTimeFromDate(endDate, "12").split(":");
+        Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
+
+        return  Pair.with(resultStartDate, resultEndDate);
     }
 }

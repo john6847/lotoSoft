@@ -276,7 +276,7 @@ public class RestApiController {
     }
 
 
-    @GetMapping(value = "/ticket/won", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @PostMapping(value = "/ticket/won",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> findWonTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
@@ -294,13 +294,13 @@ public class RestApiController {
             Shift shift = shiftRepository.findShiftByIdAndEnterpriseId( vm.getShift().getId(), vm.getEnterprise().getId());
             if (shift.equals(Shifts.Maten.name())){
 
-                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(shift.getCloseTime(), shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime(), vm.getEmissionDate(), -1);
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(shift.getCloseTime(), shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), vm.getEnterprise().getId()).getCloseTime(), vm.getEmissionDate(), -1);
 
                 sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
 
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             } else {
-                Pair<Date, Date> startAndEndDate = getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(), vm.getEmissionDate(), 0);
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId()).getCloseTime(), shift.getCloseTime(), vm.getEmissionDate(), 0);
 
                 sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
 
@@ -316,25 +316,5 @@ public class RestApiController {
     //  Amount earned by seller
 
 
-    private Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind,  int dayToSubstract){
 
-        Date startDate = new Date();
-        Date endDate = new Date();
-        try {
-            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(start );
-            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(end);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String [] timeStart = Helper.getTimeFromDate(startDate, "12").split(":");
-        Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
-        if (dayToSubstract < 0){
-            resultStartDate = Helper.addDays(resultStartDate, -1);
-        }
-        String [] timeEnd = Helper.getTimeFromDate(endDate, "12").split(":");
-        Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
-
-        return  Pair.with(resultStartDate, resultEndDate);
-    }
 }

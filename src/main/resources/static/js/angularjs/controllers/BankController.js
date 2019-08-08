@@ -22,6 +22,7 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

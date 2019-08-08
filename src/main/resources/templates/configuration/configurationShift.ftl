@@ -146,7 +146,6 @@
 <#include "../scripts.ftl">
 <script type = "text/javascript" >
     $('.selectpicker').selectpicker();
-    });
 </script>
 
 <script type="text/javascript">

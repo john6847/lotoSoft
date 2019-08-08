@@ -20,6 +20,7 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

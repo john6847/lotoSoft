@@ -33,21 +33,16 @@ public class PosService {
         if (pos.getDescription().isEmpty()){
             result.add("Deskripsyon an pa ka vid", "macAddress");
         }
-
-        if (pos.getMacAddress().isEmpty()){
-            result.add("MacAddress la pa ka vid", "macAddress");
+        if (posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), pos.getEnterprise().getId())!= null){
+            result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
         }
 
         if (pos.getSerial().isEmpty()){
-            result.add("Serial la pa ka vid", "serial");
-        }
-
-        if (posRepository.findByMacAddressAndEnterpriseId(pos.getMacAddress(), pos.getEnterprise().getId())!= null){
-            result.add("Mac Address la egziste deja", "macAddress");
+            result.add("Nimewo seri la pa ka vid", "serial");
         }
 
         if (posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId())!= null){
-            result.add("Serial la egziste deja pou yon lot machin", "serial");
+            result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
         }
 
         return result;
@@ -65,7 +60,7 @@ public class PosService {
             pos.setEnabled(true);
             posRepository.save(pos);
         }catch (Exception ex){
-            result.add("Pos la pa ka aktyalize reeseye ankò");
+            result.add("Machin sa pa ka anrejistre, reeseye ankò");
         }
         return  result;
     }
@@ -79,18 +74,13 @@ public class PosService {
         Pos currentPos = posRepository.findPosByIdAndEnterpriseId(pos.getId(), enterprise.getId());
         currentPos.setDescription(pos.getDescription());
         currentPos.setModificationDate(new Date());
-        currentPos.setMacAddress(pos.getMacAddress());
         currentPos.setSerial(pos.getSerial());
         try {
             posRepository.save(currentPos);
         }catch (Exception ex){
-            result.add("Pos la pa ka aktyalize reeseye ankò");
+            result.add("machin sa pa ka aktyalize, reeseye ankò");
         }
         return  result;
-    }
-
-    public void deletePosId(Long id, Long enterpriseId){
-        posRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
     }
 
     public ArrayList<Pos> findAllPos(Long enterpriseId){
@@ -140,13 +130,13 @@ public class PosService {
         Result result = new Result();
         Pos pos = posRepository.findPosByIdAndEnterpriseId(id, enterpriseId);
         if(pos == null) {
-            result.add("Machin sa ou bezwen elimine a pa egziste");
+            result.add("Machin sa ou bezwen elimine a, pa egziste");
             return result;
         }
         try{
             posRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
         }catch (Exception ex){
-            result.add("Machin la pa ka elimine reeseye ankò");
+            result.add("Machin lan pa ka elimine, reeseye ankò");
         }
         return result;
     }

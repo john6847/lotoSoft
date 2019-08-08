@@ -74,7 +74,7 @@
                                                class="table table-striped table-advance table-hover">
                                            <thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th style="width: 10%">#</th>
                                                     <th style="width:15%">Deskripsyon</th>
                                                     <th style="width:15%">Serial</th>
                                                     <th style="width:15%">Dat Kreyasyon</th>
@@ -113,12 +113,12 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Desktipsyon</th>
-                                                    <th>Serial</th>
-                                                    <th>Dat Kreyasyon</th>
-                                                    <th>Actif</th>
-                                                    <th>Bloke</th>
+                                                    <th style="width: 10%">#</th>
+                                                    <th style="width:15%">Deskripsyon</th>
+                                                    <th style="width:15%">Serial</th>
+                                                    <th style="width:15%">Dat Kreyasyon</th>
+                                                    <th style="width:15%; text-align: center">Actif</th>
+                                                    <th style="width:15%; text-align: center">Bloke</th>
                                                     <th style="width:5%"></th>
                                                     <th style="width:5%"></th>
                                                     <th style="width:5%"></th>
@@ -136,9 +136,9 @@
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Machin
                                     </a>
                                 </div>
-                                <div class="col-md-6"><p>Content here. <button type="show-alert btn btn-primary" onclick="onDelete(event)"  >Alert!</button></p></div>
                             </div>
                         </footer>
+                    </section>
                 </div>
         </section>
     </section>
@@ -155,14 +155,8 @@
     </div>
 </section>
 
-
 <#include "../scripts.ftl">
 <script>
-
-    // var deleteButton = document.getElementById("delete");
-    // deleteButton.addEventListener('click', function (event) {
-    //     event.preventDefault();
-    // });
     var response = false;
     function onDelete (e) {
         if(!response)
@@ -187,8 +181,6 @@
             }
         });
     }
-
-
 </script>
 
 </body>

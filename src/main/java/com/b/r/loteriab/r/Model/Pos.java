@@ -16,7 +16,6 @@ public class Pos implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private String macAddress;
     private String serial;
     private Date creationDate;
     private Date modificationDate;

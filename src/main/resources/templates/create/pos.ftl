@@ -47,22 +47,16 @@
                         <div class="panel-body">
                             <form class="form-horizontal form-validate" action="/pos/create" th:object="${pos}" method="post">
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Mac Address <span class="required">*</span></label>
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span class="required">*</span></label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" id="macAddress" name="macAddress" minlength="10" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Serial <span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" id="serial" name="serial" minlength="10" required>
+                                        <input type="text" class="form-control round-input" placeholder="Antre deskripsyon oubyen yon non pou machin sa" id="description" name="description" minlength="2" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span class="required">*</span></label>
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Nimewo seri <span class="required">*</span></label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" id="description" name="description" minlength="2" required>
+                                        <input type="text" class="form-control round-input" id="serial"  placeholder="Antre yon nimewo seri pou machin sa" name="serial" minlength="4" required>
                                     </div>
                                 </div>
 

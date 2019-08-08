@@ -5,10 +5,9 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
     $scope.pos = [];
     $scope.serial = '';
     $scope.pageno = 1;
-    $scope.totalCount = 0;
     $scope.itemsPerPage = 1000;
     $scope.state = 1;
-
+    // http://blog.ashwani.co.in/new/2015/12/07/How-to-use-Angular-Datatables.html
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDisplayLength(5)
         .withBootstrapOptions(
@@ -21,6 +20,9 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
             }
         )
         .withOption("destroy", true)
+        .withOption('responsive', true)
+        .withOption('scrollX', '100%')
+        .withOption('deferRender', true)
         .withColumnFilter({
             aoColumns: [
                 {
@@ -55,24 +57,9 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
         });
 
 
-
-    $scope.isTrue = function (val) {
-        return val === true
-    };
-
-    $scope.isNull = function (val) {
-        return val === null
-    };
-
-
     fetchAllPos();
 
     $scope.getData = function () {
-        $scope.pos = [];
-        $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
-
-        fetchAllPosSize($scope.state);
-
         fetchAllPosFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 
@@ -80,7 +67,10 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
         PosService.fetchAllPos()
             .then(
                 function (d) {
-                    $scope.pos = d;
+                    if (d === null || d === undefined)
+                        $scope.pos = [];
+                    else
+                        $scope.pos = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -91,23 +81,14 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
         PosService.fetchAllPosFiltered(pageno, itemsPerPage, state)
             .then(
                 function (d) {
-                    $scope.pos = d.content;
+                    if (d === null || d === undefined)
+                        $scope.pos = [];
+                    else
+                        $scope.pos = d.content;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
-
-    function fetchAllPosSize(state) {
-        PosService.fetchAllPosSize(state)
-            .then(
-                function (d) {
-                    $scope.totalCount = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
 
 }]);

@@ -49,30 +49,22 @@
                                   method="post">
                                 <input type="hidden" name="id" id="id" value="${pos.id}">
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Mac Address <span
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span
                                             class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" id="macAddress"
-                                               name="macAddress" minlength="10" value="${(pos.macAddress)!""}" required>
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <input type="text" class="form-control round-input" id="description"
+                                               name="description" placeholder="Antre deskripsyon oubyen yon non pou machin sa" value="${(pos.description)!""}" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Serial <span
                                             class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
                                         <input type="text" class="form-control round-input" id="serial" name="serial"
-                                               minlength="10" value="${(pos.serial)!""}" required>
+                                                placeholder="Antre yon nimewo seri pou machin sa" value="${(pos.serial)!""}" required>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span
-                                            class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="text" class="form-control round-input" id="description"
-                                               name="description" minlength="10" value="${(pos.description)!""}" required>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
@@ -80,16 +72,17 @@
                                             <div class="col-lg-6 col-md-6 col-sm-12 ">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
-                                                        title="Efase tout done pos sa">
+                                                        title="Efase tout done machin sa">
                                                         <i class="fa fa-times"></i>
                                                         Reyajiste
                                                 </button>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                                <button class="btn btn-primary form-control " type="submit"
-                                                        title="Anrejistre tout done pos sa">
+                                                <button class="btn btn-primary form-control"
+                                                        type="submit"
+                                                        title="Aktyalize tout done machin sa">
                                                         <i class="fa fa-save"></i>
-                                                        Anrejistre
+                                                        Aktyalize
                                                 </button>
                                             </div>
                                         </div>

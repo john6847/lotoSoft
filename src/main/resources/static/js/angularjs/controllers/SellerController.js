@@ -94,7 +94,6 @@ app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptions
                         $scope.sellers = [];
                     else
                         $scope.sellers = d;
-                    console.log(d);
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

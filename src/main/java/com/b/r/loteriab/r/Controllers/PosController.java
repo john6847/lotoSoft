@@ -85,14 +85,14 @@ public class PosController {
             model.addAttribute("user", user);
 
             if (id <= 0) {
-                model.addAttribute("error", "Nimewo machin sa pa egziste, cheche on lot");
+                model.addAttribute("error", "Nimewo machin sa pa egziste, cheche on lòt");
                 return "404";
             }
 
             Pos pos = posService.findPosById(id, enterprise.getId());
 
             if (pos == null) {
-                model.addAttribute("error", "Nimewo machin sa pa egziste, cheche on lot");
+                model.addAttribute("error", "Machin sa pa egziste, cheche on lòt");
                 return "404";
             }
 
@@ -113,7 +113,7 @@ public class PosController {
 
             Result result = posService.updatePos(pos, enterprise);
             if (!result.isValid()) {
-                model.addAttribute("error", "Pos la pa modifye, eseye ankò");
+                model.addAttribute("error", result.getLista().get(0).getMessage());
                 return "redirect:/pos/update/" + pos.getId();
             }
 
@@ -132,7 +132,7 @@ public class PosController {
             model.addAttribute("user", user);
 
             if (id <= 0) {
-                model.addAttribute("error", "Machin sa pa agziste, antre on lot");
+                model.addAttribute("error", "Machin sa pa agziste, antre on lòt");
                 return "404";
             }
             Result result = posService.deletePosById(id, enterprise.getId());

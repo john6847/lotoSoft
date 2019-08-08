@@ -19,6 +19,7 @@ app.controller("groupController", ['$http','$scope', 'GroupService','DTOptionsBu
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

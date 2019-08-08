@@ -19,6 +19,7 @@ app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTO
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

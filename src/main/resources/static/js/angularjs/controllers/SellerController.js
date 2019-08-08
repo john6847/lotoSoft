@@ -29,6 +29,7 @@ app.controller("sellerController", ['$http', 'SellerService','$scope','DTOptions
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

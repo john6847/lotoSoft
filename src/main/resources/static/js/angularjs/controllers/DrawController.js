@@ -34,6 +34,7 @@ app.controller("drawController", ['$http', 'DrawService','$scope','DTOptionsBuil
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

@@ -43,7 +43,7 @@
                                 <div class="col-lg-4">
                                     Bank
                                 </div>
-                                <div class="col-lg-8" ng-init="getData()">
+                                <div class="col-lg-8" >
                                     <div class="row">
                                         <div class="text-right col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
                                             <div class="form-group">

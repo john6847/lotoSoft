@@ -46,7 +46,7 @@
                   <div class="col-lg-4">
                       Gwoup
                   </div>
-                  <div class="col-lg-8 text-right" style="margin-top: 5px" ng-init="getData()">
+                  <div class="col-lg-8 text-right" style="margin-top: 5px">
                       <div class="row">
                           <div class="col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">

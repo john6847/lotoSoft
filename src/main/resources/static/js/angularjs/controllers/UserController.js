@@ -23,6 +23,7 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

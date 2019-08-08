@@ -20,6 +20,7 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
                 }
             }
         )
+        .withOption("destroy", true)
         .withColumnFilter({
             aoColumns: [
                 {

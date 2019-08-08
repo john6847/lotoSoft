@@ -8,7 +8,6 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
     $scope.itemsPerPage= 10;
     $scope.state = 1;
     $scope.products = [];
-    // $scope.product = 1;
     $scope.isBolet = false;
     $scope.constant = Constants.Products;
 

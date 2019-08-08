@@ -389,7 +389,25 @@ public class DrawService {
              startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), draw.getEnterprise().getId()).getCloseTime(),
                      draw.getShift().getCloseTime(), draw.getDrawDate(), 0, "dd/MM/yyyy, HH:mm:ss");
          }
-         return saleRepository.selectAllSale(draw.getEnterprise().getId(), draw.getShift().getId() ,startAndEndDate.getValue0() , startAndEndDate.getValue1());
+
+         String start = startAndEndDate.getValue1().toString();
+         String end = startAndEndDate.getValue1().toString();
+
+//         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss a");
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         Date d1 = null;
+         Date d2 = null;
+         try {
+             d1 = sdf.parse(start);
+             d2 = sdf.parse(end);
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }
+
+//         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+//         d1 = sdf.format();
+         
+         return saleRepository.selectAllSale(draw.getEnterprise().getId(), draw.getShift().getId() ,d1 , d2);
 
      }
 }

@@ -82,6 +82,7 @@ public class Helper {
         String [] timeEnd = Helper.getTimeFromDate(endDate, "12").split(":");
         Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
 
+
         return  Pair.with(resultStartDate, resultEndDate);
     }
 }

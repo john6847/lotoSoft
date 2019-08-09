@@ -19,12 +19,12 @@ public interface CombinationTypeRepository extends JpaRepository<CombinationType
     Page<CombinationType> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
 
     Page<CombinationType> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+
     List<CombinationType> findAllByEnterpriseName(String enterpriseName);
 
     List<CombinationType> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
-    List<CombinationType> findAllByEnterpriseId(Long enterpriseId);
 
-    void deleteCombinationTypeById(Long id);
+    List<CombinationType> findAllByEnterpriseId(Long enterpriseId);
 
     CombinationType findByProductsNameAndEnterpriseId(String name, Long enterpriseId);
 

@@ -8,29 +8,18 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
     $scope.itemsPerPage= 10;
     $scope.state = 1;
     $scope.products = [];
-    $scope.isBolet = false;
     $scope.constant = Constants.Products;
 
-    $scope.isTrue = function (val){
-        return val===true
-    };
-
-    $scope.change = function (){
-        $scope.isBolet = parseInt($scope.product) === parseInt(Constants.Products[0].Id);
-    };
-
-    $scope.isNull = function (val){
-        return val===null
-    };
-    // fetchAllProducts();
     $scope.getData = function (pageno) {
         $scope.combinationTypes=[];
+
         $scope.start= pageno*$scope.itemsPerPage-$scope.itemsPerPage;
 
         fetchAllCombinationTypesSize($scope.state);
 
-        fetchAllCombinationTypesFiltered(pageno,$scope.itemsPerPage,$scope.state,$scope.day,$scope.month,$scope.year);
+        fetchAllCombinationTypesFiltered(pageno,$scope.itemsPerPage,$scope.state);
     };
+    fetchAllCombinationTypes();
 
     function fetchAllCombinationTypes() {
         CombinationTypeService.fetchAllCombinationTypes()
@@ -40,7 +29,6 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
                         $scope.combinationTypes = [];
                     else
                         $scope.combinationTypes = d;
-                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -55,8 +43,6 @@ app.controller("combinationTypeController", ['$http', 'Constants','CombinationTy
                         $scope.combinationTypes = [];
                     else
                        $scope.combinationTypes = d.content;
-                    console.log(d.content)
-
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

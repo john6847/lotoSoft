@@ -104,7 +104,7 @@ public class PosController {
     }
 
     @PostMapping("/update")
-    public String updatePos(@ModelAttribute("pos") Pos pos,HttpServletRequest request, Model model){
+    public String updatePos(@ModelAttribute("pos") Pos pos,HttpServletRequest request, Model model,RedirectAttributes redirectAttributes ){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
             String username = request.getSession().getAttribute("username").toString();
@@ -113,7 +113,7 @@ public class PosController {
 
             Result result = posService.updatePos(pos, enterprise);
             if (!result.isValid()) {
-                model.addAttribute("error", result.getLista().get(0).getMessage());
+                redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
                 return "redirect:/pos/update/" + pos.getId();
             }
 

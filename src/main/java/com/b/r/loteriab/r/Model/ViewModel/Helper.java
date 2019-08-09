@@ -65,4 +65,16 @@ public class Helper {
         return "BR-"+ enterprise.getName().substring(0,2).toUpperCase() + "-"+ enterprise.getId()+ "-" + zeros.substring(0, 5 - String.valueOf(nextValue).length()) +""+ nextValue;
     }
 
+    public String replace (String text, String old, String newChar) {
+        return text.replace(old, newChar);
+    }
+
+    public String upper (String text) {
+        return text.toUpperCase();
+    }
+
+    public String lower (String text) {
+        return text.toLowerCase();
+    }
+
 }

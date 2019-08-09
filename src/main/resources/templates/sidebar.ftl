@@ -29,9 +29,6 @@
                   <a class="" title="Ajoute nouvo tiraj" href="/draw/create">Tiraj</a>
                 </li>
                 <li>
-                  <a class="" title="Ajoute nouvo konbinezon" href="/combinationType/create">Konbinezon</a>
-                </li>
-                <li>
                   <a class="" title="Ajoute nouvo Gwoup" href="/group/create">Gwoup</a>
                 </li>
                 <li>
@@ -110,6 +107,9 @@
                   <li>
                     <a href="/enterprise">Gade Antrepriz</a>
                   </li>
+<#--                  <li>-->
+<#--                    <a class="" title="Ajoute nouvo konbinezon" href="/combinationType/create">Konbinezon</a>-->
+<#--                  </li>-->
                 </ul>
               </li>
 

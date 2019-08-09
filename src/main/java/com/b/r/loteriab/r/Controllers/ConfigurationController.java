@@ -63,34 +63,6 @@ public class ConfigurationController {
     private EnterpriseRepository enterpriseRepository;
 
     /**
-     * Route to configigure Combination Type (Block and UnBlock)
-     * @param id
-     * @return configuration
-     */
-
-    @GetMapping("/combinationType/{id}")
-    public String configurationCombinationType (Model model, @PathVariable Long id, HttpServletRequest request) {
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            if (id <= 0) {
-                model.addAttribute("error", "Nimewo konbinezon sa pa egziste, itilize yon lòt");
-                return "redirect:/combinationType";
-            }
-            CombinationType combinationType = combinationTypeService.findCombinationTypeByIdAndEntepriseId(id, enterprise.getId());
-            if (combinationType == null) {
-                model.addAttribute("error", "Konbinezon sa pa egziste.");
-            } else {
-                combinationType.setEnabled(!combinationType.isEnabled());
-                combinationTypeRepository.save(combinationType);
-            }
-
-            return "redirect:/combinationType";
-        }
-        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke tip konbinezon sa an");
-        return "access-denied";
-    }
-
-    /**
      * Route to configigure Pos Type (Block and UnBlock)
      * @param id
      * @return configuration

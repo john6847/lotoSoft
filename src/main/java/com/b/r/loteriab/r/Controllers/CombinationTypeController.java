@@ -124,7 +124,7 @@ public class CombinationTypeController {
                 return "redirect:/combinationType";
             }
 
-            Result result =  combinationTypeService.updateCombinationType(combinationType);
+            Result result =  combinationTypeService.updateCombinationType(combinationType, enterprise);
             if(!result.isValid()){
                 redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
                 return "redirect:/combinationType/update/"+ combinationType.getId();
@@ -135,32 +135,4 @@ public class CombinationTypeController {
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye tip kobinezon an");
         return "access-denied";
     }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteDraw(HttpServletRequest request, Model model, @PathVariable("id") Long id){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            String username = request.getSession().getAttribute("username").toString();
-            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
-            model.addAttribute("user", user);
-
-            if (id <= 0) {
-                model.addAttribute("error", "Nimewo konbinezon sa pa egziste, antre on lòt");
-                return "404";
-            }
-
-            Result result = combinationTypeService.deleteCombinationTypeIdAndEnterpriseId(id, enterprise.getId());
-
-//            TODO: Create routine to delete combinationType
-
-            if (!result.isValid()) {
-                model.addAttribute("error", result.getLista().get(0).getMessage());
-            }
-
-            return "redirect:/combinationType";
-        }
-        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou elimne tip kobinezon an");
-        return "access-denied";
-    }
-
 }

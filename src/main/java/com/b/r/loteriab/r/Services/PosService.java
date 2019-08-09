@@ -33,16 +33,31 @@ public class PosService {
         if (pos.getDescription().isEmpty()){
             result.add("Deskripsyon an pa ka vid", "macAddress");
         }
-        if (posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), pos.getEnterprise().getId())!= null){
-            result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
-        }
 
         if (pos.getSerial().isEmpty()){
             result.add("Nimewo seri la pa ka vid", "serial");
         }
 
-        if (posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId())!= null){
-            result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
+        Pos  savedPos = posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), pos.getEnterprise().getId());
+        if (savedPos!= null){
+            if (pos.getId() <= 0){
+                result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
+            } else {
+                if (!pos.getId().equals(savedPos.getId())){
+                    result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
+                }
+            }
+        }
+
+        savedPos = posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId());
+        if (savedPos!= null){
+            if (pos.getId() <= 0){
+                result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
+            } else {
+                if (!pos.getId().equals(savedPos.getId())){
+                    result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
+                }
+            }
         }
 
         return result;
@@ -66,6 +81,7 @@ public class PosService {
     }
 
     public Result updatePos(Pos pos, Enterprise enterprise) {
+        pos.setEnterprise(enterprise);
         Result result = validateModel(pos);
         if (!result.isValid()){
             return result;

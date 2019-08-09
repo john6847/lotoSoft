@@ -3,7 +3,7 @@ package com.b.r.loteriab.r.Services;
 import com.b.r.loteriab.r.Model.CombinationType;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
-import com.b.r.loteriab.r.Model.Products;
+import com.b.r.loteriab.r.Model.ViewModel.Helper;
 import com.b.r.loteriab.r.Repository.CombinationTypeRepository;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,34 @@ public class CombinationTypeService {
     @Autowired
     private EnterpriseService enterpriseService;
 
+    @Autowired
+    private Helper helper;
+
+    private Result validateModel (CombinationType combinationType){
+        Result result = new Result();
+
+        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
+            if (combinationType.getPayedPriceFirstDraw() <= 0){
+                result.add("Ou dwe antre yon pri pou premye lo a", "payedPriceFirstDraw");
+                return result;
+            }
+            if (combinationType.getPayedPriceSecondDraw() <= 0){
+                result.add("Ou dwe antre yon pri pou dezyèm lo a", "payedPriceSecondDraw");
+                return result;
+            }
+            if (combinationType.getPayedPriceThirdDraw() <= 0){
+                result.add("Ou dwe antre yon pri pou twazyèm lo a", "payedPriceThirdDraw");
+                return result;
+            }
+        } else {
+            if (combinationType.getPayedPrice() <= 0){
+                result.add("Ou dwe antre yon pri pou " + helper.replace(combinationType.getProducts().getName(), "_", ""). toLowerCase(), "payedPriceThirdDraw");
+                return result;
+            }
+        }
+        return result;
+    }
+
     private CombinationType cleanModel (CombinationType combinationType) {
         if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
             combinationType.setPayedPrice(0);
@@ -55,30 +83,21 @@ public class CombinationTypeService {
             combinationType.setModificationDate(new Date());
             combinationTypeRepository.save(combinationType);
         }catch (Exception ex){
-            result.add("Konbinezon an pa ka aktyalize reeseye ankò");
+            result.add("Tip konbinezon an pa ka aktyalize reeseye ankò");
         }
         return  result;
     }
 
-    private Result validateModel (CombinationType combinationType){
-        Result result = new Result();
 
-        if (combinationType.getProducts() == null){
-            result.add("Tip Konbinezon an pa ka ret vid", "Konbinezon");
-            return result;
-        }
-        return result;
-    }
-
-    public Result updateCombinationType(CombinationType combinationType) {
+    public Result updateCombinationType(CombinationType combinationType, Enterprise enterprise) {
+        CombinationType currentCombinationType = combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(combinationType.getId(), enterprise.getId());
+        combinationType.setProducts(currentCombinationType.getProducts());
         combinationType = cleanModel(combinationType);
         Result result = validateModel(combinationType);
             if (!result.isValid()){
                 return result;
             }
 
-        CombinationType currentCombinationType = combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(combinationType.getId(), combinationType.getEnterprise().getId());
-        currentCombinationType.setProducts(combinationType.getProducts());
         if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
             currentCombinationType.setPayedPriceFirstDraw(combinationType.getPayedPriceFirstDraw());
             currentCombinationType.setPayedPriceSecondDraw(combinationType.getPayedPriceSecondDraw());
@@ -87,30 +106,14 @@ public class CombinationTypeService {
             currentCombinationType.setPayedPrice(combinationType.getPayedPrice());
         }
         currentCombinationType.setNote(combinationType.getNote());
-        currentCombinationType.setModificationDate(new Date ());
+        currentCombinationType.setModificationDate(new Date());
 
         try {
-            combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(combinationType.getId(),combinationType.getEnterprise().getId());
+            combinationTypeRepository.save(currentCombinationType);
         }catch (Exception ex){
-            result.add("Konbinezon an pa ka aktyalize reeseye ankò");
+            result.add("Tip konbinezon an pa ka aktyalize, reeseye ankò");
         }
         return  result;
-    }
-
-
-    public Result deleteCombinationTypeIdAndEnterpriseId(Long id, Long enterpriseId){
-        Result result = new Result();
-        CombinationType combinationType = combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(id, enterpriseId);
-        if(combinationType == null) {
-            result.add("Konbinezon sa ou bezwen elimine a pa egziste");
-            return result;
-        }
-        try{
-            combinationTypeRepository.deleteById(id);
-        }catch (Exception ex){
-            result.add("Konbinezon an pa ka elimine reeseye ankò");
-        }
-        return result;
     }
 
     public Page<CombinationType> findAllCombinationTypeByEnterpriseId(int page, int itemPerPage, Boolean state, Long enterpriseId){

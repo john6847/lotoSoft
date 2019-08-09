@@ -22,7 +22,7 @@
     <!--sidebar end-->
 
     <!--main content start-->
-    <section id="main-content" ng-controller="combinationTypeController" ng-init="change()">
+    <section id="main-content" ng-controller="combinationTypeController">
       <section class="wrapper">
         <div class="row">
           <div class="col-lg-12">
@@ -47,68 +47,63 @@
               <div class="panel-body">
                 <form class="form-horizontal" method="post" th:object="${combinationType}" action="/combinationType/update">
                     <input type="hidden" name="id" id="id" value="${combinationType.id}">
-                  <div class="form-group">
-                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Konbinezon <span class="required">*</span></label>
-                    <div class="col-lg-10 col-md-10 col-sm-10">
-                      <select class="form-control selectpicker"
-                        name="products"
-                        ng-model="product"
-                        data-live-search="true"
-                        data-size="5"
-                        ng-change="change()"
-                        data-none-selected-text="Chwazi Tip Konbinezon an"
-                        data-none-results-text=" Tip konbinezon sa pa egziste"
-                        data-placeholder="Chwazi Tip Konbinezon an"
-                        id="products"
-                        required>
-                        <#if products??>
-                          <#list products as p>
-                            <#if p.id == combinationType.products.id>
-                              <option value="${p.id}" selected>${p.name}</option>
-                            <#else>
-                              <option value="${p.id}">${p.name}</option>
-                            </#if>
-                          </#list>
-                        </#if>
-                      </select>
-                    </div>
-                  </div>
 
-                  <div class="form-group" ng-if="!isBolet">
-                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman <span class="required">*</span></label>
-                    <div class="col-lg-10 col-md-10 col-sm-10">
-                      <input type="number" class="form-control round-input" id="payedPrice" value="${(combinationType.payedPrice)! 0}" name="payedPrice" >
+                  <#if combinationType.products.name =="BOLET">
+                    <div class="form-group">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Premye Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10">
+                        <input  type="number"
+                                class="form-control round-input"
+                                id="payedPriceFirstDraw"
+                                min="50"
+                                value="${(combinationType.payedPriceFirstDraw)!0}"
+                                name="payedPriceFirstDraw" required>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="form-group" ng-if="isBolet">
-                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Premye Lo</label>
-                    <div class="col-lg-10 col-md-10 col-sm-10">
-                      <input type="number" class="form-control round-input" id="payedPriceFirstDraw" value="${(combinationType.payedPriceFirstDraw)!0}" name="payedPriceFirstDraw" >
-                    </div>
-                  </div>
-
-                  <div class="form-group" ng-if="isBolet">
-                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Dezyèm Lo</label>
-                    <div class="col-lg-10 col-md-10 col-sm-10">
-                      <input type="number" class="form-control round-input" id="payedPriceSecondDraw" value="${(combinationType.payedPriceSecondDraw)!0}" name="payedPriceSecondDraw" >
-                    </div>
-                  </div>
-
-                  <div class="form-group" ng-if="isBolet">
-                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Twazyèm Lo</label>
-                    <div class="col-lg-10 col-md-10 col-sm-10">
-                      <input type="number" class="form-control round-input" id="payedPriceThirdDraw" value="${(combinationType.payedPriceThirdDraw)! 0}" name="payedPriceThirdDraw" >
-                    </div>
-                  </div>
 
                     <div class="form-group">
-                        <label class="control-label col-lg-2 col-md-2 col-sm-2" for="note">Nòt:</label>
-                        <div class="col-lg-10 col-md-10 col-sm-10">
-                          <textarea class="form-control" rows="5" id="note" maxlength="255" name="note">${combinationType.note}</textarea>
-                        </div>
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Dezyèm Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10">
+                        <input type="number"
+                               class="form-control round-input"
+                               id="payedPriceSecondDraw"
+                               min="20"
+                               value="${(combinationType.payedPriceSecondDraw)!0}"
+                               name="payedPriceSecondDraw" required>
+                      </div>
                     </div>
-                 
+
+                    <div class="form-group">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Twazyèm Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10">
+                        <input type="number"
+                               class="form-control round-input"
+                               id="payedPriceThirdDraw"
+                               value="${(combinationType.payedPriceThirdDraw)! 0}"
+                               name="payedPriceThirdDraw"
+                               required
+                        >
+                      </div>
+                    </div>
+                    <#else>
+                      <div class="form-group">
+                        <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman <span class="required">*</span></label>
+                        <div class="col-lg-10 col-md-10 col-sm-10">
+                          <input type="number" class="form-control round-input" id="payedPrice" min="500" value="${(combinationType.payedPrice)! 0}" name="payedPrice" required>
+                        </div>
+                      </div>
+                  </#if>
+
+                    <div class="form-group">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="note">Nòt</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10">
+                        <textarea class="form-control" rows="5" placeholder="Antre rezon chanjman" id="note" maxlength="255" name="note">${combinationType.note}</textarea>
+                      </div>
+                    </div>
+
+
+
+
                   <div class="form-group">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
                       <div class="row">

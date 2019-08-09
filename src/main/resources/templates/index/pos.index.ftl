@@ -44,21 +44,26 @@
                                     Machin
                                 </div>
                                 <div class="col-lg-8">
-                                    <div class="row">
-                                        <div class="text-right col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
-                                            <div class="form-group">
-                                                <select class="form-control m-bot15"
-                                                        data-live-search="true"
-                                                        data-size="5"
-                                                        ng-model="state"
-                                                        ng-change="getData()"
-                                                        name="state"
-                                                        id="state"
-                                                        autofocus>
-                                                    <option value="0">Bloke</option>
-                                                    <option value="1" selected>Tout</option>
-                                                    <option value='2'>Actif</option>
-                                                </select>
+                                    <div class="row text-right">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                                    <div class="form-group" style="margin: 10px">
+                                                        <select class="form-control m-bot15"
+                                                                data-live-search="true"
+                                                                data-size="5"
+                                                                ng-model="state"
+                                                                ng-change="getData()"
+                                                                name="state"
+                                                                id="state"
+                                                                autofocus>
+                                                            <option value="0">Bloke</option>
+                                                            <option value="1" selected>Tout</option>
+                                                            <option value='2'>Actif</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +76,7 @@
                                 <div class="col-md-12">
                                     <div class="table-responsive">
                                         <table datatable="ng" dt-options="dtOptions"
-                                               class="table table-striped table-advance table-hover">
+                                               class="table table-striped table-advance table-hover" ng-init="fetchAllPos()">
                                            <thead>
                                                 <tr>
                                                     <th style="width: 10%">#</th>
@@ -181,6 +186,10 @@
             }
         });
     }
+</script>
+
+<script type = "text/javascript" >
+    $('.selectpicker').selectpicker();
 </script>
 
 </body>

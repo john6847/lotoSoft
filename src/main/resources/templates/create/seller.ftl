@@ -23,7 +23,7 @@
     <!--sidebar end-->
 
     <!--main content start-->
-    <section id="main-content" ng-init="fetchAllSellers()">
+    <section id="main-content">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -46,13 +46,14 @@
                             Vandè
                         </header>
                         <div class="panel-body">
-                            <form class="form-horizontal" action="/seller/create" th:object="${seller}" method="post">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Gen Itilizatè deja<span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <input type="checkbox" name="haveAUser" ng-model="haveUser">
+                            <form name="sellerForm" class="form-horizontal" action="/seller/create" th:object="${seller}" method="post">
+                                <div class="form-group funkyradio">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                        <input type="checkbox" name="haveAUser" id="haveAUser" ng-model="haveUser"/>
+                                        <label for="haveAUser">Gen Itilizatè deja</label>
                                     </div>
                                 </div>
+
                                 <div class="form-group" ng-if="!haveUser">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2">Non</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
@@ -70,13 +71,18 @@
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2">Non Itilizatè</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
                                         <input type="text"
-                                           class="form-control round-input"
-                                           name="username"
-                                           id="username"
-                                           placeholder="Antre non itilizatè"
-                                           minlength="5"
-                                           maxlength="20"
+                                               class="form-control round-input"
+                                               name="username"
+                                               id="username"
+                                               placeholder="Antre non itilizatè"
+                                               minlength="4"
+                                               maxlength="20"
+                                               ng-model = "sellerUsername"
+                                               ng-model-options="{ debounce: 1000}"
+                                               ng-change="usernameChange()"
                                            required>
+                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && usernameExist">Non itilizatè sa pa apropriye!! </span>
+                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && usernameExist && suggestedUsername.length > 0">Eseye <b> {{suggestedUsername[0]}}</b> oubyen <b>{{suggestedUsername[1]}}</b></span>
                                     </div>
                                 </div>
 
@@ -133,10 +139,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Fè Pati de yon gwoup</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <input type="checkbox" name="haveAGroup" ng-model="haveGroup">
+
+                                <div class="form-group funkyradio">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                        <input type="checkbox" name="haveAGroup" id="haveAGroup" ng-model="haveGroup"/>
+                                        <label for="haveAGroup">Fè Pati de yon gwoup</label>
                                     </div>
                                 </div>
 
@@ -160,10 +167,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Itilize peman pa mwa<span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <input type="checkbox" name="useMonthlyPayment" ng-model="useMonthlyPayment">
+
+                                <div class="form-group funkyradio">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                        <input type="checkbox" name="useMonthlyPayment" id="useMonthlyPayment" ng-model="useMonthlyPayment" />
+                                        <label for="useMonthlyPayment">Itilize pèman pa mwa</label>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-if="!useMonthlyPayment">

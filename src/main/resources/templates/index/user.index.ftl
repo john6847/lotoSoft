@@ -39,7 +39,7 @@
                   <div class="alert alert-danger" role="alert">${error}</div>
               </#if>
           </div>
-          <div class="col-lg-12">
+          <div class="col-lg-12" ng-init="getData()">
             <section class="panel">
               <header class="panel-heading">
                 <div class="row">
@@ -130,6 +130,9 @@
                                     <th style="width:20%">Rekolektè</th>
                                     <th style="width:10%">Kreyasyon</th>
                                     <th style="width:10%; text-align: center">Actif</th>
+                                    <th style="width:10%"></th>
+                                    <th style="width:10%"></th>
+                                    <th style="width:10%"></th>
                                 </tr>
                             </tfoot>
                         </table>

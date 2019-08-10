@@ -100,7 +100,7 @@
                                                required>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" ng-if="!haveUser">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Konfime Modpas</label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
                                         <input type="password"
@@ -191,6 +191,7 @@
                                         <label for="useMonthlyPayment">Itilize pèman pa mwa</label>
                                     </div>
                                 </div>
+
                                 <div class="form-group" ng-if="!useMonthlyPayment">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Pousantaj</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 input-group">
@@ -198,6 +199,7 @@
                                         <span class="input-group-addon">%</span>
                                     </div>
                                 </div>
+
                                 <div class="form-group" ng-if="useMonthlyPayment">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Peman chak mwa</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 input-group">

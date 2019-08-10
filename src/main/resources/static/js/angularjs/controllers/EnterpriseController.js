@@ -71,7 +71,6 @@ app.controller("enterpriseController", ['$http', 'EnterpriseService', '$scope', 
         $scope.pos = [];
         $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
 
-
         fetchAllEnterpriseFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 

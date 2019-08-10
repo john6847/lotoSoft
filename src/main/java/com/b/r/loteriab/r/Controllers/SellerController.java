@@ -82,7 +82,7 @@ public class SellerController {
                              @RequestParam(value ="username", defaultValue = "") String username,
                              @RequestParam(value ="name", defaultValue = "") String sellerName,
                              @RequestParam(value = "password", defaultValue = "") String password,
-                             @RequestParam(value = "confirmPassword") String confirmPassword,
+                             @RequestParam(value = "confirmPassword",defaultValue = "") String confirmPassword,
                              @RequestParam(value = "haveAUser", defaultValue = "off") String haveUser,
                              @RequestParam(value = "haveAGroup", defaultValue = "off") String haveAGroup,
                              @RequestParam(value = "useMonthlyPayment", defaultValue = "off") String useMonthlyPayment,

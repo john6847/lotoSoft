@@ -36,7 +36,7 @@
                         <div class="alert alert-danger" role="alert">${error}</div>
                     </#if>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" ng-init="getData()">
                     <section class="panel">
                         <header class="panel-heading">
                             <div class="row">

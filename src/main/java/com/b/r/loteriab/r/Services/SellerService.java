@@ -71,6 +71,9 @@ public class SellerService {
             List<Role> rols = new ArrayList<>();
             rols.add(role);
             users.setRoles(rols);
+
+            Users resultingUser = userRepository.save(users);
+            seller.setUser(resultingUser);
         }
         int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal(): PaymentType.PERCENTAGE.ordinal();
         seller.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
@@ -80,8 +83,7 @@ public class SellerService {
         seller.setLastPaymentDate(new Date());
         seller.setEnabled(true);
         try {
-            Users resultingUser = userRepository.save(users);
-            seller.setUser(resultingUser);
+
             sellerRepository.save(seller);
         }catch (Exception ex){
             result.add("Vandè a pa ka anrejistre reeseye ankò");

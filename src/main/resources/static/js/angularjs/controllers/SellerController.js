@@ -63,7 +63,14 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
                     type: 'select',
                     bRegex: false,
                     values: ['Wi','Non']
-                }]
+                },
+                {
+                    type: 'select',
+                    bRegex: false,
+                    values: ['Wi','Non']
+                }
+
+                ]
         });
 
     fetchAllSellers();

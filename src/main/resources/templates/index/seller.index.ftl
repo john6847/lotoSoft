@@ -22,7 +22,7 @@
     <section id="main-content" ng-controller="sellerController">
       <section class="wrapper">
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12" ng-int="getData()">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade Vandè</h3>
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="/home">Paj Akèy</a></li>
@@ -44,29 +44,33 @@
                       Vandè
                   </div>
                   <div class="col-lg-8" >
-                    <div class="row">
-                      <div class=" text-right col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
-                        <div class="form-group">
-                            <select class="form-control m-bot15"
-                                    data-live-search="true"
-                                    data-size="5"
-                                    ng-model="state"
-                                    ng-change="getData()"
-                                    name="state"
-                                    id="state"
-                                    autofocus>
-                              <option value="0">Bloke</option>
-                              <option value="1" selected>Tout</option>
-                              <option value='2'>Actif</option>
-                            </select>
+                    <div class="row text-right">
+                      <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group" style="margin: 10px">
+                              <select class="form-control m-bot15 selectpicker"
+                                      data-live-search="true"
+                                      data-size="5"
+                                      ng-model="state"
+                                      ng-change="getData()"
+                                      name="state"
+                                      id="state"
+                                      autofocus>
+                                <option value="0">Bloke</option>
+                                <option value="1" selected>Tout</option>
+                                <option value='2'>Actif</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </header>
               <div class="panel-body">
-
                 <div class="row">
                   <#--style="overflow-y:scroll; height:150px;"-->
                   <div class="col-md-12">
@@ -80,7 +84,7 @@
                           <th style="width:10%">Gwoup</th>
                           <th style="width:10%;" class="text-right">Pousantaj(%)</th>
                           <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
-                          <th style="width:15%">Kalite pèman</th>
+                          <th style="width:15%">Tip pèman</th>
                           <th style="width:15%; text-align: center">Aktif</th>
                           <th style="width:5%"></th>
                           <th style="width:5%"></th>
@@ -107,12 +111,12 @@
                             </a>
                           </td>
                           <td>
-                            <a class="btn btn-danger btn-xs" href="/seller/delete/{{seller.id}}">
+                            <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/seller/delete/{{seller.id}}">
                               <i class="fa fa-trash-o"></i> Elimine
                             </a>
                           </td>
                           <td>
-                            <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/seller/{{seller.id}}">
+                            <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/seller/{{seller.id}}">
                               <i class="fa fa-{{seller.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{seller.enabled? 'Bloke' : 'Debloke'}}
                             </a>
                           </td>
@@ -123,9 +127,9 @@
                             <th style="width:5%">#</th>
                             <th style="width:15%">Itilizatè</th>
                             <th style="width:10%">Gwoup</th>
-                            <th style="width:10%;"class="text-right">Pousantaj(%)</th>
-                            <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
-                            <th style="width:15%">Kalite pèman</th>
+                            <th style="width:10%;">Pousantaj(%)</th>
+                            <th style="width:15%">Kantite Lajan(HTG)</th>
+                            <th style="width:15%">Tip pèman</th>
                             <th style="width:15%; text-align: center">Aktif</th>
                           </tr>
                         </tfoot>
@@ -160,6 +164,60 @@
   </section>
 
   <#include "../scripts.ftl">
+<script>
+  var responseDelete = false;
+  function onDelete (e, ) {
+    if(!responseDelete)
+      e.preventDefault();
+    bootbox.confirm({
+      message: "Ou preske elimine machin sa, ou deside kontinye?",
+      size: 'small',
+      buttons: {
+        confirm: {
+          label: '<i class="fa fa-check"></i> Wi',
+          className: ' btn-success'
+        },
+        cancel: {
+          label: '<i class="fa fa-times"></i> Non',
+          className: 'btn-danger'
+        }
+      }, callback: function (result) {
+        if (result){
+          responseDelete = true;
+          document.getElementById('delete').click();
+        }
+      }
+    });
+  }
+
+  var responseBlock = false;
+  function onBlock (e) {
+    if(!responseBlock)
+      e.preventDefault();
+    bootbox.confirm({
+      message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke machin sa, ou deside kontinye?",
+      size: 'small',
+      buttons: {
+        confirm: {
+          label: '<i class="fa fa-check"></i> Wi',
+          className: ' btn-success'
+        },
+        cancel: {
+          label: '<i class="fa fa-times"></i> Non',
+          className: 'btn-danger'
+        }
+      }, callback: function (result) {
+        if (result){
+          responseBlock = true;
+          document.getElementById('block').click();
+        }
+      }
+    });
+  }
+</script>
+<script type = "text/javascript" >
+  $('.selectpicker').selectpicker();
+</script>
 
 </body>
 

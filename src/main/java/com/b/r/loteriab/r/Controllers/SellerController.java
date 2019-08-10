@@ -154,7 +154,6 @@ public class SellerController {
             }
 
             model.addAttribute("seller", seller);
-            model.addAttribute("user", seller.getUser());
             return "/update/seller";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye vandè sa");

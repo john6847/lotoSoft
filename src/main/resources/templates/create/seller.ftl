@@ -159,7 +159,7 @@
                                 <div class="form-group funkyradio">
                                     <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
                                         <input type="checkbox" name="haveAGroup" id="haveAGroup" ng-model="haveGroup"/>
-                                        <label for="haveAGroup">Fè Pati de yon gwoup</label>
+                                        <label for="haveAGroup">Fè pati de yon gwoup</label>
                                     </div>
                                 </div>
 

@@ -51,18 +51,19 @@
                                 <input type="hidden" name="id" id="id" value="${seller.id}">
 
                                 <#if isParentSeller == false>
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-2">Fè Pati de yon gwoup</label>
-                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="form-group funkyradio">
+                                        <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
                                             <#if seller.groups??>
                                                 <span style="display: none" ng-init="haveGroup = true"></span>
-                                                <input type="checkbox" name="haveAGroup" checked ng-model="haveGroup">
+                                                <input type="checkbox" name="haveAGroup" id="haveAGroup" checked ng-model="haveGroup">
                                             <#else>
-                                                <input type="checkbox" name="haveAGroup" ng-model="haveGroup">
+                                                <input type="checkbox" name="haveAGroup" id="haveAGroup" ng-model="haveGroup">
                                                 <span style="display: none" ng-init="haveGroup = false"></span>
                                             </#if>
+                                            <label for="haveAGroup">Fè pati de yon gwoup</label>
                                         </div>
                                     </div>
+
                                     <div class="form-group" ng-if="haveGroup">
                                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">Gwoup</label>
                                         <div class="col-lg-10 col-md-10 col-sm-10">
@@ -94,19 +95,18 @@
                                 </#if>
 
 
-                                <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Itilize peman pa mwa<span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <#if seller.paymentType == 0>
+                                <div class="form-group funkyradio">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
+                                    <#if seller.paymentType == 0>
                                             <span style="display: none" ng-init="useMonthlyPayment = true"></span>
-                                            <input type="checkbox" name="useMonthlyPayment" checked ng-model="useMonthlyPayment">
+                                            <input type="checkbox" name="useMonthlyPayment" id="useMonthlyPayment" checked ng-model="useMonthlyPayment">
                                         <#else>
-                                            <input type="checkbox" name="useMonthlyPayment" ng-model="useMonthlyPayment">
+                                            <input type="checkbox" name="useMonthlyPayment" id="useMonthlyPayment" ng-model="useMonthlyPayment">
                                             <span style="display: none" ng-init="useMonthlyPayment = false"></span>
                                         </#if>
+                                        <label for="useMonthlyPayment">Ititlize pèman pa mwa</label>
                                     </div>
                                 </div>
-
 
                                 <div class="form-group" ng-if="!useMonthlyPayment">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Pousantaj <span class="required">*</span></label>

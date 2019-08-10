@@ -74,6 +74,7 @@ public class GroupController {
                             @RequestParam(value = "city", defaultValue = "") String city,
                             @RequestParam(value = "sector", defaultValue = "") String sector,
                             @RequestParam(value = "phone", defaultValue = "") String phone,
+                            @RequestParam(value = "region", defaultValue = "") String region,
                             HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
@@ -94,7 +95,7 @@ public class GroupController {
         return "access-denied";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping("/delete/{id}")
     public String deleteGroup(HttpServletRequest request,
                               Model model,@PathVariable("id") Long id,
                               RedirectAttributes redirectAttributes){

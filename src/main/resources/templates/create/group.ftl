@@ -101,6 +101,19 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Rejyon</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <input type="text"
+                                               class="form-control round-input"
+                                               name="region"
+                                               id="region"
+                                               placeholder="Antre non rejyon an"
+                                               maxlength="100"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2">Sektè</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
                                         <input type="text"

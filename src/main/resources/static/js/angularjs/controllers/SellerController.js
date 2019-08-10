@@ -7,19 +7,17 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
     $scope.haveUser = false;
     $scope.haveGroup = false;
     $scope.isParentSeller = false;
-    $scope.useMonthlyPayment =true;
-    $scope.subSellerSelector = null;
-    $scope.parentSellerSelector = null;
+    $scope.useMonthlyPayment =false;
     $scope.pageno = 1;
-    $scope.totalCount = 0;
     $scope.paymentType = Constants.PaymentType;
-    $scope.sellerUsername ='';
-    $scope.usernameExist = false;
-    $scope.suggestedUsername =[];
-
     $scope.itemsPerPage = 1000;
     $scope.state = 1;
 
+    $scope.username = {
+        sellerUsername :'',
+        usernameExist: false,
+        suggestedUsername: []
+    };
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDisplayLength(5)
@@ -33,6 +31,9 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
             }
         )
         .withOption("destroy", true)
+        .withOption('responsive', true)
+        .withOption('scrollX', '100%')
+        .withOption('deferRender', true)
         .withColumnFilter({
             aoColumns: [
                 {
@@ -67,22 +68,16 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
 
     fetchAllSellers();
 
-    $scope.change = function (){
-        console.log($scope.haveUser)
-    };
-
     $scope.usernameChange = function (){
-        $scope.suggestedUsername =[];
-        if ($scope.sellerUsername !== ''){
-            fetchUser($scope.sellerUsername);
+        console.log($scope.username.sellerUsername)
+        $scope.username.suggestedUsername =[];
+        if ($scope.username.sellerUsername !== ''){
+            fetchUser($scope.username.sellerUsername);
         }
     };
 
     $scope.getData = function () {
-        $scope.seller=[];
         $scope.start= $scope.pageno *$scope.itemsPerPage-$scope.itemsPerPage;
-
-        fetchAllSellerSize($scope.state);
 
         fetchAllSellerFiltered($scope.pageno,$scope.itemsPerPage,$scope.state);
     };
@@ -110,26 +105,12 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
                         $scope.sellers = [];
                     else
                         $scope.sellers = d.content;
-                    console.log(d);
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
 
-    function fetchAllSellerSize(state) {
-        SellerService.fetchAllSellersSize(state)
-            .then(
-                function (d) {
-                    if (d === 0 || d === null || d === undefined)
-                        $scope.sellers = 0;
-                    else
-                        $scope.totalCount = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
 
     function fetchUser(username) {
         UserService.fetchUser(username)
@@ -138,20 +119,20 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
                     if (d === null || d === undefined)
                         $scope.message = 'Ou pa gen aksè pou ou reyalize aksyon sa';
                     else{
-                        $scope.usernameExist = d.exist;
+                        $scope.username.usernameExist = d.exist;
                         generateSuggestion();
                     }
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
-                })
+                });
     }
 
     function generateSuggestion() {
-        if($scope.usernameExist){
+        if($scope.username.usernameExist){
             for (var i=0 ; i< 2; i++){
-                var random = Math.floor(Math.random() * (100 - 1)) + 1;
-                $scope.suggestedUsername.push($scope.username + random);
+                var random = Math.floor(Math.random() * (1000 - 1)) + 1;
+                $scope.username.suggestedUsername.push($scope.username.sellerUsername + random);
             }
         }
     }

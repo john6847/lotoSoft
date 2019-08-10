@@ -35,12 +35,12 @@
                 </div>
             </div>
             <div class="row">
+                <#if error??>
+                    <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger" role="alert">${error}</div>
+                    </div>
+                </#if>
                 <div class="col-lg-12">
-                    <#if error??>
-                        <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
-                            <div class="alert alert-danger" role="alert">${error}</div>
-                        </div>
-                    </#if>
                     <section class="panel">
                         <header class="panel-heading">
                             Vandè
@@ -48,7 +48,7 @@
                         <div class="panel-body">
                             <form name="sellerForm" class="form-horizontal" action="/seller/create" th:object="${seller}" method="post">
                                 <div class="form-group funkyradio">
-                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
                                         <input type="checkbox" name="haveAUser" id="haveAUser" ng-model="haveUser"/>
                                         <label for="haveAUser">Gen Itilizatè deja</label>
                                     </div>
@@ -67,6 +67,7 @@
                                            required>
                                     </div>
                                 </div>
+
                                 <div class="form-group" ng-if="!haveUser">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2">Non Itilizatè</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
@@ -77,12 +78,12 @@
                                                placeholder="Antre non itilizatè"
                                                minlength="4"
                                                maxlength="20"
-                                               ng-model = "sellerUsername"
-                                               ng-model-options="{ debounce: 1000}"
                                                ng-change="usernameChange()"
-                                           required>
-                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && usernameExist">Non itilizatè sa pa apropriye!! </span>
-                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && usernameExist && suggestedUsername.length > 0">Eseye <b> {{suggestedUsername[0]}}</b> oubyen <b>{{suggestedUsername[1]}}</b></span>
+                                               ng-model = "username.sellerUsername"
+                                               ng-model-options="{ debounce: 1000}"
+                                               required>
+                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && username.usernameExist">Non itilizatè sa pa apropriye!! </span>
+                                        <span style="color: red;" ng-show="sellerForm.username.$dirty && username.usernameExist && username.suggestedUsername.length > 0">Eseye <b> {{username.suggestedUsername[0]}}</b> oubyen <b>{{username.suggestedUsername[1]}}</b></span>
                                     </div>
                                 </div>
 
@@ -103,13 +104,14 @@
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Itilizatè</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
                                         <select class="form-control round-input"
-                                            name="user"
-                                            data-live-search="true"
-                                            data-size="5"
-                                            data-none-selected-text="Chwazi Itilizatè a"
-                                            data-none-results-text="Itilizatè sa pa egziste"
-                                            data-placeholder="Chwazi Itilizatè a"
-                                            id="user">
+                                                name="user"
+                                                data-live-search="true"
+                                                data-size="5"
+                                                data-none-selected-text="Chwazi Itilizatè a"
+                                                data-none-results-text="Itilizatè sa pa egziste"
+                                                data-placeholder="Chwazi Itilizatè a"
+                                                id="user"
+                                                required>
                                             <#if usersSelect??>
                                                 <#list usersSelect as u >
                                                     <option value="${u.id}">${u.username}</option>
@@ -121,15 +123,14 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Machin</label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <select class="form-control round-input"
+                                        <select class="form-control round-input selectpicker"
                                                 name="pos"
                                                 id="pos"
                                                 data-live-search="true"
                                                 data-none-results-text="Machin sa pa egziste"
                                                 data-placeholder="Chwazi machin nan"
                                                 data-none-selected-text="Chwazi Machin nan"
-                                                data-size="5"
-                                                required>
+                                                data-size="5">
                                                 <#if pos??>
                                                     <#list pos as p>
                                                         <option value="${p.id}">${p.description}</option>
@@ -141,7 +142,7 @@
 
 
                                 <div class="form-group funkyradio">
-                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
                                         <input type="checkbox" name="haveAGroup" id="haveAGroup" ng-model="haveGroup"/>
                                         <label for="haveAGroup">Fè Pati de yon gwoup</label>
                                     </div>
@@ -150,14 +151,15 @@
                                 <div class="form-group" ng-if="haveGroup">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Gwoup</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <select class="form-control round-input"
+                                        <select class="form-control round-input selectpicker"
                                                 name="groups"
                                                 data-live-search="true"
                                                 data-size="5"
                                                 data-none-selected-text="Chwazi yon Gwoup pou vandè a"
                                                 data-none-results-text="Gwoup sa pa egziste"
                                                 data-placeholder="Chwazi Gwoup la"
-                                                id="groups">
+                                                id="groups"
+                                                required>
                                             <#if allGroups??>
                                                 <#list allGroups as g >
                                                     <option value="${g.id}">${g.description}</option>
@@ -169,7 +171,7 @@
 
 
                                 <div class="form-group funkyradio">
-                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-2 col-md-2 col-sm-2 col-xs-12 funkyradio-info">
+                                    <div class="col-sm-offset-2 col-sm-offset-2 col-sm-offset-2 col-lg-3 col-md-3 col-sm-3 col-xs-12 funkyradio-info">
                                         <input type="checkbox" name="useMonthlyPayment" id="useMonthlyPayment" ng-model="useMonthlyPayment" />
                                         <label for="useMonthlyPayment">Itilize pèman pa mwa</label>
                                     </div>
@@ -177,14 +179,14 @@
                                 <div class="form-group" ng-if="!useMonthlyPayment">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Pousantaj</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 input-group">
-                                        <input type="number" class="form-control round-input" name="percentageCharged" id="percentageCharged">
+                                        <input type="number" class="form-control round-input" min="0" name="percentageCharged" id="percentageCharged"  required>
                                         <span class="input-group-addon">%</span>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-if="useMonthlyPayment">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Peman chak mwa</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 input-group">
-                                        <input type="number" class="form-control round-input" name="amountCharged" id="amountCharged">
+                                        <input type="number" class="form-control round-input" min="0"  max="100" name="amountCharged" id="amountCharged" required>
                                         <span class="input-group-addon">HTG</span>
                                     </div>
                                 </div>
@@ -229,16 +231,15 @@
                 </div>
             </div>
         </section>
+    </section>
 
         <!-- container section end -->
     <#include "../scripts.ftl">
 
-        <script
-            type = "text/javascript">
-            $(document).ready(function () {
-                $('.selectpicker').selectpicker();
-            });
-        </script>
+
+    <script type = "text/javascript" >
+        $('.selectpicker').selectpicker();
+    </script>
 </body>
 
 </html>

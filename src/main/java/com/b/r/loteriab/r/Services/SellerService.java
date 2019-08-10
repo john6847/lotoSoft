@@ -2,8 +2,12 @@ package com.b.r.loteriab.r.Services;
 
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.PaymentType;
+import com.b.r.loteriab.r.Model.Enums.Roles;
+import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.Seller;
+import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.SellerRepository;
+import com.b.r.loteriab.r.Repository.UserRepository;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,10 +29,16 @@ public class SellerService {
     @Autowired
     private EnterpriseService enterpriseService;
 
+    @Autowired
+    private  RoleService roleService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     private Result validateModel (Seller seller){
         Result result = new Result();
 
-        if (seller.getUser().getId() == null){
+        if (seller.getUser() == null){
             result.add("Vandè a dwe gen kont avan li anrejistre", "User");
         }
 
@@ -36,7 +46,7 @@ public class SellerService {
         return result;
     }
 
-    public Result saveSeller (Seller seller, String useMonthlyPayment, Enterprise enterprise){
+    public Result saveSeller (Seller seller,  String useMonthlyPayment, String haveUser, Users users, Enterprise enterprise){
         Result result = validateModel(seller);
         if (useMonthlyPayment.equals("on")){
             if (seller.getAmountCharged() <= 0){
@@ -52,6 +62,17 @@ public class SellerService {
         if (!result.isValid()){
             return result;
         }
+
+        if (haveUser.equals("off")) {
+            users.setCreationDate(new Date());
+            users.setModificationDate(new Date());
+            users.setEnabled(true);
+            users.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
+            Role role = roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SELLER.name(), enterprise.getId());
+            List<Role> rols = new ArrayList<>();
+            rols.add(role);
+            users.setRoles(rols);
+        }
         int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal(): PaymentType.PERCENTAGE.ordinal();
         seller.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         seller.setPaymentType(payment);
@@ -60,6 +81,8 @@ public class SellerService {
         seller.setLastPaymentDate(new Date());
         seller.setEnabled(true);
         try {
+            Users resultingUser = userRepository.save(users);
+            seller.setUser(resultingUser);
             sellerRepository.save(seller);
         }catch (Exception ex){
             result.add("Vandè a pa ka anrejistre reeseye ankò");

@@ -56,6 +56,8 @@ app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuil
             ]
         });
 
+    fetchAllPos();
+
     $scope.getData = function () {
         fetchAllPosFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };

@@ -40,7 +40,7 @@ public class PosService {
 
         Pos  savedPos = posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), pos.getEnterprise().getId());
         if (savedPos!= null){
-            if (pos.getId() <= 0){
+            if (pos.getId() == null || pos.getId() <= 0){
                 result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
             } else {
                 if (!pos.getId().equals(savedPos.getId())){
@@ -51,7 +51,7 @@ public class PosService {
 
         savedPos = posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId());
         if (savedPos!= null){
-            if (pos.getId() <= 0){
+            if (pos.getId() == null || pos.getId() <= 0){
                 result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
             } else {
                 if (!pos.getId().equals(savedPos.getId())){

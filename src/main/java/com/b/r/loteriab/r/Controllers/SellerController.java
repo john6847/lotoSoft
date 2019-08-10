@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -102,22 +103,15 @@ public class SellerController {
             if (haveAGroup.equals("off")) {
                 seller.setGroups(null);
             }
+
+            Users users = new Users();
             if (haveUser.equals("off")) {
-                Users users = new Users();
                 users.setName(sellerName);
                 users.setUsername(username);
                 users.setPassword(bCryptPasswordEncoder.encode(password));
-                users.setEnabled(true);
-                users.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
-                Role role = roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SELLER.name(), enterprise.getId());
-                List<Role> rols = new ArrayList<>();
-                rols.add(role);
-                users.setRoles(rols);
-                Users resultingUser = userRepository.save(users);
-                seller.setUser(resultingUser);
             }
 
-            Result result = sellerService.saveSeller(seller, useMonthlyPayment, enterprise);
+            Result result = sellerService.saveSeller(seller, useMonthlyPayment, haveUser, users, enterprise);
             if (!result.isValid()) {
                 redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
                 return "redirect:/seller/create";

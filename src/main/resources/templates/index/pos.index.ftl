@@ -50,7 +50,7 @@
                                                 <div class="col-lg-6 col-md-6 col-sm-6"></div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                                     <div class="form-group" style="margin: 10px">
-                                                        <select class="form-control m-bot15"
+                                                        <select class="form-control m-bot15 selectpicker"
                                                                 data-live-search="true"
                                                                 data-size="5"
                                                                 ng-model="state"
@@ -110,7 +110,7 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/pos/{{pos.id}}">
+                                                    <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">
                                                         <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{pos.enabled? 'Bloke' : 'Debloke'}}
                                                     </a>
                                                 </td>
@@ -162,12 +162,12 @@
 
 <#include "../scripts.ftl">
 <script>
-    var response = false;
+    var responseDelete = false;
     function onDelete (e) {
-        if(!response)
+        if(!responseDelete)
             e.preventDefault();
         bootbox.confirm({
-            message: "Ou preske elimine machin sa, ou vle kontinye?",
+            message: "Ou preske elimine machin sa, ou deside kontinye?",
             size: 'small',
             buttons: {
                 confirm: {
@@ -180,8 +180,33 @@
                 }
             }, callback: function (result) {
                 if (result){
-                    response = true;
+                    responseDelete = true;
                     document.getElementById('delete').click();
+                }
+            }
+        });
+    }
+
+    var responseBlock = false;
+    function onBlock (e) {
+        if(!responseBlock)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Ou preske bloke machin sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseBlock = true;
+                    document.getElementById('block').click();
                 }
             }
         });

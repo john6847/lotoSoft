@@ -38,10 +38,9 @@ public class SellerService {
     private Result validateModel (Seller seller){
         Result result = new Result();
 
-        if (seller.getUser() == null){
-            result.add("Vandè a dwe gen kont avan li anrejistre", "User");
+        if (seller.getPos() == null){
+            result.add("Vandè a dwe gen yon machin avan li anrejistre", "Pos");
         }
-
 
         return result;
     }

@@ -115,13 +115,13 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Modpas<span class="required">*</span></label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="password" class="form-control round-input" id="password" placeholder="******" name="password" maxlength="20" minlength="6" required>
+                                        <input type="password" class="form-control round-input" id="password" placeholder="******" name="password" maxlength="20" minlength="8" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label">Konfime Modpas<span class="required">*</span></label>
                                     <div class="col-lg-10   col-md-10 col-sm-10">
-                                        <input type="password" class="form-control round-input" id="confirmPassword"  placeholder="******" name="confirmPassword" maxlength="20" minlength="6" required>
+                                        <input type="password" class="form-control round-input" id="confirmPassword"  placeholder="******" name="confirmPassword" maxlength="20" minlength="8" required>
                                     </div>
                                 </div>
 

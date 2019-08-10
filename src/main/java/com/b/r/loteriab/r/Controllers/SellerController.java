@@ -34,13 +34,7 @@ public class SellerController {
     private UsersService usersService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private PosService posService;
-
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     private GroupsService groupsService;
@@ -88,6 +82,7 @@ public class SellerController {
                              @RequestParam(value ="username", defaultValue = "") String username,
                              @RequestParam(value ="name", defaultValue = "") String sellerName,
                              @RequestParam(value = "password", defaultValue = "") String password,
+                             @RequestParam(value = "confirmPassword") String confirmPassword,
                              @RequestParam(value = "haveAUser", defaultValue = "off") String haveUser,
                              @RequestParam(value = "haveAGroup", defaultValue = "off") String haveAGroup,
                              @RequestParam(value = "useMonthlyPayment", defaultValue = "off") String useMonthlyPayment,
@@ -99,6 +94,11 @@ public class SellerController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(name, enterprise.getId());
             model.addAttribute("user", user);
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+            if (!confirmPassword.equals(password)) {
+                redirectAttributes.addFlashAttribute("error", "Modpas yo sipoze menm");
+                return "redirect:/seller/create";
+            }
 
             if (haveAGroup.equals("off")) {
                 seller.setGroups(null);

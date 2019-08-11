@@ -24,6 +24,9 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
             }
         )
         .withOption("destroy", true)
+        .withOption('responsive', true)
+        .withOption('scrollX', '100%')
+        .withOption('deferRender', true)
         .withColumnFilter({
             aoColumns: [
                 {

@@ -33,12 +33,14 @@
             </ol>
           </div>
         </div>
+          <#if error??>
+              <div class="row">
+                  <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
+                          <div class="alert alert-danger" role="alert">${error}</div>
+                  </div>
+              </div>
+          </#if>
         <div class="row">
-          <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
-              <#if error??>
-                  <div class="alert alert-danger" role="alert">${error}</div>
-              </#if>
-          </div>
           <div class="col-lg-12" ng-init="getData()">
             <section class="panel">
               <header class="panel-heading">
@@ -47,22 +49,28 @@
                       Itilizatè
                   </div>
 
-                  <div class="col-lg-8 text-right" style="margin-top: 5px">
-                      <div class="row">
-                          <div class="col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
-                            <div class="form-group">
-                              <select class="form-control"
-                                      data-live-search="true"
-                                      data-size="5"
-                                      ng-model="state"
-                                      ng-change="getData()"
-                                      name="state"
-                                      id="state"
-                                      autofocus>
-                                  <option value="0">Bloke</option>
-                                  <option value="1" selected>Tout</option>
-                                  <option value='2'>Actif</option>
-                              </select>
+                  <div class="col-lg-8">
+                      <div class="row text-right">
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                              <div class="row">
+                                  <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                                  <div class="col-lg-6 col-md-6 col-sm-6">
+                                      <div class="form-group" style="margin: 10px">
+                                          <select class="form-control"
+                                                  data-live-search="true"
+                                                  data-size="5"
+                                                  ng-model="state"
+                                                  ng-change="getData()"
+                                                  name="state"
+                                                  id="state"
+                                                  autofocus>
+                                              <option value="0">Bloke</option>
+                                              <option value="1" selected>Tout</option>
+                                              <option value='2'>Actif</option>
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
                             </div>
                           </div>
                       </div>
@@ -108,12 +116,12 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-danger btn-xs" href="/user/1/delete{{user.id}}">
+                                        <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete{{user.id}}">
                                             <i class="fa fa-trash-o"></i> Elimine
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/user/{{user.id}}">
+                                        <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/user/{{user.id}}">
                                             <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
                                         </a>
                                     </td>
@@ -166,6 +174,60 @@
   </section>
 
   <#include "../scripts.ftl">
+<script>
+    var responseDelete = false;
+    function onDelete (e, ) {
+        if(!responseDelete)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Ou preske elimine machin sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseDelete = true;
+                    document.getElementById('delete').click();
+                }
+            }
+        });
+    }
+
+    var responseBlock = false;
+    function onBlock (e) {
+        if(!responseBlock)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke machin sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseBlock = true;
+                    document.getElementById('block').click();
+                }
+            }
+        });
+    }
+</script>
+<script type = "text/javascript" >
+    $('.selectpicker').selectpicker();
+</script>
 
 </body>
 

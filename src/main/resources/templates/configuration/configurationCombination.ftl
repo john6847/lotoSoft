@@ -33,6 +33,7 @@
             </ol>
           </div>
         </div>
+
         <div class="row">
           <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12" ng-if="combinationField.message">
             <div class="alert alert-success" role="alert" ng-if="combinationField.message.saved">{{combinationField.message.message}}</div>
@@ -42,6 +43,9 @@
             <div class="alert alert-success" role="alert" ng-if="combinationGroupField.message.saved">{{combinationGroupField.message.message}}</div>
             <div class="alert alert-danger" role="alert" ng-if="!combinationGroupField.message.saved">{{combinationGroupField.message.message}}</div>
           </div>
+        </div>
+
+        <div class="row">
           <div class="col-lg-12">
             <section class="panel">
               <header class="panel-heading">

@@ -33,12 +33,14 @@
             </ol>
           </div>
         </div>
+          <#if error??>
+              <div class="row">
+                  <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
+                      <div class="alert alert-danger" role="alert">${error}</div>
+                  </div>
+              </div>
+          </#if>
         <div class="row">
-          <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
-              <#if error??>
-                  <div class="alert alert-danger" role="alert">${error}</div>
-              </#if>
-          </div>
           <div class="col-lg-12" ng-init="getData()">
             <section class="panel">
               <header class="panel-heading">
@@ -95,12 +97,12 @@
                                     <td>{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
                                     <td style="text-align: center"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
                                     <td>
-                                        <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}" id="delete" onclick="onDelete(event)">
+                                        <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}">
                                             <i class="fa fa-trash-o"></i> Elimine
                                         </a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}" id="block" onclick="onDelete(event)">
+                                        <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}">
                                             <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
                                         </a>
                                     </td>
@@ -114,8 +116,6 @@
                                     <th style="width:25%">Adrès</th>
                                     <th style="width:10% text-align: center">Dat Kreyasyon</th>
                                     <th style="width:10% text-align: center">Actif</th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
                                 </tr>
                             </tfoot>
                         </table>

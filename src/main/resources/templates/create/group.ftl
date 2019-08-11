@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Respoonsab <span class="required">*</span></label>
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Responsab <span class="required">*</span></label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
                                         <select class="form-control round-input"
                                                 name="parentSeller"

@@ -30,12 +30,14 @@
               </ol>
             </div>
           </div>
+            <#if error??>
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger" role="alert">${error}</div>
+                    </div>
+                </div>
+            </#if>
           <div class="row">
-            <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
-                <#if error??>
-                    <div class="alert alert-danger" role="alert">${error}</div>
-                </#if>
-            </div>
             <div class="col-lg-12">
               <section class="panel">
                 <header class="panel-heading">
@@ -57,8 +59,6 @@
                             <th style="width:15%">Pri Peman</th>
                             <th style="width:15%">Dat Kreyasyon</th>
                             <th style="width:15%">Dat Modifikasyon</th>
-<#--                            <th style="width:15%; text-align: center">Actif</th>-->
-<#--                            <th style="width:15%; text-align: center">Bloke</th>-->
                             <th style="width:5%"></th>
                           </tr>
                           <tr dir-paginate="combinationType in combinationTypes|itemsPerPage:itemsPerPage" total-items="totalCount">
@@ -68,8 +68,6 @@
                               <td ng-if="combinationType.products.id !== 1">{{combinationType.payedPrice}}</td>
                               <td>{{combinationType.creationDate | date:'dd/MM/yyyy'}}</td>
                               <td>{{combinationType.modificationDate | date:'dd/MM/yyyy'}}</td>
-<#--                              <td style="text-align: center"><i class="fa fa-{{combinationType.enabled? 'check' : 'times' }}" style="color: {{combinationType.enabled? 'green' : 'red'}} ;"></i></td>-->
-<#--                              <td style="text-align: center"><i class="fa fa-{{combinationType.enabled? 'times' : 'check' }}" style="color: {{combinationType.enabled? 'red' :'green' }} ;"></i></td>-->
                               <td>
                                   <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}"><i class="fa fa-edit"></i> Aktyalize</a>
                               </td>

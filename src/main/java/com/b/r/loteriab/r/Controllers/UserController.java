@@ -47,6 +47,7 @@ public class UserController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
+
             if (type > 1)
                 return "/index/user-super-admin.index";
             return "/index/user.index";
@@ -75,6 +76,7 @@ public class UserController {
             }
 
             model.addAttribute("users", new Users());
+            model.addAttribute("roles", roleService.findAllByEnterpriseId(enterprise.getId()));
             return "/create/user";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");

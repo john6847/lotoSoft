@@ -43,12 +43,14 @@
                     </#if>
                 </div>
             </div>
-            <div class="row">
-                <#if error??>
+            <#if error??>
+                <div class="row">
                     <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="alert alert-danger" role="alert">${error}</div>
                     </div>
-                </#if>
+                </div>
+            </#if>
+            <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
@@ -126,26 +128,60 @@
                                 </div>
 
                                 <#if isSuperAdmin == false>
-                                     <div class="form-group">
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-2">Se Administratè</label>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <input type="checkbox" name="isAdmin" id="isAdmin">
-                                        </div>
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-2">Se Vandè</label>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <input type="checkbox" name="isSeller" id="isSeller">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-2">Se Sipevizè</label>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <input type="checkbox" name="isSupervisor" id="isSupervisor">
-                                        </div>
-                                        <label class="control-label col-lg-2 col-md-2 col-sm-2">Se Rekolektè</label>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <input type="checkbox" name="isCollector" id="isCollector">
-                                        </div>
-                                    </div>
+                                    <#if roles??>
+                                            <#assign admin = 0>
+                                            <#assign collector = 0>
+                                            <#assign seller = 0>
+                                            <#assign supervisor = 0>
+                                            <#list roles as role>
+                                                <#if role.name=="ROLE_ADMIN">
+                                                    <#assign admin = 1>
+                                                </#if>
+                                                <#if role.name=="ROLE_SELLER">
+                                                    <#assign seller = 1>
+                                                </#if>
+                                                <#if role.name=="ROLE_SUPERVISOR">
+                                                    <#assign supervisor = 1>
+                                                </#if>
+                                                <#if role.name=="ROLE_COLLECTOR">
+                                                    <#assign collector = 1>
+                                                </#if>
+                                            </#list>
+                                        <#if (!(admin == 0 && seller == 0))>
+                                            <div class="form-group funkyradio">
+                                                <div class="col-sm-2 col-sm-2 col-sm-2 "></div>
+                                                <#if admin == 1>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
+                                                        <input type="checkbox" name="isAdmin" id="isAdmin">
+                                                        <label for="isAdmin">Se Administratè</label>
+                                                    </div>
+                                                </#if>
+                                                <#if seller == 1>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
+                                                        <input type="checkbox" name="isSeller" id="isSeller">
+                                                        <label for="isSeller">Se Vandè</label>
+                                                    </div>
+                                                </#if>
+                                            </div>
+                                        </#if>
+                                        <#if (!(collector == 0 && supervisor == 0))>
+                                            <div class="form-group funkyradio">
+                                                <div class="col-sm-2 col-sm-2 col-sm-2"></div>
+                                                <#if supervisor == 1>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
+                                                        <input type="checkbox" name="isSupervisor" id="isSupervisor">
+                                                        <label for="isSupervisor">Se Sipevizè</label>
+                                                    </div>
+                                                </#if>
+                                                <#if collector == 1>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
+                                                        <input type="checkbox" name="isCollector" id="isCollector">
+                                                        <label for="isCollector">Se Rekolektè</label>
+                                                    </div>
+                                                </#if>
+                                            </div>
+                                        </#if>
+                                    </#if>
                                 </#if>
 
                                 <div class="form-group">

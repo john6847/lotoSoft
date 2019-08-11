@@ -170,6 +170,7 @@ public class UserController {
                 return "404";
             }
 
+            model.addAttribute("roles", roleService.findAllByEnterpriseId(enterprise.getId()));
             model.addAttribute("users", users);
             return "/update/user";
         }

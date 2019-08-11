@@ -52,17 +52,17 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     Page<Users> selectUserSuperAdminAndEnabled(String name, boolean state, Pageable pageable);
 
     String q5 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where r.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and u.enterprise_id =?3";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and u.enterprise_id =?3";
     @Query(value = q5, nativeQuery = true)
     List<Users> selectAllUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId);
 
     String q6 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where r.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and enterprise_id=?3 and order by ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and u.enterprise_id=?3 order by ?#{#pageable}";
     @Query(value = q6, nativeQuery = true)
     Page<Users> selectUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId, Pageable pageable);
 
     String q7 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where r.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) u.enabled =?3 and enterprise_id=?4 and order by ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) u.enabled =?3 and u.enterprise_id=?4 order by ?#{#pageable}";
     @Query(value = q7, nativeQuery = true)
     Page<Users> selectUserExceptSuperAdminAndEnabledAndEnterpriseId(String name, String name1, boolean state, Long enterpriseId, Pageable pageable);
 

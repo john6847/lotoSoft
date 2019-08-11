@@ -58,50 +58,49 @@ app.controller("groupController", ['$http','$scope', 'GroupService','DTOptionsBu
         fetchAllGroupFiltered($scope.pageno,$scope.itemsPerPage,$scope.state);
     };
 
-        function fetchAllGroup() {
-            GroupService.fetchAllGroups()
-                .then(
-                    function (d) {
-                        if (d === null || d === undefined)
-                            $scope.groups = [];
-                        else
-                            $scope.groups = createAddress(d);
-                    },
-                    function (errorResponse) {
-                        console.error(errorResponse);
-                    })
-        }
+    function fetchAllGroup() {
+        GroupService.fetchAllGroups().then(
+                function (d) {
+                    if (d === null || d === undefined)
+                        $scope.groups = [];
+                    else
+                        $scope.groups = createAddress(d);
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                })
+    }
 
-        function fetchAllGroupFiltered(pageno, itemsPerPage, state) {
-            GroupService.fetchAllGroupsFiltered(pageno, itemsPerPage, state)
-                .then(
-                    function (d) {
-                        if (d === null || d === undefined)
-                            $scope.groups = [];
-                        else
-                            $scope.groups = createAddress(d.content);
-                    },
-                    function (errorResponse) {
-                        console.error(errorResponse);
-                    })
-        }
+    function fetchAllGroupFiltered(pageno, itemsPerPage, state) {
+        GroupService.fetchAllGroupsFiltered(pageno, itemsPerPage, state)
+            .then(
+                function (d) {
+                    if (d === null || d === undefined)
+                        $scope.groups = [];
+                    else
+                        $scope.groups = createAddress(d.content);
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                })
+    }
 
-        function createAddress(groups) {
-            for (var i=0 ; i< groups.length ; i++){
-                groups[i].address.address = ' ';
-                if (groups[i].address.city){
-                    groups[i].address.address += groups[i].address.city +', '
-                }
-                if (groups[i].address.sector){
-                    groups[i].address.address += groups[i].address.sector+', '
-                }
-                if (groups[i].address.country){
-                    groups[i].address.address += groups[i].address.country +'\n '
-                }
-                if (groups[i].address.phone){
-                    groups[i].address.address += groups[i].address.phone+' '
-                }
+    function createAddress(groups) {
+        for (var i=0 ; i< groups.length ; i++){
+            groups[i].address.address = ' ';
+            if (groups[i].address.city){
+                groups[i].address.address += groups[i].address.city +', '
             }
-            return groups;
+            if (groups[i].address.sector){
+                groups[i].address.address += groups[i].address.sector+', '
+            }
+            if (groups[i].address.country){
+                groups[i].address.address += groups[i].address.country +'\n '
+            }
+            if (groups[i].address.phone){
+                groups[i].address.address += groups[i].address.phone+' '
+            }
         }
+        return groups;
+    }
 }]);

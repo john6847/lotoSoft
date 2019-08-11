@@ -41,7 +41,7 @@
               </div>
           </#if>
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12" ng-init="getData()">
             <section class="panel">
               <header class="panel-heading">
                 <div class="row">
@@ -149,6 +149,59 @@
   </section>
 
   <#include "../scripts.ftl">
+
+  <script>
+      var responseDelete = false;
+      function onDelete (e) {
+          if(!responseDelete)
+              e.preventDefault();
+          bootbox.confirm({
+              message: "Wap reayilize yon aksyon ki ap elimine group sa, ou deside kontinye?",
+              size: 'small',
+              buttons: {
+                  confirm: {
+                      label: '<i class="fa fa-check"></i> Wi',
+                      className: ' btn-success'
+                  },
+                  cancel: {
+                      label: '<i class="fa fa-times"></i> Non',
+                      className: 'btn-danger'
+                  }
+              }, callback: function (result) {
+                  if (result){
+                      responseDelete = true;
+                      document.getElementById('delete').click();
+                  }
+              }
+          });
+      }
+
+
+      var responseBlock = false;
+      function onDelete (e) {
+          if(!responseBlock)
+              e.preventDefault();
+          bootbox.confirm({
+              message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke gwoup sa, ou deside kontinye",
+              size: 'small',
+              buttons: {
+                  confirm: {
+                      label: '<i class="fa fa-check"></i> Wi',
+                      className: ' btn-success'
+                  },
+                  cancel: {
+                      label: '<i class="fa fa-times"></i> Non',
+                      className: 'btn-danger'
+                  }
+              }, callback: function (result) {
+                  if (result){
+                      responseBlock = true;
+                      document.getElementById('block').click();
+                  }
+              }
+          });
+      }
+  </script>
 
 </body>
 

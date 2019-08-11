@@ -62,6 +62,9 @@ public class ConfigurationController {
     @Autowired
     private EnterpriseRepository enterpriseRepository;
 
+    @Autowired
+    private GroupsRepository groupRepository;
+
     /**
      * Route to configigure Pos Type (Block and UnBlock)
      * @param id
@@ -175,10 +178,10 @@ public class ConfigurationController {
                         sellerRepository.save(seller);
                     }
                 }
-                groupsService.save(groups, enterprise);
+                groupRepository.save(groups);
             }
 
-            return "redirect:/draw";
+            return "redirect:/group";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke gwoup sa");
         return "access-denied";

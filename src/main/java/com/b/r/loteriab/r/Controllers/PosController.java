@@ -140,8 +140,6 @@ public class PosController {
             if (!result.isValid()) {
                 model.addAttribute("error", result.getLista().get(0).getMessage());
             }
-
-
             return "redirect:/pos";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou elimne machin sa");

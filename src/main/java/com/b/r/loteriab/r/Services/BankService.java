@@ -28,6 +28,9 @@ public class BankService {
     @Autowired
     private Helper helper;
 
+    @Autowired
+    private  EnterpriseService enterpriseService;
+
     private Result validateModel (Bank pos){
         Result result = new Result();
 
@@ -43,13 +46,13 @@ public class BankService {
     }
 
     public Result saveBank(Bank bank, Enterprise enterprise){
+        bank.setSerial(helper.createBankSerial(enterprise));
         Result result = validateModel(bank);
         if (!result.isValid()){
             return result;
         }
         try {
-            bank.setSerial(helper.createBankSerial(enterprise));
-            bank.setEnterprise(enterprise);
+            bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
             bank.setCreationDate(new Date());
             bank.setModificationDate(new Date());
             bank.setEnabled(true);
@@ -81,7 +84,7 @@ public class BankService {
     }
 
 
-    public ArrayList<Bank> findAllBank(Long enterpriseId){
+    public ArrayList<Bank> findAllBankByEnterprise(Long enterpriseId){
         return (ArrayList<Bank>)bankRepository.findAllByEnterpriseId(enterpriseId);
     }
 

@@ -27,7 +27,6 @@ public class PosController {
     @Autowired
     private UsersService usersService;
 
-
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
@@ -35,6 +34,7 @@ public class PosController {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
+
             return "/index/pos.index";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade machin yo");

@@ -160,7 +160,7 @@
           <li>
             <a href="#">
               <span class="photo"
-                ><img alt="avatar" src="./img/avatar-mini.jpg"
+                ><img alt="avatar" src="/img/avatar-mini.jpg"
               /></span>
               <span class="subject">
                 <span class="from">Greg Martin</span>
@@ -174,7 +174,7 @@
           <li>
             <a href="#">
               <span class="photo"
-                ><img alt="avatar" src="./img/avatar-mini2.jpg"
+                ><img alt="avatar" src="/img/avatar-mini2.jpg"
               /></span>
               <span class="subject">
                 <span class="from">Bob Mckenzie</span>
@@ -188,7 +188,7 @@
           <li>
             <a href="#">
               <span class="photo"
-                ><img alt="avatar" src="./img/avatar-mini3.jpg"
+                ><img alt="avatar" src="/img/avatar-mini3.jpg"
               /></span>
               <span class="subject">
                 <span class="from">Phillip Park</span>
@@ -202,7 +202,7 @@
           <li>
             <a href="#">
               <span class="photo"
-                ><img alt="avatar" src="./img/avatar-mini4.jpg"
+                ><img alt="avatar" src="/img/avatar-mini4.jpg"
               /></span>
               <span class="subject">
                 <span class="from">Ray Munoz</span>
@@ -271,7 +271,7 @@
         <li class="dropdown">
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="profile-ava">
-              <img alt="" src="img/avatar1_small.jpg" />
+              <img alt="" src="/img/avatar1_small.jpg" />
             </span>
             <span class="username">${user.username}</span>
             <b class="caret"></b>

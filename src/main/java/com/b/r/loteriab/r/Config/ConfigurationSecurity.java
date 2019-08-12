@@ -96,7 +96,7 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers( "/my-ws/**", "/deadRouteBR/**","/assets/**","/fonts/**", "/css/**","/bootstrap-toggle/**", "/dist/**", "/js/**", "/img/**", "/mdb/**");
+        web.ignoring().antMatchers( "/my-ws/**", "/deadRouteBR/**", "/img/**","/assets/**","/fonts/**", "/css/**","/bootstrap-toggle/**", "/dist/**", "/js/**", "/img/**", "/mdb/**");
 
     }
 

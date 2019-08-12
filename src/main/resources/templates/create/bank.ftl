@@ -69,7 +69,8 @@
                                                         data-none-selected-text="Chwazi Vande a"
                                                         data-allow-clear="true"
                                                         data-none-results-text="Vande sa pa egziste"
-                                                        data-placeholder="Chwazi vande la">
+                                                        data-placeholder="Chwazi vande la"
+                                                        required>
                                                     <option value="" selected disabled>---Chwazi yon  vandè---</option>
                                                     <#if sellers??>
                                                         <#list sellers as seller>
@@ -87,16 +88,13 @@
                                                         name="pos"
                                                         id="pos"
                                                         data-live-search="true"
+                                                        data-allow-clear="true"
                                                         data-none-results-text="Machin sa pa egziste"
                                                         data-placeholder="Chwazi machin nan"
                                                         data-none-selected-text="Chwazi Machin nan"
                                                         data-size="5"
                                                         required>
-                                                    <#if pos??>
-                                                        <#list pos as p>
-                                                            <option value="${p.id}">${p.description}</option>
-                                                        </#list>
-                                                    </#if>
+                                                        <option ng-repeat="p in pos track by p.id" value="{{p.id}}">{{p.description}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -121,8 +119,7 @@
                                                        name="region"
                                                        id="region"
                                                        placeholder="Antre non depatman an"
-                                                       maxlength="100"
-                                                       >
+                                                       maxlength="100">
                                             </div>
                                         </div>
 
@@ -158,13 +155,10 @@
                                                        name="street"
                                                        id="street"
                                                        placeholder="Antre non rout la"
-                                                       maxlength="100" >
+                                                       maxlength="250" >
                                             </div>
                                         </div>
-
-
                                     </div>
-
                                 </section>
                             </div>
                         </div>

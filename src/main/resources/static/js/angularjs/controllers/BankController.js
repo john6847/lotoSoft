@@ -23,6 +23,9 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
             }
         )
         .withOption("destroy", true)
+        .withOption('responsive', true)
+        .withOption('scrollX', '100%')
+        .withOption('deferRender', true)
         .withColumnFilter({
             aoColumns: [
                 {
@@ -75,7 +78,6 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
     fetchAllBank();
 
     $scope.getData = function () {
-        $scope.banks = [];
         $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
 
         fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
@@ -107,6 +109,13 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
         BankService.fetchAllBank()
             .then(
                 function (d) {
+                    if (d === null || d === undefined){
+                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+                        $scope.banks = [];
+                    }
+                    else{
+                        $scope.banks = createAddress(d);
+                    }
                     $scope.banks = d;
                 },
                 function (errorResponse) {
@@ -118,11 +127,36 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
         BankService.fetchAllBankFiltered(pageno, itemsPerPage, state)
             .then(
                 function (d) {
-                    $scope.banks = d.content;
+                    if (d === null || d === undefined){
+                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+                        $scope.banks = [];
+                    }
+                    else{
+                        $scope.banks = createAddress(d.content);
+                    }
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
+    }
+
+    function createAddress(banks) {
+        if (!banks) {
+            return  [];
+        }
+        for (var i=0 ; i<banks.length ; i++){
+            banks[i].address.address = ' ';
+            if (banks[i].address.sector){
+                banks[i].address.address += banks[i].address.sector+', '
+            }
+            if (banks[i].address.city){
+                banks[i].address.address += banks[i].address.city +', '
+            }
+            if (banks[i].address.region){
+                banks[i].address.address += banks[i].address.region +'\n '
+            }
+        }
+        return banks;
     }
 
 }]);

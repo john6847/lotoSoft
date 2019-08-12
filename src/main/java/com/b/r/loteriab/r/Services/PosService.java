@@ -1,7 +1,9 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.Combination;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Pos;
+import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Repository.PosRepository;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -60,6 +60,9 @@ public class GlobalRestController {
     @Autowired
     private EnterpriseService enterpriseService;
 
+    @Autowired
+    private BankService bankService;
+
     private static final String ACCECPT_TYPE= "application/json";
 
     /**
@@ -265,7 +268,43 @@ public class GlobalRestController {
     }
 
     /**
-     * Get All Shifts
+     * Get All Bank
+     * @return banks
+     */
+    @GetMapping(value = "/bank/", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Bank>> getBankList(HttpServletRequest request){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<Bank> banks = bankService.findAllBankByEnterprise(enterprise.getId());
+            if (banks.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(banks, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK); //TODO: Sattus code
+    }
+
+    /**
+     * Get All bank filtered
+     * @param page
+     * @param items
+     * @param state
+     * @return groups
+     */
+    @GetMapping(value = "/bank/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Bank>> findBankByPage(@PathVariable("items")int items,
+                                                        @PathVariable("page")int page,
+                                                        @PathVariable("state")int state,
+                                                        HttpServletRequest request
+    ){ Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            Page<Bank> banks = bankService.findAllBankByState(page, items, getState(state), enterprise.getId());
+            return new ResponseEntity<>(banks, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
+    /**
+     * Get All Shift
      * @return shifts
      */
     @GetMapping(value = "/shift/", produces = ACCECPT_TYPE)
@@ -466,8 +505,10 @@ public class GlobalRestController {
     }
 
     /**
-     * Get All Pos size
+     * Get All Pos
      * @param state
+     * @param items
+     * @param page
      * @return size
      */
     @GetMapping(value = "/pos/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)

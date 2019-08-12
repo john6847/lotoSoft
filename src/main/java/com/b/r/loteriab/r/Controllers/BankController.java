@@ -6,10 +6,7 @@ import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.SellerRepository;
-import com.b.r.loteriab.r.Services.BankService;
-import com.b.r.loteriab.r.Services.PosService;
-import com.b.r.loteriab.r.Services.SellerService;
-import com.b.r.loteriab.r.Services.UsersService;
+import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -35,7 +32,7 @@ public class BankController {
     private SellerService sellerService;
 
     @Autowired
-    private PosService posService;
+    private EnterpriseService enterpriseService;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -72,12 +69,21 @@ public class BankController {
     }
 
     @PostMapping("/create")
-    public String saveBank(@ModelAttribute("bank") Bank bank, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+    public String saveBank(@ModelAttribute("bank") Bank bank,
+                           @RequestParam(value = "region", defaultValue = "") String region,
+                           @RequestParam(value = "city", defaultValue = "") String  city,
+                           @RequestParam(value = "sector", defaultValue = "") String  sector,
+                           @RequestParam(value = "street", defaultValue = "") String street,
+                           HttpServletRequest request,
+                           Model model,
+                           RedirectAttributes redirectAttributes){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
+
+            bank.setAddress(enterpriseService.buildAddress ("",region, city, sector, street, 0, "", ""));
 
             Result result = bankService.saveBank(bank, enterprise);
             if (!result.isValid()) {
@@ -120,16 +126,25 @@ public class BankController {
     }
 
     @PostMapping("/update")
-    public String updateBank(@ModelAttribute("bank") Bank bank,HttpServletRequest request, Model model){
+    public String updateBank(@ModelAttribute("bank") Bank bank,
+                             @RequestParam(value = "region", defaultValue = "") String region,
+                             @RequestParam(value = "city", defaultValue = "") String  city,
+                             @RequestParam(value = "sector", defaultValue = "") String  sector,
+                             @RequestParam(value = "street", defaultValue = "") String street,
+                             RedirectAttributes redirectAttributes,
+                             HttpServletRequest request,
+                             Model model){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
+            bank.setAddress(enterpriseService.buildAddress ("",region, city, sector, street, 0, "", ""));
+
             Result result = bankService.updateBank(bank, enterprise);
             if (!result.isValid()) {
-                model.addAttribute("error", "Bank la pa modifye, eseye ankò");
+                redirectAttributes.addFlashAttribute("error", "Bank la pa modifye, eseye ankò");
                 return "redirect:/bank/update/" + bank.getId();
             }
 

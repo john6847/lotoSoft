@@ -2,8 +2,10 @@ package com.b.r.loteriab.r.Services;
 
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Bank;
+import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.ViewModel.Helper;
 import com.b.r.loteriab.r.Repository.BankRepository;
+import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,12 @@ public class BankService {
     @Autowired
     private  EnterpriseService enterpriseService;
 
+    @Autowired
+    private SellerService sellerService;
+
+    @Autowired
+    private SellerRepository sellerRepository;
+
     private Result validateModel (Bank pos){
         Result result = new Result();
 
@@ -53,6 +61,12 @@ public class BankService {
         }
         try {
             bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
+            if (bank.getSeller()!=null){
+                Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
+                if (seller!=null && seller.getPos()== null){
+                    sellerRepository.save(seller);
+                }
+            }
             bank.setCreationDate(new Date());
             bank.setModificationDate(new Date());
             bank.setEnabled(true);
@@ -75,6 +89,10 @@ public class BankService {
         currentBank.setPos(bank.getPos());
         currentBank.setSeller(bank.getSeller());
         currentBank.setModificationDate(new Date());
+        currentBank.getAddress().setRegion(bank.getAddress().getRegion());
+        currentBank.getAddress().setSector(bank.getAddress().getSector());
+        currentBank.getAddress().setCity(bank.getAddress().getCity());
+        currentBank.getAddress().setStreet(bank.getAddress().getStreet());
         try {
             bankRepository.save(currentBank);
         }catch (Exception ex){
@@ -125,4 +143,5 @@ public class BankService {
         }
         return result;
     }
+
 }

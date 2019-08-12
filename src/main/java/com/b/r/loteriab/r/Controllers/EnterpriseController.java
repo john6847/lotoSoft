@@ -61,6 +61,7 @@ public class EnterpriseController {
     @PostMapping("/create")
     public String saveEnterprise(@ModelAttribute("enterprise") Enterprise enterprise,
                                  @RequestParam(value = "country", defaultValue = "") String country,
+                                 @RequestParam(value = "region", defaultValue = "") String region,
                                  @RequestParam(value = "city", defaultValue = "") String  city,
                                  @RequestParam(value = "sector", defaultValue = "") String  sector,
                                  @RequestParam(value = "street", defaultValue = "") String street,
@@ -85,7 +86,7 @@ public class EnterpriseController {
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
-        enterprise.setAddress(enterpriseService.buildAddress (country, city, sector, street, number, phone, email));
+        enterprise.setAddress(enterpriseService.buildAddress (country, region, city, sector, street, number, phone, email));
         Result result = enterpriseService.saveEnterprise(enterprise);
         if(!result.isValid()){
             redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());

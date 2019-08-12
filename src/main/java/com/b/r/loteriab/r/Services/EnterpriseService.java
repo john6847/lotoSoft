@@ -120,11 +120,14 @@ public class EnterpriseService {
         return result;
     }
 
-    public Address buildAddress (String country, String city, String sector, String street, int number, String phone, String email){
+    public Address buildAddress (String country, String region, String city, String sector, String street, int number, String phone, String email){
 
         Address address = new Address();
         if (!country.isEmpty()){
             address.setCountry(country);
+        }
+        if (!region.isEmpty()){
+            address.setRegion(region);
         }
         if (!city.isEmpty()){
             address.setCity(city);

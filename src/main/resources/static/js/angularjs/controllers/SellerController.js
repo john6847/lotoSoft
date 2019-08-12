@@ -76,7 +76,6 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
     fetchAllSellers();
 
     $scope.usernameChange = function (){
-        console.log($scope.username.sellerUsername)
         $scope.username.suggestedUsername =[];
         if ($scope.username.sellerUsername !== ''){
             fetchUser($scope.username.sellerUsername);

@@ -35,6 +35,10 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     @Query(value = q1, nativeQuery = true)
     <T>List<T>selectAllByNumberThreeDigitsByEnterpriseId(String numberInStringFormat, int limit, String type, Long enterpriseId, Class<T> classType);
 
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and (c.RESULT_COMBINATION = '94 05' or c.RESULT_COMBINATION = '05 94') and (c.COMBINATION_TYPE_ID = 3 or c.COMBINATION_TYPE_ID = 4)
+    List<Combination> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId1, Long enterpriseId);
+
+
     String q2 = "SELECT " +
             "       c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED, " +
             "       n.Id as numberTwoDigitsId, n.NUMBER_IN_STRING_FORMAT as numberTwoDigits, " +
@@ -146,6 +150,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     @Query(value = q6, nativeQuery = true)
     <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeLOTOANDOPSYONAndEnterpriseId(String numberInStringFormat, String type1, String type2, Long enterpriseId, Class<T> classType);
+    List<Combination> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long combinationTypeId2, Long enterpriseId);
+
 
     String q7 ="SELECT\n" +
             "    c.ID as combinationId, c.MAX_PRICE as maxPrice, c.COMBINATION_TYPE_ID as combinationTypeId, c.ENABLED,\n" +
@@ -168,6 +174,16 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     @Query(value = q7, nativeQuery = true)
     <T>List<T> selectAllBySameNumberTwoDigitsAndNumberTwoDigitsAndTypeMARYAJAndEnterpriseId(String numberInStringFormat, String type1, Long enterpriseId, Class<T> classType);
+    List<Combination> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId);
+
+
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and c.RESULT_COMBINATION = '44' and  c.COMBINATION_TYPE_ID = 1;borlet
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and c.RESULT_COMBINATION = '944' and  c.COMBINATION_TYPE_ID = 2; Loto 3
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and (c.RESULT_COMBINATION = '05 44' or c.RESULT_COMBINATION ='44 05') and  (c.COMBINATION_TYPE_ID = 3 or c.COMBINATION_TYPE_ID = 4); Loto and Opsyon
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and c.RESULT_COMBINATION = '22 22' and  (c.COMBINATION_TYPE_ID = 3 or c.COMBINATION_TYPE_ID = 4); Loto and Opsyon
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and (c.RESULT_COMBINATION = '05x44' or c.RESULT_COMBINATION ='44x05') and  c.COMBINATION_TYPE_ID = 5;Maryaj
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and c.RESULT_COMBINATION = '44x44' and  c.COMBINATION_TYPE_ID = 5;Maryaj
+//    select * from COMBINATION c where c.ENTERPRISE_ID = 2 and c.RESULT_COMBINATION = '944 05' and  c.COMBINATION_TYPE_ID = 6; extra
 
     List<Combination> findAllByCombinationTypeProductsNameAndEnterpriseId(String Name, Long enterpriseId); // TODO:
 

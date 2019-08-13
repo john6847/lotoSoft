@@ -59,12 +59,14 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Vande<span class="required">*</span></label>
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Vandè<span class="required">*</span></label>
                                             <div class="col-lg-10 col-md-10 col-sm-10">
                                                 <select class="form-control selectpicker"
                                                         name="seller"
                                                         id="seller"
                                                         data-size="5"
+                                                        ng-model="selectedSeller"
+                                                        ng-change="sellerChange(1)"
                                                         data-none-selected-text="Chwazi Vande a"
                                                         data-allow-clear="true"
                                                         data-none-results-text="Vande sa pa egziste"

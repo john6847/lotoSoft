@@ -102,10 +102,10 @@
                                                 <td>{{start+$index+1}}</td>
                                                 <td>{{bank.description}}</td>
                                                 <td>{{bank.serial}}</td>
-                                                <td>{{bank.address}}</td>
+                                                <td>{{bank.address.address}}</td>
                                                 <td>{{bank.seller.user.name}}</td>
                                                 <td>{{bank.seller.pos.description}}</td>
-                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy'}}</td>
+                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
                                                 <td style="text-align: center"><i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td>
                                                     <a class="btn btn-warning btn-xs" href="/bank/update/{{bank.id}}">
@@ -118,7 +118,7 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-{{bank.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/bank/{{bank.id}}">
+                                                    <a class="btn btn-{{bank.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/bank/{{bank.id}}">
                                                         <i class="fa fa-{{bank.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{bank.enabled? 'Bloke' : 'Debloke'}}
                                                     </a>
                                                 </td>
@@ -151,7 +151,6 @@
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Bank
                                     </a>
                                 </div>
-                                <div class="col-md-6"><p>Content here. <button type="show-alert btn btn-primary" onclick="onDelete(event)"  >Alert!</button></p></div>
                             </div>
                         </footer>
                 </div>
@@ -173,17 +172,12 @@
 
 <#include "../scripts.ftl">
 <script>
-
-    // var deleteButton = document.getElementById("delete");
-    // deleteButton.addEventListener('click', function (event) {
-    //     event.preventDefault();
-    // });
-    var response = false;
-    function onDelete (e) {
-        if(!response)
+    var responseDelete = false;
+    function onDelete (e, ) {
+        if(!responseDelete)
             e.preventDefault();
         bootbox.confirm({
-            message: "Ou preske elimine machin sa, ou vle kontinye?",
+            message: "Ou preske elimine bank sa, ou deside kontinye?",
             size: 'small',
             buttons: {
                 confirm: {
@@ -196,16 +190,42 @@
                 }
             }, callback: function (result) {
                 if (result){
-                    response = true;
+                    responseDelete = true;
                     document.getElementById('delete').click();
                 }
             }
         });
     }
 
-
+    var responseBlock = false;
+    function onBlock (e) {
+        if(!responseBlock)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke bank sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseBlock = true;
+                    document.getElementById('block').click();
+                }
+            }
+        });
+    }
 </script>
-
+</script>
+<script type = "text/javascript" >
+    $('.selectpicker').selectpicker();
+</script>
 </body>
 
 </html>

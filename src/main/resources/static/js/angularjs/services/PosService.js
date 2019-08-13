@@ -38,9 +38,9 @@ angular.module('lottery')
             return deferred.promise;
         }
 
-        function fetchPosBySeller(id) {
+        function fetchPosBySeller(id, updating) {
             var deferred = $q.defer();
-            $http.get("/api/pos/find/seller/"+ id)
+            $http.get("/api/pos/find/seller/"+ id +'/'+updating)
                 .then(
                     function (response) {
                         deferred.resolve(response.data);

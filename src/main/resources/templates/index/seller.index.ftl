@@ -175,7 +175,7 @@
     if(!responseDelete)
       e.preventDefault();
     bootbox.confirm({
-      message: "Ou preske elimine machin sa, ou deside kontinye?",
+      message: "Ou preske elimine vande sa, ou deside kontinye?",
       size: 'small',
       buttons: {
         confirm: {
@@ -200,7 +200,7 @@
     if(!responseBlock)
       e.preventDefault();
     bootbox.confirm({
-      message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke machin sa, ou deside kontinye?",
+      message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke vande sa, ou deside kontinye?",
       size: 'small',
       buttons: {
         confirm: {

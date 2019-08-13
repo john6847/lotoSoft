@@ -31,11 +31,6 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
                 {
                 type: 'number'
                 },
-                    {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
                 {
                     type: 'text',
                     bRegex: true,
@@ -62,9 +57,9 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
                     bSmart: true
                 },
                 {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
+                    type: 'text',
+                    bRegex: true,
+                    bSmart: true
                 },
                 {
                     type: 'select',
@@ -83,15 +78,14 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
         fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 
-    $scope.sellerChange = function (){
+    $scope.sellerChange = function (updatiing){
         if ($scope.selectedSeller){
-            console.log($scope.selectedSeller)
-            fetchPos($scope.selectedSeller);
+            fetchPos($scope.selectedSeller, updatiing);
         }
     };
 
-    function fetchPos(selectedSeller) {
-        PosService.fetchPosBySeller(selectedSeller)
+    function fetchPos(selectedSeller, updating) {
+        PosService.fetchPosBySeller(selectedSeller, updating)
             .then(
                 function (d) {
                     if (d === null || d === undefined)
@@ -145,15 +139,17 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
             return  [];
         }
         for (var i=0 ; i<banks.length ; i++){
-            banks[i].address.address = ' ';
-            if (banks[i].address.sector){
-                banks[i].address.address += banks[i].address.sector+', '
-            }
-            if (banks[i].address.city){
-                banks[i].address.address += banks[i].address.city +', '
-            }
-            if (banks[i].address.region){
-                banks[i].address.address += banks[i].address.region +'\n '
+            if (banks[i].address){
+                banks[i].address.address = ' ';
+                if (banks[i].address.sector){
+                    banks[i].address.address += banks[i].address.sector+', '
+                }
+                if (banks[i].address.city){
+                    banks[i].address.address += banks[i].address.city +', '
+                }
+                if (banks[i].address.region){
+                    banks[i].address.address += banks[i].address.region +'\n '
+                }
             }
         }
         return banks;

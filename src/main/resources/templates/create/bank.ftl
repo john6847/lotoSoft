@@ -65,7 +65,7 @@
                                                         id="seller"
                                                         data-size="5"
                                                         ng-model="selectedSeller"
-                                                        ng-change="sellerChange()"
+                                                        ng-change="sellerChange(0)"
                                                         data-none-selected-text="Chwazi Vande a"
                                                         data-allow-clear="true"
                                                         data-none-results-text="Vande sa pa egziste"

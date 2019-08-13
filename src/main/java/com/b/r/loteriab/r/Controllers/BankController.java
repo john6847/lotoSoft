@@ -37,6 +37,9 @@ public class BankController {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private PosService posService;
+
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
@@ -61,7 +64,6 @@ public class BankController {
 
             model.addAttribute("bank", new Bank());
             model.addAttribute("sellers", sellerRepository.selectAllSellersFreeFromBankByEnterpriseId(true, enterprise.getId()));
-//            model.addAttribute("pos", posService.findAllFreePosFromBankByEnabled(true, enterprise.getId()));
             return "/create/bank";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye bank sa");
@@ -118,7 +120,7 @@ public class BankController {
 
             model.addAttribute("bank", bank);
             model.addAttribute("sellers", sellerService.findAllSellersByEnterpriseId(enterprise.getId()));
-//            model.addAttribute("pos", posService.findAllFreePosFromBankByEnabled(true, enterprise.getId()));
+            model.addAttribute("pos", posService.findPosBySellerId(bank.getSeller().getId(), enterprise.getId(),1));
             return "/update/bank";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye machin sa");

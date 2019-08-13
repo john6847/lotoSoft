@@ -128,11 +128,16 @@ public class PosService {
         return posRepository.findAllByEnterpriseId(enterpriseId);
     }
 
-    public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId){
+    public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId, int updating){
         List<Pos> pos = posRepository.selectPosRelatedToSeller(sellerId, enterpriseId, true);
 
-        if (pos == null){
-            pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
+        if (updating <= 0){
+            if (pos == null){
+                pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
+            }
+        } else {
+            List<Pos> freePos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
+            pos.addAll(freePos);
         }
         return pos;
     }

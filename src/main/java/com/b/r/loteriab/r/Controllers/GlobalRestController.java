@@ -473,13 +473,14 @@ public class GlobalRestController {
     /**
      * Get All Pos By seller
      * @param sellerId
+     * @param updating
      * @return size
      */
-    @GetMapping(value = "/pos/find/seller/{id}", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Pos>> getAllPosBySeller(@PathVariable("id")Long sellerId, HttpServletRequest request){
+    @GetMapping(value = "/pos/find/seller/{id}/{updating}", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Pos>> getAllPosBySeller(@PathVariable("id")Long sellerId,@PathVariable("updating")int updating,  HttpServletRequest request){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Pos> pos = posService.findPosBySellerId(sellerId, enterprise.getId());
+            List<Pos> pos = posService.findPosBySellerId(sellerId, enterprise.getId(),updating);
             if (pos.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(pos, HttpStatus.OK);

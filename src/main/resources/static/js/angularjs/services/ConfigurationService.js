@@ -12,10 +12,10 @@ angular.module('lottery')
             updateCombinationConfigurationGroup: updateCombinationConfigurationGroup
         };
 
-        function fetchAllCombination(itemsPerPage, combination) {
+        function fetchAllCombination(combination) {
             var deferred = $q.defer();
 
-            $http.get("/api/combination/find/item/"+itemsPerPage, {params: {combination: combination}})
+            $http.get("/api/combination/find", {params: {combination: combination}})
                 .then(
                     function (response) {
                         deferred.resolve(response.data);

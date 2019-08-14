@@ -260,10 +260,11 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
 
     function groupItem(data){
         if (data){
-            $scope.combinationField.combinations= data.reduce(function(results, org) {
-                (results[org.combinationId] = results[org.combinationId] || []).push(org);
-                return results;
-            }, {});
+            // $scope.combinationField.combinations= data.reduce(function(results, org) {
+            //     (results[org.combinationId] = results[org.combinationId] || []).push(org);
+            //     return results;
+            // }, {});
+            $scope.combinationField.combinations = data;
             $scope.combinationField.showList = true;
         } else {
             $scope.combinationField.combinations = [];

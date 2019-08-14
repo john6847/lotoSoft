@@ -242,13 +242,11 @@ public class GlobalRestController {
 
     /**
      * Get All combination filtered
-     * @param items
      * @return sellers
      */
-    @GetMapping(value = "/combination/find/item/{items}", produces = ACCECPT_TYPE)
-    public ResponseEntity<ArrayList<CombinationViewModel>> findCombinationByPage(
+    @GetMapping(value = "/combination/find", produces = ACCECPT_TYPE)
+    public ResponseEntity<ArrayList<Combination>> findCombinationByPage(
                                                    HttpServletRequest request,
-                                                   @PathVariable("items")int items,
                                                    @RequestParam(defaultValue = "") String combination){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
@@ -258,7 +256,7 @@ public class GlobalRestController {
             if (combination.matches("([^0-9xX\\s]+)"))
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-            ArrayList<CombinationViewModel> combinations = (ArrayList<CombinationViewModel>) combinationService.findAllCombinations(combination, items, enterprise);
+            ArrayList<Combination> combinations = (ArrayList<Combination>) combinationService.findAllCombinations(combination, enterprise);
             if (combinations.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(combinations, HttpStatus.OK);

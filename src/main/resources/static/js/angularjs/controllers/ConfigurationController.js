@@ -83,6 +83,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
     };
 
     $scope.combinationChange = function (){
+        console.log($scope.combinationField.combination)
         $scope.combinationField.selectedCombination  = null;
         $scope.combinationGroupField.selectedCombinationType  = null;
         $scope.combinationField.message = null;
@@ -187,10 +188,11 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
     };
 
     function fetchAllCombination(combination) {
-        ConfigurationService.fetchAllCombination($scope.itemsPerPage, combination)
+        ConfigurationService.fetchAllCombination(combination)
             .then(
                 function (d) {
                     groupItem(d);
+                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

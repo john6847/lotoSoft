@@ -93,85 +93,96 @@
                     </div>
                     <div style="box-shadow: 5px 5px 5px grey" ng-if="combinationField.showList && combinationField.combinations">
                       <ul class="list-group">
-                        <li class="list-group-item" style="padding: 0px 0px 0px 0px;" ng-repeat="(key,comb) in combinationField.combinations" ng-click="selectCombination(key)">
-                          <span ng-if="comb.length == 1">
-                            <span class="row .bg-info" ng-if="comb[0].productsId === 1">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4"><span class="badge badge-primary">{{comb[0].numberTwoDigits}}</span></span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
+                        <li class="list-group-item" style="padding: 0px 0px 0px 0px;" ng-repeat="comb in combinationField.combinations" ng-click="selectCombination(comb.id)">
+                           <span class="row .bg-info">
+                               <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4"><span class="badge badge-primary">{{comb.resultCombination}}</span></span>
+                               <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb.combinationType.products.name}}</span>
+                               <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
+                                 <h5 class="label label-{{comb.enabled? 'success' : 'danger'}}">{{comb.enabled? 'Actif' : 'Bloke'}}</h5>
+                               </span>
+                             </span>
+<#--                            How to combine multiple And and Or through method name-->
 
-                            <span class="row" ng-if="comb[0].productsId === 2">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">
-                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
 
-                            <span class="row" ng-if="comb[0].productsId === 3">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
 
-                            <span class="row" ng-if="comb[0].productsId === 4">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
+<#--                          <span ng-if="comb.length == 1">-->
+<#--                            <span class="row .bg-info" ng-if="comb[0].productsId === 1">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4"><span class="badge badge-primary">{{comb[0].numberTwoDigits}}</span></span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
 
-                            <span class="row" ng-if="comb[0].productsId === 5">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5> x <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
+<#--                            <span class="row" ng-if="comb[0].productsId === 2">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
 
-                            <span class="row" ng-if="comb[0].productsId === 6">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">
-                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>
-                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
-                          </span>
+<#--                            <span class="row" ng-if="comb[0].productsId === 3">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
 
-                          <span ng-if="comb.length == 2">
-                            <span class="row .bg-info">
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 3 || comb[0].productsId === 4">
-                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span>
-                                <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 5">
-                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span> x <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>
-                              </span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>
-                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
-                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>
-                              </span>
-                            </span>
-                          </span>
+<#--                            <span class="row" ng-if="comb[0].productsId === 4">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
+
+<#--                            <span class="row" ng-if="comb[0].productsId === 5">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5> x <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
+
+<#--                            <span class="row" ng-if="comb[0].productsId === 6">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>-->
+<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
+<#--                          </span>-->
+
+<#--                          <span ng-if="comb.length == 2">-->
+<#--                            <span class="row .bg-info">-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 3 || comb[0].productsId === 4">-->
+<#--                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span>-->
+<#--                                <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 5">-->
+<#--                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span> x <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>-->
+<#--                              </span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
+<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
+<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
+<#--                              </span>-->
+<#--                            </span>-->
+<#--                          </span>-->
                         </li>
                       </ul>
                     </div>

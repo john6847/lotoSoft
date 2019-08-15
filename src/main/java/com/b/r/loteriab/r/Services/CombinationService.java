@@ -88,11 +88,11 @@ public class CombinationService {
                 String first = combination.substring(0, 2);
                 String second = combination.substring(2, 4);
                 if (first.equals(second)){
-                    return findAllCombinationForLoto4AndOpsyon(first+" "+second, "", combinationType.getId(),
-                            secondCombinationType.getId(), enterprise.getId());
+                    return findAllCombinationForLoto4AndOpsyon(first+" "+second, "", combinationType,
+                            secondCombinationType, enterprise);
                 }
-                return findAllCombinationForLoto4AndOpsyon(first+" "+second, second + " "+ first, combinationType.getId(),
-                        secondCombinationType.getId(), enterprise.getId());
+                return findAllCombinationForLoto4AndOpsyon(first+" "+second, second + " "+ first, combinationType,
+                        secondCombinationType, enterprise);
             }
             return  new ArrayList<>();
         }
@@ -112,9 +112,9 @@ public class CombinationService {
 
             if (combinationType!= null && secondCombinationType != null){
                 if (arr[0].equals(arr[1])){
-                    return findAllCombinationForLoto4AndOpsyon(combination, "", combinationType.getId(), secondCombinationType.getId(), enterprise.getId());
+                    return findAllCombinationForLoto4AndOpsyon(combination, "", combinationType, secondCombinationType, enterprise);
                 }
-                return findAllCombinationForLoto4AndOpsyon(combination, arr[1]+" "+arr[0], combinationType.getId(), secondCombinationType.getId(), enterprise.getId());
+                return findAllCombinationForLoto4AndOpsyon(combination, arr[1]+" "+arr[0], combinationType, secondCombinationType, enterprise);
             }
             return new ArrayList<>();
         }
@@ -174,13 +174,13 @@ public class CombinationService {
 
 //    Loto 4 and Opsyon
 
-    private List<Combination> findAllCombinationForLoto4AndOpsyon(String resultCombination, String reverseResultCombination, Long combinationTypeId1,Long combinationTypeId2, Long enterpriseId){
+    private List<Combination> findAllCombinationForLoto4AndOpsyon(String resultCombination, String reverseResultCombination, CombinationType combinationType1,CombinationType combinationType2, Enterprise enterprise){
         if(reverseResultCombination.isEmpty()){
             return combinationRepository
-                    .findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, combinationTypeId1, combinationTypeId2, enterpriseId, Combination.class);
+                    .findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, combinationType1.getId(), combinationType2.getId(), enterprise.getId(), Combination.class);
         }
         return combinationRepository
-                .findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, reverseResultCombination, combinationTypeId1, combinationTypeId2, enterpriseId, Combination.class);
+                .findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, reverseResultCombination, combinationType1, combinationType2, enterprise);
     }
 
 

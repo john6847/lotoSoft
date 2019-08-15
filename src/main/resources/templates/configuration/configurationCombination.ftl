@@ -94,95 +94,13 @@
                     <div style="box-shadow: 5px 5px 5px grey" ng-if="combinationField.showList && combinationField.combinations">
                       <ul class="list-group">
                         <li class="list-group-item" style="padding: 0px 0px 0px 0px;" ng-repeat="comb in combinationField.combinations" ng-click="selectCombination(comb.id)">
-                           <span class="row .bg-info">
+                            <span class="row .bg-info">
                                <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4"><span class="badge badge-primary">{{comb.resultCombination}}</span></span>
                                <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb.combinationType.products.name}}</span>
                                <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">
                                  <h5 class="label label-{{comb.enabled? 'success' : 'danger'}}">{{comb.enabled? 'Actif' : 'Bloke'}}</h5>
                                </span>
-                             </span>
-<#--                            How to combine multiple And and Or through method name-->
-
-
-
-<#--                          <span ng-if="comb.length == 1">-->
-<#--                            <span class="row .bg-info" ng-if="comb[0].productsId === 1">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4"><span class="badge badge-primary">{{comb[0].numberTwoDigits}}</span></span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-
-<#--                            <span class="row" ng-if="comb[0].productsId === 2">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-
-<#--                            <span class="row" ng-if="comb[0].productsId === 3">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-
-<#--                            <span class="row" ng-if="comb[0].productsId === 4">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-
-<#--                            <span class="row" ng-if="comb[0].productsId === 5">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5> x <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-
-<#--                            <span class="row" ng-if="comb[0].productsId === 6">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4">-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberThreeDigits}}</h5>-->
-<#--                                <h5 class="badge badge-primary">{{comb[0].numberTwoDigits}}</h5>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-<#--                          </span>-->
-
-<#--                          <span ng-if="comb.length == 2">-->
-<#--                            <span class="row .bg-info">-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 3 || comb[0].productsId === 4">-->
-<#--                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span>-->
-<#--                                <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4" ng-if="comb[0].productsId === 5">-->
-<#--                                <span class="badge badge-primary">{{comb[0].numberTwoDigits }}</span> x <span class="badge badge-primary">{{comb[1].numberTwoDigits }}</span>-->
-<#--                              </span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 lead" style="margin-bottom: 0px">{{comb[0].productsName}}</span>-->
-<#--                              <span class="col-md-4 col-sm-3 col-lg-4 col-xs-4 text-right">-->
-<#--                                <h5 class="label label-{{comb[0].enabled? 'success' : 'danger'}}">{{comb[0].enabled? 'Actif' : 'Bloke'}}</h5>-->
-<#--                              </span>-->
-<#--                            </span>-->
-<#--                          </span>-->
+                            </span>
                         </li>
                       </ul>
                     </div>
@@ -190,42 +108,29 @@
                 </div>
 
 
-                  <div class="form-group" ng-if="combinationField.selectedCombination.length > 0">
+                  <div class="form-group" ng-if="combinationField.selectedCombination != null">
                     <div class="col-lg-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-6 col-xs-12 col-md-6 col-sm-6">
                       <md-card md-theme-watch>
                         <md-card-title>
                           <md-card-title-text>
                             <span class="md-headline">Valè Aktyèl</span>
-                            <span class="md-subhead">{{combinationField.selectedCombination[0].productsName}}</span>
+                            <span class="md-subhead">{{combinationField.selectedCombination.combinationType.products.name}}</span>
                           </md-card-title-text>
 
                           <md-card-title-media>
-                            <div class="md-media-lg card-media text-center" ng-if="combinationField.selectedCombination.length === 1">
-                              <div class="info-box {{combinationField.selectedCombination[0].enabled? 'green' : 'red'}}-bg" style="position: relative;  width: 100%; height: 73%;">
+                            <div class="md-media-lg card-media text-center">
+                              <div class="info-box {{combinationField.selectedCombination.enabled? 'green' : 'red'}}-bg" style="position: relative;  width: 100%; height: 73%;">
                                 <div class="count">
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 1">{{combinationField.selectedCombination[0].numberTwoDigits}}</span>
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 2">{{combinationField.selectedCombination[0].numberThreeDigits}}</span>
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 3 || combinationField.selectedCombination[0].productsId === 4">{{combinationField.selectedCombination[0].numberTwoDigits}} {{combinationField.selectedCombination[0].numberTwoDigits}}</span>
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 5">{{combinationField.selectedCombination[0].numberTwoDigits}} {{combinationField.selectedCombination[0].numberTwoDigits}}</span>
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 6">{{combinationField.selectedCombination[0].numberThreeDigits}} {{combinationField.selectedCombination[0].numberTwoDigits}}</span>
+                                  <span style="font-size: 30px">{{combinationField.selectedCombination.resultCombination}}</span>
                                 </div>
-                                <div class="title">{{combinationField.selectedCombination[0].enabled? 'Actif' : 'Bloke'}}</div>
+                                <div class="title">{{combinationField.selectedCombination.enabled? 'Actif' : 'Bloke'}}</div>
                                </div>
-                            </div>
-                            <div class="md-media-lg card-media text-center" ng-if="combinationField.selectedCombination.length === 2">
-                              <div class="info-box {{combinationField.selectedCombination[0].enabled? 'green' : 'red'}}-bg" style="position: relative;  width: 100%; height: 73%;">
-                                <div class="count">
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 5">{{combinationField.selectedCombination[0].numberTwoDigits}} x {{combinationField.selectedCombination[1].numberTwoDigits}}</span>
-                                  <span style="font-size: 30px" ng-if="combinationField.selectedCombination[0].productsId === 3 || combinationField.selectedCombination[0].productsId === 4">{{combinationField.selectedCombination[0].numberTwoDigits}} {{combinationField.selectedCombination[1].numberTwoDigits}}</span>
-                                </div>
-                                <div class="title">{{combinationField.selectedCombination[0].enabled? 'Actif' : 'Bloke'}}</div>
-                              </div>
                             </div>
                           </md-card-title-media>
                         </md-card-title>
 
                         <md-card-content layout-align="start center">
-                          <p>Pri Maksimòm: {{combinationField.selectedCombination[0].maxPrice}}</p>
+                          <p>Pri Maksimòm: {{combinationField.selectedCombination.maxPrice}}</p>
                         </md-card-content>
 
                         <md-card-actions layout="row" layout-align="end center">
@@ -234,24 +139,25 @@
                             Chanje pri
                           </md-button>
                           <md-button ng-click="combinationField.changeState = !combinationField.changeState; combinationField.changePrice = false" class="md-raised md-primary">
-                            <i class="fa fa-{{combinationField.selectedCombination[0].enabled? 'lock' : 'unlock'}}"></i>
-                            {{combinationField.selectedCombination[0].enabled? ' Bloke' : ' Debloke'}}
+                            <i class="fa fa-{{combinationField.selectedCombination.enabled? 'lock' : 'unlock'}}"></i>
+                            {{combinationField.selectedCombination.enabled? ' Bloke' : ' Debloke'}}
                           </md-button>
                         </md-card-actions>
                       </md-card>
                     </div>
                       <div class="col-lg-3 col-xs-12 col-md-3 col-sm-12"
-                           ng-if="(combinationField.changeState || combinationField.changePrice) && combinationField.selectedCombination.length > 0">
+                           ng-if="(combinationField.changeState || combinationField.changePrice) && combinationField.selectedCombination!=null">
                         <md-card md-theme-watch >
                           <md-content>
                             <md-card-title layout-align="start center">
                               <md-card-title-text >
                                 <span class="md-headline" ng-if="combinationField.changeState">
-                                  {{combinationField.selectedCombination[0].enabled? 'Bloke' : 'Debloke'}} konbinezon
+                                  {{combinationField.selectedCombination.enabled? 'Bloke' : 'Debloke'}} konbinezon
                                 </span>
                                 <span class="md-headline" ng-if="combinationField.changePrice">Chanje Pri a </span>
                               </md-card-title-text>
                             </md-card-title>
+<#--                              thhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeee-->
                             <md-card-content layout="row">
 
                               <div layout="row" ng-if="combinationField.changeState">

@@ -110,11 +110,13 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
       }
     };
 
-    $scope.selectCombination = function (key){
-        $scope.combinationField.selectedCombination  = $scope.combinationField.combinations[key];
-        $scope.combinationField.resultCombination.id = key;
-        $scope.combinationField.resultCombination.maxPrice = $scope.combinationField.selectedCombination[0].maxPrice;
-        $scope.combinationField.resultCombination.enabled= $scope.combinationField.selectedCombination[0].enabled;
+    $scope.selectCombination = function (id){
+        $scope.combinationField.selectedCombination  = $scope.combinationField.combinations.find(function (combination) {
+           return combination.id === id;
+        });
+        $scope.combinationField.resultCombination.id = id;
+        $scope.combinationField.resultCombination.maxPrice = $scope.combinationField.selectedCombination.maxPrice;
+        $scope.combinationField.resultCombination.enabled= $scope.combinationField.selectedCombination.enabled;
         $scope.combinationField.showList = false;
     };
 

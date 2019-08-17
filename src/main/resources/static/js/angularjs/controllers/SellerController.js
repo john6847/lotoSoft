@@ -45,7 +45,12 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
                     bSmart: true
                 },
                 {
-                    type: 'number',
+                    type: 'text',
+                    bRegex: true,
+                    bSmart: true
+                },
+                {
+                    type: 'text',
                     bRegex: true,
                     bSmart: true
                 },

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,8 +70,8 @@ public class DrawService {
             Draw currentDraw = drawRepository.findTopByEnterpriseIdOrderByEnterpriseIdDesc(enterprise.getId());
             currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
             determineWonTicket(draw, false);
-            currentDraw.setAmountLost(determineAmountWonForSoldTicket(draw).getAmountLost());
-            currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
+            currentDraw.setAmountLost(determineAmountLostForSoldTicket(draw).getAmountLost()); //  what the enterpriseLost
+            currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost()); // what the enterprise won
             drawRepository.save(currentDraw);
         }catch (Exception ex){
             result.add("Tiraj la pa ka anrejistre reeseye ankò");
@@ -138,7 +139,7 @@ public class DrawService {
         try {
             currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
             determineWonTicket(draw, true);
-            currentDraw.setAmountLost(determineAmountWonForSoldTicket(draw).getAmountLost());
+            currentDraw.setAmountLost(determineAmountLostForSoldTicket(draw).getAmountLost());
             currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
             drawRepository.save(currentDraw);
         }catch (Exception ex){
@@ -236,11 +237,11 @@ public class DrawService {
          return  draw;
      }
 
-    private Draw determineAmountWonForSoldTicket(Draw draw){
+    private Draw determineAmountLostForSoldTicket(Draw draw){
         List<Sale> sales =  getSales(draw);
         for (Sale sale: sales){
             if (sale.getTicket().isWon()){
-                draw.setAmountSold(draw.getAmountLost()+ sale.getTicket().getAmountWon());
+                draw.setAmountLost(draw.getAmountLost()+ sale.getTicket().getAmountWon());
             }
         }
         return  draw;
@@ -380,34 +381,21 @@ public class DrawService {
      }
 
      private  List<Sale> getSales(Draw draw) {
-         Pair<Date, Date> startAndEndDate;
+         Pair<Date, Date> startAndEndDate = null;
          if (draw.getShift().getName().equals(Shifts.Maten.name())){
              startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), draw.getEnterprise().getId()).getCloseTime(),
-                     draw.getShift().getCloseTime(), draw.getDrawDate(), -1, "dd/MM/yyyy, HH:mm:ss");
+                     draw.getShift().getCloseTime(), draw.getDrawDate(), -1, "dd/MM/yyyy, hh:mm:ss aa");
 
          } else {
-             startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), draw.getEnterprise().getId()).getCloseTime(),
-                     draw.getShift().getCloseTime(), draw.getDrawDate(), 0, "dd/MM/yyyy, HH:mm:ss");
+             Shift shift = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), draw.getEnterprise().getId());
+
+             if (shift != null) {
+                 startAndEndDate = Helper.getStartDateAndEndDate(shift.getCloseTime(),
+                         draw.getShift().getCloseTime(), draw.getDrawDate(), 0, "dd/MM/yyyy, hh:mm:ss aa");
+             }
+
          }
-
-         String start = startAndEndDate.getValue1().toString();
-         String end = startAndEndDate.getValue1().toString();
-
-//         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss a");
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         Date d1 = null;
-         Date d2 = null;
-         try {
-             d1 = sdf.parse(start);
-             d2 = sdf.parse(end);
-         } catch (ParseException e) {
-             e.printStackTrace();
-         }
-
-//         sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
-//         d1 = sdf.format();
-         
-         return saleRepository.selectAllSale(draw.getEnterprise().getId(), draw.getShift().getId() ,d1 , d2);
+             return saleRepository.selectAllSale(draw.getEnterprise().getId(), draw.getShift().getId() ,startAndEndDate.getValue0() , startAndEndDate.getValue1());
 
      }
 }

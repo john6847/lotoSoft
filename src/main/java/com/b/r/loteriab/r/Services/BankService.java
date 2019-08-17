@@ -63,7 +63,8 @@ public class BankService {
             bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
             if (bank.getSeller()!=null){
                 Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
-                if (seller!=null && seller.getPos()== null){
+                if (seller!=null){
+                    seller.setPos(bank.getPos());
                     sellerRepository.save(seller);
                 }
             }
@@ -84,6 +85,13 @@ public class BankService {
         }
 
         Bank currentBank = bankRepository.findBankByIdAndEnterpriseId(bank.getId(), enterprise.getId());
+        if (bank.getSeller()!=null){
+            Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
+            if (seller!=null){
+                seller.setPos(bank.getPos());
+                sellerRepository.save(seller);
+            }
+        }
         currentBank.setDescription(bank.getDescription());
         currentBank.setAddress(bank.getAddress());
         currentBank.setPos(bank.getPos());

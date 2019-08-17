@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" ng-init="fetchAllShifts()">
+            <div class="row">
                 <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
@@ -85,7 +85,7 @@
                                                 <div layout-gt-xs="row" style="margin-right: 10px;">
                                                     <div flex-gt-xs>
                                                         <h4>Lè ouvèti</h4>
-                                                        <div class="input-group">
+                                                        <div class="input-group" style="margin-right: 10px;">
                                                             <input id="ouveti"
                                                                    class="form-control"
                                                                    name="openTime"

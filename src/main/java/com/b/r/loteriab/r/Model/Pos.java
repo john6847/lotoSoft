@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,9 @@ public class Pos implements Serializable{
     private Long id;
     private String description;
     private String serial;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
     private Date creationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
     private Date modificationDate;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")

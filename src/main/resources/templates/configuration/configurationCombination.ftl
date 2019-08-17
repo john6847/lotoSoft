@@ -157,7 +157,6 @@
                                 <span class="md-headline" ng-if="combinationField.changePrice">Chanje Pri a </span>
                               </md-card-title-text>
                             </md-card-title>
-<#--                              thhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeee-->
                             <md-card-content layout="row">
 
                               <div layout="row" ng-if="combinationField.changeState">
@@ -195,10 +194,6 @@
                               <div layout-gt-md="row">
                                   <div flex-gt-md>
                                       <md-input-container style="margin-right: 10px;">
-                                          <label>Opsyon</label>
-                                          <md-select ng-model="selectType.changeType">
-                                              <md-option ng-repeat="changeType in selectType.changeTypes track by changeType.id" ng-value="{{changeType.id}}">{{changeType.name}}</md-option>
-                                          </md-select>
                                       </md-input-container>
                                   </div>
                                   <div flex-gt-md layout-align="end center">

@@ -8,7 +8,7 @@
 
 <body>
 <!-- container section start -->
-<section id="container" class="" >
+<section id="container" class="">
   <!--nav start-->
   <#include "../nav.ftl" >
     <!--header end-->

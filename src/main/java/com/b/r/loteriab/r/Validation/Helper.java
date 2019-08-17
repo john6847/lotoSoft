@@ -40,7 +40,7 @@ public class Helper {
         calendar.setTime(date);
         SimpleDateFormat format;
         if (shift.equals("12")){
-            format = new SimpleDateFormat("HH:mm:ss a");
+            format = new SimpleDateFormat("hh:mm:ss a");
         }else {
             format = new SimpleDateFormat("HH:mm:ss");
         }
@@ -74,14 +74,13 @@ public class Helper {
             e.printStackTrace();
         }
 
-        String [] timeStart = Helper.getTimeFromDate(startDate, "12").split(":");
+        String [] timeStart = Helper.getTimeFromDate(startDate, "").split(":");
         Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
         if (dayToSubstract < 0){
             resultStartDate = Helper.addDays(resultStartDate, -1);
         }
-        String [] timeEnd = Helper.getTimeFromDate(endDate, "12").split(":");
+        String [] timeEnd = Helper.getTimeFromDate(endDate, "").split(":");
         Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
-
 
         return  Pair.with(resultStartDate, resultEndDate);
     }

@@ -83,7 +83,6 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
     };
 
     $scope.combinationChange = function (){
-        console.log($scope.combinationField.combination)
         $scope.combinationField.selectedCombination  = null;
         $scope.combinationGroupField.selectedCombinationType  = null;
         $scope.combinationField.message = null;
@@ -98,7 +97,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
     $scope.shiftChange = function (){
         $scope.shiftField.message = null;
     };
-
+    fetchAllShifts();
     $scope.updateVm = function(){
       for (var i = 0; i< $scope.shiftField.shifts.length; i++){
           if($scope.shiftField.shifts[i].openTime != null){
@@ -202,7 +201,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
 
     }
 
-    $scope.fetchAllShifts  = function () {
+    function fetchAllShifts() {
         ConfigurationService.fetchAllShifts()
             .then(
                 function (d) {

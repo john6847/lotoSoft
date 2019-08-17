@@ -10,6 +10,7 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
     $scope.itemsPerPage = 1000;
     $scope.state = 1;
     $scope.selectedSeller = null;
+    $scope.selectedPos = null;
 
     $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withDisplayLength(5)
@@ -78,9 +79,9 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
         fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 
-    $scope.sellerChange = function (updatiing){
+    $scope.sellerChange = function (updating){
         if ($scope.selectedSeller){
-            fetchPos($scope.selectedSeller, updatiing);
+            fetchPos($scope.selectedSeller, updating);
         }
     };
 
@@ -110,7 +111,6 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
                     else{
                         $scope.banks = createAddress(d);
                     }
-                    $scope.banks = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

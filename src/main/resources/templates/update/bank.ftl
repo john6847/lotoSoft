@@ -83,7 +83,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" ng-if="pos.length <= 0">
                                             <label class="col-lg-2 col-md-2 col-sm-2 control-label">Machin</label>
                                             <div class="col-lg-10   col-md-10 col-sm-10">
                                                 <select class="form-control round-input"
@@ -104,6 +104,24 @@
                                                             </#if>
                                                         </#list>
                                                     </#if>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="pos.length > 0">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Machin</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                                <select class="form-control round-input"
+                                                        name="pos"
+                                                        id="pos"
+                                                        ng-model="selectedPos"
+                                                        data-live-search="true"
+                                                        data-none-results-text="Machin sa pa egziste"
+                                                        data-placeholder="Chwazi machin nan"
+                                                        data-none-selected-text="Chwazi Machin nan"
+                                                        data-size="5"
+                                                        required>
+                                                    <option ng-repeat="p in pos track by p.id" value="{{p.id}}">{{p.description}}</option>
+
                                                 </select>
                                             </div>
                                         </div>

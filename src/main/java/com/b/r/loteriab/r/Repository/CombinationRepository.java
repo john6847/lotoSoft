@@ -21,11 +21,14 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Combination findCombinationById(Long id);
 
     <T>List<T> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId, Long enterpriseId, Class<T> classType); // bolet loto3 extra and maryaj when equal
-    <T>List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId1, Long combinationTypeId2, Long enterpriseId, Class<T> classType); // loto and opsyon when number are the same
+   // <T>List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId1, Long combinationTypeId2, Long enterpriseId, Class<T> classType); // loto and opsyon when number are the same
     <T>List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId, Class<T> classType); //Maryaj
 
     @Query(" select c from Combination c where c.enterprise = :enterprise and (c.resultCombination = :resultCombination or c.resultCombination=:reverseResultCombination) and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
-    List<Combination> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("reverseResultCombination")String reverseResultCombination, @Param("combinationType1")CombinationType combinationType1, @Param("combinationType2")CombinationType combinationType2, @Param("enterprise") Enterprise enterprise); // Case is important
+    <T>List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("reverseResultCombination")String reverseResultCombination, @Param("combinationType1")CombinationType combinationType1, @Param("combinationType2")CombinationType combinationType2, @Param("enterprise") Enterprise enterprise, Class<T> classType); // Case is important
+
+    @Query(" select c from Combination c where c.enterprise = :enterprise and c.resultCombination = :resultCombination  and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
+    <T>List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("combinationType1")CombinationType combinationType1, @Param("combinationType2")CombinationType combinationType2, @Param("enterprise") Enterprise enterprise,Class<T> classType); // Case is important
 
 
     List<Combination> findAllByCombinationTypeProductsNameAndEnterpriseId(String Name, Long enterpriseId); // TODO:

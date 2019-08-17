@@ -75,7 +75,6 @@ public class RestApiController {
     @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm){
         SampleResponse sampleResponse = new SampleResponse();
-        System.out.println(vm.toString());
         Enterprise enterprise = enterpriseRepository.findEnterpriseByName(vm.getEnterpriseName());
         Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseId(vm.getSerial(), true, enterprise.getId());
         if (pos == null) {

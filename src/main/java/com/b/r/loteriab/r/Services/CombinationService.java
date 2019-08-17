@@ -85,8 +85,8 @@ public class CombinationService {
             combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
             secondCombinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
             if (combinationType!= null && secondCombinationType != null){
-                String first = combination.substring(0, 2);
-                String second = combination.substring(2, 4);
+                String first = combination.substring(0, 2).trim();
+                String second = combination.substring(2, 4).trim();
                 if (first.equals(second)){
                     return findAllCombinationForLoto4AndOpsyon(first+" "+second, "", combinationType,
                             secondCombinationType, enterprise);
@@ -177,10 +177,10 @@ public class CombinationService {
     private List<Combination> findAllCombinationForLoto4AndOpsyon(String resultCombination, String reverseResultCombination, CombinationType combinationType1,CombinationType combinationType2, Enterprise enterprise){
         if(reverseResultCombination.isEmpty()){
             return combinationRepository
-                    .findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, combinationType1.getId(), combinationType2.getId(), enterprise.getId(), Combination.class);
+                    .findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, combinationType1, combinationType2, enterprise, Combination.class);
         }
         return combinationRepository
-                .findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, reverseResultCombination, combinationType1, combinationType2, enterprise);
+                .findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, reverseResultCombination, combinationType1, combinationType2, enterprise, Combination.class);
     }
 
 

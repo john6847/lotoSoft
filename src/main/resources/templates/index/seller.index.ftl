@@ -84,10 +84,11 @@
                           <th style="width:5%">#</th>
                           <th style="width:15%">Itilizatè</th>
                           <th style="width:10%">Gwoup</th>
+                          <th style="width:10%">Machin</th>
                           <th style="width:10%;" class="text-right">Pousantaj(%)</th>
                           <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
                           <th style="width:15%">Tip pèman</th>
-                          <th style="width:15%; text-align: center">Aktif</th>
+                          <th style="width:5%; text-align: center">Aktif</th>
                           <th style="width:5%"></th>
                           <th style="width:5%"></th>
                           <th style="width:5%"></th>
@@ -99,6 +100,7 @@
                           <td>{{start+$index+1}}</td>
                           <td>{{seller.user.username}}</td>
                           <td><span ng-if="seller.groups === null || seller.groups === undefined">N/A</span>{{seller.groups.description}}</td>
+                          <td>{{seller.pos.description}}</td>
                           <td class="text-right"><span ng-if="seller.percentageCharged">{{seller.percentageCharged | number: 2}}</span> <span ng-if="!seller.percentageCharged">N/A</span></td>
                           <td class="text-right"><span ng-if="seller.amountCharged">{{seller.amountCharged | number: 2}}</span> <span ng-if="!seller.amountCharged">N/A</span></td>
                           <td>{{paymentType[seller.paymentType].Name}}</td>
@@ -129,13 +131,11 @@
                             <th style="width:5%">#</th>
                             <th style="width:15%">Itilizatè</th>
                             <th style="width:10%">Gwoup</th>
-                            <th style="width:10%;">Pousantaj(%)</th>
-                            <th style="width:15%">Kantite Lajan(HTG)</th>
+                            <th style="width:10%">Machin</th>
+                            <th style="width:10%;" class="text-right">Pousantaj(%)</th>
+                            <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
                             <th style="width:15%">Tip pèman</th>
-                            <th style="width:15%; text-align: center">Aktif</th>
-                            <th style="width:5%"></th>
-                            <th style="width:5%"></th>
-                            <th style="width:5%"></th>
+                            <th style="width:5%; text-align: center">Aktif</th>
                           </tr>
                         </tfoot>
                       </table>

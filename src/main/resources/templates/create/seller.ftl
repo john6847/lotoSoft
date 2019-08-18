@@ -57,8 +57,8 @@
                                 </div>
 
                                 <div class="form-group" ng-if="!haveUser">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Non</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="name">Non</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                            class="form-control round-input"
                                            name="name"
@@ -71,8 +71,8 @@
                                 </div>
 
                                 <div class="form-group" ng-if="!haveUser">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Non Itilizatè</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="usernam">Non Itilizatè</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                                class="form-control round-input"
                                                name="username"
@@ -90,8 +90,8 @@
                                 </div>
 
                                 <div class="form-group" ng-if="!haveUser">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Modpas</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Modpas</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="password"
                                                class="form-control round-input"
                                                name="password"
@@ -103,8 +103,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" ng-if="!haveUser">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Konfime Modpas</label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="confirmPassword">Konfime Modpas</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="password"
                                                class="form-control round-input"
                                                id="confirmPassword"
@@ -117,8 +117,8 @@
                                 </div>
 
                                 <div class="form-group" ng-if ="haveUser">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Itilizatè</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="user">Itilizatè</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control round-input"
                                                 name="user"
                                                 data-live-search="true"
@@ -137,8 +137,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Machin</label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="pos">Machin</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control round-input selectpicker"
                                                 name="pos"
                                                 id="pos"
@@ -166,8 +166,8 @@
                                 </div>
 
                                 <div class="form-group" ng-if="haveGroup">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Gwoup</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="groups">Gwoup</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control round-input selectpicker"
                                                 name="groups"
                                                 data-live-search="true"
@@ -195,15 +195,15 @@
                                 </div>
 
                                 <div class="form-group" ng-if="!useMonthlyPayment">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Pousantaj</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10 input-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="percentageCharged">Pousantaj</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 input-group">
                                         <input type="number" class="form-control round-input" min="0" max="100" name="percentageCharged" id="percentageCharged"  required>
                                         <span class="input-group-addon">%</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group" ng-if="useMonthlyPayment">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Peman chak mwa</label>
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="amountCharged" >Peman chak mwa</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 input-group">
                                         <input type="number" class="form-control round-input" min="0"   name="amountCharged" id="amountCharged" required>
                                         <span class="input-group-addon">HTG</span>
@@ -211,9 +211,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done vandè sa">
@@ -221,7 +221,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         title="Anrejistre tout done vandè sa">

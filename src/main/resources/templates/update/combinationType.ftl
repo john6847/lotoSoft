@@ -52,8 +52,8 @@
 
                   <#if combinationType.products.name =="BOLET">
                     <div class="form-group">
-                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Premye Lo</label>
-                      <div class="col-lg-10 col-md-10 col-sm-10">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2 " for="payedPriceFirstDraw">Pri Pèman Premye Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <input  type="number"
                                 class="form-control round-input"
                                 id="payedPriceFirstDraw"
@@ -64,8 +64,8 @@
                     </div>
 
                     <div class="form-group">
-                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Dezyèm Lo</label>
-                      <div class="col-lg-10 col-md-10 col-sm-10">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="payedPriceSecondDraw">Pri Pèman Dezyèm Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <input type="number"
                                class="form-control round-input"
                                id="payedPriceSecondDraw"
@@ -76,8 +76,8 @@
                     </div>
 
                     <div class="form-group">
-                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman Twazyèm Lo</label>
-                      <div class="col-lg-10 col-md-10 col-sm-10">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="payedPriceThirdDraw">Pri Pèman Twazyèm Lo</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <input type="number"
                                class="form-control round-input"
                                id="payedPriceThirdDraw"
@@ -88,27 +88,24 @@
                     </div>
                     <#else>
                       <div class="form-group">
-                        <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Pri Pèman <span class="required">*</span></label>
-                        <div class="col-lg-10 col-md-10 col-sm-10">
+                        <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="payedPrice">Pri Pèman <span class="required">*</span></label>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                           <input type="number" class="form-control round-input" id="payedPrice" min="500" value="${(combinationType.payedPrice)! 0}" name="payedPrice" required>
                         </div>
                       </div>
                   </#if>
 
                     <div class="form-group">
-                      <label class="control-label col-lg-2 col-md-2 col-sm-2" for="note">Nòt</label>
-                      <div class="col-lg-10 col-md-10 col-sm-10">
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="note">Nòt</label>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <textarea class="form-control" rows="5" placeholder="Antre rezon chanjman" id="note" maxlength="255" name="note">${combinationType.note}</textarea>
                       </div>
                     </div>
 
-
-
-
                   <div class="form-group">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                       <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12 ">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                           <button class="btn btn-danger form-control" 
                             type="reset"
                             title="Efase tout done tiraj sa">
@@ -116,7 +113,7 @@
                             Reyajiste
                           </button>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                           <button class="btn btn-primary form-control"
                             type="submit"
                             title="Anrejistre tout done tiraj sa">

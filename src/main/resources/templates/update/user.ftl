@@ -71,8 +71,8 @@
                                     <#if isSuperAdmin == true >
                                         <input type="checkbox" checked name="isSuperAdmin" style="display: none;">
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="enterprise">Antrepriz</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <select class="form-control round-input"
                                                         name="enterprise"
                                                         id="enterprise">
@@ -93,12 +93,12 @@
                                 <div class="form-group">
                                     <#if isSuperAdmin?? >
                                         <#if isSuperAdmin == true>
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kliyan<span class="required">*</span></label>
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="name">Kliyan<span class="required">*</span></label>
                                         <#else>
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Non<span class="required">*</span></label>
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="name">Non<span class="required">*</span></label>
                                         </#if>
                                     </#if>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" value="${(users.name)!""}"
                                                placeholder="Egzanp: John Doe" id="name" name="name" minlength="2"
                                                maxlength="100" required>
@@ -106,9 +106,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Non Ititilizatè <span
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="username">Non Ititilizatè <span
                                                 class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input"
                                                value="${(users.username)!""}" placeholder="Egzanp: John25" id="username"
                                                name="username" minlength="4" maxlength="20" required>
@@ -157,7 +157,7 @@
                                             </#list>
                                             <#if (!(savedAdmin == 0 && savedSeller == 0))>
                                                 <div class="form-group funkyradio">
-                                                    <div class="col-sm-2 col-sm-2 col-sm-2 "></div>
+                                                    <div class="col-sm-2 col-sm-2 col-sm-2 col-xs-12"></div>
                                                     <#if savedAdmin == 1>
                                                         <#if admin == 1>
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
@@ -188,7 +188,7 @@
                                             </#if>
                                             <#if (!(savedSupervisor == 0 && savedCollector == 0))>
                                                 <div class="form-group funkyradio">
-                                                    <div class="col-sm-2 col-sm-2 col-sm-2 "></div>
+                                                    <div class="col-sm-2 col-sm-2 col-sm-2 col-xs-12"></div>
                                                     <#if savedSupervisor == 1>
                                                         <#if supervisor == 1>
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 funkyradio-info">
@@ -224,7 +224,7 @@
 
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-12 ">
                                                 <button class="btn btn-danger form-control"
@@ -234,7 +234,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         title="Anrejistre tout done pos sa">

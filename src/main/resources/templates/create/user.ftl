@@ -68,8 +68,8 @@
                                     <#if isSuperAdmin == true >
                                         <input type="checkbox" checked name="isSuperAdmin" style="display: none;">
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="enterprise">Antrepriz</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <select class="form-control round-input"
                                                         name="enterprise"
                                                         id="enterprise">
@@ -86,18 +86,18 @@
                                 <div class="form-group">
                                     <#if isSuperAdmin?? >
                                         <#if isSuperAdmin == true>
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kliyan<span class="required">*</span></label>
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="name">Kliyan<span class="required">*</span></label>
                                             <#else>
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Non<span class="required">*</span></label>
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="name">Non<span class="required">*</span></label>
                                         </#if>
                                     </#if>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" placeholder="Egzanp: John Doe" id="name" name="name" minlength="2" maxlength="100" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Non Ititilizatè <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="username">Non Ititilizatè <span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                                class="form-control round-input"
                                                placeholder="Egzanp: john25"
@@ -115,14 +115,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Modpas<span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="password">Modpas<span class="required">*</span></label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                         <input type="password" class="form-control round-input" id="password" placeholder="******" name="password" maxlength="20" minlength="8" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Konfime Modpas<span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="confirmPassword">Konfime Modpas<span class="required">*</span></label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                         <input type="password" class="form-control round-input" id="confirmPassword"  placeholder="******" name="confirmPassword" maxlength="20" minlength="8" required>
                                     </div>
                                 </div>
@@ -185,9 +185,9 @@
                                 </#if>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done itilizatè sa">
@@ -195,7 +195,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         ng-disabled="usernameExist"

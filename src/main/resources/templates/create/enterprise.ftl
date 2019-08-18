@@ -51,40 +51,40 @@
                                     </header>
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz <span class="required">*</span></label>
-                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Antrepriz <span class="required">*</span></label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text" class="form-control round-input" id="name" name="name" minlength="2" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Kantite Anplwaye</label>
-                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Kantite Anplwaye</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                                 <input type="number" class="form-control round-input" id="numberOfEmployee" name="numberOfEmployee" min="0">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-lg-2 col-md-2 col-sm-2 control-label">Telefon</label>
-                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                            <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text" class="form-control round-input" id="phone" name="phone">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">RNC</label>
-                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">RNC</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text" class="form-control round-input" id="rnc" name="rnc">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Logo Url</label>
-                                            <div class="col-lg-10   col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Logo Url</label>
+                                            <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text" class="form-control round-input" id="logoUrl" name="logoUrl">
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">Sub Domain</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Sub Domain</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text" class="form-control round-input" id="subDomain" name="subDomain">
                                             </div>
                                         </div>
@@ -186,8 +186,8 @@
                                     <div class="panel-body">
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Peyi</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Peyi</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="country"
@@ -197,8 +197,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Depatman</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Depatman</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="region"
@@ -208,8 +208,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Vil</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Vil</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="city"
@@ -220,8 +220,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Sektè</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Sektè</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="sector"
@@ -232,8 +232,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Rout</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Rout</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="street"
@@ -244,8 +244,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Nimewo</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Nimewo</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="number"
                                                        class="form-control round-input"
                                                        name="number"
@@ -256,8 +256,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Telefòn</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Telefòn</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="text"
                                                        class="form-control round-input"
                                                        name="phone"
@@ -268,8 +268,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label col-lg-2 col-md-2 col-sm-2">Imel</label>
-                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                            <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Imel</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                                 <input type="email"
                                                        class="form-control round-input"
                                                        name="email"
@@ -286,12 +286,12 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="breadcrumb" style="height: auto;">
                             <div class="form-group" style="margin-bottom: 10px;">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                             <button type="reset"
                                                     class="btn btn-danger form-control"
                                                     title="Efase tout done antrepriz la">
@@ -299,7 +299,7 @@
                                                 Reyajiste
                                             </button>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                             <button class="btn btn-primary form-control"
                                                     type="submit"
                                                     title="Anrejistre tout done antrepriz la">

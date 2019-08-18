@@ -67,8 +67,8 @@
                                     </div>
 
                                     <div class="form-group" ng-if="haveGroup">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">Gwoup</label>
-                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="groups">Gwoup</label>
+                                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                             <select class="form-control round-input"
                                                     name="groups"
                                                     data-live-search="true"
@@ -78,7 +78,7 @@
                                                     data-placeholder="Chwazi Gwoup la"
                                                     id="groups">
                                                 <#if allGroups??>
-                                                    <#list allGroups as g >
+                                                    <#list allGroups as g>
                                                         <#if seller.groups??>
                                                             <#if g.id == seller.groups.id>
                                                                 <option value="${g.id}" selected>${g.description}</option>
@@ -111,24 +111,24 @@
                                 </div>
 
                                 <div class="form-group" ng-if="!useMonthlyPayment">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Pousantaj <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10 input-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="percentageCharged">Pousantaj <span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 input-group">
                                         <input type="number" class="form-control round-input" name="percentageCharged" value="${seller.percentageCharged}" id="percentageCharged">
                                         <span class="input-group-addon">%</span>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-if="useMonthlyPayment">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Peman chak mwa <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10 input-group">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="amountCharged">Peman chak mwa <span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 input-group">
                                         <input type="number" class="form-control round-input" name="amountCharged" value="${seller.amountCharged?c}" id="amountCharged">
                                         <span class="input-group-addon">HTG</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done tiraj sa">
@@ -136,7 +136,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         title="Anrejistre tout done tiraj sa">

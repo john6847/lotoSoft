@@ -49,23 +49,23 @@
                         <div class="panel-body">
                             <form class="form-horizontal form-validate" action="/pos/create" th:object="${pos}" method="post">
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Deskripsyon<span class="required">*</span></label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" placeholder="Antre deskripsyon oubyen yon non pou machin sa" id="description" name="description" minlength="2" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Nimewo seri <span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Nimewo seri <span class="required">*</span></label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" id="serial"  placeholder="Antre yon nimewo seri pou machin sa" name="serial" minlength="4" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done machin sa">
@@ -73,7 +73,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit" title="Anrejistre tout done machin sa">
                                                         <i class="fa fa-save"></i>

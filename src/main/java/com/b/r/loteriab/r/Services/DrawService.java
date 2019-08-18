@@ -82,35 +82,49 @@ public class DrawService {
     private Result validateModel (Draw draw){
         Result result = new Result();
 
+        if (draw.getId() <= 0){
+            if (draw.getShift() == null){
+                result.add("Ou dwe rantre tiraj la", "NumberTwoDigits");
+                return result;
+            }
+            if (draw.getDrawDate() == null){
+                result.add("Ou dwe rantre yon dat pou tiraj la", "NumberTwoDigits");
+                return result;
+            }
+            if (!draw.getDrawDate().before(new Date())){
+                result.add("Dat tiraj la ou mete a poko rive rantre yn lot", "NumberTwoDigits");
+                return result;
+            }
+        }
         if (draw.getNumberThreeDigits().getNumberInStringFormat().isEmpty()){
             result.add("Loto 3 chif la paka vid", "Shift");
             return result;
         }
 
-        if (draw.getShift() == null){
-            result.add("Tip tiraj la vid rantrel yon lot fwa", "NumberTwoDigits");
-            return result;
-        }
 
-        if(draw.getNumberTwoDigits() == null || draw.getNumberTwoDigits().size() < 3)
+        if(draw.getFirstDraw() == null)
         {
-            result.add("Ou sipoze ajoute twa nimewo pou bòlet la");
+            result.add("Ou sipoze ajoute premye lo pou bòlet la");
             return  result;
         }
 
-        if(!draw.getNumberTwoDigits().get(0).getNumberInStringFormat().equals(draw.getNumberThreeDigits().getNumberInStringFormat().substring(1)))
+        if(draw.getSecondDraw() == null)
+        {
+            result.add("Ou sipoze ajoute dezyem lo pou bòlet la");
+            return  result;
+        }
+
+        if(draw.getThirdDraw() == null)
+        {
+            result.add("Ou sipoze ajoute twazyem lo pou bòlet la");
+            return  result;
+        }
+
+        if(!draw.getFirstDraw().getNumberInStringFormat().equals(draw.getNumberThreeDigits().getNumberInStringFormat().substring(1)))
         {
             result.add("Premye lo a sipoze menm ak loto 3 chif la");
             return  result;
         }
-        int index = 0;
-        for (NumberTwoDigits numberTwoDigits: draw.getNumberTwoDigits()){
-            if (numberTwoDigits.getNumberInStringFormat().isEmpty()){
-                result.add((index+1) + " lo a manke, antrel epi retounen anrejistre");
-            }
-            index++;
-        }
-
 
         return result;
     }
@@ -121,6 +135,8 @@ public class DrawService {
         if (!result.isValid()){
             return result;
         }
+        draw.setEnterprise(new Enterprise());
+        draw.getEnterprise().setId(enterpriseId);
         List<Draw> savedDraw = drawRepository.findAllByShiftNameAndDrawDateAndEnterpriseId(draw.getShift().getName(), draw.getDrawDate(), enterpriseId);
         if (savedDraw!=null){
             for (Draw sd : savedDraw){
@@ -134,12 +150,13 @@ public class DrawService {
         Draw currentDraw = drawRepository.findDrawByIdAndEnterpriseId(draw.getId(), enterpriseId);
         currentDraw.setModificationDate(new Date());
         currentDraw.setNumberThreeDigits(draw.getNumberThreeDigits());
-        currentDraw.setNumberTwoDigits(draw.getNumberTwoDigits());
-        currentDraw.setShift(draw.getShift());
+        currentDraw.setFirstDraw(draw.getFirstDraw());
+        currentDraw.setSecondDraw(draw.getSecondDraw());
+        currentDraw.setThirdDraw(draw.getThirdDraw());
         try {
-            currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
-            determineWonTicket(draw, true);
-            currentDraw.setAmountLost(determineAmountLostForSoldTicket(draw).getAmountLost());
+            currentDraw.setAmountSold(determineAmountForSoldTicket(currentDraw).getAmountSold());
+            determineWonTicket(currentDraw, true);
+            currentDraw.setAmountLost(determineAmountLostForSoldTicket(currentDraw).getAmountLost());
             currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
             drawRepository.save(currentDraw);
         }catch (Exception ex){
@@ -301,80 +318,81 @@ public class DrawService {
         List<DrawViewModel> drawViewModels = new ArrayList<>();
          for (CombinationType combinationType: combinationTypes){
              if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
-                for (int i = 0; i<draw.getNumberTwoDigits().size(); i++){
+                for (int i = 0; i<3; i++){
                     DrawViewModel drawViewModel = new DrawViewModel();
-                    drawViewModel.setCombination(draw.getNumberTwoDigits().get(i).getNumberInStringFormat());
                     drawViewModel.setCombinationTypeId(CombinationTypes.BOLET.ordinal());
                     if (i == 0){
+                        drawViewModel.setCombination(draw.getFirstDraw().getNumberInStringFormat());
                         drawViewModel.setPayedPrice(combinationType.getPayedPriceFirstDraw());
                     } else if (i == 1){
+                    drawViewModel.setCombination(draw.getSecondDraw().getNumberInStringFormat());
                         drawViewModel.setPayedPrice(combinationType.getPayedPriceSecondDraw());
-                    } else if (i == 2) {
+                    } else {
+                    drawViewModel.setCombination(draw.getThirdDraw().getNumberInStringFormat());
                         drawViewModel.setPayedPrice(combinationType.getPayedPriceThirdDraw());
                     }
                     drawViewModels.add(drawViewModel);
                 }
              } else if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_TWA_CHIF.name())){
-                 DrawViewModel drawViewModel = generateDrawViewModel(CombinationTypes.LOTO_TWA_CHIF.ordinal(),combinationType.getPayedPrice(), 0, 0, false, draw);
+                 DrawViewModel drawViewModel = generateDrawViewModel(CombinationTypes.LOTO_TWA_CHIF.ordinal(),combinationType.getPayedPrice(), null, null, false, draw);
                  drawViewModel.setCombination(draw.getNumberThreeDigits().getNumberInStringFormat());
                  drawViewModels.add(drawViewModel);
 
              } else if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())){
-                 drawViewModels.add(generateDrawViewModel(CombinationTypes.LOTO_KAT_CHIF.ordinal(),combinationType.getPayedPrice(), 1, 2, true, draw));
+                 drawViewModels.add(generateDrawViewModel(CombinationTypes.LOTO_KAT_CHIF.ordinal(),combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
              } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name())){
                  for (int i=0 ; i<3; i++) {
                    if (i == 0){
-                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), 0, 1, true, draw));
+                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
                    } else if (i == 1){
-                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), 0, 2, true, draw));
+                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
                    } else {
-                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), 1, 2, true, draw));
+                       drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(),combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
                    }
                  }
 
              } else if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())){
                  for (int i=0 ; i<3; i++) {
                      if (i == 0){
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 0, 1, true, draw));
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 1, 0, true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getFirstDraw(), true, draw));
                      } else if (i == 1){
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 0, 2, true, draw));
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 2, 0, true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getThirdDraw(), draw.getFirstDraw(), true, draw));
                      } else {
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 1, 2, true, draw));
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), 2, 1, true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.MARYAJ.ordinal(),combinationType.getPayedPrice(), draw.getThirdDraw(), draw.getSecondDraw(), true, draw));
                      }
                  }
 
              } else if (combinationType.getProducts().getName().equals(CombinationTypes.EXTRA.name())){
-                 for (int i=0 ; i<3; i++) {
+                 for (int i = 0 ; i<3; i++) {
                      if (i == 0){
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), 1, 0, true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getFirstDraw(), true, draw));
                      } else if (i == 1){
-                         drawViewModels.add(generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), 2, 0, true, draw));
+                         drawViewModels.add(generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), draw.getThirdDraw(), draw.getFirstDraw(), true, draw));
                      } else {
-                         DrawViewModel drawViewModel = generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), 0, 0, false, draw);
-                         drawViewModel.setCombination(draw.getNumberTwoDigits().get(0).getNumberInStringFormat().substring(1)+ draw.getNumberTwoDigits().get(1).getNumberInStringFormat()+" "+draw.getNumberTwoDigits().get(2).getNumberInStringFormat());
+                         DrawViewModel drawViewModel = generateDrawViewModel(CombinationTypes.EXTRA.ordinal(),combinationType.getPayedPrice(), null, null, false, draw);
+                         drawViewModel.setCombination(draw.getFirstDraw().getNumberInStringFormat().substring(1)+ draw.getSecondDraw().getNumberInStringFormat()+" "+draw.getThirdDraw().getNumberInStringFormat());
                          drawViewModels.add(drawViewModel);
                      }
                  }
              }
          }
-
          return drawViewModels;
      }
 
-     private DrawViewModel generateDrawViewModel(int type, double price, int pos1, int pos2, boolean setCombination, Draw draw) {
+     private DrawViewModel generateDrawViewModel(int type, double price, NumberTwoDigits pos1, NumberTwoDigits  pos2, boolean setCombination, Draw draw) {
         DrawViewModel drawViewModel=  new DrawViewModel();
         drawViewModel.setPayedPrice(price);
         drawViewModel.setCombinationTypeId(type);
         if (setCombination){
             if (type == CombinationTypes.MARYAJ.ordinal()){
-                drawViewModel.setCombination(draw.getNumberTwoDigits().get(pos1).getNumberInStringFormat()+ "x"+draw.getNumberTwoDigits().get(pos2).getNumberInStringFormat());
+                drawViewModel.setCombination(pos1.getNumberInStringFormat()+ "x"+pos2.getNumberInStringFormat());
             } else if (type == CombinationTypes.EXTRA.ordinal()){
-                drawViewModel.setCombination(draw.getNumberThreeDigits().getNumberInStringFormat()+ " "+draw.getNumberTwoDigits().get(pos1).getNumberInStringFormat());
+                drawViewModel.setCombination(draw.getNumberThreeDigits().getNumberInStringFormat()+ " "+pos1.getNumberInStringFormat());
             }  if (type == CombinationTypes.OPSYON.ordinal() || type == CombinationTypes.LOTO_KAT_CHIF.ordinal() ){
-                drawViewModel.setCombination(draw.getNumberTwoDigits().get(pos1).getNumberInStringFormat()+ " "+draw.getNumberTwoDigits().get(pos2).getNumberInStringFormat());
+                drawViewModel.setCombination(pos1.getNumberInStringFormat()+ " "+pos2.getNumberInStringFormat());
             }
         }
         return  drawViewModel;

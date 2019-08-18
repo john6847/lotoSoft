@@ -37,6 +37,7 @@
 
 <#--switch toggle-->
 <script src="/js/bootstrap-toggle.min.js"></script>
+<script src="/js/select2.js"></script>
 
 <script type="text/javascript" src="/js/ui-bootstrap-tpls.min.js"></script>
 <script type="text/javascript" src="/js/angular-ui-utils.min.js"></script>

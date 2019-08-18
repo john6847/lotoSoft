@@ -80,6 +80,10 @@ app.controller("drawController", ['$http', 'DrawService','$scope','DTOptionsBuil
         fetchAllDrawsFiltered($scope.pageno,$scope.itemsPerPage,$scope.state,$scope.day,$scope.month,$scope.year);
     };
 
+    $scope.replaceString = function(str, newString) {
+        return str.replace(/_/g, newString);
+    };
+
     function fetchAllDraws() {
         DrawService.fetchAllDraws()
             .then(

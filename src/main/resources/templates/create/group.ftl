@@ -51,15 +51,15 @@
                             <form class="form-horizontal" action="/group/create" th:object="${group}" method="post">
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Deskripsyon<span class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Deskripsyon<span class="required">*</span></label>
+                                    <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" id="description" name="description" minlength="2" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Responsab <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Responsab <span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control round-input"
                                                 name="parentSeller"
                                                 data-live-search="true"
@@ -78,8 +78,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Peyi</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Peyi</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                            class="form-control round-input"
                                            name="country"
@@ -90,8 +90,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Vil</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Vil</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                            class="form-control round-input"
                                            name="city"
@@ -103,8 +103,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Rejyon</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Depatman</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                                class="form-control round-input"
                                                name="region"
@@ -116,8 +116,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Sektè</label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Sektè</label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text"
                                            class="form-control round-input"
                                            name="sector"
@@ -129,7 +129,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2">Telefòn</label>
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12">Telefòn</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10">
                                         <input type="text"
                                            class="form-control round-input"
@@ -142,9 +142,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done gwoup sa">
@@ -152,7 +152,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         title="Anrejistre tout done gwoup sa">

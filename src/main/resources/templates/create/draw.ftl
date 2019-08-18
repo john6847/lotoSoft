@@ -63,16 +63,16 @@
 
                             <form class="form-horizontal" action="/draw/create" th:object="${draw}" method="post">
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Dat<span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <input type="date" name="drawDate" class="form-control" required>
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="drawDate">Dat<span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                                        <input type="date" name="drawDate" id="drawDate" class="form-control" required>
                                     </div>
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Tip Tiraj<span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="shift">Tip Tiraj<span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control selectpicker"
                                                 name="shift"
                                                 id="shift"
@@ -92,8 +92,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Loto 3 chif <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="numberThreeDigits">Loto 3 chif <span class="required">*</span></label>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <select class="form-control selectpicker"
                                                 name="numberThreeDigits"
                                                 id="numberThreeDigits"
@@ -112,17 +112,44 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="inputSuccess">Bòlet <span class="required">*</span></label>
-                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                        <select class="form-control select2"
-                                                name="numberTwoDigits"
-                                                id="numberTwoDigits"
+                                    <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="firstDraw">Bòlet <span class="required">*</span></label>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                        <select class="form-control selectpicker"
+                                                name="firstDraw"
+                                                id="firstDraw"
                                                 data-allow-clear="true"
-                                                data-placeholder="Chwazi twa boul bòlet"
-                                                data-maximum-selection-length ="3"
-                                                data-tags="true"
-                                                data-multiple="true"
-                                                multiple="multiple"
+                                                data-placeholder="Chwazi premye lo a"
+                                                data-size="7"
+                                                required>
+                                            <#if numberTwoDigits??>
+                                                <#list numberTwoDigits as numberTwoDigit>
+                                                    <option value="${numberTwoDigit.id}">${numberTwoDigit.numberInStringFormat}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 ">
+                                        <select class="form-control selectpicker"
+                                                name="secondDraw"
+                                                id="secondDraw"
+                                                data-allow-clear="true"
+                                                data-placeholder="Chwazi dezyem lo a"
+                                                data-size="7"
+                                                required>
+                                            <#if numberTwoDigits??>
+                                                <#list numberTwoDigits as numberTwoDigit>
+                                                    <option value="${numberTwoDigit.id}">${numberTwoDigit.numberInStringFormat}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                        <select class="form-control selectpicker"
+                                                name="thirdDraw"
+                                                id="thirdDraw"
+                                                data-allow-clear="true"
+                                                data-placeholder="Chwazi twazyem lo a"
+                                                data-size="7"
                                                 required>
                                             <#if numberTwoDigits??>
                                                 <#list numberTwoDigits as numberTwoDigit>
@@ -135,9 +162,9 @@
 
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done tiraj sa">
@@ -145,9 +172,11 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
+                                                        id="save"
+                                                        onclick="onSave(event)"
                                                         title="Anrejistre tout done tiraj sa">
                                                         <i class="fa fa-save"></i>
                                                         Anrejistre
@@ -164,6 +193,8 @@
             </div>
         </section>
     </section>
+
+
 
     <!--main content end-->
     <div class="text-right">
@@ -195,6 +226,63 @@
         });
     });
 </script>
+
+<script>
+    var response = false;
+    function onSave (e) {
+        var date = document.getElementById("drawDate").value;
+        var shift = document.getElementById("shift");
+        shift = shift.options[shift.selectedIndex].text;
+        var loto3chif = document.getElementById("numberThreeDigits");
+        loto3chif = loto3chif.options[loto3chif.selectedIndex].text;
+        var firstDraw = document.getElementById("firstDraw");
+        firstDraw = firstDraw.options[firstDraw.selectedIndex].text;
+        var secondDraw = document.getElementById("secondDraw");
+        secondDraw = secondDraw.options[secondDraw.selectedIndex].text;
+        var thirdDraw = document.getElementById("thirdDraw");
+        thirdDraw = thirdDraw.options[thirdDraw.selectedIndex].text;
+
+        if(!response)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "<h4 class='lead'>Verifye enfomasyon tiraj la byen avan ou anrejistrel</h4><hr>"+
+                    "<div class='row'>"+
+                        "<div class='col-md-6'><p style='font-size:1.5em;font-weight:bold'>Dat: <span class='lead'>"+ date +"</span></p></div>" +
+                        "<div class='col-md-6'><p style='font-size:1.5em;font-weight:bold'>Tiraj: <span class='lead'>"+ shift +"</span></p></div>" +
+                    "</div>"+
+                    "<div class='row'>"+
+                        "<div class='col-md-6'>" +
+                            "<p style='font-size:1.5em;font-weight:bold'>" +
+                                "Loto 3 chif: <span class='lead label label-primary'>"+ loto3chif +"</span>" +
+                            "</p>"+
+                        "</div>"+
+                        "<div class='col-md-6'>" +
+                            "<p style='font-size:1.5em; font-weight:bold'>Bolet: "+
+                                "<span class='lead label label-warning' style='margin-right:5px'>"+ firstDraw +"</span>"+
+                                "<span class='lead label label-success' style='margin-right:5px'>"+ secondDraw +"</span>"+
+                                "<span class='lead label label-info' style='margin-right:5px'>"+ thirdDraw +"</span>" +
+                            "</p>"+
+                        "</div>" +
+                    "</div>",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    response = true;
+                    document.getElementById('save').click();
+                }
+            }
+        });
+    }
+</script
 
 <script type = "text/javascript" >
     $('.selectpicker').selectpicker();

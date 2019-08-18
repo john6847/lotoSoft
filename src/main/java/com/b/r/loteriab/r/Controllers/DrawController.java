@@ -104,7 +104,7 @@ public class DrawController {
     }
 
     @GetMapping("/update/{id}")
-    public String getDraw(@PathVariable("id")Long id, HttpServletRequest request, Model model, FilterChain filterChain){
+    public String getDraw(@PathVariable("id")Long id, HttpServletRequest request, Model model){
 
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {

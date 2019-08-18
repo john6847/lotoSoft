@@ -21,7 +21,7 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Combination findCombinationById(Long id);
 
     <T>List<T> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId, Long enterpriseId, Class<T> classType); // bolet loto3 extra and maryaj when equal
-   // <T>List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId1, Long combinationTypeId2, Long enterpriseId, Class<T> classType); // loto and opsyon when number are the same
+
     <T>List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId, Class<T> classType); //Maryaj
 
     @Query(" select c from Combination c where c.enterprise = :enterprise and (c.resultCombination = :resultCombination or c.resultCombination=:reverseResultCombination) and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")

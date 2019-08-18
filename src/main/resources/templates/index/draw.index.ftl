@@ -128,7 +128,7 @@
 
                       <tr>
                         <th style="width:5%">#</th>
-                        <th style="width:10%">Dat</th>
+                        <th style="width:10%">Dat Tiraj</th>
                         <th style="width:10%">Tip</th>
                         <th style="width:10%" class="text-center">Loto 3</th>
                         <th style="width:25%; text-align: center">Bolet</th>
@@ -149,9 +149,9 @@
                           </td>
                           <td class="text-center"><span class="badge bg-primary">{{draw.numberThreeDigits.numberInStringFormat}}</span></td>
                           <td class="text-center">
-                            <span class="badge bg-warning">{{draw.numberTwoDigits[0].numberInStringFormat}}</span>
-                            <span class="badge bg-success">{{draw.numberTwoDigits[1].numberInStringFormat}}</span>
-                            <span class="badge bg-info">{{draw.numberTwoDigits[2].numberInStringFormat}}</span>
+                            <span class="badge bg-warning">{{draw.firstDraw.numberInStringFormat}}</span>
+                            <span class="badge bg-success">{{draw.secondDraw.numberInStringFormat}}</span>
+                            <span class="badge bg-info">{{draw.thirdDraw.numberInStringFormat}}</span>
                           </td>
                           <td>{{draw.modificationDate | date:'dd/MM/yyyy'}}</td>
                           <td style="text-align: center">
@@ -173,13 +173,13 @@
                       </tbody>
                       <tfoot>
                         <tr>
-                          <th>#</th>
-                          <th>Dat</th>
-                          <th>Tip</th>
-                          <th>Loto 3</th>
-                          <th>Bolet</th>
-                          <th>Dat Kreyayson</th>
-                          <th>Actif</th>
+                          <th style="width:5%">#</th>
+                          <th style="width:10%">Dat Tiraj</th>
+                          <th style="width:10%">Tip</th>
+                          <th style="width:10%" class="text-center">Loto 3</th>
+                          <th style="width:25%; text-align: center">Bolet</th>
+                          <th style="width:10%">Dat Kreyayson</th>
+                          <th style="width:15%; text-align: center">Actif</th>
                         </tr>
                       </tfoot>
                     </table>

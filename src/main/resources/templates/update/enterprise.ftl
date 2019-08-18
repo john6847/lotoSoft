@@ -51,18 +51,18 @@
                                   method="post">
                                 <input type="hidden" name="id" id="id" value="${enterprise.id}">
                                 <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label">Antrepriz<span
+                                    <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="enterprise">Antrepriz<span
                                             class="required">*</span></label>
-                                    <div class="col-lg-10   col-md-10 col-sm-10">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                                         <input type="text" class="form-control round-input" id="enterprise"
                                                name="enterprise" value="${(enterprise.name)!""}" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-lg-offset-6 col-md-offset-6 col-xs-12">
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-danger form-control"
                                                         type="reset"
                                                         title="Efase tout done pos sa">
@@ -70,7 +70,7 @@
                                                         Reyajiste
                                                 </button>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                 <button class="btn btn-primary form-control"
                                                         type="submit"
                                                         title="Anrejistre tout done pos sa">

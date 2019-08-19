@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Notification.Jobs;
 
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
 import com.b.r.loteriab.r.Notification.Enums.NotificationType;
@@ -9,6 +10,7 @@ import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Notification.Service.AuditEventServiceImpl;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
+import com.b.r.loteriab.r.Validation.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,13 +18,13 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Tuple;
 import javax.xml.bind.helpers.AbstractUnmarshallerImpl;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 
 /**
@@ -68,12 +70,28 @@ public class WebSocketPingScheduler {
 
     @Scheduled(fixedRate = 10000)
     public void enableAndDisableShift() {
-//        ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
-//        Map<Long, List<Shift>> mapShifts = shiftList.stream()
-//                .collect(groupingBy(Enterprise, toList()));
-//
-//        for (Shift shift: shiftList) {
-//            mapShifts.put(shift.getEnterprise().getId(), mapShifts.getOrDefault(shift.getEnterprise().getId(), new ArrayList<>())
+        ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
+        Map<Long, List<Shift>> mapShifts = shiftList.stream()
+                .collect(groupingBy(o -> o.getEnterprise().getId(), mapping((Shift s) -> s, toList())));
+//        for (Map.Entry<Long, List<Shift>> entry : mapShifts.entrySet()){
+//            for (Shift shift : entry.getValue()){
+//                if(shift.getName().equals(Shifts.Maten.name()) && shift.isEnabled()){
+//                    Date date = new Date();
+//                    try {
+//                        date = new SimpleDateFormat("dd/MM/yyyy, hh:mm:ss aa").parse(shift.getCloseTime());
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                    String [] time = Helper.getTimeFromDate(date, "").split(":");
+//                    Date resultDate = Helper.setTimeToDate(new Date(), time);
+//                    if (resultDate.after(new Date())){
+////                        TODO: close shift and open other
+//                    }
+//                    System.out.println("Close date "+ resultDate);
+//                    System.out.println("Actual date "+ new Date());
+//                }
+//            }
 //        }
+
     }
 }

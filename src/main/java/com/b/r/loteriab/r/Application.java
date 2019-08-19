@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -24,6 +25,8 @@ public class Application {
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+		System.out.println("************************* "+TimeZone.getDefault()+"***************");
+		System.out.println("************************* "+new Date() +"***************");
 		InitServices initServices= (InitServices) applicationContext.getBean("initServices");
 		initServices.init();
 	}

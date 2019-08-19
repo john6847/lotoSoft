@@ -47,6 +47,8 @@
 <link rel="stylesheet" href="/css/fullcalendar.css" />
 <link href="/css/widgets.css" rel="stylesheet" />
 <link href="/css/style.css" rel="stylesheet" />
+<link href="/css/select2Style.css" rel="stylesheet" />
+<link href="/dist/select2/css/select2.min.css" rel="stylesheet"/>
 <link href="/css/customStyle.css" rel="stylesheet" />
 <link href="/css/style-responsive.css" rel="stylesheet" />
 <link href="/css/xcharts.min.css" rel=" stylesheet" />

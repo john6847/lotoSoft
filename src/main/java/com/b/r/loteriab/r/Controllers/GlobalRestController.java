@@ -3,9 +3,14 @@ package com.b.r.loteriab.r.Controllers;
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Interaces.CombinationViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.CombinationVm;
+import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
+import com.b.r.loteriab.r.Notification.Enums.NotificationType;
+import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
+import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
+import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,10 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Dany on 12/05/2019.
@@ -62,6 +64,10 @@ public class GlobalRestController {
 
     @Autowired
     private BankService bankService;
+
+    @Autowired
+    private AuditEventService service;
+
 
     private static final String ACCECPT_TYPE= "application/json";
 
@@ -566,37 +572,54 @@ public class GlobalRestController {
 
 
     @PutMapping(value = "/combination/update", produces = ACCECPT_TYPE)
-    public ResponseEntity<Map> saveCombinationConfiguration(@RequestBody CombinationVm combinationVm){
-        HashMap map = new HashMap();
-        Combination combination = combinationService.findCombinationById(combinationVm.getId());
+    public ResponseEntity<Map> saveCombinationConfiguration(@RequestBody CombinationVm combinationVm, HttpServletRequest request){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            HashMap map = new HashMap();
+            Combination combination = combinationService.findCombinationById(combinationVm.getId());
 
-        if (combination == null){
-            map.put("saved", false);
-            map.put("message", "Konbinezon an pa egziste cheche yon lot");
-            return new ResponseEntity<>(map,HttpStatus.NOT_FOUND);
-        }
-
-        if (combinationVm.isChangeMaxPrice()){
-            if (combinationVm.getMaxPrice()>0) {
-                combination.setMaxPrice(combinationVm.getMaxPrice());
+            if (combination == null) {
+                map.put("saved", false);
+                map.put("message", "Konbinezon an pa egziste cheche yon lot");
+                return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
             }
+
+            if (combinationVm.isChangeMaxPrice()) {
+                if (combinationVm.getMaxPrice() > 0) {
+                    combination.setMaxPrice(combinationVm.getMaxPrice());
+                }
+            }
+
+            if (combinationVm.isChangeState()) {
+                combination.setEnabled(combinationVm.isEnabled());
+            }
+
+            Result result = combinationService.updateCombination(combination);
+            if (!result.isValid()) {
+                map.put("saved", false);
+                map.put("message", result.getLista().get(0).getMessage());
+                return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+            }
+
+            map.put("saved", true);
+
+            SampleResponse sampleResponse = new SampleResponse();
+            if (combinationVm.isChangeState()) {
+                LastNotification last = new LastNotification();
+                last.setChanged(true);
+                last.setDate(new Date());
+                last.setEnterpriseId(enterprise.getId());
+                last.setType(NotificationType.CombinationBlocked.ordinal());
+
+                sampleResponse.getBody().put("combination", combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId()));
+                last.setSampleResponse(sampleResponse);
+                service.sendMessage(sampleResponse, enterprise.getId(), last);
+            }
+            map.put("message", "Konbinezon aktyalize");
+
+            return new ResponseEntity<>(map, HttpStatus.OK);
         }
-
-        if (combinationVm.isChangeState()){
-            combination.setEnabled(combinationVm.isEnabled());
-        }
-
-        Result result = combinationService.updateCombination(combination);
-        if(!result.isValid()){
-            map.put("saved", false);
-            map.put("message", result.getLista().get(0).getMessage());
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
-        }
-
-        map.put("saved", true);
-        map.put("message", "Konbinezon aktyalize");
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     /**

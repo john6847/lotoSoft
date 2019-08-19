@@ -1,6 +1,10 @@
 package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
+import com.b.r.loteriab.r.Notification.Enums.NotificationType;
+import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
+import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,6 +70,9 @@ public class ConfigurationController {
     @Autowired
     private GroupsRepository groupRepository;
 
+    @Autowired
+    private AuditEventService service;
+
     /**
      * Route to configigure Pos Type (Block and UnBlock)
      * @param id
@@ -84,7 +92,18 @@ public class ConfigurationController {
                 model.addAttribute("error", "Machin sa pa egziste.");
             } else {
                 pos.setEnabled(!pos.isEnabled());
-                posRepository.save(pos);
+                Pos savedPos = posRepository.save(pos);
+
+                SampleResponse sampleResponse = new SampleResponse();
+                LastNotification last = new LastNotification();
+                last.setChanged(true);
+                last.setDate(new Date());
+                last.setEnterpriseId(enterprise.getId());
+                last.setType(NotificationType.PosBlocked.ordinal());
+                sampleResponse.getBody().put("pos", savedPos);
+                last.setSampleResponse(sampleResponse);
+                service.sendMessage(sampleResponse, enterprise.getId(), last);
+
             }
 
             return "redirect:/pos";

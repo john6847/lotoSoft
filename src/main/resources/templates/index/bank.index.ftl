@@ -223,9 +223,7 @@
     }
 </script>
 </script>
-<script type = "text/javascript" >
-    $('.selectpicker').selectpicker();
-</script>
+
 </body>
 
 </html>

@@ -140,7 +140,7 @@
                               id="thirdDraw"
                               data-allow-clear="true"
                               data-live-search="true"
-                              data-placeholder="Chwazi dezyem lo a"
+                              data-placeholder="Chwazi twazyem lo a"
                               data-size="7"
                               required>
                               <#if numberTwoDigits??>
@@ -204,14 +204,6 @@
   <!-- container section end -->
   <#include "../scripts.ftl">
 
-
-
-  <script>
-      <scripttype = "text/javascript" >
-              $('.selectpicker').selectpicker();
-
-      $.fn.selectpicker.Constructor.BootstrapVersion = '4';
-  </script>
 </body>
 
 </html>

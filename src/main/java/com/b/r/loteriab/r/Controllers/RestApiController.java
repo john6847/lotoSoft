@@ -176,7 +176,8 @@ public class RestApiController {
         }
 
         Shift shift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, vm.getShift().getEnterprise().getId());
-        if (!shift.getId().equals(vm.getShift().getId())) {
+
+        if (shift!=null && !shift.getId().equals(vm.getShift().getId())) {
             sampleResponse.getMessages().add("Tiraj "+ vm.getShift().getName()+ " pa aktive kounya, vant sa ap pase pou tiraj "+ shift.getName());
         }
 

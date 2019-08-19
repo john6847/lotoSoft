@@ -7,18 +7,6 @@
 <head>
 
 <#include "../header.ftl">
-    <link href="/dist/select2/css/select2.min.css" rel="stylesheet"/>
-
-    <style>
-        .select2 {
-            width: 100% !important;
-        }
-
-        .select2-search__field{
-            width: 100% !important;
-        }
-
-    </style>
 </head>
 
 <body ng-app="lottery" ng-cloak>
@@ -73,7 +61,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="shift">Tip Tiraj<span class="required">*</span></label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                        <select class="form-control selectpicker"
+                                        <select class="form-control select2"
                                                 name="shift"
                                                 id="shift"
                                                 data-size="5"
@@ -94,7 +82,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="numberThreeDigits">Loto 3 chif <span class="required">*</span></label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                        <select class="form-control selectpicker"
+                                        <select class="form-control select2"
                                                 name="numberThreeDigits"
                                                 id="numberThreeDigits"
                                                 data-allow-clear="true"
@@ -114,7 +102,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="firstDraw">Bòlet <span class="required">*</span></label>
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                        <select class="form-control selectpicker"
+                                        <select class="form-control select2"
                                                 name="firstDraw"
                                                 id="firstDraw"
                                                 data-allow-clear="true"
@@ -129,7 +117,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 ">
-                                        <select class="form-control selectpicker"
+                                        <select class="form-control select2"
                                                 name="secondDraw"
                                                 id="secondDraw"
                                                 data-allow-clear="true"
@@ -144,7 +132,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                        <select class="form-control selectpicker"
+                                        <select class="form-control select2"
                                                 name="thirdDraw"
                                                 id="thirdDraw"
                                                 data-allow-clear="true"
@@ -213,21 +201,6 @@
 <#include "../scripts.ftl">
 
 <script>
-    $(document).ready(function() {
-        $('.select2').select2();
-
-        $(".select2").on("select2:select", function (evt) {
-            var element = evt.params.data.element;
-            var $element = $(element);
-
-            $element.detach();
-            $(this).append($element);
-            $(this).trigger("change");
-        });
-    });
-</script>
-
-<script>
     var response = false;
     function onSave (e) {
         var date = document.getElementById("drawDate").value;
@@ -284,10 +257,7 @@
     }
 </script
 
-<script type = "text/javascript" >
-    $('.selectpicker').selectpicker();
-    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
-</script>
+
 
 </body>
 

@@ -139,7 +139,7 @@
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="pos">Machin</label>
                                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                        <select class="form-control round-input selectpicker"
+                                        <select class="form-control round-input select2"
                                                 name="pos"
                                                 id="pos"
                                                 data-live-search="true"
@@ -256,9 +256,9 @@
     <#include "../scripts.ftl">
 
 
-    <script type = "text/javascript" >
-        $('.selectpicker').selectpicker();
-    </script>
+    <#--<script type = "text/javascript" >-->
+        <#--$('.selectpicker').selectpicker();-->
+    <#--</script>-->
 </body>
 
 </html>

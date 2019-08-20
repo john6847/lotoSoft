@@ -93,6 +93,21 @@
                 </li>
               </ul>
             </li>
+            <li class="sub-menu">
+              <a href="javascript:;" class="">
+                <i class="icon_cog"></i>
+                <span>Rapò</span>
+                <span class="menu-arrow arrow_carrot-right"></span>
+              </a>
+              <ul class="sub">
+                <li>
+                  <a class="" title="Rapò vant yo" href="/report/sales">Rapò Vant</a>
+                </li>
+<#--                <li>-->
+<#--                  <a class="" title="Konfigire tip tiraj" href="/configuration/shift">Tip Tiraj</a>-->
+<#--                </li>-->
+              </ul>
+            </li>
             <#elseif rol.name=="ROLE_SUPER_MEGA_ADMIN">
               <li class="sub-menu">
                 <a href="javascript:;" class="">

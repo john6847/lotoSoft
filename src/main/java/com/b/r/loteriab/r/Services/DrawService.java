@@ -153,8 +153,9 @@ public class DrawService {
         currentDraw.setFirstDraw(draw.getFirstDraw());
         currentDraw.setSecondDraw(draw.getSecondDraw());
         currentDraw.setThirdDraw(draw.getThirdDraw());
+        currentDraw.setAmountLost(0.0);
+        currentDraw.setAmountWon(0.0);
         try {
-            currentDraw.setAmountSold(determineAmountForSoldTicket(currentDraw).getAmountSold());
             determineWonTicket(currentDraw, true);
             currentDraw.setAmountLost(determineAmountLostForSoldTicket(currentDraw).getAmountLost());
             currentDraw.setAmountWon(currentDraw.getAmountSold() - currentDraw.getAmountLost());
@@ -294,7 +295,7 @@ public class DrawService {
                     } else {
                         sales.get(i).getTicket().setWon(won);
                         sales.get(i).getTicket().setAmountWon(0.0);
-                        for (int x = 0; x <sales.get(i).getSaleDetails().size(); i++){
+                        for (int x = 0; x <sales.get(i).getSaleDetails().size(); x++){
                             sales.get(i).getSaleDetails().get(x).setWon(false);
                         }
                         saleRepository.save(sales.get(i));
@@ -401,12 +402,13 @@ public class DrawService {
      private  List<Sale> getSales(Draw draw) {
          Pair<Date, Date> startAndEndDate = null;
          if (draw.getShift().getName().equals(Shifts.Maten.name())){
-             startAndEndDate = Helper.getStartDateAndEndDate(shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), draw.getEnterprise().getId()).getCloseTime(),
-                     draw.getShift().getCloseTime(), draw.getDrawDate(), -1, "dd/MM/yyyy, hh:mm:ss aa");
-
+             Shift shift = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), draw.getEnterprise().getId());
+             if (shift != null) {
+                 startAndEndDate = Helper.getStartDateAndEndDate(shift.getCloseTime(),
+                         draw.getShift().getCloseTime(), draw.getDrawDate(), -1, "dd/MM/yyyy, hh:mm:ss aa");
+             }
          } else {
              Shift shift = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), draw.getEnterprise().getId());
-
              if (shift != null) {
                  startAndEndDate = Helper.getStartDateAndEndDate(shift.getCloseTime(),
                          draw.getShift().getCloseTime(), draw.getDrawDate(), 0, "dd/MM/yyyy, hh:mm:ss aa");

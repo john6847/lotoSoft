@@ -54,8 +54,7 @@
                   <div class="form-group">
                     <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label" for="drawDate">Dat<span class="required">*</span></label>
                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <span class="lead fa-2x">${(draw.drawDate?string["dd/MM/yyyy"])}</span>
-
+                        <span class="lead fa-2x" id="drawDate">${(draw.drawDate?string["dd/MM/yyyy"])}</span>
                     </div>
                   </div>
 
@@ -170,10 +169,12 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                           <button class="btn btn-primary form-control" 
-                            type="submit"
-                            title="Anrejistre tout done tiraj sa">
-                            <i class="fa fa-save"></i>
-                            Anrejistre
+                                  type="submit"
+                                  id="save"
+                                  onclick="onSave(event)"
+                                  title="Anrejistre tout done tiraj sa">
+                                  <i class="fa fa-save"></i>
+                                  Anrejistre
                           </button>
                         </div>
                       </div>
@@ -204,6 +205,69 @@
   <!-- container section end -->
   <#include "../scripts.ftl">
 
+<script>
+  var response = false;
+  function onSave (e) {
+    var date =  document.getElementById("drawDate").innerText.toString();
+    var shift = document.getElementById("shift");
+    shift = shift.options[shift.selectedIndex].text;
+    var loto3chif = document.getElementById("numberThreeDigits");
+    loto3chif = loto3chif.options[loto3chif.selectedIndex].text;
+    var firstDraw = document.getElementById("firstDraw");
+    firstDraw = firstDraw.options[firstDraw.selectedIndex].text;
+    var secondDraw = document.getElementById("secondDraw");
+    secondDraw = secondDraw.options[secondDraw.selectedIndex].text;
+    var thirdDraw = document.getElementById("thirdDraw");
+    thirdDraw = thirdDraw.options[thirdDraw.selectedIndex].text;
+
+    if(!response)
+      e.preventDefault();
+    bootbox.confirm({
+      message: "<h4 class='lead'>Verifye enfomasyon tiraj la byen avan ou aktyalizel</h4><hr>"+
+              "<div class='row'>"+
+                "<div class='col-md-6'><p style='font-size:1.5em;font-weight:bold'>Dat: <span class='lead'>"+ date +"</span></p></div>" +
+                "<div class='col-md-6'><p style='font-size:1.5em;font-weight:bold'>Tiraj: <span class='lead'>"+ shift +"</span></p></div>" +
+              "</div>"+
+              "<div class='row'>"+
+                "<div class='col-md-6'>" +
+                "<p style='font-size:1.5em;font-weight:bold'>" +
+                "Loto 3 chif: <span class='lead label label-primary'>"+ loto3chif +"</span>" +
+                "</p>"+
+              "</div>"+
+                "<div class='col-md-6'>" +
+                  "<p style='font-size:1.5em; font-weight:bold'>Bolet: "+
+                  "<span class='lead label label-warning' style='margin-right:5px'>"+ firstDraw +"</span>"+
+                  "<span class='lead label label-success' style='margin-right:5px'>"+ secondDraw +"</span>"+
+                  "<span class='lead label label-info' style='margin-right:5px'>"+ thirdDraw +"</span>" +
+                  "</p>"+
+                "</div>" +
+              "</div>",
+      size: 'small',
+      buttons: {
+        confirm: {
+          label: '<i class="fa fa-check"></i> Wi',
+          className: ' btn-success'
+        },
+        cancel: {
+          label: '<i class="fa fa-times"></i> Non',
+          className: 'btn-danger'
+        }
+      }, callback: function (result) {
+        if (result){
+          response = true;
+          document.getElementById('save').click();
+        }
+      }
+    });
+  }
+</script
+
+  <script>
+      <scripttype = "text/javascript" >
+              $('.selectpicker').selectpicker();
+
+      $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+  </script>
 </body>
 
 </html>

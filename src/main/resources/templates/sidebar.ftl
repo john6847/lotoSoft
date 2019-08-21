@@ -95,7 +95,7 @@
             </li>
             <li class="sub-menu">
               <a href="javascript:;" class="">
-                <i class="icon_cog"></i>
+                <i class="icon_datareport"></i>
                 <span>Rapò</span>
                 <span class="menu-arrow arrow_carrot-right"></span>
               </a>

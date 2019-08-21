@@ -43,12 +43,42 @@
                 <div class="col-lg-3">
                     <md-content layout-padding>
                         <md-card>
-                            <div layout-gt-xs="row">
+                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
                                 <md-input-container>
-                                    <label>Enter date</label>
-                                    <md-datepicker ng-model="user.submissionDate" aria-label="Enter date"></md-datepicker>
+                                    <label>Soti nan</label>
+                                    <md-datepicker ng-model="global.beginDate" aria-label="Antre dat komansman"></md-datepicker>
+                                </md-input-container>
+                            </div>
+                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
+                                <md-input-container>
+                                    <label>Pou rive</label>
+                                    <md-datepicker ng-model="global.endDate" aria-label="Antre dat komansman"></md-datepicker>
                                 </md-input-container>
 <#--                                https://material.angularjs.org/latest/demo/input-->
+                            </div>
+                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
+                                <div  flex-gt-xs>
+                                    <md-input-container>
+                                        <label>Vande</label>
+                                        <md-select ng-model="selectType.type" ng-change="changeSelectType()">
+    <#--                                        ng-repeat="type in selectType.types track by type.id" ng-value="{{type.id}}"-->
+                                            <md-option >
+    <#--                                            {{type.name}}-->
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div  flex-gt-xs>
+                                    <md-input-container>
+                                        <label>Tiraj</label>
+                                        <md-select ng-model="selectType.type" ng-change="changeSelectType()">
+    <#--                                        ng-repeat="type in selectType.types track by type.id" ng-value="{{type.id}}"-->
+                                            <md-option >
+    <#--                                            {{type.name}}-->
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
                             </div>
                         </md-card>
                     </md-content>
@@ -57,13 +87,74 @@
                     <div ng-cloak>
                         <md-content>
                             <md-tabs md-dynamic-height md-border-bottom>
-                                <md-tab label="one">
+                                <md-tab label="Vant Total">
                                     <md-content class="md-padding">
-                                        <h1 class="md-display-2">Tab One</h1>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
-                                            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In
-                                            sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
-                                            feugiat ultricies mi.</p>
+                                        <h1 class="md-display-2">Vant Total</h1>
+                                        <div layout-lt-lg="row">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Vande</th>
+                                                        <th>Vant Total</th>
+                                                        <th>Pousantaj</th>
+                                                        <th>Vant ne</th>
+                                                        <th>Gany</th>
+                                                        <th>Rezilta</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Jerome</td>
+                                                        <td>5000.00</td>
+                                                        <td>590.00</td>
+                                                        <td>4910.00</td>
+                                                        <td>3900.00</td>
+                                                        <td class="danger">-1010.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Ti Pol</td>
+                                                        <td>9456.00</td>
+                                                        <td>940.00</td>
+                                                        <td>8516.00</td>
+                                                        <td>200.00</td>
+                                                        <td class="success">8316.00</td>
+                                                    </tr> <tr>
+                                                        <td>Noy</td>
+                                                        <td>5000.00</td>
+                                                        <td>590.00</td>
+                                                        <td>4910.00</td>
+                                                        <td>3900.00</td>
+                                                        <td class="success">1010.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mary</td>
+                                                        <td>9456.00</td>
+                                                        <td>940.00</td>
+                                                        <td>8516.00</td>
+                                                        <td>200.00</td>
+                                                        <td class="success">8316.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>July</td>
+                                                        <td>4910.00</td>
+                                                        <td>3900.00</td>
+                                                        <td>1010.00</td>
+                                                        <td>590.00</td>
+                                                        <td class="success">4910.00</td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <td class="warning" style="font-weight: bold;" >TOTAL</td>
+                                                    <td class="warning" style="font-weight: bold;" >27000.00</td>
+                                                    <td class="warning" style="font-weight: bold;" >13000.00</td>
+                                                    <td class="warning" style="font-weight: bold;" >18888.00</td>
+                                                    <td class="warning" style="font-weight: bold;" >15000.00</td>
+                                                    <td class="warning" style="font-weight: bold;" >49190.00</td>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </md-content>
                                 </md-tab>
                                 <md-tab label="two">

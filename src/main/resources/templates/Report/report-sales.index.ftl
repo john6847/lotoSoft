@@ -25,8 +25,25 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <h3 class="page-header"><i class="fa fa-file"></i>Rapò Vant</h3>
+                </div>
+                <div class="col-lg-6">
+                    <button type="button" class="btn btn-default" style="float: right">
+                        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Enprime
+                    </button>
+
+                    <div class="btn-group" style="float: right; margin-right: 5px">
+                        <button type="button" class="btn btn-info">Ekspòte</button>
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><span style="color: #008000" class="fa fa-file-excel-o" aria-hidden="true"></span> Excel</a></li>
+                            <li><a href="#"><span style="color: red" class="fa fa-file-pdf-o" aria-hidden="true"></span> PDF</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -45,21 +62,21 @@
                         <md-card>
                             <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
                                 <md-input-container>
-                                    <label>Soti nan</label>
-                                    <md-datepicker ng-model="global.beginDate" aria-label="Antre dat komansman"></md-datepicker>
+                                    <label>Sòti nan</label>
+                                    <md-datepicker ng-model="global.startDate" aria-label="Antre dat komansman"></md-datepicker>
                                 </md-input-container>
                             </div>
                             <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
                                 <md-input-container>
                                     <label>Pou rive</label>
-                                    <md-datepicker ng-model="global.endDate" aria-label="Antre dat komansman"></md-datepicker>
+                                    <md-datepicker ng-model="global.endDate" aria-label="Antre dat finisman"></md-datepicker>
                                 </md-input-container>
 <#--                                https://material.angularjs.org/latest/demo/input-->
                             </div>
                             <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
                                 <div  flex-gt-xs>
                                     <md-input-container>
-                                        <label>Vande</label>
+                                        <label>Vandè</label>
                                         <md-select ng-model="selectType.type" ng-change="changeSelectType()">
     <#--                                        ng-repeat="type in selectType.types track by type.id" ng-value="{{type.id}}"-->
                                             <md-option >
@@ -95,10 +112,10 @@
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th>Vande</th>
+                                                        <th>Vandè</th>
                                                         <th>Vant Total</th>
                                                         <th>Pousantaj</th>
-                                                        <th>Vant ne</th>
+                                                        <th>Vant nè</th>
                                                         <th>Gany</th>
                                                         <th>Rezilta</th>
                                                     </tr>

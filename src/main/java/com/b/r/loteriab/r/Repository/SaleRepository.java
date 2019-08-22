@@ -42,5 +42,5 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 
 
-
+//    http://www.sqlservertutorial.net/sql-server-aggregate-functions/sql-server-sum/
 }

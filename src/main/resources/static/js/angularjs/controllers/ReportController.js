@@ -1,16 +1,19 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['$http', 'ReportService','SellerService', 'ConfigurationService', '$scope', 'DTOptionsBuilder', function ($http, ReportService, SellerService, ConfigurationService, $scope, DTOptionsBuilder) {
+app.controller("reportController", ['$http', 'ReportService','SellerService', 'ConfigurationService', '$scope', 'DTOptionsBuilder', function ($http, ReportService, SellerService, ConfigurationService, $scope, DTOptionsBuilder) {
     $scope.global = {
         sellers: [],
+        selectedSeller: null,
         shifts: [],
+        selectedShift: null,
         startDate: null,
         endDate: null,
-        message: null,
+        message: null
     };
 
-
+    fetchAllSellers();
+    fetchAllShifts();
     function fetchAllShifts() {
         ConfigurationService.fetchAllShifts()
             .then(
@@ -43,9 +46,5 @@ app.controller("bankController", ['$http', 'ReportService','SellerService', 'Con
                 })
 
     }
-
-
-
-
 
 }]);

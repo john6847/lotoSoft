@@ -22,7 +22,7 @@
     <!--sidebar end-->
 
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" ng-controller="reportController">
         <section class="wrapper">
             <div class="row">
                 <div class="col-lg-6">
@@ -60,27 +60,26 @@
                 <div class="col-lg-3">
                     <md-content layout-padding>
                         <md-card>
-                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
+                            <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
                                 <md-input-container>
                                     <label>Sòti nan</label>
                                     <md-datepicker ng-model="global.startDate" aria-label="Antre dat komansman"></md-datepicker>
                                 </md-input-container>
                             </div>
-                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
+                            <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
                                 <md-input-container>
                                     <label>Pou rive</label>
                                     <md-datepicker ng-model="global.endDate" aria-label="Antre dat finisman"></md-datepicker>
                                 </md-input-container>
 <#--                                https://material.angularjs.org/latest/demo/input-->
                             </div>
-                            <div layout-gt-xs="row" layout-lt-lg="row" layout-lt-md="row">
+                            <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
                                 <div  flex-gt-xs>
                                     <md-input-container>
                                         <label>Vandè</label>
-                                        <md-select ng-model="selectType.type" ng-change="changeSelectType()">
-    <#--                                        ng-repeat="type in selectType.types track by type.id" ng-value="{{type.id}}"-->
-                                            <md-option >
-    <#--                                            {{type.name}}-->
+                                        <md-select ng-model="global.selectedSeller">
+                                            <md-option ng-repeat="seller in global.sellers track by seller.id" ng-value="{{seller.id}}">
+                                                {{seller.user.name}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
@@ -88,10 +87,9 @@
                                 <div  flex-gt-xs>
                                     <md-input-container>
                                         <label>Tiraj</label>
-                                        <md-select ng-model="selectType.type" ng-change="changeSelectType()">
-    <#--                                        ng-repeat="type in selectType.types track by type.id" ng-value="{{type.id}}"-->
-                                            <md-option >
-    <#--                                            {{type.name}}-->
+                                        <md-select ng-model="global.selectedShift">
+                                            <md-option ng-repeat="shift in global.shifts track by shift.id" ng-value="{{shift.id}}">
+                                                {{shift.name}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
@@ -107,7 +105,7 @@
                                 <md-tab label="Vant Total">
                                     <md-content class="md-padding">
                                         <h1 class="md-display-2">Vant Total</h1>
-                                        <div layout-lt-lg="row">
+                                        <div layout-gt-lg="row">
                                             <div class="table-responsive">
                                                 <table class="table">
                                                     <thead>

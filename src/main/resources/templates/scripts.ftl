@@ -90,4 +90,6 @@
 <script src="/js/angularjs/controllers/EnterpriseController.js"></script>
 <script src="/js/angularjs/services/EnterpriseService.js"></script>
 <script src="/js/angularjs/controllers/BankController.js"></script>
+<script src="/js/angularjs/controllers/ReportController.js"></script>
 <script src="/js/angularjs/services/BankService.js"></script>
+<script src="/js/angularjs/services/ReportService.js"></script>

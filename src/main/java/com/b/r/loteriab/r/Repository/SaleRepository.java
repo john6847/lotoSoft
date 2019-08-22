@@ -39,4 +39,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     String q1 = "select * from sale s where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date >= ?3 and s.date <= ?4";
     @Query(value = q1, nativeQuery = true)
     List<Sale> selectAllSale(Long enterpriseId, Long shiftId, Date startDate, Date endDate); // TODO: Check query
+
+
+
+
 }

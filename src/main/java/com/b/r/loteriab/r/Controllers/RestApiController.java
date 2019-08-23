@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -165,6 +166,7 @@ public class RestApiController {
     @RequestMapping(value = "/sale",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> processSale(@RequestBody SaleViewModel vm, @RequestHeader("token") String token){
         SampleResponse sampleResponse = new SampleResponse();
+        sampleResponse.setMessages(new ArrayList<>());
         if (token.isEmpty()){
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);

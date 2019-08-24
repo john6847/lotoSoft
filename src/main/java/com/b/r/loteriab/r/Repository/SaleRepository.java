@@ -39,4 +39,26 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     String q1 = "select * from sale s where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date >= ?3 and s.date <= ?4";
     @Query(value = q1, nativeQuery = true)
     List<Sale> selectAllSale(Long enterpriseId, Long shiftId, Date startDate, Date endDate); // TODO: Check query
+
+
+
+//    http://www.sqlservertutorial.net/sql-server-aggregate-functions/sql-server-sum/
+//    SELECT
+//    s.seller_id,
+//    SUM(s.total_amount) as  sale_total,
+//    SUM(t.amount_won) as amount_won,
+//    (SUM(s.total_amount)- SUM(t.amount_won))as net_sale,
+//            CASE
+//    WHEN s2.amount_charged > 0 THEN s2.amount_charged
+//    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))
+//    END AS salary,
+//            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100))) )
+//
+//    FROM
+//    sale s
+//    INNER JOIN ticket t on s.ticket_id = t.id
+//    INNER JOIN seller s2 on s.seller_id = s2.id
+//    GROUP BY
+//    s.seller_id, s2.percentage_charged, s2.amount_charged;
+
 }

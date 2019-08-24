@@ -7,8 +7,11 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Helper {
 
@@ -52,6 +55,35 @@ public class Helper {
         cal.setTime(date);
         cal.add(Calendar.DATE, numberDays);
         return cal.getTime();
+    }
+
+
+    public  static int getDateValueFromDate (Date date, int type) {
+        LocalDate localDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        switch (type){
+            case 0:
+                return localDate.getDayOfMonth();
+                case 1:
+                return localDate.getMonthValue();
+                case 2:
+                return localDate.getYear();
+        }
+        return 0;
+    }
+
+    public static int getTimeValueFromDate(Date date, int type){
+        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+        calendar.setTime(date);   // assigns calendar to given date
+        calendar.get(Calendar.HOUR);        // gets hour in 12h format
+        switch (type){
+            case 0:
+                return calendar.get(Calendar.MINUTE);
+            case 1:
+                return calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format;
+            case 2:
+                return calendar.get(Calendar.HOUR); // gets hour in 12h format;
+        }
+        return 0;
     }
 
     public static Date setTimeToDate(Date date, String []time) {

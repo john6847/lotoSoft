@@ -16,5 +16,5 @@
 
 - kill service: 
 - [service number for now] -> 10677
-- ps kill -9 [service number]
+- kill -9 [service number]
 

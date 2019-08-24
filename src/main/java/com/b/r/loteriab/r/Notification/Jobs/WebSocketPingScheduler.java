@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Notification.Jobs;
 
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
 import com.b.r.loteriab.r.Notification.Enums.NotificationType;
@@ -9,6 +10,7 @@ import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Notification.Service.AuditEventServiceImpl;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
+import com.b.r.loteriab.r.Validation.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,13 +18,15 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Tuple;
 import javax.xml.bind.helpers.AbstractUnmarshallerImpl;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 
 /**
@@ -44,7 +48,6 @@ public class WebSocketPingScheduler {
 
    @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
-       System.out.println("There");
        for (Map.Entry<Integer, LastNotification> entry : AuditEventServiceImpl.lastNotificationMap.entrySet())
        {
            long diff = new Date().getTime() - entry.getValue().getDate().getTime();
@@ -68,12 +71,61 @@ public class WebSocketPingScheduler {
 
     @Scheduled(fixedRate = 10000)
     public void enableAndDisableShift() {
-//        ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
-//        Map<Long, List<Shift>> mapShifts = shiftList.stream()
-//                .collect(groupingBy(Enterprise, toList()));
-//
-//        for (Shift shift: shiftList) {
-//            mapShifts.put(shift.getEnterprise().getId(), mapShifts.getOrDefault(shift.getEnterprise().getId(), new ArrayList<>())
-//        }
+        ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
+        Map<Long, List<Shift>> mapShifts = shiftList.stream()
+                .collect(groupingBy(o -> o.getEnterprise().getId(), mapping((Shift s) -> s, toList())));
+
+        for (Map.Entry<Long, List<Shift>> entry : mapShifts.entrySet()){
+            for (Shift shift : entry.getValue()){
+                System.out.println("there");
+                if(shift.getName().equals(Shifts.Maten.name()) && shift.isEnabled()) {
+                    if (!shift.getCloseTime().isEmpty()) {
+                        System.out.println("there closing time");
+                        Date date = getCloseDateTime(shift.getCloseTime());
+                        int hour = Helper.getTimeValueFromDate(new Date(), 1);
+                        if (hour < 20) {
+                            if (new Date().after(date)) {
+                                shift.setEnabled(false);
+                                shiftRepository.save(shift);
+                                Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
+                                other.setEnabled(true);
+                                shiftRepository.save(other);
+                            }
+                        } else {
+                            date = Helper.addDays(date, 1);
+                        }
+                        System.out.println("Close date " + date);
+                        System.out.println("Actual date " + new Date());
+                    }
+                }
+                if (shift.getName().equals(Shifts.New_York.name()) && shift.isEnabled()) {
+                    if(!shift.getCloseTime().isEmpty()){
+                        System.out.println("there closing time");
+                        Date date = getCloseDateTime(shift.getCloseTime());
+                        if (new Date().after(date)){
+                            System.out.println("Date come after");
+                            shift.setEnabled(false);
+                            shiftRepository.save(shift);
+                            Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
+                            other.setEnabled(true);
+                            shiftRepository.save(other);
+                        }
+                        System.out.println("Close date "+ date);
+                        System.out.println("Actual date "+ new Date());
+                    }
+                }
+            }
+        }
+    }
+
+    private Date getCloseDateTime(String closeTime){
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy, hh:mm:ss aa").parse(closeTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String [] time = Helper.getTimeFromDate(date, "").split(":");
+        return Helper.setTimeToDate(new Date(), time);
     }
 }

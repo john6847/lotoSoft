@@ -90,9 +90,7 @@
                                                                    class="form-control"
                                                                    name="openTime"
                                                                    ng-model="shiftField.selectedShift.openTime"
-                                                                   placeholder="HH:mm:ss"
-                                                                   min="05:00:00"
-                                                                   max="20:00:00"
+                                                                   placeholder="HH:mm:ss aa"
                                                                    required
                                                                    type="time"/>
                                                             <span class="input-group-addon"><i
@@ -112,8 +110,8 @@
                                                                    name="closeTime"
                                                                    ng-model="shiftField.selectedShift.closeTime"
                                                                    placeholder="HH:mm:ss"
-                                                                   min="05:00:00"
-                                                                   max="20:00:00"
+<#--                                                                   min="05:00:00"-->
+<#--                                                                   max="20:00:00"-->
                                                                    required
                                                                    type="time"/>
                                                             <span class="input-group-addon"><i
@@ -165,7 +163,6 @@
 
 <script type="text/javascript">
     $('.timepicker').timepicker();
-    // $('#timepicker2').timepicker();
 </script>
 
 

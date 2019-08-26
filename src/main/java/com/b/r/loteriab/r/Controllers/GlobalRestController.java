@@ -3,6 +3,7 @@ package com.b.r.loteriab.r.Controllers;
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Interaces.CombinationViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.CombinationVm;
+import com.b.r.loteriab.r.Model.ViewModel.SalesReportViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
 import com.b.r.loteriab.r.Notification.Enums.NotificationType;
 import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
@@ -68,6 +69,8 @@ public class GlobalRestController {
     @Autowired
     private AuditEventService service;
 
+    @Autowired
+    private ReportService reportService;
 
     private static final String ACCECPT_TYPE= "application/json";
 
@@ -688,6 +691,23 @@ public class GlobalRestController {
         map.put("saved", false);
         map.put("message", "Tip tiraj la pa ka aktyalize, ou pa gen pemisyon pou sa");
         return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Get All Sales Report
+     * @return size
+     */
+    @PutMapping(value = "/sales/report", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<SalesReportViewModel>> getSalesReport(
+            @RequestBody SalesReportViewModel salesReportViewModel,
+            HttpServletRequest request
+    ){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            salesReportViewModel.setEnterpriseId(enterprise.getId());
+          return new ResponseEntity<>(reportService.getSalesReport(salesReportViewModel), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     private Boolean getState (int state){

@@ -5,13 +5,12 @@
 angular.module('lottery')
     .factory('ReportService', ['$http', '$q', function ($http, $q) {
         return {
-            fetchAllBank: fetchAllBank,
-            fetchAllBankFiltered: fetchAllBankFiltered
+            fetchSalesReport: fetchSalesReport
         };
 
-        function fetchAllBank() {
+        function fetchSalesReport(salesReport) {
             var deferred = $q.defer();
-            $http.get("/api/bank/")
+            $http.put("/api/sales/report",  JSON.stringify(salesReport))
                 .then(
                     function (response) {
                         deferred.resolve(response.data);
@@ -21,19 +20,4 @@ angular.module('lottery')
                     });
             return deferred.promise;
         }
-
-        function fetchAllBankFiltered(pageno,itemsPerPage,state) {
-            var deferred = $q.defer();
-
-            $http.get("/api/bank/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state)
-                .then(
-                    function (response) {
-                        deferred.resolve(response.data);
-                    }, function (errResponse) {
-                        console.error(errResponse);
-                        deferred.reject(errResponse);
-                    });
-            return deferred.promise;
-        }
-
     }]);

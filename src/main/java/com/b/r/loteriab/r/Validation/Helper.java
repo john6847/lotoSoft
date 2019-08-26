@@ -116,4 +116,21 @@ public class Helper {
 
         return  Pair.with(resultStartDate, resultEndDate);
     }
+
+    public static Date getCloseDateTime(String closeTime, Date dateToApply){
+        Date date = Helper.convertStringToDate(closeTime, "dd/MM/yyyy, hh:mm:ss a");
+        String [] time = Helper.getTimeFromDate(date, "").split(":");
+        return Helper.setTimeToDate(dateToApply, time);
+    }
+
+    public static Date convertStringToDate(String sDate, String format) {
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = formatter.parse(sDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 }

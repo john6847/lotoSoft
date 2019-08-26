@@ -4,6 +4,7 @@ import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Sale;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Model.ViewModel.SalesReportViewModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,22 +44,53 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 
 //    http://www.sqlservertutorial.net/sql-server-aggregate-functions/sql-server-sum/
-//    SELECT
-//    s.seller_id,
-//    SUM(s.total_amount) as  sale_total,
-//    SUM(t.amount_won) as amount_won,
-//    (SUM(s.total_amount)- SUM(t.amount_won))as net_sale,
-//            CASE
-//    WHEN s2.amount_charged > 0 THEN s2.amount_charged
-//    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))
-//    END AS salary,
-//            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100))) )
-//
-//    FROM
-//    sale s
-//    INNER JOIN ticket t on s.ticket_id = t.id
-//    INNER JOIN seller s2 on s.seller_id = s2.id
-//    GROUP BY
-//    s.seller_id, s2.percentage_charged, s2.amount_charged;
+String q2 = " SELECT\n" +
+        "    s.seller_id,\n" +
+        "    SUM(s.total_amount) as  sale_total,\n" +
+        "    SUM(t.amount_won) as amount_won,\n" +
+        "    (SUM(s.total_amount)- SUM(t.amount_won))as net_sale,\n" +
+        "            CASE\n" +
+        "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
+        "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
+        "    END AS salary,\n" +
+        "            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
+        "\n" +
+        "    FROM\n" +
+        "    sale s\n" +
+        "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
+        "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
+        "\n" +
+        "    where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date between ?3 and ?4\n" +
+        "    GROUP BY\n" +
+        "    s.seller_id, s2.percentage_charged, s2.amount_charged";
+    @Query(value = q2, nativeQuery = true)
+    List<SalesReportViewModel> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, Date startDate, Date endDate);
+
+    String q3 = "SELECT\n" +
+        "    s.seller_id,\n" +
+        "    SUM(s.total_amount) as sale_total,\n" +
+        "    SUM(t.amount_won) as amount_won,\n" +
+        "    (SUM(s.total_amount) - SUM(t.amount_won))as net_sale,\n" +
+        "    CASE\n" +
+        "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
+        "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
+        "    END AS salary,\n" +
+        "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
+        "\n" +
+        "    FROM\n" +
+        "    sale s\n" +
+        "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
+        "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
+        "\n" +
+        "    where s.enterprise_id =?1 and s.shift_id =?2 and s.seller_id=?3 and s.date between ?4 and ?5\n" +
+        "    GROUP BY\n" +
+        "    s.seller_id, s2.percentage_charged, s2.amount_charged";
+    @Query(value = q2, nativeQuery = true)
+    List<SalesReportViewModel> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, Date startDate, Date endDate);
+
+
+
+
+
 
 }

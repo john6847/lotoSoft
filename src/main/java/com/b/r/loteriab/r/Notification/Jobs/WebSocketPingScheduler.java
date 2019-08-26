@@ -80,8 +80,7 @@ public class WebSocketPingScheduler {
                 System.out.println("there");
                 if(shift.getName().equals(Shifts.Maten.name()) && shift.isEnabled()) {
                     if (!shift.getCloseTime().isEmpty()) {
-                        System.out.println("there closing time");
-                        Date date = getCloseDateTime(shift.getCloseTime());
+                        Date date = Helper.getCloseDateTime(shift.getCloseTime(), new Date());
                         int hour = Helper.getTimeValueFromDate(new Date(), 1);
                         if (hour < 20) {
                             if (new Date().after(date)) {
@@ -100,10 +99,8 @@ public class WebSocketPingScheduler {
                 }
                 if (shift.getName().equals(Shifts.New_York.name()) && shift.isEnabled()) {
                     if(!shift.getCloseTime().isEmpty()){
-                        System.out.println("there closing time");
-                        Date date = getCloseDateTime(shift.getCloseTime());
+                        Date date = Helper.getCloseDateTime(shift.getCloseTime(), new Date());
                         if (new Date().after(date)){
-                            System.out.println("Date come after");
                             shift.setEnabled(false);
                             shiftRepository.save(shift);
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
@@ -118,14 +115,5 @@ public class WebSocketPingScheduler {
         }
     }
 
-    private Date getCloseDateTime(String closeTime){
-        Date date = new Date();
-        try {
-            date = new SimpleDateFormat("dd/MM/yyyy, hh:mm:ss aa").parse(closeTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String [] time = Helper.getTimeFromDate(date, "").split(":");
-        return Helper.setTimeToDate(new Date(), time);
-    }
+
 }

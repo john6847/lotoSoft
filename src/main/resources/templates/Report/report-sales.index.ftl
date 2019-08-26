@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                     <md-content layout-padding>
                         <md-card>
                             <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
@@ -74,12 +74,26 @@
 <#--                                https://material.angularjs.org/latest/demo/input-->
                             </div>
                             <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
+                                <md-switch ng-model="global.isGroup" aria-label="">
+                                    {{global.isGroup? 'Pa Gwoup' : 'Pa vandè'}}
+                                </md-switch>
+                            </div>
+
+                            <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
                                 <div  flex-gt-xs>
-                                    <md-input-container>
+                                    <md-input-container ng-if="!global.isGroup">
                                         <label>Vandè</label>
                                         <md-select ng-model="global.selectedSeller">
                                             <md-option ng-repeat="seller in global.sellers track by seller.id" ng-value="{{seller.id}}">
                                                 {{seller.user.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container ng-if="global.isGroup">
+                                        <label>Gwoup</label>
+                                        <md-select ng-model="global.selectedGroups">
+                                            <md-option ng-repeat="group in global.groups track by group.id" ng-value="{{group.id}}">
+                                                {{group.description}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
@@ -95,10 +109,13 @@
                                     </md-input-container>
                                 </div>
                             </div>
+                            <div layout-gt-xs="row" layout-gt-lg="row" layout-gt-md="row">
+                                <md-button ng-disabled="!global.startDate|| !global.selectedShift" class="md-raised md-primary" ng-click="buildReport()">Kalkile</md-button>
+                            </div>
                         </md-card>
                     </md-content>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                     <div ng-cloak>
                         <md-content>
                             <md-tabs md-dynamic-height md-border-bottom>
@@ -110,6 +127,7 @@
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
+                                                        <th>#</th>
                                                         <th>Vandè</th>
                                                         <th>Vant Total</th>
                                                         <th>Pousantaj</th>
@@ -119,53 +137,23 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <td>Jerome</td>
-                                                        <td>5000.00</td>
-                                                        <td>590.00</td>
-                                                        <td>4910.00</td>
-                                                        <td>3900.00</td>
-                                                        <td class="danger">-1010.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Ti Pol</td>
-                                                        <td>9456.00</td>
-                                                        <td>940.00</td>
-                                                        <td>8516.00</td>
-                                                        <td>200.00</td>
-                                                        <td class="success">8316.00</td>
-                                                    </tr> <tr>
-                                                        <td>Noy</td>
-                                                        <td>5000.00</td>
-                                                        <td>590.00</td>
-                                                        <td>4910.00</td>
-                                                        <td>3900.00</td>
-                                                        <td class="success">1010.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mary</td>
-                                                        <td>9456.00</td>
-                                                        <td>940.00</td>
-                                                        <td>8516.00</td>
-                                                        <td>200.00</td>
-                                                        <td class="success">8316.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>July</td>
-                                                        <td>4910.00</td>
-                                                        <td>3900.00</td>
-                                                        <td>1010.00</td>
-                                                        <td>590.00</td>
-                                                        <td class="success">4910.00</td>
+                                                    <tr  ng-repeat="salesReport in global.salesReports">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{salesReport.seller_name}}</td>
+                                                        <td>{{salesReport.sale_total}}</td>
+                                                        <td>{{salesReport.salary}}</td>
+                                                        <td>{{salesReport.net_sale}}</td>
+                                                        <td>{{salesReport.amount_won}}</td>
+                                                        <td class="salesReport.sale_result > 0 ? 'success': 'danger'" >{{salesReport.sale_result}}</td>
                                                     </tr>
                                                     </tbody>
-                                                    <tfoot>
-                                                    <td class="warning" style="font-weight: bold;" >TOTAL</td>
-                                                    <td class="warning" style="font-weight: bold;" >27000.00</td>
-                                                    <td class="warning" style="font-weight: bold;" >13000.00</td>
-                                                    <td class="warning" style="font-weight: bold;" >18888.00</td>
-                                                    <td class="warning" style="font-weight: bold;" >15000.00</td>
-                                                    <td class="warning" style="font-weight: bold;" >49190.00</td>
+                                                    <tfoot ng-if="total.sale_total !== null">
+                                                        <td class="warning" style="font-weight: bold;" >TOTAL</td>
+                                                        <td class="warning" style="font-weight: bold;" >N/A</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.sale_total}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.salary}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.net_sale}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.amount_won}}</td>
                                                     </tfoot>
                                                 </table>
                                             </div>

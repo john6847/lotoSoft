@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Model;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class Bank implements Serializable {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "pos_id")
     private Pos pos;
+    @CreatedDate
     private Date creationDate;
     private Date modificationDate;
     private String serial;

@@ -19,4 +19,9 @@ public class SalesReportViewModel {
     private double amount_won;
     private double net_sale;
     private double salary;
+
+    //    https://www.callicoder.com/spring-boot-jpa-hibernate-postgresql-restful-crud-api-example/
+//    https://stackoverflow.com/questions/1754411/how-to-select-date-from-datetime-column/30378572#30378572
+//    vhttps://blog.mimacom.com/java-8-dates-with-postgresql/
+//    spring boot with  postgresql native query example with date
 }

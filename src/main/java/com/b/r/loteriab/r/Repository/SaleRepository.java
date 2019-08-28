@@ -64,29 +64,33 @@ String q2 = " SELECT\n" +
         "    GROUP BY\n" +
         "    s.seller_id, s2.percentage_charged, s2.amount_charged";
     @Query(value = q2, nativeQuery = true)
-    List<SalesReportViewModel> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, Date startDate, Date endDate);
+    List<Object> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, Date startDate, Date endDate);
 
-    String q3 = "SELECT\n" +
-        "    s.seller_id,\n" +
-        "    SUM(s.total_amount) as sale_total,\n" +
-        "    SUM(t.amount_won) as amount_won,\n" +
-        "    (SUM(s.total_amount) - SUM(t.amount_won))as net_sale,\n" +
-        "    CASE\n" +
-        "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
-        "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
-        "    END AS salary,\n" +
-        "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
-        "\n" +
-        "    FROM\n" +
-        "    sale s\n" +
-        "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
-        "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
-        "\n" +
-        "    where s.enterprise_id =?1 and s.shift_id =?2 and s.seller_id=?3 and s.date between ?4 and ?5\n" +
-        "    GROUP BY\n" +
-        "    s.seller_id, s2.percentage_charged, s2.amount_charged";
-    @Query(value = q2, nativeQuery = true)
-    List<SalesReportViewModel> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, Date startDate, Date endDate);
+    String q3 = "SELECT s.seller_id,\n" +
+            "    u.name as selller_name,\n"+
+            "    SUM(s.total_amount) as sale_total,\n" +
+            "    SUM(t.amount_won) as amount_won,\n" +
+            "    (SUM(s.total_amount) - SUM(t.amount_won))as net_sale,\n" +
+            "    CASE\n" +
+            "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
+            "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
+            "    END AS salary,\n" +
+            "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
+            "\n" +
+            "    FROM\n" +
+            "    sale s\n" +
+            "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
+            "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
+            "    INNER JOIN users u on u.id = s2.user_id"+
+            "\n" +
+            "    where s.enterprise_id = ?1 and s.shift_id = ?2 and s.seller_id = ?3\n" +
+            "    and cast (s.date as timestamp)\n" +
+            "    BETWEEN to_timestamp(?4, 'YYYY-MM-DD HH24:MI:SS')\n" +
+            "    AND to_timestamp(?5, 'YYYY-MM-DD HH24:MI:SS')\n" +
+            "    GROUP BY\n" +
+            "    s.seller_id, s2.percentage_charged, s2.amount_charged, u.name";
+    @Query(value = q3, nativeQuery = true)
+    List<Object> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, String startDate, String endDate);
 
 
 

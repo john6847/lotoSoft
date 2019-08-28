@@ -128,9 +128,15 @@ public class Helper {
         Date date = null;
         try {
             date = formatter.parse(sDate);
+            System.out.println(formatter.format(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static String convertDateToString(Date date, String format) {
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        return formatter.format(date);
     }
 }

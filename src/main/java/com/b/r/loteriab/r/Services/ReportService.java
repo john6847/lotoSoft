@@ -6,6 +6,7 @@ import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.ViewModel.SaleDetailViewModel;
+import com.b.r.loteriab.r.Model.ViewModel.SaleViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.SalesReportViewModel;
 import com.b.r.loteriab.r.Repository.PosRepository;
 import com.b.r.loteriab.r.Repository.SaleRepository;
@@ -42,12 +43,12 @@ public class ReportService {
     private SellerRepository sellerRepository;
 
 
-    public List<SalesReportViewModel> getSalesReport(SalesReportViewModel salesReportViewModel){
+    public List<Object> getSalesReport(SalesReportViewModel salesReportViewModel){
         if (salesReportViewModel.getSellerId()!= null){
            return proceedToFindSalesReport(salesReportViewModel, true);
         } else {
             if (salesReportViewModel.getGroupId()!= null){
-                List<SalesReportViewModel> salesReportViewModels = new ArrayList<>();
+                List<Object> salesReportViewModels = new ArrayList<>();
                 List<Seller> sellers = sellerRepository.selectAllSellersInGroupsByEnterpriseId(salesReportViewModel.getGroupId(), true, salesReportViewModel.getEnterpriseId());
                 for(Seller seller: sellers){
                     salesReportViewModel.setSellerId(seller.getId());
@@ -85,20 +86,21 @@ public class ReportService {
         return Pair.with(start, end);
     }
 
-    private List<SalesReportViewModel> proceedToFindSalesReport(SalesReportViewModel salesReportViewModel, boolean haveSeller) {
+    private List<Object> proceedToFindSalesReport(SalesReportViewModel salesReportViewModel, boolean haveSeller) {
         if (salesReportViewModel.getShiftId()!= null){
             Shift shift = shiftRepository.findShiftByIdAndEnterpriseId(salesReportViewModel.getShiftId(), salesReportViewModel.getEnterpriseId());
             if (salesReportViewModel.getStartDate()!= null && salesReportViewModel.getEndDate() !=null){
                 if (shift!=null){
                     Pair<Date, Date> startAndEnd = getStartAndEndDate(shift, Helper.convertStringToDate(salesReportViewModel.getStartDate(), "yyyy-MM-dd"),Helper.convertStringToDate(salesReportViewModel.getEndDate(), "yyyy-MM-dd") , salesReportViewModel.getEnterpriseId());
                     if (haveSeller){
-                        System.out.println(TimeZone.getDefault());
                         return saleRepository.selectSaleReportGloballyOverAPeriodBySeller(
                                 salesReportViewModel.getEnterpriseId(),
                                 salesReportViewModel.getShiftId(),
                                 salesReportViewModel.getSellerId(),
-                                startAndEnd.getValue0(),
-                                startAndEnd.getValue1()
+//                                startAndEnd.getValue0(),
+                                Helper.convertDateToString(startAndEnd.getValue0(), "dd/MM/yyyy, HH:mm:ss"),
+                                Helper.convertDateToString(startAndEnd.getValue1(), "dd/MM/yyyy, HH:mm:ss")
+//                                startAndEnd.getValue1()
                         );
                     }else {
                         return saleRepository.selectSaleReportGloballyOverAPeriod(
@@ -118,8 +120,10 @@ public class ReportService {
                                     salesReportViewModel.getEnterpriseId(),
                                     salesReportViewModel.getShiftId(),
                                     salesReportViewModel.getSellerId(),
-                                    startAndEnd.getValue0(),
-                                    startAndEnd.getValue1()
+                                    Helper.convertDateToString(startAndEnd.getValue0(), "dd/MM/yyyy, HH:mm:ss"),
+                                    Helper.convertDateToString(startAndEnd.getValue1(), "dd/MM/yyyy, HH:mm:ss")
+//                                    startAndEnd.getValue0(),
+//                                    startAndEnd.getValue1()
                             );
                         }else {
                             return saleRepository.selectSaleReportGloballyOverAPeriod(

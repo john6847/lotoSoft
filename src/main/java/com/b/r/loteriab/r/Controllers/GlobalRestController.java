@@ -698,7 +698,7 @@ public class GlobalRestController {
      * @return size
      */
     @PutMapping(value = "/sales/report", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<SalesReportViewModel>> getSalesReport(
+    public ResponseEntity<List<Object>> getSalesReport(
             @RequestBody SalesReportViewModel salesReportViewModel,
             HttpServletRequest request
     ){

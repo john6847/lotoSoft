@@ -104,6 +104,7 @@ app.controller("reportController", ['$http', 'ReportService','SellerService', 'G
                         $scope.global.salesReports = d;
                         calculateTotal(d);
                     }
+                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

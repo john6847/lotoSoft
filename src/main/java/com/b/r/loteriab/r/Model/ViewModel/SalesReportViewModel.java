@@ -1,9 +1,6 @@
 package com.b.r.loteriab.r.Model.ViewModel;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class SalesReportViewModel {
@@ -13,11 +10,11 @@ public class SalesReportViewModel {
     private Long enterpriseId;
     private Long shiftId;
     private Long groupId;
-    private String seller_name;
-    private double sale_result;
-    private double sale_total;
-    private double amount_won;
-    private double net_sale;
+    private String sellerName;
+    private double saleResult;
+    private double saleTotal;
+    private double amountWon;
+    private double netSale;
     private double salary;
 
     //    https://www.callicoder.com/spring-boot-jpa-hibernate-postgresql-restful-crud-api-example/

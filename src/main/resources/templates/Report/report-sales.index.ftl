@@ -139,21 +139,21 @@
                                                     <tbody>
                                                     <tr  ng-repeat="salesReport in global.salesReports">
                                                         <td>{{$index+1}}</td>
-                                                        <td>{{salesReport.seller_name}}</td>
-                                                        <td>{{salesReport.sale_total}}</td>
+                                                        <td>{{salesReport.sellerName}}</td>
+                                                        <td>{{salesReport.saleTotal}}</td>
                                                         <td>{{salesReport.salary}}</td>
-                                                        <td>{{salesReport.net_sale}}</td>
-                                                        <td>{{salesReport.amount_won}}</td>
-                                                        <td class="salesReport.sale_result > 0 ? 'success': 'danger'" >{{salesReport.sale_result}}</td>
+                                                        <td>{{salesReport.netSale}}</td>
+                                                        <td>{{salesReport.amountWon}}</td>
+                                                        <td class="salesReport.sale_result > 0 ? 'success': 'danger'" >{{salesReport.saleResult}}</td>
                                                     </tr>
                                                     </tbody>
-                                                    <tfoot ng-if="total.sale_total !== null">
+                                                    <tfoot ng-if="total.saleTotal !== null">
                                                         <td class="warning" style="font-weight: bold;" >TOTAL</td>
                                                         <td class="warning" style="font-weight: bold;" >N/A</td>
-                                                        <td class="warning" style="font-weight: bold;" >{{total.sale_total}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.saleTotal}}</td>
                                                         <td class="warning" style="font-weight: bold;" >{{total.salary}}</td>
-                                                        <td class="warning" style="font-weight: bold;" >{{total.net_sale}}</td>
-                                                        <td class="warning" style="font-weight: bold;" >{{total.amount_won}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.netSale}}</td>
+                                                        <td class="warning" style="font-weight: bold;" >{{total.amountWon}}</td>
                                                     </tfoot>
                                                 </table>
                                             </div>

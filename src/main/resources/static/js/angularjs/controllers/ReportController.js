@@ -119,10 +119,10 @@ app.controller("reportController", ['$http', 'ReportService','SellerService', 'G
         }
 
         saleReportList.foreach(function (sale) {
-            $scope.total.sale_total+= sale.sale_total;
-            $scope.total.sale_result+= sale.sale_result;
-            $scope.total.amount_won+= sale.amount_won;
-            $scope.total.net_sale+= sale.net_sale;
+            $scope.total.saleTotal+= sale.saleTotal;
+            $scope.total.saleResult+= sale.saleResult;
+            $scope.total.amountWon+= sale.amountWon;
+            $scope.total.netSale+= sale.netSale;
             $scope.total.salary+= sale.salary;
         })
     }

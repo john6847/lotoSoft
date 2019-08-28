@@ -45,37 +45,42 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 //    http://www.sqlservertutorial.net/sql-server-aggregate-functions/sql-server-sum/
 String q2 = " SELECT\n" +
-        "    s.seller_id,\n" +
-        "    SUM(s.total_amount) as  sale_total,\n" +
+        "    u.name as sellerName,\n"+
+        "    s.sellerId,\n" +
+        "    SUM(s.total_amount) as  saleTotal,\n" +
         "    SUM(t.amount_won) as amount_won,\n" +
-        "    (SUM(s.total_amount)- SUM(t.amount_won))as net_sale,\n" +
+        "    (SUM(s.total_amount)- SUM(t.amount_won))as netSale,\n" +
         "            CASE\n" +
         "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
         "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
         "    END AS salary,\n" +
-        "            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
+        "            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as saleResult\n" +
         "\n" +
         "    FROM\n" +
         "    sale s\n" +
         "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
         "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
+        "    INNER JOIN users u on u.id = s2.user_id"+
         "\n" +
-        "    where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date between ?3 and ?4\n" +
+        "    where s.enterprise_id = ?1 and s.shift_id = ?2 " +
+        "    and cast (s.date as timestamp)\\n\" +\n" +
+        "    BETWEEN to_timestamp(?3, 'YYYY-MM-DD HH24:MI:SS')\n" +
+        "    AND to_timestamp(?4, 'YYYY-MM-DD HH24:MI:SS')\n" +
         "    GROUP BY\n" +
-        "    s.seller_id, s2.percentage_charged, s2.amount_charged";
+        "    s.seller_id, s2.percentage_charged, s2.amount_charged, u.name";
     @Query(value = q2, nativeQuery = true)
-    List<Object> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, Date startDate, Date endDate);
+    <T>List<T> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, String startDate, String endDate, Class<T> classType);
 
-    String q3 = "SELECT s.seller_id,\n" +
-            "    u.name as selller_name,\n"+
-            "    SUM(s.total_amount) as sale_total,\n" +
-            "    SUM(t.amount_won) as amount_won,\n" +
-            "    (SUM(s.total_amount) - SUM(t.amount_won))as net_sale,\n" +
+    String q3 = "SELECT s.sellerId,\n" +
+            "    u.name as sellerName,\n"+
+            "    SUM(s.total_amount) as saleTotal,\n" +
+            "    SUM(t.amount_won) as amountWon,\n" +
+            "    (SUM(s.total_amount) - SUM(t.amount_won))as netSale,\n" +
             "    CASE\n" +
             "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
             "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
             "    END AS salary,\n" +
-            "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as sale_result\n" +
+            "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as saleResult\n" +
             "\n" +
             "    FROM\n" +
             "    sale s\n" +
@@ -90,7 +95,7 @@ String q2 = " SELECT\n" +
             "    GROUP BY\n" +
             "    s.seller_id, s2.percentage_charged, s2.amount_charged, u.name";
     @Query(value = q3, nativeQuery = true)
-    List<Object> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, String startDate, String endDate);
+    <T>List<T> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, String startDate, String endDate, Class<T> classType);
 
 
 

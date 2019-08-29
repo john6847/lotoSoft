@@ -44,26 +44,26 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 
 //    http://www.sqlservertutorial.net/sql-server-aggregate-functions/sql-server-sum/
-String q2 = " SELECT\n" +
+String q2 = "SELECT\n" +
         "    u.name as sellerName,\n"+
-        "    s.sellerId,\n" +
+        "    s.seller_id  as sellerId,\n" +
         "    SUM(s.total_amount) as  saleTotal,\n" +
-        "    SUM(t.amount_won) as amount_won,\n" +
+        "    SUM(t.amount_won) as amountWon,\n" +
         "    (SUM(s.total_amount)- SUM(t.amount_won))as netSale,\n" +
         "            CASE\n" +
         "    WHEN s2.amount_charged > 0 THEN s2.amount_charged\n" +
         "    WHEN s2.percentage_charged > 0 THEN (SUM((s.total_amount * (s2.percentage_charged / 100))))\n" +
         "    END AS salary,\n" +
-        "            (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as saleResult\n" +
+        "    (SUM(s.total_amount)- SUM(t.amount_won) - SUM((s.total_amount * (s2.percentage_charged / 100)))) as saleResult\n" +
         "\n" +
         "    FROM\n" +
         "    sale s\n" +
         "    INNER JOIN ticket t on s.ticket_id = t.id\n" +
         "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
-        "    INNER JOIN users u on u.id = s2.user_id"+
+        "    INNER JOIN users u on u.id = s2.user_id\n"+
         "\n" +
-        "    where s.enterprise_id = ?1 and s.shift_id = ?2 " +
-        "    and cast (s.date as timestamp)\\n\" +\n" +
+        "    where s.enterprise_id = ?1 and s.shift_id = ?2\n" +
+        "    and cast (s.date as timestamp)\n" +
         "    BETWEEN to_timestamp(?3, 'YYYY-MM-DD HH24:MI:SS')\n" +
         "    AND to_timestamp(?4, 'YYYY-MM-DD HH24:MI:SS')\n" +
         "    GROUP BY\n" +
@@ -71,7 +71,7 @@ String q2 = " SELECT\n" +
     @Query(value = q2, nativeQuery = true)
     <T>List<T> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, String startDate, String endDate, Class<T> classType);
 
-    String q3 = "SELECT s.sellerId,\n" +
+    String q3 = "SELECT s.seller_id as sellerId,\n" +
             "    u.name as sellerName,\n"+
             "    SUM(s.total_amount) as saleTotal,\n" +
             "    SUM(t.amount_won) as amountWon,\n" +

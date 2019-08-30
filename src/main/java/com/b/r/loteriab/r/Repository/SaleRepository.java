@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Repository;
 
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Interaces.IReportViewModel;
 import com.b.r.loteriab.r.Model.Sale;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.Users;
@@ -62,14 +63,14 @@ String q2 = "SELECT\n" +
         "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
         "    INNER JOIN users u on u.id = s2.user_id\n"+
         "\n" +
-        "    where s.enterprise_id = ?1 and s.shift_id = ?2\n" +
+        "    where s.enterprise_id = :enterpriseId and s.shift_id = :shiftId\n" +
         "    and cast (s.date as timestamp)\n" +
-        "    BETWEEN to_timestamp(?3, 'YYYY-MM-DD HH24:MI:SS')\n" +
-        "    AND to_timestamp(?4, 'YYYY-MM-DD HH24:MI:SS')\n" +
+        "    BETWEEN to_timestamp(:startDate, 'YYYY-MM-DD HH24:MI:SS')\n" +
+        "    AND to_timestamp(:endDate, 'YYYY-MM-DD HH24:MI:SS')\n" +
         "    GROUP BY\n" +
         "    s.seller_id, s2.percentage_charged, s2.amount_charged, u.name";
     @Query(value = q2, nativeQuery = true)
-    <T>List<T> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, String startDate, String endDate, Class<T> classType);
+    List<IReportViewModel> selectSaleReportGloballyOverAPeriod(Long enterpriseId, Long shiftId, String startDate, String endDate);
 
     String q3 = "SELECT s.seller_id as sellerId,\n" +
             "    u.name as sellerName,\n"+
@@ -88,14 +89,14 @@ String q2 = "SELECT\n" +
             "    INNER JOIN seller s2 on s.seller_id = s2.id\n" +
             "    INNER JOIN users u on u.id = s2.user_id"+
             "\n" +
-            "    where s.enterprise_id = ?1 and s.shift_id = ?2 and s.seller_id = ?3\n" +
+            "    where s.enterprise_id = :enterpriseId and s.shift_id = :shiftId and s.seller_id = :sellerId\n" +
             "    and cast (s.date as timestamp)\n" +
-            "    BETWEEN to_timestamp(?4, 'YYYY-MM-DD HH24:MI:SS')\n" +
-            "    AND to_timestamp(?5, 'YYYY-MM-DD HH24:MI:SS')\n" +
+            "    BETWEEN to_timestamp(:startDate, 'YYYY-MM-DD HH24:MI:SS')\n" +
+            "    AND to_timestamp(:endDate, 'YYYY-MM-DD HH24:MI:SS')\n" +
             "    GROUP BY\n" +
             "    s.seller_id, s2.percentage_charged, s2.amount_charged, u.name";
     @Query(value = q3, nativeQuery = true)
-    <T>List<T> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long seller_id, String startDate, String endDate, Class<T> classType);
+    List<IReportViewModel> selectSaleReportGloballyOverAPeriodBySeller(Long enterpriseId, Long shiftId, Long sellerId, String startDate, String endDate);
 
 
 

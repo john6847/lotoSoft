@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Interaces.CombinationViewModel;
+import com.b.r.loteriab.r.Model.Interaces.IReportViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.CombinationVm;
 import com.b.r.loteriab.r.Model.ViewModel.SalesReportViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
@@ -698,7 +699,7 @@ public class GlobalRestController {
      * @return size
      */
     @PutMapping(value = "/sales/report", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<SalesReportViewModel>> getSalesReport(
+    public ResponseEntity<List<IReportViewModel>> getSalesReport(
             @RequestBody SalesReportViewModel salesReportViewModel,
             HttpServletRequest request
     ){

@@ -144,7 +144,7 @@
                                                         <td>{{salesReport.salary}}</td>
                                                         <td>{{salesReport.netSale}}</td>
                                                         <td>{{salesReport.amountWon}}</td>
-                                                        <td class="salesReport.sale_result > 0 ? 'success': 'danger'" >{{salesReport.saleResult}}</td>
+                                                        <td class="salesReport.saleResult > 0 ? 'success': 'danger'" >{{salesReport.saleResult}}</td>
                                                     </tr>
                                                     </tbody>
                                                     <tfoot ng-if="total.saleTotal !== null">
@@ -154,6 +154,7 @@
                                                         <td class="warning" style="font-weight: bold;" >{{total.salary}}</td>
                                                         <td class="warning" style="font-weight: bold;" >{{total.netSale}}</td>
                                                         <td class="warning" style="font-weight: bold;" >{{total.amountWon}}</td>
+                                                        <td class="info" style="font-weight: bold;" >{{total.saleResult}}</td>
                                                     </tfoot>
                                                 </table>
                                             </div>

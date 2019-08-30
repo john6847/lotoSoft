@@ -24,7 +24,7 @@ app.controller("reportController", ['$http', 'ReportService','SellerService', 'G
         groupId: null
     };
 
-    $scope.total ={};
+    $scope.total = null;
 
     fetchAllSellers();
     fetchAllShifts();
@@ -114,16 +114,24 @@ app.controller("reportController", ['$http', 'ReportService','SellerService', 'G
 
     function calculateTotal(saleReportList) {
         if (saleReportList.length === 0){
-            $scope.total= null;
+            $scope.total = null;
             return;
         }
 
-        saleReportList.foreach(function (sale) {
-            $scope.total.saleTotal+= sale.saleTotal;
-            $scope.total.saleResult+= sale.saleResult;
-            $scope.total.amountWon+= sale.amountWon;
-            $scope.total.netSale+= sale.netSale;
-            $scope.total.salary+= sale.salary;
-        })
+        $scope.total = {
+            saleTotal: 0,
+            saleResult: 0,
+            amountWon: 0,
+            netSale: 0,
+            salary: 0,
+        };
+
+        saleReportList.forEach(function (sale) {
+            $scope.total.saleTotal += sale.saleTotal;
+            $scope.total.saleResult += sale.saleResult;
+            $scope.total.amountWon += sale.amountWon;
+            $scope.total.netSale += sale.netSale;
+            $scope.total.salary += sale.salary;
+        });
     }
 }]);

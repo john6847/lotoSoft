@@ -10,12 +10,7 @@ public class SalesReportViewModel {
     private Long enterpriseId;
     private Long shiftId;
     private Long groupId;
-    private String sellerName;
-    private double saleResult;
-    private double saleTotal;
-    private double amountWon;
-    private double netSale;
-    private double salary;
+
 
     //    https://www.callicoder.com/spring-boot-jpa-hibernate-postgresql-restful-crud-api-example/
 //    https://stackoverflow.com/questions/1754411/how-to-select-date-from-datetime-column/30378572#30378572

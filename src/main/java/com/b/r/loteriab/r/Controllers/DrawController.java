@@ -161,7 +161,7 @@ public class DrawController {
         return "access-denied";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping("/cancel/{id}")
     public String deleteDraw(HttpServletRequest request, Model model, @PathVariable("id") Long id){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {

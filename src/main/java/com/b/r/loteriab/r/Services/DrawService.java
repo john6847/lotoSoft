@@ -178,10 +178,21 @@ public class DrawService {
             return result;
         }
         try{
+            draw.setAmountLost(0.0);
+            draw.setAmountWon(0.0);
+            cancelDraw(draw);
+            draw.setEnterprise(null);
+            draw.setNumberThreeDigits(null);
+            draw.setFirstDraw(null);
+            draw.setSecondDraw(null);
+            draw.setThirdDraw(null);
+            draw.setShift(null);
+            drawRepository.save(draw);
             drawRepository.deleteByIdAndEnterpriseId(id, entepriseId);
         }catch (Exception ex){
-            result.add("Tiraj la pa ka elimine reeseye ankò");
+            result.add("Tiraj la pa ka anile reeseye ankò");
         }
+
         return result;
     }
 
@@ -303,6 +314,30 @@ public class DrawService {
                 }
             }
 
+        }
+     }
+
+     public void cancelDraw (Draw draw){
+        List<CombinationType> combinationTypes = combinationTypeService.findallByEnterpriseId(draw.getEnterprise().getId());
+         List<Sale> sales =  getSales(draw);
+
+        if(!sales.isEmpty()) {
+            List<DrawViewModel> drawViewModels = generateCombination(combinationTypes, draw);
+            for (int i = 0; i < sales.size(); i++) {
+                boolean won = false;
+                for (int j = 0; j < sales.get(i).getSaleDetails().size(); j++) {
+                    Pair<Double, Boolean> youwon = youWon(sales.get(i).getSaleDetails().get(j), drawViewModels);
+                    if (youwon.getValue1()) {
+                        sales.get(i).getSaleDetails().get(j).setWon(false);
+                        won = true;
+                    }
+                }
+                if (won) {
+                    sales.get(i).getTicket().setWon(false);
+                    sales.get(i).getTicket().setAmountWon(0.0);
+                    saleRepository.save(sales.get(i));
+                }
+            }
         }
      }
 

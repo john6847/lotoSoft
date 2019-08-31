@@ -1,6 +1,8 @@
 package com.b.r.loteriab.r.Model;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -25,18 +27,23 @@ public class Draw implements Serializable{
 //    private List<NumberTwoDigits> numberTwoDigits;
     @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Enterprise enterprise;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "numberThreeDigits_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private NumberThreeDigits numberThreeDigits;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "firstDraw_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private NumberTwoDigits firstDraw;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "secondDraw_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private NumberTwoDigits secondDraw;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "thirdDraw_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private NumberTwoDigits thirdDraw;
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

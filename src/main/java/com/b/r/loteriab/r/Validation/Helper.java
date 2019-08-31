@@ -97,14 +97,8 @@ public class Helper {
     }
     public static Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind, int dayToSubstract, String format){
 
-        Date startDate = new Date();
-        Date endDate = new Date();
-        try {
-            startDate = new SimpleDateFormat(format).parse(start);
-            endDate = new SimpleDateFormat(format).parse(end);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date startDate = Helper.parseDate(start, format);
+        Date endDate = Helper.parseDate(end, format);
 
         String [] timeStart = Helper.getTimeFromDate(startDate, "").split(":");
         Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
@@ -115,6 +109,16 @@ public class Helper {
         Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
 
         return  Pair.with(resultStartDate, resultEndDate);
+    }
+
+    public static Date parseDate(String date, String format){
+        Date newDate = new Date();
+        try {
+            newDate = new SimpleDateFormat(format).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newDate;
     }
 
     public static Date getCloseDateTime(String closeTime, Date dateToApply){

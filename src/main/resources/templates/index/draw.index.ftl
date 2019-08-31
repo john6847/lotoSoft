@@ -136,7 +136,6 @@
                         <th style="width:15%; text-align: center">Actif</th>
                         <th style="width:5%"></th>
                         <th style="width:5%"></th>
-                        <th style="width:5%"></th>
 
                       </tr>
                       </thead>
@@ -162,12 +161,7 @@
                               <a class="btn btn-warning btn-xs" href="/draw/update/{{draw.id}}"><i class="fa fa-edit"></i> Aktyalize</a>
                           </td>
                           <td>
-                              <a class="btn btn-danger btn-xs" href="/draw/delete/{{draw.id}}"><i class="fa fa-trash-o"></i> Elimine</a>
-                          </td>
-                          <td>
-                            <a class="btn btn-{{draw.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/draw/{{draw.id}}">
-                              <i class="fa fa-{{draw.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{draw.enabled? 'Bloke' : 'Debloke'}}
-                            </a>
+                              <a class="btn btn-danger btn-xs cancel" id="cancel" onclick="onCancel(event)" href="/draw/cancel/{{draw.id}}"><i class="fa fa-trash-o"></i> Anile</a>
                           </td>
                         </tr>
                       </tbody>
@@ -219,7 +213,32 @@
       $('.selectpicker').selectpicker();
   </script>
 
-
+  <script>
+    var responseCancel = false;
+    function onCancel (e, ) {
+      if(!responseCancel)
+        e.preventDefault();
+      bootbox.confirm({
+        message: "Ou preske anile tiraj sa, ou deside kontinye?",
+        size: 'small',
+        buttons: {
+          confirm: {
+            label: '<i class="fa fa-check"></i> Wi',
+            className: ' btn-success'
+          },
+          cancel: {
+            label: '<i class="fa fa-times"></i> Non',
+            className: 'btn-danger'
+          }
+        }, callback: function (result) {
+          if (result){
+            responseCancel = true;
+            document.getElementById('cancel').click();
+          }
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>

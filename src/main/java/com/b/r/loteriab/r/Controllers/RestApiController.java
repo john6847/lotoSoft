@@ -65,6 +65,9 @@ public class RestApiController {
     @Autowired
     private CombinationTypeRepository combinationTypeRepository;
 
+    @Autowired
+    private DrawRepository drawRepository;
+
     private static final String ACCECPT_TYPE= "application/json";
 
     @GetMapping(value = "/user", produces = ACCECPT_TYPE)
@@ -299,13 +302,17 @@ public class RestApiController {
                 Pair<Date, Date> startAndEndDate = null;
                 if (newyork != null){
                     startAndEndDate= Helper.getStartDateAndEndDate(newyork.getCloseTime(), shift.getCloseTime(),
-                            vm.getEmissionDate(), -1, "dd/MM/yyyy, hh:mm:ss aa");
+                            vm.getEmissionDate(), -1, "dd/MM/yyyy, hh:mm:ss a");
                 }
                 if (startAndEndDate != null) {
                     sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
                             vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
                 }
 
+                Draw draw = drawRepository.selectDrawByDate(vm.getEmissionDate(),vm.getEnterprise().getId(), shift.getId());
+                if(draw != null){
+                    sampleResponse.getBody().put("draw", draw);
+                }
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             } else {
                 Shift maten = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), vm.getEnterprise().getId());
@@ -318,10 +325,41 @@ public class RestApiController {
                     sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
                             vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
                 }
+                Draw draw = drawRepository.selectDrawByDate(vm.getEmissionDate(),vm.getEnterprise().getId(), shift.getId());
+                if(draw != null){
+                    sampleResponse.getBody().put("draw", draw);
+                    return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
+                }
 
-                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             }
-
+        }
+        Shift activeShift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, vm.getEnterprise().getId());
+        Shift inactiveShift = shiftRepository.findShiftByEnabledAndEnterpriseId(false, vm.getEnterprise().getId());
+        if (activeShift != null && inactiveShift != null){
+            if (activeShift.getName().equals(Shifts.Maten.name())){
+                Date date = Helper.addDays(new Date(), -1);
+                Draw draw = drawRepository.selectDrawByDate(date,vm.getEnterprise().getId(), inactiveShift.getId());
+                if(draw != null){
+                    sampleResponse.getBody().put("draw", draw);
+                }
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(activeShift.getCloseTime(), inactiveShift.getCloseTime(),
+                            date, 0, "dd/MM/yyyy, hh:mm:ss aa");
+                if (startAndEndDate != null){
+                    sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
+                            vm.getEnterprise().getId(), vm.getSeller().getId(), inactiveShift.getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+                }
+            } else {
+                Draw draw = drawRepository.selectDrawByDate(new Date(),vm.getEnterprise().getId(), inactiveShift.getId());
+                if(draw != null){
+                    sampleResponse.getBody().put("draw", draw);
+                }
+                Pair<Date, Date> startAndEndDate = Helper.getStartDateAndEndDate(activeShift.getCloseTime(), inactiveShift.getCloseTime(),
+                        new Date(), 0, "dd/MM/yyyy, hh:mm:ss aa");
+                if (startAndEndDate != null){
+                    sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
+                            vm.getEnterprise().getId(), vm.getSeller().getId(), inactiveShift.getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
+                }
+            }
         }
 
         sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(vm.getEnterprise().getId(),vm.getSeller().getId()));

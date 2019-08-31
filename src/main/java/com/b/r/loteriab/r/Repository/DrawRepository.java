@@ -31,6 +31,11 @@ public interface DrawRepository extends JpaRepository<Draw, Long> {
 
     List<Draw>findAllByShiftNameAndDrawDateAndEnterpriseId(String shiftName,Date drawDate, Long enterpriseId);
 
+    String q24 = "SELECT * FROM draw d WHERE date(to_timestamp(d.draw_date)) = date_trunc('day', ?1) and d.enterprise_id =?2 and d.shift_id =?3";
+    @Query(value = q24, nativeQuery = true)
+    Draw selectDrawByDate(Date drawDate, Long enterpriseId, Long shift_id);
+
+
     Draw save(Draw draw);
 
     List<Draw> findAllByEnabledAndEnterpriseId(Pageable pageable,  boolean enabled, Long enterpriseId);

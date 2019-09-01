@@ -90,7 +90,7 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                                 shiftRepository.save(shift);
-                                //deleteIncompleteSale(entry.getKey());
+                                deleteIncompleteSale(entry.getKey());
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
                                 shiftRepository.save(other);
@@ -108,7 +108,7 @@ public class WebSocketPingScheduler {
                         if (new Date().after(date)){
                             shift.setEnabled(false);
                             shiftRepository.save(shift);
-                           //deleteIncompleteSale(entry.getKey());
+                           deleteIncompleteSale(entry.getKey());
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
                             shiftRepository.save(other);

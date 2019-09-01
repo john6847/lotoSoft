@@ -23,35 +23,33 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Service
 public class AuditEventServiceImpl implements AuditEventService {
-   private Map <Long, ConcurrentLinkedQueue<SampleResponse>> eventQueue = new HashMap<>();
-   public static Map<Integer, LastNotification> lastNotificationMap = new HashMap<>();
-   @Autowired
-   private SimpMessagingTemplate brokerMessagingTemplate;
+    private Map<Long, ConcurrentLinkedQueue<SampleResponse>> eventQueue = new HashMap<>();
+    public static Map<Integer, LastNotification> lastNotificationMap = new HashMap<>();
+    @Autowired
+    private SimpMessagingTemplate brokerMessagingTemplate;
 
-   @Override
-   public void sendMessage(SampleResponse sampleResponse, Long enterpriseId, LastNotification last) {
-      enqueue(sampleResponse, enterpriseId);
+    @Override
+    public void sendMessage(SampleResponse sampleResponse, Long enterpriseId, LastNotification last) {
+        enqueue(sampleResponse, enterpriseId);
 
-      if (last.getType() > 0  && last.getType() != NotificationType.SendSystemDate.ordinal()) {
-         if(last != null){
+        if (last != null && last.getType() > -1 && last.getType() != NotificationType.SendSystemDate.ordinal()) {
             AuditEventServiceImpl.lastNotificationMap.put(last.getType(), last);
-         }
-      }
+        }
 
-      if (last.getType() > 0  && last.getType() == NotificationType.PosBlocked.ordinal()){
-         brokerMessagingTemplate.convertAndSend("/topics/"+enterpriseId+"/"+last.getIdType()+"/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
-      }
-      if (last.getType() > 0  && last.getType() == NotificationType.SendSystemDate.ordinal()) {
-         brokerMessagingTemplate.convertAndSend("/topics/time", JSON.toJSONString(Helper.getSystemDate(), SerializerFeature.BrowserCompatible));
-      }
-      brokerMessagingTemplate.convertAndSend("/topics/"+enterpriseId+"/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
-   }
+        if (last != null && last.getType() > 0 && last.getType() == NotificationType.PosBlocked.ordinal()) {
+            brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId + "/" + last.getIdType() + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
+        }
+        if (last != null  && last.getType() > 0 && last.getType() == NotificationType.SendSystemDate.ordinal()) {
+            brokerMessagingTemplate.convertAndSend("/topics/time", JSON.toJSONString(Helper.getSystemDate(), SerializerFeature.BrowserCompatible));
+        }
+        brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
+    }
 
-   private void enqueue(SampleResponse sampleResponse, Long enterpriseId) {
-       eventQueue.put(enterpriseId, eventQueue.getOrDefault(enterpriseId, new ConcurrentLinkedQueue<SampleResponse>((Arrays.asList(sampleResponse)))));
+    private void enqueue(SampleResponse sampleResponse, Long enterpriseId) {
+        eventQueue.put(enterpriseId, eventQueue.getOrDefault(enterpriseId, new ConcurrentLinkedQueue<SampleResponse>((Arrays.asList(sampleResponse)))));
 
-      if(eventQueue.size() > 300) {
-         eventQueue.get(enterpriseId).remove();
-      }
-   }
+        if (eventQueue.size() > 300) {
+            eventQueue.get(enterpriseId).remove();
+        }
+    }
 }

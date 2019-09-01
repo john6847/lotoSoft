@@ -50,7 +50,7 @@ public class WebSocketPingScheduler {
    @Autowired
    private SaleRepository saleRepository;
 
-   @Scheduled(fixedRate = 10000)
+   @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
        System.out.println("Web socket Ping");
        for (Map.Entry<Integer, LastNotification> entry : AuditEventServiceImpl.lastNotificationMap.entrySet())

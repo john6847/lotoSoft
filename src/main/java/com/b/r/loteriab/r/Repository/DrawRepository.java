@@ -31,10 +31,10 @@ public interface DrawRepository extends JpaRepository<Draw, Long> {
 
     List<Draw>findAllByShiftNameAndDrawDateAndEnterpriseId(String shiftName,Date drawDate, Long enterpriseId);
 
-    String q24 = "SELECT * FROM draw d WHERE date(to_timestamp(d.draw_date)) = date_trunc('day', ?1) and d.enterprise_id =?2 and d.shift_id =?3";
-    @Query(value = q24, nativeQuery = true)
-    Draw selectDrawByDate(Date drawDate, Long enterpriseId, Long shift_id);
-
+//    String q24 = "SELECT * FROM draw d WHERE date_trunc('day', ?1) = d.draw_date and d.enterprise_id =?2 and d.shift_id =?3";
+//    @Query(value = q24, nativeQuery = true)
+//    Draw selectDrawByDate(Date drawDate, Long enterpriseId, Long shift_id);
+    Draw findByDrawDateAndEnterpriseIdAndShiftId(Date drawDate, Long enterpriseId, Long shift_id);
 
     Draw save(Draw draw);
 
@@ -43,8 +43,8 @@ public interface DrawRepository extends JpaRepository<Draw, Long> {
     List<Draw> findAllByEnabledAndModificationDateAndEnterpriseId( boolean enabled, Date modificationDate,Long enterpriseId, Pageable pageable);
 
     List<Draw> findAllByModificationDateAndEnterpriseId( Date modificationDate, Long enterpriseId, Pageable pageable);
-
-    String q1 = "SELECT * FROM draw d WHERE date(to_timestamp(d.modification_date)) = date_trunc('day', ?2) and d.enabled = ?1 and d.enterprise_id =?3 and order by ?#{#pageable}";
+//    date(to_timestamp(d.modification_date))
+    String q1 = "SELECT * FROM draw d WHERE cast (d.modification_date as timestamp)  = date_trunc('day', ?2) and d.enabled = ?1 and d.enterprise_id =?3 and order by ?#{#pageable}";
     @Query(value = q1, nativeQuery = true)
     List<Draw> selectDrawByDayAndEnabledAndEnterpriseId(boolean enabled, Date modificationDate, Long enterpriseId, Pageable pageable);
 

@@ -29,9 +29,9 @@ public class Helper {
         return bytes.toString();
     }
 
-    public  static String getSystemTime(){
+    public  static String getSystemDate(){
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss a");
         return format.format(calendar.getTime());
     }
 

@@ -11,5 +11,6 @@ public class LastNotification {
     private Date date;
     private Long enterpriseId;
     int type;
+    Long idType;
     SampleResponse sampleResponse;
 }

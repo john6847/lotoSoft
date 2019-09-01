@@ -45,8 +45,6 @@ public class SimpleAuthenticationFilter
             enterprise = "";
         }
 
-
-
         String usernameDomain = String.format("%s%s%s", username.trim(),
                 String.valueOf(Character.LINE_SEPARATOR), enterprise);
         return new UsernamePasswordAuthenticationToken(usernameDomain, password);

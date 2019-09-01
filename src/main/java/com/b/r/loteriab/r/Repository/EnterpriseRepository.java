@@ -18,11 +18,19 @@ import java.util.List;
 public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseById(Long id);
+
+    Enterprise findAllByEnabledTrueAndIdGreaterThan(long id);
+
     Enterprise findEnterpriseByEnabledAndId(boolean enabled, Long id);
+
+    Enterprise findEnterpriseByEnabledAndNameContainingIgnoreCase(boolean enabled, String enterpriseName);
+
     Enterprise findEnterpriseByName(String name);
 
     Page<Enterprise> findAllByEnabled(Pageable pageable, boolean state);
+
     Page<Enterprise> findAll(Pageable pageable);
+
     List<Enterprise> findAllByEnabled(Boolean enabled);
 
     void deleteById(Long id);

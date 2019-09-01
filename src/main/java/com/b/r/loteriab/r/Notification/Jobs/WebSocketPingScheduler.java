@@ -1,7 +1,9 @@
 package com.b.r.loteriab.r.Notification.Jobs;
 
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Enums.SaleSatus;
 import com.b.r.loteriab.r.Model.Enums.Shifts;
+import com.b.r.loteriab.r.Model.Sale;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
 import com.b.r.loteriab.r.Notification.Enums.NotificationType;
@@ -9,6 +11,8 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Notification.Service.AuditEventServiceImpl;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
+import com.b.r.loteriab.r.Repository.EnterpriseRepository;
+import com.b.r.loteriab.r.Repository.SaleRepository;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
 import com.b.r.loteriab.r.Validation.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +34,7 @@ import static java.util.stream.Collectors.*;
 
 
 /**
- * Created by xschen on 16/9/2017.
+ * Created by Dany on 16/9/2017.
  *
  * A simple scheduler that tries to ping the web client every 10 seconds via web-socket
  */
@@ -41,10 +45,10 @@ public class WebSocketPingScheduler {
    private AuditEventService service;
 
    @Autowired
-   private CombinationRepository combinationRepository;
+   private ShiftRepository shiftRepository;
 
    @Autowired
-   private ShiftRepository shiftRepository;
+   private SaleRepository saleRepository;
 
    @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
@@ -86,6 +90,7 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                                 shiftRepository.save(shift);
+                                //deleteIncompleteSale(entry.getKey());
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
                                 shiftRepository.save(other);
@@ -103,6 +108,7 @@ public class WebSocketPingScheduler {
                         if (new Date().after(date)){
                             shift.setEnabled(false);
                             shiftRepository.save(shift);
+                           //deleteIncompleteSale(entry.getKey());
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
                             shiftRepository.save(other);
@@ -115,5 +121,26 @@ public class WebSocketPingScheduler {
         }
     }
 
+    private void deleteIncompleteSale(Long enterpriseId) {
+       List<Sale> sales = saleRepository.findAllByEnterpriseId(enterpriseId);
+       for (Sale sale: sales){
+           if (sale.getSaleStatus() == SaleSatus.SAVING.ordinal()){
+               saleRepository.deleteSaleByIdAndEnterpriseId(sale.getId(), sale.getEnterprise().getId());
+           }
+       }
+     }
 
+    @Scheduled(fixedRate = 1000)
+    public void sendSystemDate() {
+       SampleResponse sampleResponse = new SampleResponse();
+       sampleResponse.setBody(new HashMap());
+
+       LastNotification last = new LastNotification();
+       last.setChanged(false);
+       last.setDate(new Date());
+       last.setType(NotificationType.SendSystemDate.ordinal());
+
+        sampleResponse.getBody().put("date", Helper.getSystemDate());
+        service.sendMessage(sampleResponse, 0L, last);
+    }
 }

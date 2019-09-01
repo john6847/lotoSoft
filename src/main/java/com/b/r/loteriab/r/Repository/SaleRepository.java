@@ -37,6 +37,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     List<Sale> findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(Long enterpriseId, Long sellerId);
 
     void deleteSaleByTicketIdAndEnterpriseId(Long ticketId, Long enterpriseId);
+    void deleteSaleByIdAndEnterpriseId(Long id, Long enterpriseId);
 
     String q1 = "select * from sale s where s.enterprise_id = ?1 and s.shift_id = ?2 and s.date >= ?3 and s.date <= ?4";
     @Query(value = q1, nativeQuery = true)

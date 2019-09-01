@@ -21,6 +21,7 @@
 <!-- bootstrap-wysiwyg -->
 <script type="text/javascript" src="/dist/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/js/angular.js"></script>
+<script src="/js/ng-stomp/dist/ng-stomp.standalone.min.js"></script>
 <script src="/js/jquery.hotkeys.js"></script>
 <script src="/js/bootstrap-wysiwyg.js"></script>
 <script src="/js/bootstrap-wysiwyg-custom.js"></script>
@@ -72,6 +73,7 @@
 <script src="/js/app.js"></script>
 <script src="/dist/js/bootstrap-select.min.js"></script>
 <script src="/js/angularjs/enums/Enums.js"></script>
+<script src="/js/angularjs/controllers/AppController.js"></script>
 <script src="/js/angularjs/controllers/DrawController.js"></script>
 <script src="/js/angularjs/services/DrawService.js"></script>
 <script src="/js/angularjs/controllers/CombinationTypeController.js"></script>

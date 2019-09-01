@@ -81,22 +81,23 @@ public class RestApiController {
         SampleResponse sampleResponse = new SampleResponse();
         Enterprise enterprise = enterpriseRepository.findEnterpriseByName(vm.getEnterpriseName());
         Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseId(vm.getSerial(), true, enterprise.getId());
+//        TODO: obtener el serial del pos que no se hardcoded
         if (pos == null) {
             System.out.println("Pos null");
             sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-//        if (pos.getEnterprise() == null ){
-//            sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
-//            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
-//        }
+        if (vm.getEnterpriseName()== null ){
+            sampleResponse.setMessage("Ou sipoze voye non antrepriz la");
+            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
+        }
 
-//        if (pos.getEnterprise()!= null && !pos.getEnterprise().isEnabled()){
-//            // Opsyonal: Ajoute nimewo met bolet la
-//            sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte,kontakte met bolèt la pou plis enfo");
-//            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
-//        }
+        Enterprise savedEnterprise = enterpriseRepository.findEnterpriseByEnabledAndNameContainingIgnoreCase(true, vm.getEnterpriseName());
+        if (savedEnterprise == null ){
+            sampleResponse.setMessage("Non antrepriz la pa bon reeseye avek yon lot non pou ou ka konekte");
+            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
+        }
 
         Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(),enterprise.getId());
         if (vm.getUsername().isEmpty() || vm.getPassword().isEmpty()) {
@@ -186,16 +187,13 @@ public class RestApiController {
             sampleResponse.getMessages().add("Tiraj "+ vm.getShift().getName()+ " pa aktive kounya, vant sa ap pase pou tiraj "+ shift.getName());
         }
 
-        boolean haveMax = false;
         for (SaleDetailViewModel saleDetailViewModel: vm.getSaleDetails()){
             Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(saleDetailViewModel.getCombination(), saleDetailViewModel.getCombinationTypeId(), vm.getEnterprise().getId());
             if ((combination.getSaleTotal() + saleDetailViewModel.getPrice()) >= combination.getMaxPrice()) {
-                haveMax = true;
                 sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " depase pri maksimòm ou ka vann li an retirel pou ka kontinye.");
+//              TODO: Notificar el propietario  que esta combinacion ya ha llegado a su limite en la pagina principal
+                return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
             }
-        }
-        if (haveMax){
-            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         Sale sale = apiService.mapSale(vm, shift);

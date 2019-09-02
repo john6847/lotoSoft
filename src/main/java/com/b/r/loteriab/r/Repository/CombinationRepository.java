@@ -10,11 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Dany on 04/05/2019.
  */
+@Transactional
 @Repository
 public interface CombinationRepository extends JpaRepository<Combination, Long> {
 

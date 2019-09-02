@@ -6,7 +6,7 @@
 
   <body ng-app="lottery" ng-cloak>
     <!-- container section start -->
-    <section id="container" class="">
+    <section id="container" ng-controller="appController">
       <!--nav start-->
       <#include "nav.ftl" >
       <!--header end-->
@@ -18,7 +18,7 @@
       <!--sidebar end-->
 
 
-      <section id="main-content" ng-controller="appController">
+      <section id="main-content" >
       <!--main content start-->
         <section class="wrapper">
           <!--overview start-->
@@ -35,45 +35,45 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-              <div class="info-box dark-bg">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <div class="info-box dark-bg tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Lè Sèvè a">
                 <i class="fa fa-clock-o"></i>
-                <div class="count">4.362</div>
-                <div class="title">Order</div>
+                <div class="count">{{global.systemDate | date:'hh:mm:ss a'}}</div>
+                <div class="title">{{global.systemDate  | date:'dd MMM yyyy'}}</div>
               </div>
               <!--/.info-box-->
             </div>
             <!--/.col-->
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-              <div class="info-box blue-bg">
-                <i class="fa fa-cloud-download"></i>
-                <div class="count">6.674</div>
-                <div class="title">Download</div>
-              </div>
-              <!--/.info-box-->
-            </div>
-            <!--/.col-->
-
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-              <div class="info-box brown-bg">
-                <i class="fa fa-shopping-cart"></i>
-                <div class="count">7.538</div>
-                <div class="title">Purchased</div>
-              </div>
-              <!--/.info-box-->
-            </div>
+<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
+<#--              <div class="info-box blue-bg">-->
+<#--                <i class="fa fa-cloud-download"></i>-->
+<#--                <div class="count">6.674</div>-->
+<#--                <div class="title">Download</div>-->
+<#--              </div>-->
+<#--              <!--/.info-box&ndash;&gt;-->
+<#--            </div>-->
             <!--/.col-->
 
-
-            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-              <div class="info-box green-bg">
-                <i class="fa fa-cubes"></i>
-                <div class="count">1.426</div>
-                <div class="title">Stock</div>
-              </div>
-              <!--/.info-box-->
-            </div>
+<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
+<#--              <div class="info-box brown-bg">-->
+<#--                <i class="fa fa-shopping-cart"></i>-->
+<#--                <div class="count">7.538</div>-->
+<#--                <div class="title">Purchased</div>-->
+<#--              </div>-->
+<#--              <!--/.info-box&ndash;&gt;-->
+<#--            </div>-->
             <!--/.col-->
+
+
+<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
+<#--              <div class="info-box green-bg">-->
+<#--                <i class="fa fa-cubes"></i>-->
+<#--                <div class="count">1.426</div>-->
+<#--                <div class="title">Stock</div>-->
+<#--              </div>-->
+<#--              <!--/.info-box&ndash;&gt;-->
+<#--            </div>-->
+<#--            <!--/.col&ndash;&gt;-->
           </div>
           <!--/.row-->
 
@@ -961,5 +961,6 @@
 <#--        });-->
 <#--      });-->
 <#--    </script>-->
+
   </body>
 </html>

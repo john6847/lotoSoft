@@ -3,4 +3,4 @@
  */
 
 
-var app = angular.module("lottery", ['angularUtils.directives.dirPagination','ngMaterial','ngAnimate', 'datatables','datatables.columnfilter','datatables.bootstrap', 'ngResource', 'ui.bootstrap']);
+var app = angular.module("lottery", ['angularUtils.directives.dirPagination','ngMaterial','ngAnimate', 'datatables','datatables.columnfilter','datatables.bootstrap', 'ngResource', 'ui.bootstrap', 'ngStomp']);

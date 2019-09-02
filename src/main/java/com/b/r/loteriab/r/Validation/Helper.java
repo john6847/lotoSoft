@@ -31,7 +31,7 @@ public class Helper {
 
     public  static String getSystemDate(){
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss a");
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss");
         return format.format(calendar.getTime());
     }
 

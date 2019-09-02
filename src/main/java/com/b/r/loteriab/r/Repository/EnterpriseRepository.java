@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Dany on 14/07/2019.
  */
 @Repository
+@Transactional
 public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseById(Long id);

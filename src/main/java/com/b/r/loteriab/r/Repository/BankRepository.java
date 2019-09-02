@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by Dany on 04/05/2019.
  */
+@Transactional
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
 

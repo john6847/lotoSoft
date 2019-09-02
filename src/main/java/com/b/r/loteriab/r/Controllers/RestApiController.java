@@ -6,6 +6,7 @@ import com.b.r.loteriab.r.Model.ViewModel.*;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
 import com.b.r.loteriab.r.Services.UsersService;
+import com.b.r.loteriab.r.Validation.GlobalHelper;
 import com.b.r.loteriab.r.Validation.Helper;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class RestApiController {
 
     @Autowired
     private DrawRepository drawRepository;
+
+    @Autowired
+    private GlobalHelper globalHelper;
 
     private static final String ACCECPT_TYPE= "application/json";
 
@@ -336,7 +340,7 @@ public class RestApiController {
         if (activeShift != null && inactiveShift != null){
             if (activeShift.getName().equals(Shifts.Maten.name())){
                 Date date = Helper.addDays(new Date(), -1);
-                Draw draw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(date, "00:00:00".split(":")),vm.getEnterprise().getId(), inactiveShift.getId());
+                Draw draw = globalHelper.getLastDraw(vm.getEnterprise().getId(), activeShift, inactiveShift);
                 if(draw != null){
                     sampleResponse.getBody().put("draw", draw);
                 }

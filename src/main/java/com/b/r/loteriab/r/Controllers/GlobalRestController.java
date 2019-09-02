@@ -613,6 +613,7 @@ public class GlobalRestController {
                 last.setChanged(true);
                 last.setDate(new Date());
                 last.setEnterpriseId(enterprise.getId());
+                last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationBlocked.ordinal());
 
                 sampleResponse.getBody().put("combination", combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId()));

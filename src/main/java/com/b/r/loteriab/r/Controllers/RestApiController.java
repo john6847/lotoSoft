@@ -307,7 +307,7 @@ public class RestApiController {
                             vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
                 }
 
-                Draw draw = drawRepository.selectDrawByDate(vm.getEmissionDate(),vm.getEnterprise().getId(), shift.getId());
+                Draw draw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(vm.getEmissionDate(), "00:00:00".split(":")),vm.getEnterprise().getId(), shift.getId());
                 if(draw != null){
                     sampleResponse.getBody().put("draw", draw);
                 }
@@ -323,7 +323,7 @@ public class RestApiController {
                     sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdAndShiftIdAndDateAfterAndDateBefore(
                             vm.getEnterprise().getId(), vm.getSeller().getId(), vm.getShift().getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
                 }
-                Draw draw = drawRepository.selectDrawByDate(vm.getEmissionDate(),vm.getEnterprise().getId(), shift.getId());
+                Draw draw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(vm.getEmissionDate(), "00:00:00".split(":")),vm.getEnterprise().getId(), shift.getId());
                 if(draw != null){
                     sampleResponse.getBody().put("draw", draw);
                     return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
@@ -336,7 +336,7 @@ public class RestApiController {
         if (activeShift != null && inactiveShift != null){
             if (activeShift.getName().equals(Shifts.Maten.name())){
                 Date date = Helper.addDays(new Date(), -1);
-                Draw draw = drawRepository.selectDrawByDate(date,vm.getEnterprise().getId(), inactiveShift.getId());
+                Draw draw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(date, "00:00:00".split(":")),vm.getEnterprise().getId(), inactiveShift.getId());
                 if(draw != null){
                     sampleResponse.getBody().put("draw", draw);
                 }
@@ -347,7 +347,7 @@ public class RestApiController {
                             vm.getEnterprise().getId(), vm.getSeller().getId(), inactiveShift.getId(), startAndEndDate.getValue0(),startAndEndDate.getValue1()));
                 }
             } else {
-                Draw draw = drawRepository.selectDrawByDate(new Date(),vm.getEnterprise().getId(), inactiveShift.getId());
+                Draw draw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(new Date(), "00:00:00".split(":")),vm.getEnterprise().getId(), inactiveShift.getId());
                 if(draw != null){
                     sampleResponse.getBody().put("draw", draw);
                 }
@@ -360,7 +360,7 @@ public class RestApiController {
             }
         }
 
-        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(vm.getEnterprise().getId(),vm.getSeller().getId()));
+//        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(vm.getEnterprise().getId(),vm.getSeller().getId()));
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 

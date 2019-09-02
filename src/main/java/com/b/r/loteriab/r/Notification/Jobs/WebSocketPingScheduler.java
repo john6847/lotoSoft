@@ -53,13 +53,17 @@ public class WebSocketPingScheduler {
 
    @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
+       System.out.println("Web socket Ping");
        for (Map.Entry<Integer, LastNotification> entry : AuditEventServiceImpl.lastNotificationMap.entrySet())
        {
            long diff = new Date().getTime() - entry.getValue().getDate().getTime();
            long diffMinutes = diff / (60 * 1000) % 150;
            if (diffMinutes <= 120L){
+
+               System.out.println("There Number");
                if(entry.getValue().isChanged()) {
                    if (entry.getKey() == NotificationType.CombinationBlocked.ordinal()){
+                       System.out.println("Combination Bloked");
                        service.sendMessage(entry.getValue().getSampleResponse(), entry.getValue().getEnterpriseId(), null);
                    }
                } else if (entry.getKey() == NotificationType.ShiftChange.ordinal()) {

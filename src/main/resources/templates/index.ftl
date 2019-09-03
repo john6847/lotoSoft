@@ -44,14 +44,18 @@
               <!--/.info-box-->
             </div>
             <!--/.col-->
-<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
-<#--              <div class="info-box blue-bg">-->
-<#--                <i class="fa fa-cloud-download"></i>-->
-<#--                <div class="count">6.674</div>-->
-<#--                <div class="title">Download</div>-->
-<#--              </div>-->
-<#--              <!--/.info-box&ndash;&gt;-->
-<#--            </div>-->
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <section class="panel info-box tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Tiraj Maten an">
+                <span style="color: darkblue; font-weight: bold; font-size: 16px">Tiraj Maten an</span>
+                <div class="row">
+                    <div class="col-md-4 count facebook-bg text-center"><span class="label label-danger">309</span></div>
+                    <div class="col-md-4 count linkedin-bg text-center"><span class="label label-warning">39</span></div>
+                    <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">45</span></div>
+                  </div>
+              </section>
+            </div>
+              <!--/.info-box-->
+          </div>
             <!--/.col-->
 
 <#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->

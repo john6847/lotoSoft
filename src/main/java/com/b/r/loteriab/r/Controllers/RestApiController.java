@@ -3,6 +3,9 @@ package com.b.r.loteriab.r.Controllers;
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.ViewModel.*;
+import com.b.r.loteriab.r.Notification.Enums.NotificationType;
+import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
+import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
 import com.b.r.loteriab.r.Services.UsersService;
@@ -71,6 +74,10 @@ public class RestApiController {
 
     @Autowired
     private GlobalHelper globalHelper;
+
+    @Autowired
+    private AuditEventService auditService;
+
 
     private static final String ACCECPT_TYPE= "application/json";
 
@@ -194,7 +201,17 @@ public class RestApiController {
         for (SaleDetailViewModel saleDetailViewModel: vm.getSaleDetails()){
             Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(saleDetailViewModel.getCombination(), saleDetailViewModel.getCombinationTypeId(), vm.getEnterprise().getId());
             if ((combination.getSaleTotal() + saleDetailViewModel.getPrice()) >= combination.getMaxPrice()) {
-                sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " depase pri maksimòm ou ka vann li an retirel pou ka kontinye.");
+                LastNotification last = new LastNotification();
+                last.setChanged(true);
+                last.setDate(new Date());
+                last.setEnterpriseId(vm.getEnterprise().getId());
+                last.setIdType(combination.getId());
+                last.setType(NotificationType.CombinationPriceLimit.ordinal());
+
+                sampleResponse.getBody().put("message", String.format("Konbinezon %s rive nan limit li ka vann pou tiraj sa", combination.getResultCombination()));
+                last.setSampleResponse(sampleResponse);
+                auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
+                sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");
 //              TODO: Notificar el propietario  que esta combinacion ya ha llegado a su limite en la pagina principal
                 return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
             }

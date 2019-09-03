@@ -5,6 +5,7 @@ public enum NotificationType {
     ShiftChange,
     CombinationPriceChange,
     PosBlocked,
-    SendSystemDate
+    SendSystemDate,
+    CombinationPriceLimit
 
 }

@@ -9,6 +9,7 @@ import com.b.r.loteriab.r.Repository.DrawRepository;
 import com.b.r.loteriab.r.Repository.SaleRepository;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
 import com.b.r.loteriab.r.Validation.Helper;
+import com.b.r.loteriab.r.Validation.NumberHelper;
 import com.b.r.loteriab.r.Validation.Result;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,8 @@ public class DrawService {
             draw.setAmountSold(0.0);
             drawRepository.save(draw);
 
-            Draw currentDraw = drawRepository.findTopByEnterpriseIdOrderByEnterpriseIdDesc(enterprise.getId());
+//            Draw currentDraw = drawRepository.findTopByEnterpriseIdOrderByEnterpriseIdDesc(enterprise.getId());
+            Draw currentDraw = drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(draw.getDrawDate(), "00:00:00".split(":")),enterprise.getId(), draw.getShift().getId());
             currentDraw.setAmountSold(determineAmountForSoldTicket(draw).getAmountSold());
             determineWonTicket(draw, false);
             currentDraw.setAmountLost(determineAmountLostForSoldTicket(draw).getAmountLost()); //  what the enterpriseLost
@@ -82,7 +84,7 @@ public class DrawService {
     private Result validateModel (Draw draw){
         Result result = new Result();
 
-        if (draw.getId() <= 0){
+        if (Long.parseLong(NumberHelper.getNumericValue(draw.getId()).toString()) <= 0){
             if (draw.getShift() == null){
                 result.add("Ou dwe rantre tiraj la", "NumberTwoDigits");
                 return result;
@@ -188,7 +190,7 @@ public class DrawService {
             draw.setThirdDraw(null);
             draw.setShift(null);
             drawRepository.save(draw);
-            drawRepository.deleteByIdAndEnterpriseId(id, entepriseId);
+            drawRepository.deleteById(draw.getId());
         }catch (Exception ex){
             result.add("Tiraj la pa ka anile reeseye ankò");
         }

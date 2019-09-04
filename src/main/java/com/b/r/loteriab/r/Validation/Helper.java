@@ -22,6 +22,8 @@ public class Helper {
         return str.length() == pos.getIndex();
     }
 
+
+
     public static String createToken (int number) {
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[number];

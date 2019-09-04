@@ -293,6 +293,7 @@ public class RestApiController {
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/ticket/replay/{enterprise}/{serial}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> replayTicket (@RequestHeader("token") String token,
                                                 @PathVariable("serial") String serial,

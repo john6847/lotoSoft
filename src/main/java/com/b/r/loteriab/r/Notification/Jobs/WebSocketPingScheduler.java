@@ -78,7 +78,7 @@ public class WebSocketPingScheduler {
        }
    }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 100000)
     public void enableAndDisableShift() {
         ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
         Map<Long, List<Shift>> mapShifts = shiftList.stream()

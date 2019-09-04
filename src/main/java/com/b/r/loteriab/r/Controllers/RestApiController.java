@@ -81,12 +81,6 @@ public class RestApiController {
 
     private static final String ACCECPT_TYPE= "application/json";
 
-    @GetMapping(value = "/user", produces = ACCECPT_TYPE)
-    public ResponseEntity<String[]> getUsers(){
-        String [] users = {"Dany", "Widzer", "Ketya"};
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm){
         SampleResponse sampleResponse = new SampleResponse();
@@ -299,6 +293,25 @@ public class RestApiController {
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/ticket/replay/{enterprise}/{serial}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    public ResponseEntity<Object> replayTicket (@RequestHeader("token") String token,
+                                                @PathVariable("serial") String serial,
+                                                @PathVariable("enterprise") Long enterpriseId) {
+        SampleResponse sampleResponse = new SampleResponse();
+        if (token.isEmpty()) {
+            sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        if (userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId) == null) {
+            sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        Sale sale = saleRepository.findSaleByTicketSerialAndEnterpriseId(serial, enterpriseId);
+        sampleResponse.getBody().put("sale", sale);
+        return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
+    }
 
     @PostMapping(value = "/ticket/won",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
     public ResponseEntity<Object> findWonTicket (@RequestHeader("token") String token,

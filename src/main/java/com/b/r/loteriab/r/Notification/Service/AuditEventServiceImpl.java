@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentMap;
 public class AuditEventServiceImpl implements AuditEventService {
     private Map<Long, ConcurrentLinkedQueue<SampleResponse>> eventQueue = new HashMap<>();
     public static Map<Integer, LastNotification> lastNotificationMap = new HashMap<>();
+    public static Map<Integer, ArrayList<LastNotification>> lastNotificationMapList = new HashMap<>();
     @Autowired
     private SimpMessagingTemplate brokerMessagingTemplate;
 
@@ -34,6 +35,16 @@ public class AuditEventServiceImpl implements AuditEventService {
 
         if (last != null && last.getType() > -1 && last.getType() != NotificationType.SendSystemDate.ordinal()) {
             AuditEventServiceImpl.lastNotificationMap.put(last.getType(), last);
+        }
+
+        if (last!=null && last.getType() > -1 && last.getType() != NotificationType.CombinationPriceLimit.ordinal()){
+            List <LastNotification> existedList = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
+            if (existedList != null) {
+                AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal()).add(last);
+            } else {
+                AuditEventServiceImpl.lastNotificationMapList
+                        .put(NotificationType.CombinationPriceLimit.ordinal(), AuditEventServiceImpl.lastNotificationMapList.getOrDefault( NotificationType.CombinationPriceLimit.ordinal(), new ArrayList<>(Arrays.asList(last))));
+            }
         }
 
         if (last != null && last.getType() > 0 && last.getType() == NotificationType.PosBlocked.ordinal()) {
@@ -46,7 +57,7 @@ public class AuditEventServiceImpl implements AuditEventService {
     }
 
     private void enqueue(SampleResponse sampleResponse, Long enterpriseId) {
-        eventQueue.put(enterpriseId, eventQueue.getOrDefault(enterpriseId, new ConcurrentLinkedQueue<SampleResponse>((Arrays.asList(sampleResponse)))));
+        eventQueue.put(enterpriseId, eventQueue.getOrDefault(enterpriseId, new ConcurrentLinkedQueue<>((Arrays.asList(sampleResponse)))));
 
         if (eventQueue.size() > 300) {
             eventQueue.get(enterpriseId).remove();

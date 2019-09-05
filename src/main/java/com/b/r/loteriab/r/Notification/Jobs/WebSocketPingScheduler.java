@@ -95,8 +95,7 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                               //  deleteIncompleteSale(entry.getKey());
-//                                TODO: Kanpe notif ki rive  pou boul ki rive nan limit yo nan limit yo pou tiraj sa, metel false
-//
+//                        TODO: TEST        deleteNotificationInList(shift.getId());
                                 shiftRepository.save(shift);
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
@@ -105,9 +104,7 @@ public class WebSocketPingScheduler {
                         } else {
                             date = Helper.addDays(date, 1);
                         }
-                        //                                TODO: notifye ke tel konbinezn rive nan limit yo nan limit yo pou tiraj sa, metel false
-
-
+//                          TODO: TEST    sendCombinationPriceLimitNotif();
                         System.out.println("Close date " + date);
                         System.out.println("Actual date " + new Date());
                     }
@@ -118,6 +115,7 @@ public class WebSocketPingScheduler {
                         if (new Date().after(date)){
                             shift.setEnabled(false);
                            //deleteIncompleteSale(entry.getKey());
+//                              TODO: TEST    deleteNotificationInList(shift.getId());
                             shiftRepository.save(shift);
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
@@ -125,8 +123,33 @@ public class WebSocketPingScheduler {
                         }
                         System.out.println("Close date "+ date);
                         System.out.println("Actual date "+ new Date());
-//                        TODO: The same there
+//                       TODO: TEST       sendCombinationPriceLimitNotif();
                     }
+                }
+            }
+        }
+    }
+
+    private void deleteNotificationInList(Long currentShiftId) {
+        List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
+        if (lastNotifications != null){
+            for (LastNotification lastNotification : lastNotifications){
+                if (lastNotification.isChanged()) {
+                    Long shiftId = (Long) lastNotification.getSampleResponse().getBody().get("shiftId");
+                    if (shiftId!= null && shiftId.equals(currentShiftId)){
+                        AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal()).remove(lastNotification);
+                    }
+                }
+            }
+        }
+    }
+
+    private  void sendCombinationPriceLimitNotif(){
+        List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
+        if (lastNotifications != null){
+            for (LastNotification lastNotification : lastNotifications){
+                if (lastNotification.isChanged()) {
+                    service.sendMessage(lastNotification.getSampleResponse(), lastNotification.getEnterpriseId(), null);
                 }
             }
         }

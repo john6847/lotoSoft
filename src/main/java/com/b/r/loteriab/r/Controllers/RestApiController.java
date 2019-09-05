@@ -203,6 +203,7 @@ public class RestApiController {
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
                 sampleResponse.getBody().put("message", String.format("Konbinezon %s rive nan limit li ka vann pou tiraj sa", combination.getResultCombination()));
+                sampleResponse.getBody().put("shiftId", vm.getShift());
                 last.setSampleResponse(sampleResponse);
                 auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
                 sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");

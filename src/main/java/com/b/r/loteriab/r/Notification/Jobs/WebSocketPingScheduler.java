@@ -95,6 +95,8 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                               //  deleteIncompleteSale(entry.getKey());
+//                                TODO: Kanpe notif ki rive  pou boul ki rive nan limit yo nan limit yo pou tiraj sa, metel false
+//
                                 shiftRepository.save(shift);
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
@@ -103,6 +105,9 @@ public class WebSocketPingScheduler {
                         } else {
                             date = Helper.addDays(date, 1);
                         }
+                        //                                TODO: notifye ke tel konbinezn rive nan limit yo nan limit yo pou tiraj sa, metel false
+
+
                         System.out.println("Close date " + date);
                         System.out.println("Actual date " + new Date());
                     }
@@ -120,6 +125,7 @@ public class WebSocketPingScheduler {
                         }
                         System.out.println("Close date "+ date);
                         System.out.println("Actual date "+ new Date());
+//                        TODO: The same there
                     }
                 }
             }

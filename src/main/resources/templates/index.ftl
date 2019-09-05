@@ -45,13 +45,17 @@
             </div>
             <!--/.col-->
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <section class="panel info-box tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Tiraj Maten an">
-                <span style="color: darkblue; font-weight: bold; font-size: 16px">Tiraj Maten an</span>
-                <div class="row">
-                    <div class="col-md-4 count facebook-bg text-center"><span class="label label-danger">309</span></div>
-                    <div class="col-md-4 count linkedin-bg text-center"><span class="label label-warning">39</span></div>
-                    <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">45</span></div>
-                  </div>
+              <section class="panel info-box tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Denye Tiraj la">
+                <span style="color: darkblue; font-weight: bold; font-size: 16px">Denye Tiraj la</span>
+                <#if draw??>
+                  <div class="row">
+                      <div class="col-md-4 count facebook-bg text-center"><span class="label label-danger">${draw.numberThreeDigits.numberInStringFormat}</span></div>
+                      <div class="col-md-4 count linkedin-bg text-center"><span class="label label-warning">${draw.secondDraw.numberInStringFormat}</span></div>
+                      <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">${draw.thirdDraw.numberInStringFormat}</span></div>
+                    </div>
+                  <#else>
+                    <p style="font-family: 'Lato, sans-serif'; color: red">Oppsss! Denye Tiraj la poko egziste ajoutel kounya!</p>
+                </#if>
               </section>
             </div>
               <!--/.info-box-->

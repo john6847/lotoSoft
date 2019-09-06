@@ -8,6 +8,7 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
+import com.b.r.loteriab.r.Services.TokenService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.GlobalHelper;
 import com.b.r.loteriab.r.Validation.Helper;
@@ -133,6 +134,9 @@ public class RestApiController {
         }
         user.setToken(Helper.createToken(128));
         userRepository.save(user);
+//        String token = TokenService.createAndStoreToken(user.getId(), enterprise.getId());
+
+//        /        TODO: implements tokenservice
         sampleResponse.setMessage("Konekte avèk siksè");
         sampleResponse.getBody().put("token",user.getToken());
         sampleResponse.getBody().put("pos", pos);
@@ -151,6 +155,7 @@ public class RestApiController {
             sampleResponse.setMessage("Itilizatè sa pat ouvri sesyon, li pa nesesè pou li fèmen sesyon an.");
             return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
         }
+
         Users users = userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId);
 
         if (users == null){

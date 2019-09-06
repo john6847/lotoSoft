@@ -51,6 +51,10 @@ public class WebSocketPingScheduler {
    @Autowired
    private TicketRepository ticketRepository;
 
+    /**
+     * Schedule to send notification to enable and disable shift every 10 seconds.
+     * @return configuration
+     */
    @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
        System.out.println("Web socket Ping");
@@ -77,7 +81,10 @@ public class WebSocketPingScheduler {
 
        }
    }
-
+    /**
+     * Schedule to send notification to enable and disable shift every 10 seconds.
+     * @return configuration
+     */
     @Scheduled(fixedRate = 100000)
     public void enableAndDisableShift() {
         ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
@@ -95,7 +102,7 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                               //  deleteIncompleteSale(entry.getKey());
-//                        TODO: TEST        deleteNotificationInList(shift.getId());
+                                deleteNotificationInList(shift.getId());
                                 shiftRepository.save(shift);
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
@@ -104,7 +111,7 @@ public class WebSocketPingScheduler {
                         } else {
                             date = Helper.addDays(date, 1);
                         }
-//                          TODO: TEST    sendCombinationPriceLimitNotif();
+                        sendCombinationPriceLimitNotif();
                         System.out.println("Close date " + date);
                         System.out.println("Actual date " + new Date());
                     }
@@ -115,7 +122,7 @@ public class WebSocketPingScheduler {
                         if (new Date().after(date)){
                             shift.setEnabled(false);
                            //deleteIncompleteSale(entry.getKey());
-//                              TODO: TEST    deleteNotificationInList(shift.getId());
+                            deleteNotificationInList(shift.getId());
                             shiftRepository.save(shift);
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
@@ -123,13 +130,18 @@ public class WebSocketPingScheduler {
                         }
                         System.out.println("Close date "+ date);
                         System.out.println("Actual date "+ new Date());
-//                       TODO: TEST       sendCombinationPriceLimitNotif();
+                        sendCombinationPriceLimitNotif();
                     }
                 }
             }
         }
     }
 
+/**
+ * Function to delete notification that are at the price limit for a shift long
+ * @param currentShiftId
+ * @return configuration
+ */
     private void deleteNotificationInList(Long currentShiftId) {
         List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
         if (lastNotifications != null){
@@ -144,6 +156,10 @@ public class WebSocketPingScheduler {
         }
     }
 
+    /**
+     * Function to send notification to admin about combination that are at the price limit
+     * @return configuration
+     */
     private  void sendCombinationPriceLimitNotif(){
         List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
         if (lastNotifications != null){
@@ -179,6 +195,10 @@ public class WebSocketPingScheduler {
        }
      }
 
+    /**
+     * Schedule to send notification about the server time
+     * @return configuration
+     */
     @Scheduled(fixedRate = 1000)
     public void sendSystemDate() {
        SampleResponse sampleResponse = new SampleResponse();

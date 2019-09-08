@@ -6,5 +6,6 @@ public enum NotificationType {
     CombinationPriceChange,
     PosBlocked,
     SendSystemDate,
-    CombinationPriceLimit
+    CombinationPriceLimit,
+    UserConnected,
 }

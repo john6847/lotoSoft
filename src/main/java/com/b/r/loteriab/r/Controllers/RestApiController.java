@@ -142,7 +142,7 @@ public class RestApiController {
         }
 //        user.setToken(Helper.createToken(128));
 //        userRepository.save(user);
-        String token = TokenService.createAndStoreToken(user.getId(), enterprise.getId());
+        String token = TokenService.createAndStoreToken(user, enterprise.getId());
 
         sampleResponse.setMessage("Konekte avèk siksè");
 //        sampleResponse.getBody().put("token",user.getToken());
@@ -205,7 +205,6 @@ public class RestApiController {
                 last.setChanged(true);
                 last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setDate(new Date());
-                last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
@@ -216,7 +215,7 @@ public class RestApiController {
                 last.setSampleResponse(sampleResponse);
                 auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
                 sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");
-                sampleResponse.getBody().put("ok",true);
+                sampleResponse.getBody().put("ok",false);
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             }
         }
@@ -340,6 +339,7 @@ public class RestApiController {
 
         Sale sale = saleRepository.findSaleByTicketShortSerialAndEnterpriseId(serial, enterpriseId);
         sampleResponse.getBody().put("sale", sale);
+        sampleResponse.getBody().put("ok",true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 

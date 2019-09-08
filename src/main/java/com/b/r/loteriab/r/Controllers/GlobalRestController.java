@@ -724,6 +724,22 @@ public class GlobalRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
+    /**
+     * Get All Connected User
+     * @return users
+     */
+    @GetMapping(value = "/user/connected", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<String>> getConnectedUsers(
+            HttpServletRequest request
+    ){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<String> users = TokenService.getConnectedUsers(enterprise.getId());
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
     private Boolean getState (int state){
         Boolean resultState = false;
         if (state == 0){

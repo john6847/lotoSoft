@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
 import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.ViewModel.*;
 import com.b.r.loteriab.r.Notification.Enums.NotificationType;
@@ -226,7 +227,7 @@ public class RestApiController {
                 sampleResponse.getBody().put("shiftId", vm.getShift());
                 last.setSampleResponse(sampleResponse);
                 auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
-                sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");
+                sampleResponse.getMessages().add("Konbinezon "+ vm.getSaleDetails().get(i).getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");
                 sampleResponse.getBody().put("ok",false);
                 return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             }

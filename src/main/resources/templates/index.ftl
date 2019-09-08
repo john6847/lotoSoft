@@ -54,9 +54,12 @@
                       <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">${draw.thirdDraw.numberInStringFormat}</span></div>
                     </div>
                   <#else>
-                    <p style="font-family: 'Lato, sans-serif'; color: red">Oppsss! Denye Tiraj la poko egziste ajoutel kounya!</p>
+                    <p style="font-family: 'Lato, sans-serif'; color: red">Ouuppsss! Denye Tiraj la poko egziste ajoutel kounya!</p>
                 </#if>
               </section>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             </div>
               <!--/.info-box-->
           </div>
@@ -111,32 +114,20 @@
               </div>
             </div>
             <div class="col-md-3">
-              <!-- List starts -->
-              <ul class="today-datas">
-                <!-- List #1 -->
-                <li>
-                  <!-- Graph -->
-                  <div><span id="todayspark1" class="spark"></span></div>
-                  <!-- Text -->
-                  <div class="datas-text">11,500 visitors/day</div>
-                </li>
-                <li>
-                  <div><span id="todayspark2" class="spark"></span></div>
-                  <div class="datas-text">15,000 Pageviews</div>
-                </li>
-                <li>
-                  <div><span id="todayspark3" class="spark"></span></div>
-                  <div class="datas-text">30.55% Bounce Rate</div>
-                </li>
-                <li>
-                  <div><span id="todayspark4" class="spark"></span></div>
-                  <div class="datas-text">$16,00 Revenue/Day</div>
-                </li>
-                <li>
-                  <div><span id="todayspark5" class="spark"></span></div>
-                  <div class="datas-text">12,000000 visitors every Month</div>
-                </li>
-              </ul>
+              <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: scroll;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
+                <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
+                <ul class="list-group" style="color: #263a4f;">
+                  <li class="list-group-item">Cras justo odio</li>
+                  <li class="list-group-item">Dapibus ac facilisis in</li>
+                  <li class="list-group-item">Morbi leo risus</li>
+                  <li class="list-group-item">Porta ac consectetur ac</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+              </div>
             </div>
           </div>
 

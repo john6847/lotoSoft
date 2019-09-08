@@ -47,9 +47,10 @@ public class AuditEventServiceImpl implements AuditEventService {
             }
         }
 
-        if (last != null && last.getType() > 0 && last.getType() == NotificationType.PosBlocked.ordinal()) {
+        if (last != null && last.getType() > 0 && last.getType() == NotificationType.PosBlocked.ordinal() && last.getType() == NotificationType.CombinationPriceLimit.ordinal()) {
             brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId + "/" + last.getIdType() + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
         }
+
         if (last != null  && last.getType() > 0 && last.getType() == NotificationType.SendSystemDate.ordinal()) {
             brokerMessagingTemplate.convertAndSend("/topics/time", JSON.toJSONString(Helper.getSystemDate(), SerializerFeature.BrowserCompatible));
         }

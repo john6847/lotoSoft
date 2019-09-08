@@ -7,5 +7,4 @@ public enum NotificationType {
     PosBlocked,
     SendSystemDate,
     CombinationPriceLimit
-
 }

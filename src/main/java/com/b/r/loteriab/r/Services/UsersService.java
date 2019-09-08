@@ -197,7 +197,6 @@ public class UsersService {
         if(state != null){
             return usersRepository.selectUserExceptSuperAdminAndEnabledAndEnterpriseId(Roles.ROLE_SUPER_ADMIN.name(), Roles.ROLE_SUPER_MEGA_ADMIN.name(),state,enterpriseId, pageable);
         }
-        System.out.println("Weyyyyyyyyyyyyy: "+Roles.ROLE_SUPER_ADMIN.name()+" "+ Roles.ROLE_SUPER_MEGA_ADMIN.name() + " " + enterpriseId +" "+ pageable);
         return usersRepository.selectUserExceptSuperAdminAndEnterpriseId(Roles.ROLE_SUPER_ADMIN.name(), Roles.ROLE_SUPER_MEGA_ADMIN.name(),enterpriseId,pageable);
     }
 

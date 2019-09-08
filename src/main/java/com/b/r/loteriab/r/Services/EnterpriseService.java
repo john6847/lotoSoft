@@ -89,9 +89,9 @@ public class EnterpriseService {
     public Page<Enterprise> findAllEnterpriseByState(int page, int itemPerPage, Boolean state){
         Pageable pageable = PageRequest.of(page, itemPerPage);
         if(state != null){
-            return enterpriseRepository.findAllByEnabled(pageable,state);
+            return enterpriseRepository.findAllByEnabledOrderByIdDesc(pageable,state);
         }
-        return enterpriseRepository.findAll(pageable);
+        return enterpriseRepository.findAllByOrderById(pageable);
     }
 
     public Enterprise findEnterpriseById(Long id){

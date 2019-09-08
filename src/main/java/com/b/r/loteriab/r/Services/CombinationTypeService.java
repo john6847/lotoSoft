@@ -119,9 +119,9 @@ public class CombinationTypeService {
     public Page<CombinationType> findAllCombinationTypeByEnterpriseId(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if (state!= null){
-            return combinationTypeRepository.findAllByEnabledAndEnterpriseId(pageable, state, enterpriseId);
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
-        return combinationTypeRepository.findAllByEnterpriseId(pageable, enterpriseId);
+        return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
     public CombinationType findCombinationTypeByIdAndEntepriseId(Long id,Long enterpriseId){
@@ -129,7 +129,7 @@ public class CombinationTypeService {
     }
 
     public List<CombinationType> findallByEnterpriseId (Long enterpriseId){
-        return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
+        return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
      public List<CombinationType> findAllByEnterpriseName (String enterpriseName){
@@ -138,9 +138,9 @@ public class CombinationTypeService {
 
     public List<CombinationType> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return combinationTypeRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(enabled, enterpriseId);
         }
-        return combinationTypeRepository.findAllByEnterpriseId(enterpriseId);
+        return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public void initCombinationTypeForEnterprise (String enterpriseName, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra){

@@ -169,7 +169,7 @@ public class DrawService {
     }
 
     public ArrayList<Draw> findAllDraw(Long entepriseId) {
-        return (ArrayList<Draw>) drawRepository.findAllByEnterpriseId(entepriseId);
+        return (ArrayList<Draw>) drawRepository.findAllByEnterpriseIdOrderByIdDesc(entepriseId);
     }
 
     public Result deleteDrawById(Long id, Long entepriseId){
@@ -245,7 +245,7 @@ public class DrawService {
                 return drawRepository.findAllByModificationDateAndEnterpriseId( modificationDate, enterpriseId ,pageable);
             }
         }
-        return drawRepository.findAllByEnterpriseId(enterpriseId);
+        return drawRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public Draw findDrawById(Long id, Long enterpriseId){
@@ -255,9 +255,9 @@ public class DrawService {
 
      public List<Draw> findAllDrawByEnabled(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return drawRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
+            return drawRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(enabled, enterpriseId);
         }
-         return drawRepository.findAllByEnterpriseId(enterpriseId);
+         return drawRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
      }
 
      private Draw determineAmountForSoldTicket(Draw draw){

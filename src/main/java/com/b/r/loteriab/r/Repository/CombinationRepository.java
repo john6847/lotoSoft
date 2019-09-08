@@ -51,6 +51,10 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
     Combination findByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, long combinationTypeId, Long enterpriseId);
 
 
+    @Modifying
+    @Query("UPDATE Combination c SET c.saleTotal = 0  WHERE c.saleTotal > 0 AND c.enterprise.id= :enterpriseId")
+    void updateCombinationSaleTotal(@Param("enterpriseId") Long enterpriseId);
+
 
 
 

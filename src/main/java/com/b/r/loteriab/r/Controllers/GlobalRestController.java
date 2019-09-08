@@ -570,6 +570,18 @@ public class GlobalRestController {
     }
 
     /**
+     * Get actual enterprise
+     * @return
+     */
+    @GetMapping(value = "/enterprise/find", produces = ACCECPT_TYPE)
+    public ResponseEntity<Long> getActualEnterprise(HttpServletRequest request){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null)
+            return new ResponseEntity<>(enterprise.getId(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
      * Update combination Combination
      * @return result
      */

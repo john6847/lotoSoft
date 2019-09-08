@@ -76,7 +76,7 @@ public class GroupsService {
     }
 
     public List <Groups> findAllGroups(Long enterpriseId){
-        return groupRepository.findAllByEnterpriseId(enterpriseId);
+        return groupRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public Groups findGroupsById (Long id, Long enterpriseId) {
@@ -98,13 +98,12 @@ public class GroupsService {
         return result;
     }
 
-
     public Page<Groups> findAllGroupByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return groupRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
+            return groupRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }
-        return groupRepository.findAllByEnterpriseId(pageable, enterpriseId);
+        return groupRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
 }

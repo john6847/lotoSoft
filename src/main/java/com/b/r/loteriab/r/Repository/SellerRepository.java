@@ -18,8 +18,8 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     Seller findSellerByIdAndEnterpriseId(Long id, Long enterpriseId);
     Seller findSellerByIdAndEnabledAndEnterpriseId(Long id,boolean enabled, Long enterpriseId);
 
-    Page<Seller> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
-    Page<Seller> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
+    Page<Seller> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+    Page<Seller> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
     List<Seller> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
     List<Seller> findAllByEnterpriseId(Long enterpriseId);
 

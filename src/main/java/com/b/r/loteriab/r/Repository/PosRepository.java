@@ -22,13 +22,13 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
 
     Pos findPosByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
 
-    Page<Pos> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean state, Long enterpriseId);
+    Page<Pos> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean state, Long enterpriseId);
 
-    Page<Pos> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+    Page<Pos> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
 
-    List <Pos> findAllByEnterpriseId(Long enterpriseId);
+    List <Pos> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 
-    List<Pos> findAllByEnabledAndEnterpriseId(Boolean enabled,Long enterpriseId);
+    List<Pos> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Boolean enabled,Long enterpriseId);
 
     void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
 

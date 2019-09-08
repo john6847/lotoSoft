@@ -66,7 +66,7 @@ public class InitServices {
         List<Products> products = productRepository.findAll();
         if(products.size() > 0)
         {
-            List<CombinationType> combinationTypes = combinationTypeRepository.findAllByEnterpriseId(enterprise.getId());
+            List<CombinationType> combinationTypes = combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId());
             if(combinationTypes.size() <= 0){
                 for(Products product: products){
                     CombinationType combinationType = new CombinationType();

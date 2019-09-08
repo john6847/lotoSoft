@@ -4,9 +4,10 @@ import com.b.r.loteriab.r.Model.ViewModel.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+@Service
 public class TokenService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
@@ -33,6 +34,9 @@ public class TokenService {
         return generatedToken;
     }
 
+    public static void remove(String token){
+        TokenService.activeTokens.entrySet().removeIf( key -> key.getKey().equals(token));
+    }
 
     public static boolean contains(String token) {
         return activeTokens.get(token) != null;

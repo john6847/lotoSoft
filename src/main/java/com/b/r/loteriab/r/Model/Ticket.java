@@ -14,6 +14,7 @@ public class Ticket implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serial;
+    private String shortSerial;
     @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
     private Shift shift; // tanda

@@ -18,15 +18,15 @@ public interface CombinationTypeRepository extends JpaRepository<CombinationType
 
     CombinationType findCombinationTypeByIdAndEnterpriseId(Long id, Long enterpriseId);
 
-    Page<CombinationType> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
+    Page<CombinationType> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
 
-    Page<CombinationType> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
+    Page<CombinationType> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
 
     List<CombinationType> findAllByEnterpriseName(String enterpriseName);
 
-    List<CombinationType> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
+    List<CombinationType> findAllByEnabledAndEnterpriseIdOrderByIdDesc(boolean enabled, Long enterpriseId);
 
-    List<CombinationType> findAllByEnterpriseId(Long enterpriseId);
+    List<CombinationType> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 
     CombinationType findByProductsNameAndEnterpriseId(String name, Long enterpriseId);
 

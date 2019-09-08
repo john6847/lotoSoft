@@ -80,9 +80,9 @@ public class RestApiController {
     private AuditEventService auditService;
 
 
-    private static final String ACCECPT_TYPE= "application/json";
+    private static final String ACCEPT_TYPE= "application/json";
 
-    @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm){
         SampleResponse sampleResponse = new SampleResponse();
         Enterprise enterprise = enterpriseRepository.findEnterpriseByName(vm.getEnterpriseName());
@@ -91,38 +91,45 @@ public class RestApiController {
         if (pos == null) {
             System.out.println("Pos null");
             sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
         if (vm.getEnterpriseName()== null ){
             sampleResponse.setMessage("Ou sipoze voye non antrepriz la");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
         Enterprise savedEnterprise = enterpriseRepository.findEnterpriseByEnabledAndNameContainingIgnoreCase(true, vm.getEnterpriseName());
         if (savedEnterprise == null ){
             sampleResponse.setMessage("Non antrepriz la pa bon reeseye avek yon lot non pou ou ka konekte");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
         Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(),enterprise.getId());
         if (vm.getUsername().isEmpty() || vm.getPassword().isEmpty()) {
             sampleResponse.setMessage("Itilizatè oubyen modpas la pa bon");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
         if (user == null){
             sampleResponse.setMessage("Itilizatè sa pa egziste");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
         
         Seller seller = sellerRepository.findByUserIdAndEnterpriseId(user.getId(), enterprise.getId());
         if (seller == null) {
             sampleResponse.setMessage("Vandè sa pa egziste");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         } else {
             if(!seller.isEnabled()) {
                 sampleResponse.setMessage("Vandè sa pa gen pèmisyon konekte");
+                sampleResponse.getBody().put("ok",false);
                 return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
             }
         }
@@ -130,64 +137,58 @@ public class RestApiController {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!bCryptPasswordEncoder.matches(vm.getPassword(), user.getPassword())){
             sampleResponse.setMessage("Modpas sa pa bon");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
-        user.setToken(Helper.createToken(128));
-        userRepository.save(user);
-//        String token = TokenService.createAndStoreToken(user.getId(), enterprise.getId());
+//        user.setToken(Helper.createToken(128));
+//        userRepository.save(user);
+        String token = TokenService.createAndStoreToken(user.getId(), enterprise.getId());
 
-//        /        TODO: implements tokenservice
         sampleResponse.setMessage("Konekte avèk siksè");
-        sampleResponse.getBody().put("token",user.getToken());
+//        sampleResponse.getBody().put("token",user.getToken());
+        sampleResponse.getBody().put("token",token);
+        sampleResponse.getBody().put("ok",true);
         sampleResponse.getBody().put("pos", pos);
         sampleResponse.getBody().put("seller", seller);
-        sampleResponse.getBody().put("shifts", shiftRepository.findAllByEnterpriseId(enterprise.getId()));
-        sampleResponse.getBody().put("CombinationTypes", combinationTypeRepository.findAllByEnterpriseId(enterprise.getId()));
+        sampleResponse.getBody().put("shifts", shiftRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId()));
+        sampleResponse.getBody().put("CombinationTypes", combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId()));
         sampleResponse.getBody().put("combination", combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId()));
 
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/logout/enterprise/{id}",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @RequestMapping(value = "/logout/enterprise/{id}",  method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> logout(@RequestHeader("token") String token, @PathVariable("id") Long enterpriseId){
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()){
-            sampleResponse.setMessage("Itilizatè sa pat ouvri sesyon, li pa nesesè pou li fèmen sesyon an.");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
         }
 
-        Users users = userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId);
-
-        if (users == null){
-            sampleResponse.setMessage("Sesyon Itilizatè sa pa valid, li pa nesesè pou li fèmen sesyon an.");
+        if (!TokenService.contains(token)){
+            sampleResponse.setMessage("Sesyon an fèmen avèk siksè.");
+            sampleResponse.getBody().put("ok",true);
             return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
         }
-        users.setToken("");
-        Users loggedOutUser = userRepository.save(users);
-        if (loggedOutUser != null){
-            if (loggedOutUser.getToken().isEmpty()){
-                sampleResponse.setMessage("Sesyon an fèmen avèk siksè.");
-                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
-            }else {
-                sampleResponse.setMessage("Sesyon an pa rive fèmen, reeseye yon lòt fwa.");
-                return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
-            }
-        }
-        sampleResponse.setMessage("Sesyon an pa rive fèmen, reeseye yon lòt fwa.");
-        return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        TokenService.remove(token);
+        sampleResponse.setMessage("Sesyon an fèmen avèk siksè.");
+        sampleResponse.getBody().put("ok", true);
+        return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/sale",  method = RequestMethod.POST, produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @RequestMapping(value = "/sale",  method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> processSale(@RequestBody SaleViewModel vm, @RequestHeader("token") String token){
         SampleResponse sampleResponse = new SampleResponse();
         sampleResponse.setMessages(new ArrayList<>());
         if (token.isEmpty()){
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, vm.getEnterprise().getId()) == null){
+        if (!TokenService.contains(token)){
             sampleResponse.setMessage("Ou pa otorize kreye vant, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
@@ -202,18 +203,21 @@ public class RestApiController {
             if ((combination.getSaleTotal() + saleDetailViewModel.getPrice()) >= combination.getMaxPrice()) {
                 LastNotification last = new LastNotification();
                 last.setChanged(true);
+                last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setDate(new Date());
                 last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
-                sampleResponse.getBody().put("message", String.format("Konbinezon %s rive nan limit li ka vann pou tiraj sa", combination.getResultCombination()));
+                sampleResponse.getBody().put("combination", combination.getResultCombination());
+                sampleResponse.getBody().put("date", new Date());
+
                 sampleResponse.getBody().put("shiftId", vm.getShift());
                 last.setSampleResponse(sampleResponse);
                 auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
                 sampleResponse.getMessages().add("Konbinezon "+ saleDetailViewModel.getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");
-//              TODO: Notificar el propietario  que esta combinacion ya ha llegado a su limite en la pagina principal
-                return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+                sampleResponse.getBody().put("ok",true);
+                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
             }
         }
 
@@ -221,8 +225,16 @@ public class RestApiController {
         Sale savedSale = saleRepository.save(sale);
         savedSale.setEnabled(true);
         saleRepository.save(sale);
-//        TODO: Saving Sale and return ticket to the seller
+
         sampleResponse.getBody().put("ticket", savedSale.getTicket());
+
+        for (SaleDetail saleDetail: savedSale.getSaleDetails()){
+            Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());
+            if (combination != null){
+                combination.setSaleTotal(combination.getSaleTotal() + saleDetail.getPrice());
+                combinationRepository.save(combination);
+            }
+        }
 
 //        TODO: save the seller percentage on every sale
 //        Seller seller = sellerRepository.findSellerById(vm.getSeller().getId());
@@ -231,19 +243,22 @@ public class RestApiController {
 //            double amountBySale = (sale.getTotalAmount()* seller.getPercentageCharged())/100;
 //            seller.setMonthlyPercentagePayment();
 //        }
+        sampleResponse.getBody().put("ok",true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/complete/sale/enterprise/{enterpriseId}/ticket/{id}",  produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> completeSale(@RequestHeader("token") String token,@PathVariable("enterpriseId")Long enterpriseId, @PathVariable("id")Long ticketId){
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()){
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId) == null){
+        if (!TokenService.contains(token)){
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
@@ -259,17 +274,19 @@ public class RestApiController {
 
 
     // delete wrong ticket after 5 minutes
-    @PostMapping(value = "/ticket/delete/", produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @PostMapping(value = "/ticket/delete/", produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> deleteTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, vm.getEnterprise().getId()) == null) {
+        if (!TokenService.contains(token)) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
@@ -277,12 +294,14 @@ public class RestApiController {
 
         if (ticket == null){
             sampleResponse.setMessage("Ticket sa pa egziste");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
         Sale sale = saleRepository.findSaleByTicketIdAndEnterpriseIdAndSellerId(ticket.getId(), vm.getEnterprise().getId(), vm.getSeller().getId());
         if (sale  == null){
             sampleResponse.setMessage("Ou pa otorize elimine Ticket sa anko");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
@@ -291,46 +310,52 @@ public class RestApiController {
 
         if (diff >= 5){
             sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         saleRepository.deleteSaleByTicketIdAndEnterpriseId(ticket.getId(), vm.getEnterprise().getId());
 
+        sampleResponse.getBody().put("ok",true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
 
-    @GetMapping(value = "/ticket/replay/{enterprise}/{serial}",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @GetMapping(value = "/ticket/replay/{enterprise}/{serial}",  produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> replayTicket (@RequestHeader("token") String token,
                                                 @PathVariable("serial") String serial,
                                                 @PathVariable("enterprise") Long enterpriseId) {
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, enterpriseId) == null) {
+        if (!TokenService.contains(token)) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        Sale sale = saleRepository.findSaleByTicketSerialAndEnterpriseId(serial, enterpriseId);
+        Sale sale = saleRepository.findSaleByTicketShortSerialAndEnterpriseId(serial, enterpriseId);
         sampleResponse.getBody().put("sale", sale);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/ticket/won",  produces = ACCECPT_TYPE, consumes = ACCECPT_TYPE)
+    @PostMapping(value = "/ticket/won",  produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> findWonTicket (@RequestHeader("token") String token,
                                                 @RequestBody TicketWonViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
         if (token.isEmpty()) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        if (userRepository.findUsersByTokenAndEnterpriseId(token, vm.getEnterprise().getId()) == null) {
+        if (!TokenService.contains(token)) {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
+            sampleResponse.getBody().put("ok",false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
@@ -402,11 +427,10 @@ public class RestApiController {
         }
 
 //        sampleResponse.getBody().put("wonsales", saleRepository.findAllByTicket_WonTrueAndEnterpriseIdAndSellerIdOrderByShiftIdDesc(vm.getEnterprise().getId(),vm.getSeller().getId()));
+        sampleResponse.getBody().put("ok",true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 
     //  Amount earned by seller
-
-
 
 }

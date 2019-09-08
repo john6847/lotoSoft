@@ -111,15 +111,15 @@ public class BankService {
 
 
     public ArrayList<Bank> findAllBankByEnterprise(Long enterpriseId){
-        return (ArrayList<Bank>)bankRepository.findAllByEnterpriseId(enterpriseId);
+        return (ArrayList<Bank>)bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public Page<Bank> findAllBankByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return bankRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
+            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }
-        return bankRepository.findAllByEnterpriseId(pageable, enterpriseId);
+        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
     public Bank findBankById(Long id, Long enterpriseId){
@@ -134,7 +134,7 @@ public class BankService {
         if (enabled!= null){
             return bankRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
         }
-        return bankRepository.findAllByEnterpriseId(enterpriseId);
+        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public Result deleteBankById(Long id, Long enterpriseId){

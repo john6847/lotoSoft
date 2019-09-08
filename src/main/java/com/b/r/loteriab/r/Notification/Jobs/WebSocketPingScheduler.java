@@ -51,6 +51,9 @@ public class WebSocketPingScheduler {
    @Autowired
    private TicketRepository ticketRepository;
 
+   @Autowired
+   private CombinationRepository combinationRepository;
+
     /**
      * Schedule to send notification to enable and disable shift every 10 seconds.
      * @return configuration
@@ -102,7 +105,8 @@ public class WebSocketPingScheduler {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
                               //  deleteIncompleteSale(entry.getKey());
-                                deleteNotificationInList(shift.getId());
+                                deleteNotificationInList(shift.getId()); // Delete old (combination limit price) notification
+                                setSaleTotalBackToDefault(entry.getKey());
                                 shiftRepository.save(shift);
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
@@ -122,6 +126,7 @@ public class WebSocketPingScheduler {
                         if (new Date().after(date)){
                             shift.setEnabled(false);
                            //deleteIncompleteSale(entry.getKey());
+                            setSaleTotalBackToDefault(entry.getKey()); // Delete old (combination limit price) notification
                             deleteNotificationInList(shift.getId());
                             shiftRepository.save(shift);
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
@@ -138,7 +143,7 @@ public class WebSocketPingScheduler {
     }
 
 /**
- * Function to delete notification that are at the price limit for a shift long
+ * Method to delete notification that are at the price limit for a shift long
  * @param currentShiftId
  * @return configuration
  */
@@ -157,7 +162,15 @@ public class WebSocketPingScheduler {
     }
 
     /**
-     * Function to send notification to admin about combination that are at the price limit
+     * Method to set combination saleTotal back to the defauult value
+     * @return configuration
+     */
+    private  void setSaleTotalBackToDefault(Long enterpriseId){
+        combinationRepository.updateCombinationSaleTotal(enterpriseId);
+    }
+
+    /**
+     * Method to send notification to admin about combination that are at the price limit
      * @return configuration
      */
     private  void sendCombinationPriceLimitNotif(){

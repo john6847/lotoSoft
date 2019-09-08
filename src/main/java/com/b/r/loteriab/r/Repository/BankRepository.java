@@ -21,9 +21,9 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
     Bank findBankByIdAndEnterpriseId(Long id, Long enterpriseId);
     Bank findBankByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
 
-    Page<Bank> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean state, Long enterpriseId);
-    Page<Bank> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
-    List <Bank> findAllByEnterpriseId(Long enterpriseId);
+    Page<Bank> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean state, Long enterpriseId);
+    Page<Bank> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+    List <Bank> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
     List<Bank> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId);
 
     void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);

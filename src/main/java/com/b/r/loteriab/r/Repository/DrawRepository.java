@@ -21,9 +21,9 @@ public interface DrawRepository extends JpaRepository<Draw, Long> {
 
     Draw findDrawByIdAndEnterpriseId(Long id, Long enterpriseId);
 
-    List<Draw> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
+    List<Draw> findAllByEnabledAndEnterpriseIdOrderByIdDesc(boolean enabled, Long enterpriseId);
 
-    List<Draw> findAllByEnterpriseId(Long enterpriseId);
+    List<Draw> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 
     void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
 

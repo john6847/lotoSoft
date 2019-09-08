@@ -102,15 +102,15 @@ public class PosService {
     }
 
     public ArrayList<Pos> findAllPos(Long enterpriseId){
-        return (ArrayList<Pos>)posRepository.findAllByEnterpriseId(enterpriseId);
+        return (ArrayList<Pos>)posRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public Page<Pos> findAllPosByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
         Pageable pageable = PageRequest.of(page,itemPerPage);
         if(state != null){
-            return posRepository.findAllByEnabledAndEnterpriseId(pageable,state, enterpriseId);
+            return posRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }
-        return posRepository.findAllByEnterpriseId(pageable, enterpriseId);
+        return posRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
     public Pos findPosById(Long id, Long enterpriseId){
@@ -123,9 +123,9 @@ public class PosService {
 
     public List<Pos> findPosByEnabled(Boolean enabled, Long enterpriseId){
         if (enabled!= null){
-            return posRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
+            return posRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(enabled, enterpriseId);
         }
-        return posRepository.findAllByEnterpriseId(enterpriseId);
+        return posRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId, int updating){

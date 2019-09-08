@@ -8,6 +8,8 @@ import com.b.r.loteriab.r.Repository.TicketRepository;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.RandomStringUtils;
+
 @Component
 public class Helper {
 
@@ -55,7 +57,7 @@ public class Helper {
     }
 
     public String createBankSerial(Enterprise enterprise) {
-        if (bankRepository.findAllByEnterpriseId(enterprise.getId()).size() <= 0){
+        if (bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId()).size() <= 0){
             return "BR-"+ enterprise.getName().substring(0,2).toUpperCase() + "-"+ enterprise.getId()+"-00000";
         }
         String zeros = "00000";
@@ -63,6 +65,19 @@ public class Helper {
         int serialLength= bank.getSerial().length();
         int nextValue = Integer.valueOf(bank.getSerial().substring(serialLength-5, serialLength)) +  1 ;
         return "BR-"+ enterprise.getName().substring(0,2).toUpperCase() + "-"+ enterprise.getId()+ "-" + zeros.substring(0, 5 - String.valueOf(nextValue).length()) +""+ nextValue;
+    }
+
+    public String generateString(boolean separate, int number){
+        String defaultString = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFJIJKLMNOPQRSTUVWXYZ";
+        if (!separate){
+            return  RandomStringUtils.random(number, defaultString);
+        }
+        else {
+            if(number % 2 == 0){
+               return RandomStringUtils.random(number/2, defaultString) + "-" +RandomStringUtils.random(number/2, defaultString);
+            }
+            return RandomStringUtils.random((number/2)+1, defaultString) + "-" +RandomStringUtils.random(number/2, defaultString);
+        }
     }
 
     public String replace (String text, String old, String newChar) {

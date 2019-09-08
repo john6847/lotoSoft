@@ -79,7 +79,7 @@ public class ShiftService {
     }
 
     public ArrayList<Shift> findAllByEnterpriseId(Long enterpriseId){
-        return (ArrayList<Shift>)shiftRepository.findAllByEnterpriseId(enterpriseId);
+        return (ArrayList<Shift>)shiftRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
     public void createShiftForEnterprise(String enterpriseName){

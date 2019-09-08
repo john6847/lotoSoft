@@ -63,6 +63,7 @@ public class ApiService {
         Pair<String, Long> ticketSerial = helper.createNewTicketSerial(enterprise);
         ticket.setSerial(ticketSerial.getValue0());
         ticket.setSequence(ticketSerial.getValue1());
+         ticket.setShortSerial(helper.generateString(true, 10));
         sale.setTicket(ticket);
         return sale;
     }

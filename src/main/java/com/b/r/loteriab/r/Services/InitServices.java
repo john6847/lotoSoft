@@ -254,7 +254,7 @@ public class InitServices {
      * @return
      */
     public  void createShift(Enterprise enterprise){
-        List<Shift> shifts = shiftRepository.findAllByEnterpriseId(enterprise.getId());
+        List<Shift> shifts = shiftRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId());
         if(shifts.size()<=0){
             for (Shifts shift: Shifts.values()){
                Shift newShift = new Shift();

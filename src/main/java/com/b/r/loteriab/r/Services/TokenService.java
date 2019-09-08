@@ -38,6 +38,10 @@ public class TokenService {
         TokenService.activeTokens.entrySet().removeIf( key -> key.getKey().equals(token));
     }
 
+//    public static void remove(Long enterpriseId){
+//        TokenService.activeTokens.entrySet().stream().forEach();
+//    }
+
     public static boolean contains(String token) {
         return activeTokens.get(token) != null;
     }

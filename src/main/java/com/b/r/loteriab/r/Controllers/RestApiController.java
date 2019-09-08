@@ -198,13 +198,25 @@ public class RestApiController {
             sampleResponse.getMessages().add("Tiraj "+ vm.getShift().getName()+ " pa aktive kounya, vant sa ap pase pou tiraj "+ shift.getName());
         }
 
-        for (SaleDetailViewModel saleDetailViewModel: vm.getSaleDetails()){
-            Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(saleDetailViewModel.getCombination(), saleDetailViewModel.getCombinationTypeId(), vm.getEnterprise().getId());
-            if ((combination.getSaleTotal() + saleDetailViewModel.getPrice()) >= combination.getMaxPrice()) {
+        for (int i = 0; i < vm.getSaleDetails().size(); i++){
+
+            Combination combination = null;
+            if (vm.getSaleDetails().get(i).getProduct().equals(CombinationTypes.MARYAJ.name())){
+                String [] arr = vm.getSaleDetails().get(i).getCombination().split("x");
+                combination= combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(arr[0].trim()+"x"+arr[1].trim(), vm.getSaleDetails().get(i).getCombinationTypeId(), vm.getEnterprise().getId());
+                if(combination == null){
+                    combination= combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(arr[1].trim()+"x"+arr[0].trim(), vm.getSaleDetails().get(i).getCombinationTypeId(), vm.getEnterprise().getId());
+                    vm.getSaleDetails().get(i).setCombination(arr[1].trim()+"x"+arr[0].trim());
+                }
+            } else {
+                combination= combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(vm.getSaleDetails().get(i).getCombination(), vm.getSaleDetails().get(i).getCombinationTypeId(), vm.getEnterprise().getId());
+            }
+            if ((combination.getSaleTotal() + vm.getSaleDetails().get(i).getPrice()) >= combination.getMaxPrice()) {
                 LastNotification last = new LastNotification();
                 last.setChanged(true);
                 last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setDate(new Date());
+                last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
@@ -339,7 +351,6 @@ public class RestApiController {
 
         Sale sale = saleRepository.findSaleByTicketShortSerialAndEnterpriseId(serial, enterpriseId);
         sampleResponse.getBody().put("sale", sale);
-        sampleResponse.getBody().put("ok",true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 public class SaleDetailViewModel {
     private double price;
     private String combination;
+    private String product;
     private long combinationTypeId;
     private long enterpriseId;
 }

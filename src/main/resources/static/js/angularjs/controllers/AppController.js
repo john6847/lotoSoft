@@ -9,7 +9,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
     };
     $scope.enterpriseId = 0;
     fetchEnterprise();
-    $stomp.connect('http://localhost:3200/live', {})
+    $stomp.connect('http://178.128.148.98:3200/live', {})
         .then(function (frame) {
             $stomp.subscribe('/topics/time',
                 function (payload, headers, res) {

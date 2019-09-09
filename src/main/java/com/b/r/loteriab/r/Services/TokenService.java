@@ -69,10 +69,11 @@ public class TokenService {
         last.setIdType((long) 0);
         last.setType(NotificationType.UserConnected.ordinal());
 
-        TokenService.auditEventService.sendMessage(sampleResponse, enterpriseId, last);
+
         sampleResponse.getBody().put("users", getConnectedUsers(enterpriseId));
         sampleResponse.getBody().put("added", true);
         last.setSampleResponse(sampleResponse);
+        TokenService.auditEventService.sendMessage(sampleResponse, enterpriseId, last);
     }
 
     public static void remove(String token, Long enterpriseId){

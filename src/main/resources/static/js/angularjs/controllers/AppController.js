@@ -9,7 +9,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
     };
     $scope.enterpriseId = 0;
     fetchEnterprise();
-    $stomp.connect('http://178.128.148.98:3200/live', {})
+    $stomp.connect('http://localhost:3200/live', {})
         .then(function (frame) {
             $stomp.subscribe('/topics/time',
                 function (payload, headers, res) {
@@ -24,12 +24,14 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                     });
             }
 
-            $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+6+'/event',
-                function (payload, headers, res) {
-                    console.log(payload);
-                    // $scope.global.connectedUsers.push(payload);
-                    // $scope.$apply($scope.global.combinationsLimited);
-                });
+            if($scope.enterpriseId > 0) {
+                $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 6 + '/event',
+                    function (payload, headers, res) {
+                        console.log(payload);
+                        // $scope.global.connectedUsers.push(payload);
+                        // $scope.$apply($scope.global.combinationsLimited);
+                    });
+            }
         });
 
     function fetchEnterprise() {

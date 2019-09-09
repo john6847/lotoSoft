@@ -12,6 +12,7 @@ import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
+import org.javatuples.Pair;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -729,12 +730,12 @@ public class GlobalRestController {
      * @return users
      */
     @GetMapping(value = "/user/connected", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<String>> getConnectedUsers(
+    public ResponseEntity<List<Pair<Long, String>>> getConnectedUsers(
             HttpServletRequest request
     ){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<String> users = TokenService.getConnectedUsers(enterprise.getId());
+            List<Pair<Long, String>> users = TokenService.getConnectedUsers(enterprise.getId());
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code

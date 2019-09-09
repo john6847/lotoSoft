@@ -28,8 +28,8 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 6 + '/event',
                     function (payload, headers, res) {
                         console.log(payload);
-                        // $scope.global.connectedUsers.push(payload);
-                        // $scope.$apply($scope.global.combinationsLimited);
+                        $scope.connectedUsers = merge($scope.connectedUsers, payload);
+                        $scope.$apply($scope.global.connectedUsers);
                     });
             }
         });
@@ -56,4 +56,15 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                     console.error(errorResponse);
                 })
     }
+
+    function merge(old,newArray) {
+        var d =[];
+        x.concat(old, newArray).forEach(function (item) {
+            if (d.indexOf(item) === -1)
+                d.push(item);
+        });
+        return d;
+    }
+
+
 }]);

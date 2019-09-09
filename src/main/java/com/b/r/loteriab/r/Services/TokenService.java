@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.javatuples.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,8 +82,8 @@ public class TokenService {
         sendNotification(enterpriseId);
     }
 
-    public static List<String> getConnectedUsers(Long enterpriseId){
-        return TokenService.activeTokens.values().stream().filter(o -> o.getEnterpriseId().equals(enterpriseId)).map(Token::getName).collect(Collectors.toList());
+    public static List<Pair<Long, String>> getConnectedUsers(Long enterpriseId){
+        return TokenService.activeTokens.values().stream().filter(o -> o.getEnterpriseId().equals(enterpriseId)).map(e -> Pair.with(e.getUser(),  e.getName()) ).collect(Collectors.toList());
     }
 
     public static boolean contains(String token) {

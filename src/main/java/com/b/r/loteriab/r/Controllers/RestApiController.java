@@ -171,7 +171,7 @@ public class RestApiController {
             sampleResponse.getBody().put("ok",true);
             return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
         }
-        TokenService.remove(token);
+        TokenService.remove(token, enterpriseId);
         sampleResponse.setMessage("Sesyon an fèmen avèk siksè.");
         sampleResponse.getBody().put("ok", true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);

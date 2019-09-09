@@ -30,7 +30,18 @@ public class TokenService {
     @Scheduled(fixedRate = HALF_AN_HOUR_IN_MILLISECONDS)
     public void evictExpiredTokens() {
         logger.info("Evicting expired tokens");
+        List<Token> tokens = new ArrayList<>();
+        TokenService.activeTokens.forEach((key, value) -> {
+            if (new Date().getTime() - value.getCreatedAt().getTime() > value.getLifetime()) {
+                tokens.add(value);
+            }
+        });
         TokenService.activeTokens.entrySet().removeIf(entry -> (new Date().getTime() - entry.getValue().getCreatedAt().getTime()) > entry.getValue().getLifetime());
+        if (tokens.size() > 0){
+            for (Token token: tokens){
+                sendNotification(token.getEnterpriseId());
+            }
+        }
     }
 
     public static String createAndStoreToken(Users user, Long enterpriseId) {
@@ -45,11 +56,7 @@ public class TokenService {
             createAndStoreToken(user, enterpriseId);
         }
         activeTokens.put(generatedToken, token);
-
-//        send notification
-
         sendNotification(enterpriseId);
-
         return generatedToken;
     }
 
@@ -68,8 +75,9 @@ public class TokenService {
         last.setSampleResponse(sampleResponse);
     }
 
-    public static void remove(String token){
+    public static void remove(String token, Long enterpriseId){
         TokenService.activeTokens.entrySet().removeIf( key -> key.getKey().equals(token));
+        sendNotification(enterpriseId);
     }
 
     public static List<String> getConnectedUsers(Long enterpriseId){

@@ -9,7 +9,8 @@ angular.module('lottery')
         fetchAllUsersSuperAdmin: fetchAllUsersSuperAdmin,
         fetchAllUsersFiltered: fetchAllUsersFiltered,
         fetchAllUsersFilteredSuperAdmin: fetchAllUsersFilteredSuperAdmin,
-        fetchUser: fetchUser
+        fetchUser: fetchUser,
+        fetchAllConnectedUser: fetchAllConnectedUser
     };
 
 
@@ -70,6 +71,19 @@ angular.module('lottery')
     function fetchAllUsersFilteredSuperAdmin(pageno,itemsPerPage,state) {
         var deferred = $q.defer();
         $http.get("/api/user/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state+'/superAdmin')
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                }, function (errResponse) {
+                    console.error(errResponse);
+                    deferred.reject(errResponse);
+                });
+        return deferred.promise;
+    }
+
+    function fetchAllConnectedUser() {
+        var deferred = $q.defer();
+        $http.get("/api/user/connected")
             .then(
                 function (response) {
                     deferred.resolve(response.data);

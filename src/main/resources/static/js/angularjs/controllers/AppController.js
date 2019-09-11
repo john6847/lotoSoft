@@ -5,7 +5,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
     $scope.global = {
         systemDate: new Date(),
         combinationsLimited: [],
-        connectedUsers: []
+        users: []
     };
     $scope.enterpriseId = 0;
     fetchEnterprise();
@@ -17,6 +17,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                     $scope.$apply($scope.global.systemDate);
                 });
             if($scope.enterpriseId > 0){
+                // fetchAllConnectedUser();
                 $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+5+'/event',
                     function (payload, headers, res) {
                         $scope.global.combinationsLimited.push(payload);
@@ -28,8 +29,8 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 6 + '/event',
                     function (payload, headers, res) {
                         console.log(payload);
-                        $scope.connectedUsers = merge($scope.connectedUsers, payload);
-                        $scope.$apply($scope.global.connectedUsers);
+                        $scope.global.users = merge($scope.global.users, payload.body.users);
+                        $scope.$apply($scope.global.users);
                     });
             }
         });
@@ -39,27 +40,28 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
             .then(
                 function (d) {
                     $scope.enterpriseId = d;
-                    fetchAllConnectedUser();
+                    fetchAllUsersLogged();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
 
-    function fetchAllConnectedUser() {
-        UserService.fetchAllConnectedUser()
+    function fetchAllUsersLogged() {
+        UserService.fetchAllUsersLogged()
             .then(
                 function (d) {
-                    $scope.global.connectedUsers = d;
+                    $scope.global.users = d;
+                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
-                })
+                });
     }
 
     function merge(old,newArray) {
         var d =[];
-        x.concat(old, newArray).forEach(function (item) {
+        old.concat(newArray).forEach(function (item) {
             if (d.indexOf(item) === -1)
                 d.push(item);
         });

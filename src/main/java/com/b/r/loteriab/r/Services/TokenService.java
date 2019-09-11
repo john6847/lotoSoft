@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.javatuples.Pair;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +47,11 @@ public class TokenService {
     }
 
     public static String createAndStoreToken(Users user, Long enterpriseId) {
+        boolean existed = TokenService.activeTokens.values().stream().anyMatch(o -> o.getUser().equals(user.getId()));
+        if (existed){
+            String key = TokenService.activeTokens.entrySet().stream().filter(o -> o.getValue().getUser().equals(user.getId())).findAny().get().getKey();
+            return key;
+        }
         Token token = new Token();
         String generatedToken = UUID.randomUUID().toString();
         token.setEnterpriseId(enterpriseId);

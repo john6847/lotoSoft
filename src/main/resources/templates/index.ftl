@@ -89,7 +89,15 @@
           <!--/.row-->
 
           <div class="row">
-            <div class="col-lg-9 col-md-12">
+            <div class="col-md-3">
+              <div class="info-box brown-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: scroll;" data-toggle="tooltip" data-original-title="List Itilizate ki konekte yo">
+                <span style="color: darkblue; font-weight: bold; font-size: 16px">List itilizate ki konekte yo</span>
+                <ul class="list-group" style="color: #263a4f;">
+                  <li class="list-group-item" ng-repeat="user in global.users track by $index">{{user.value1}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h2>

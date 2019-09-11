@@ -17,7 +17,6 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                     $scope.$apply($scope.global.systemDate);
                 });
             if($scope.enterpriseId > 0){
-                // fetchAllConnectedUser();
                 $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+5+'/event',
                     function (payload, headers, res) {
                         $scope.global.combinationsLimited.push(payload);

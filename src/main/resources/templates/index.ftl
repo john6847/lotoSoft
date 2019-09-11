@@ -44,20 +44,26 @@
               <!--/.info-box-->
             </div>
             <!--/.col-->
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <section class="panel info-box tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Denye Tiraj la">
-                <span style="color: darkblue; font-weight: bold; font-size: 16px">Denye Tiraj la</span>
-                <#if draw??>
-                  <div class="row">
-                      <div class="col-md-4 count facebook-bg text-center"><span class="label label-danger">${draw.numberThreeDigits.numberInStringFormat}</span></div>
-                      <div class="col-md-4 count linkedin-bg text-center"><span class="label label-warning">${draw.secondDraw.numberInStringFormat}</span></div>
-                      <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">${draw.thirdDraw.numberInStringFormat}</span></div>
-                    </div>
-                  <#else>
-                    <p style="font-family: 'Lato, sans-serif'; color: red">Ouuppsss! Denye Tiraj la poko egziste ajoutel kounya!</p>
-                </#if>
-              </section>
-            </div>
+              <#if user??>
+                <#list user.roles as rol>
+                  <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
+                    <section class="panel info-box tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Denye Tiraj la">
+                      <span style="color: darkblue; font-weight: bold; font-size: 16px">Denye Tiraj la</span>
+                      <#if draw??>
+                        <div class="row">
+                            <div class="col-md-4 count facebook-bg text-center"><span class="label label-danger">${draw.numberThreeDigits.numberInStringFormat}</span></div>
+                            <div class="col-md-4 count linkedin-bg text-center"><span class="label label-warning">${draw.secondDraw.numberInStringFormat}</span></div>
+                            <div class="col-md-4 count facebook-bg text-center"><span class="label label-warning">${draw.thirdDraw.numberInStringFormat}</span></div>
+                          </div>
+                        <#else>
+                          <p style="font-family: 'Lato, sans-serif'; color: red">Ouuppsss! Denye Tiraj la poko egziste ajoutel kounya!</p>
+                      </#if>
+                    </section>
+                  </div>
+                  </#if>
+                </#list>
+              </#if>
 
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             </div>
@@ -87,57 +93,63 @@
 <#--            <!--/.col&ndash;&gt;-->
           </div>
           <!--/.row-->
-
-          <div class="row">
-            <div class="col-md-3">
-              <div class="info-box brown-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: scroll;" data-toggle="tooltip" data-original-title="List Itilizate ki konekte yo">
-                <span style="color: darkblue; font-weight: bold; font-size: 16px">List itilizate ki konekte yo</span>
-                <ul class="list-group" style="color: #263a4f;">
-                  <li class="list-group-item" ng-repeat="user in global.users track by $index">{{user.value1}}</li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h2>
-                    <i class="fa fa-map-marker red"></i
-                    ><strong>Countries</strong>
-                  </h2>
-                  <div class="panel-actions">
-                    <a href="index.ftl#" class="btn-setting"
-                      ><i class="fa fa-rotate-right"></i
-                    ></a>
-                    <a href="index.ftl#" class="btn-minimize"
-                      ><i class="fa fa-chevron-up"></i
-                    ></a>
-                    <a href="index.ftl#" class="btn-close"
-                      ><i class="fa fa-times"></i
-                    ></a>
-                  </div>
-                </div>
-                <div class="panel-body-map">
-                  <div id="map" style="height:380px;"></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: scroll;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
-                <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
-                <ul class="list-group" style="color: #263a4f;">
-                  <li class="list-group-item">Cras justo odio</li>
-                  <li class="list-group-item">Dapibus ac facilisis in</li>
-                  <li class="list-group-item">Morbi leo risus</li>
-                  <li class="list-group-item">Porta ac consectetur ac</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                  <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+            <#if user??>
+                <#list user.roles as rol>
+                    <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="info-box brown-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="List Itilizatè ki konekte yo">
+                            <span style="color: darkblue; font-weight: bold; font-size: 16px">List itilizatè ki konekte yo</span>
+                            <ul class="list-group" ng-if="global.users.length > 0" style="color: #263a4f;">
+                              <li class="list-group-item" ng-repeat="user in global.users track by $index">{{user.value1}}</li>
+                            </ul>
+                            <p ng-if="global.users.length <= 0" style="mso-font-info: serif">Pa gen vandè ki konekte kounya!!</p>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <h2>
+                                <i class="fa fa-map-marker red"></i
+                                ><strong>Countries</strong>
+                              </h2>
+                              <div class="panel-actions">
+                                <a href="index.ftl#" class="btn-setting"
+                                  ><i class="fa fa-rotate-right"></i
+                                ></a>
+                                <a href="index.ftl#" class="btn-minimize"
+                                  ><i class="fa fa-chevron-up"></i
+                                ></a>
+                                <a href="index.ftl#" class="btn-close"
+                                  ><i class="fa fa-times"></i
+                                ></a>
+                              </div>
+                            </div>
+                            <div class="panel-body-map">
+                              <div id="map" style="height:380px;"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
+                            <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
+                            <ul class="list-group" style="color: #263a4f;">
+                              <li class="list-group-item">Cras justo odio</li>
+                              <li class="list-group-item">Dapibus ac facilisis in</li>
+                              <li class="list-group-item">Morbi leo risus</li>
+                              <li class="list-group-item">Porta ac consectetur ac</li>
+                              <li class="list-group-item">Vestibulum at eros</li>
+                              <li class="list-group-item">Vestibulum at eros</li>
+                              <li class="list-group-item">Vestibulum at eros</li>
+                              <li class="list-group-item">Vestibulum at eros</li>
+                              <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </#if>
+                </#list>
+            </#if>
 
           <!-- Today status end -->
 

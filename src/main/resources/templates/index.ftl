@@ -97,7 +97,7 @@
                 <#list user.roles as rol>
                     <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
                       <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-12 col-lg-3 col-xl-3 col-sm-12 col-xs-12">
                           <div class="info-box brown-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="List Itilizatè ki konekte yo">
                             <span style="color: darkblue; font-weight: bold; font-size: 16px">List itilizatè ki konekte yo</span>
                             <ul class="list-group" ng-if="global.users.length > 0" style="color: #263a4f;">
@@ -106,7 +106,7 @@
                             <p ng-if="global.users.length <= 0" style="mso-font-info: serif">Pa gen vandè ki konekte kounya!!</p>
                           </div>
                         </div>
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
                               <h2>
@@ -130,13 +130,13 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-12 col-lg-3 col-xl-3 col-sm-12 col-xs-12">
                           <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
                             <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
                             <ul class="list-group" style="color: #263a4f;">
                             <li class="list-group-item">
-                              <span class='lead label label-info fa-2x'>23x45</span>
-                              <span style="float: right;">Maryaj</span>
+                              <span class='lead label label-info' style="font-size: 14px">23x45</span>
+                              <span style="float: right; font-family: 'serif'; color: #009da7;">Maryaj</span>
                             </li>
 <#--                              <li class="list-group-item" ng-repeat="item in global.combinationsLimited track by $index">-->
 <#--                                <span class='lead label label-info fa-2x'>{{item.combination}}</span>-->

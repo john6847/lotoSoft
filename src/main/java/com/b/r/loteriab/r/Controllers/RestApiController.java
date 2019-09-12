@@ -222,6 +222,7 @@ public class RestApiController {
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
                 sampleResponse.getBody().put("combination", combination.getResultCombination());
+                sampleResponse.getBody().put("type", combination.getCombinationType().getProducts().getName());
                 sampleResponse.getBody().put("date", new Date());
 
                 sampleResponse.getBody().put("shiftId", vm.getShift());

@@ -134,15 +134,14 @@
                           <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
                             <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
                             <ul class="list-group" style="color: #263a4f;">
-                              <li class="list-group-item">Cras justo odio</li>
-                              <li class="list-group-item">Dapibus ac facilisis in</li>
-                              <li class="list-group-item">Morbi leo risus</li>
-                              <li class="list-group-item">Porta ac consectetur ac</li>
-                              <li class="list-group-item">Vestibulum at eros</li>
-                              <li class="list-group-item">Vestibulum at eros</li>
-                              <li class="list-group-item">Vestibulum at eros</li>
-                              <li class="list-group-item">Vestibulum at eros</li>
-                              <li class="list-group-item">Vestibulum at eros</li>
+                            <li class="list-group-item">
+                              <span class='lead label label-info fa-2x'>23x45</span>
+                              <span style="float: right;">Maryaj</span>
+                            </li>
+<#--                              <li class="list-group-item" ng-repeat="item in global.combinationsLimited track by $index">-->
+<#--                                <span class='lead label label-info fa-2x'>{{item.combination}}</span>-->
+<#--                                <span style="float: right;">{{item.type}}</span>-->
+<#--                              </li>-->
                             </ul>
                           </div>
                         </div>

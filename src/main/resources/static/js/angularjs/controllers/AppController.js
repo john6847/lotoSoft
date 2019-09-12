@@ -19,7 +19,8 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
             if($scope.enterpriseId > 0){
                 $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+5+'/event',
                     function (payload, headers, res) {
-                        $scope.global.combinationsLimited.push(payload);
+                        $scope.global.combinationsLimited.push({combination: payload.body.combination, type: payload.body.type});
+                        $scope.global.combinationsLimited = merge($scope.global.combinationsLimited, [] );
                         $scope.$apply($scope.global.combinationsLimited);
                     });
             }

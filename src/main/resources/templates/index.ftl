@@ -123,30 +123,126 @@
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
+                              List boul ki vann plis pou jounen an
                             </div>
                             <div class="panel-body">
                               <div class="row">
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);">
-                                  <div class="flex-container">
-<#--                                    <div>-->
-<#--                                      <div>Bolet</div>-->
-<#--                                      <div>25</div>-->
-<#--                                      <div>200 (HTG)</div>-->
-<#--                                    </div>-->
-                                    <div>1</div>
-                                    <div>2</div>
-                                    <div>3</div>
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item purple-bg text-center">
+                                      <h3 class="list-group-item-heading">Bolet</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">36</spap>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">25</span>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">52</span>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
                                   </div>
                                 </div>
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item facebook-bg text-center">
+                                      <h3 class="list-group-item-heading">Maryaj</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">25 X 36</spap>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">25x36</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">25 X 36</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                  </div>
+                                </div>
+                                 <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item magenta-bg text-center">
+                                      <h3 class="list-group-item-heading">Loto 3 chif</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">253</spap>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">536</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">256</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                  </div>
+                                </div>
                               </div>
                               <div class="row">
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
-                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item purple-bg text-center">
+                                      <h3 class="list-group-item-heading">Loto 4 chif</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">36 67</spap>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">76 45</span>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">52 25</span>
+                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item facebook-bg text-center">
+                                      <h3 class="list-group-item-heading">Extra</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">253 36</spap>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">222 32</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">258 45</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                  </div>
+                                </div>
+                                 <div class="col-md-4 col-lg-4 col-xl-4">
+                                  <div class="list-group">
+                                    <a href="#" class="list-group-item magenta-bg text-center">
+                                      <h3 class="list-group-item-heading">Opsyon</h3>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <spap class="list-group-item-text">25 33</spap>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">53 46</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-info">
+                                      <span class="list-group-item-text">25 16</span>
+                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                    </a>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>

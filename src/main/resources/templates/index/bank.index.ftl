@@ -78,7 +78,7 @@
                             <div class="row">
                             <#--style="overflow-y:scroll; height:150px;"-->
                                 <div class="col-md-12">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive"   >
                                         <table datatable="ng" dt-options="dtOptions"
                                                class="table table-striped table-advance table-hover">
                                            <thead>

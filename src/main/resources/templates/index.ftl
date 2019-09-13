@@ -2,6 +2,20 @@
 <html lang="en">
   <head>
   <#include "header.ftl">
+
+    <style>
+      .flex-container {
+        display: flex;
+        background-color: DodgerBlue;
+      }
+
+      .flex-container > div {
+        background-color: #f1f1f1;
+        margin: 2px;
+        padding: 20px;
+        font-size: 14px;
+      }
+    </style>
   </head>
 
   <body ng-app="lottery" ng-cloak>
@@ -109,39 +123,43 @@
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <h2>
-                                <i class="fa fa-map-marker red"></i
-                                ><strong>Countries</strong>
-                              </h2>
-                              <div class="panel-actions">
-                                <a href="index.ftl#" class="btn-setting"
-                                  ><i class="fa fa-rotate-right"></i
-                                ></a>
-                                <a href="index.ftl#" class="btn-minimize"
-                                  ><i class="fa fa-chevron-up"></i
-                                ></a>
-                                <a href="index.ftl#" class="btn-close"
-                                  ><i class="fa fa-times"></i
-                                ></a>
-                              </div>
                             </div>
-                            <div class="panel-body-map">
-                              <div id="map" style="height:380px;"></div>
+                            <div class="panel-body">
+                              <div class="row">
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);">
+                                  <div class="flex-container">
+<#--                                    <div>-->
+<#--                                      <div>Bolet</div>-->
+<#--                                      <div>25</div>-->
+<#--                                      <div>200 (HTG)</div>-->
+<#--                                    </div>-->
+                                    <div>1</div>
+                                    <div>2</div>
+                                    <div>3</div>
+                                  </div>
+                                </div>
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                                <div class="col-md-6" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);"> hey</div>
+                              </div>
                             </div>
                           </div>
                         </div>
                         <div class="col-md-12 col-lg-3 col-xl-3 col-sm-12 col-xs-12">
                           <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
                             <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
+
                             <ul class="list-group" style="color: #263a4f;">
-                            <li class="list-group-item">
-                              <span class='lead label label-info' style="font-size: 14px">23x45</span>
-                              <span style="float: right; font-family: 'serif'; color: #009da7;">Maryaj</span>
-                            </li>
-<#--                              <li class="list-group-item" ng-repeat="item in global.combinationsLimited track by $index">-->
-<#--                                <span class='lead label label-info fa-2x'>{{item.combination}}</span>-->
-<#--                                <span style="float: right;">{{item.type}}</span>-->
-<#--                              </li>-->
+                              <li class="list-group-item" ng-repeat="item in global.combinationsLimited track by $index">
+                                <span class='lead label label-info' style="font-size: 14px">{{item.combination}}</span>
+                                <span style="float: right; font-family: 'serif'; color: #009da7;" >{{item.type}}</span>
+                              </li>
                             </ul>
                           </div>
                         </div>

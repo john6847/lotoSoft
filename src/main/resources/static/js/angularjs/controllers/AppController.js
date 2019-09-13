@@ -1,11 +1,12 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService','UserService' ,function ($http, $scope, $stomp, EnterpriseService,UserService) {
+app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService','UserService', 'CombinationService', function ($http, $scope, $stomp, EnterpriseService,UserService, CombinationService) {
     $scope.global = {
         systemDate: new Date(),
         combinationsLimited: [],
-        users: []
+        users: [],
+        topSoldCombinations: []
     };
     $scope.enterpriseId = 0;
     fetchEnterprise();
@@ -41,6 +42,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                 function (d) {
                     $scope.enterpriseId = d;
                     fetchAllUsersLogged();
+                    fetchAllTop3SoldCombination();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -52,6 +54,18 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
             .then(
                 function (d) {
                     $scope.global.users = d;
+                    console.log(d)
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+    }
+
+    function fetchAllTop3SoldCombination() {
+        CombinationService.fetchAllTop3SoldCombination()
+            .then(
+                function (d) {
+                    $scope.global.topSoldCombinations = d;
                     console.log(d)
                 },
                 function (errorResponse) {

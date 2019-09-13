@@ -741,6 +741,22 @@ public class GlobalRestController {
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
+    /**
+     * Get All Top 3 sold combination by product in an enterprise
+     * @return users
+     */
+    @GetMapping(value = "/combination/top/sold", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Combination>> getTop3SoldCombinationByEnterprise(
+            HttpServletRequest request
+    ){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<Combination> combinations = combinationService.selectTop3MostSoldCombinationByCombintionType(enterprise.getId());
+            return new ResponseEntity<>(combinations, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
     private Boolean getState (int state){
         Boolean resultState = false;
         if (state == 0){

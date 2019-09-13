@@ -200,4 +200,8 @@ public class CombinationService {
         initServices.createCombinations(enterpriseService.findEnterpriseByName(enterpriseName), combinationTypeService.findAllByEnterpriseName(enterpriseName));
     }
 
+    public List<Combination> selectTop3MostSoldCombinationByCombintionType(Long enterpriseId){
+        return combinationRepository.selectTop3MostSoldCombinationByCombintionType(enterpriseId, Combination.class) ;
+    }
+
 }

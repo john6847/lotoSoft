@@ -57,6 +57,18 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
 
 
+    String q1 = "SELECT\n" +
+            "    *\n" +
+            "FROM (\n" +
+            "         SELECT\n" +
+            "                     ROW_NUMBER() OVER (PARTITION BY c.combination_type_id ORDER BY c.sale_total Desc) AS r,\n" +
+            "                     c.*\n" +
+            "         FROM\n" +
+            "             combination c where c.sale_total > 0 and enterprise_id =?1 ) x\n" +
+            "WHERE\n" +
+            "        x.r <= 3";
+    @Query(value = q1, nativeQuery = true)
+    <T>List<T>selectTop3MostSoldCombinationByCombintionType(Long enterpriseId,  Class<T> classType);
 
 
 

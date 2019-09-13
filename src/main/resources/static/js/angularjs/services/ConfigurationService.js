@@ -82,5 +82,4 @@ angular.module('lottery')
             return deferred.promise;
         }
 
-
     }]);

@@ -54,10 +54,7 @@ public class WebSocketPingScheduler {
    @Autowired
    private CombinationRepository combinationRepository;
 
-    /**
-     * Schedule to send notification to enable and disable shift every 10 seconds.
-     * @return configuration
-     */
+
    @Scheduled(fixedRate = 60000)
    public void webSocketPing() {
        System.out.println("Web socket Ping");
@@ -88,7 +85,7 @@ public class WebSocketPingScheduler {
      * Schedule to send notification to enable and disable shift every 10 seconds.
      * @return configuration
      */
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = 10000)
     public void enableAndDisableShift() {
         ArrayList<Shift> shiftList = (ArrayList<Shift>) shiftRepository.findAll();
         Map<Long, List<Shift>> mapShifts = shiftList.stream()

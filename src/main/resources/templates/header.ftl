@@ -63,3 +63,6 @@
 <link href="/dist/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 
 
+<script rel="stylesheet" src="/dist/css/ng-table.min.css"></script>
+
+

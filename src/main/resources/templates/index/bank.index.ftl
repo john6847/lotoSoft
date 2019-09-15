@@ -3,6 +3,10 @@
 
 <head>
 <#include "../header.ftl">
+    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+<#--    <script rel="stylesheet" src="/dist/css/ng-table.min.css"></script>-->
+
+
 </head>
 
 <body>
@@ -78,35 +82,48 @@
                             <div class="row">
                             <#--style="overflow-y:scroll; height:150px;"-->
                                 <div class="col-md-12">
-                                    <div class="table-responsive"   >
-                                        <table datatable="ng" dt-options="dtOptions"
-                                               class="table table-striped table-advance table-hover">
-                                           <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th style="width:15%">Deskripsyon</th>
-                                                    <th style="width:15%">Nimewo</th>
-                                                    <th style="width:15%">Adres</th>
-                                                    <th style="width:15%">Vande</th>
-                                                    <th style="width:15%">Machin</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:15%; text-align: center">Actif</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
+                                    <div class="table-responsive">
+<#--                                        <table datatable="ng" dt-options="dtOptions"-->
+<#--                                               class="table table-striped table-advance table-hover">-->
+                                            <table ng-table="global.tableParams" show-filter="true"
+                                               class="table table-striped table-bordered table-striped table-condensed table-hover">
+<#--                                           <thead>-->
+<#--                                                <tr>-->
+<#--                                                    <th>#</th>-->
+<#--                                                    <th style="width:15%">Deskripsyon</th>-->
+<#--                                                    <th style="width:15%">Nimewo</th>-->
+<#--                                                    <th style="width:15%">Adres</th>-->
+<#--                                                    <th style="width:15%">Vande</th>-->
+<#--                                                    <th style="width:15%">Machin</th>-->
+<#--                                                    <th style="width:15%">Dat Kreyasyon</th>-->
+<#--                                                    <th style="width:15%; text-align: center">Actif</th>-->
+<#--                                                    <th style="width:5%"></th>-->
+<#--                                                    <th style="width:5%"></th>-->
+<#--                                                    <th style="width:5%"></th>-->
 
-                                                </tr>
-                                           </thead>
-                                            <tbody>
-                                            <tr ng-repeat="bank in banks">
-                                                <td>{{start+$index+1}}</td>
-                                                <td>{{bank.description}}</td>
-                                                <td>{{bank.serial}}</td>
-                                                <td>{{bank.address.address}}</td>
-                                                <td>{{bank.seller.user.name}}</td>
-                                                <td>{{bank.seller.pos.description}}</td>
-                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
-                                                <td style="text-align: center"><i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>
+<#--                                                </tr>-->
+<#--                                           </thead>-->
+<#--                                            <tbody>-->
+<#--                                            <tr ng-repeat="bank in banks">-->
+                                            <tr ng-repeat="bank in $data track by row.id">
+<#--                                                <td>{{start+$index+1}}</td>-->
+<#--                                                <td>{{bank.description}}</td>-->
+<#--                                                <td>{{bank.serial}}</td>-->
+<#--                                                <td>{{bank.address.address}}</td>-->
+<#--                                                <td>{{bank.seller.user.name}}</td>-->
+<#--                                                <td>{{bank.seller.pos.description}}</td>-->
+<#--                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>-->
+<#--                                                <td style="text-align: center"><i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>  -->
+<#--                                                -->
+                                                <td style="vertical-align: middle;" data-title="'Id'" filter="{Id: 'number'}" sortable="'Id'">{{start+$index+1}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Deskripsyon'" filter="{Deskripsyon: 'text'}" sortable="'Deskripsyon'">{{bank.description}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Nimewo'" filter="{Nimewo: 'text'}" sortable="'Nimewo'">{{bank.serial}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Adres'" filter="{Adres: 'text'}" sortable="'Adres'">{{bank.address.address}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Vande'" filter="{Vande: 'text'}" sortable="'Vande'">{{bank.seller.user.name}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Machin'" filter="{Machin: 'text'}" sortable="'Machin'">{{bank.seller.pos.description}}</td>
+                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'" filter="{DatKreyasyon: 'text'}" sortable="'Dat Kreyasyon'">{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
+                                                <td style="text-align: center; vertical-align: middle" data-title="'Actif'" filter="{ Actif: 'select'}" filter-data="['Actif', 'Bloke']">
+                                                    <i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td>
                                                     <a class="btn btn-warning btn-xs" href="/bank/update/{{bank.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
@@ -123,7 +140,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            </tbody>
+<#--                                            </tbody>-->
                                             <tfoot>
                                                 <tr>
                                                     <th>#</th>
@@ -222,7 +239,7 @@
         });
     }
 </script>
-</script>
+<#--<script src="/dist/js/ng-table.min.js"></script>-->
 
 </body>
 

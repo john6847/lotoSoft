@@ -97,3 +97,6 @@
 <script src="/js/angularjs/controllers/BankController.js"></script>
 <script src="/js/angularjs/controllers/ReportController.js"></script>
 <script src="/js/angularjs/controllers/AppController.js"></script>
+
+
+<script src="/dist/js/ng-table.min.js"></script>

@@ -3,8 +3,8 @@ app.constant('Constants', {
         {Id: 1, Name: 'BOLET'},
         {Id: 2, Name:'LOTO_TWA_CHIF'},
         {Id: 3, Name:'LOTO_KAT_CHIF'},
-        {Id: 4, Name:'MARYAJ'},
-        {Id: 5, Name:'OPSYON'},
+        {Id: 4, Name:'OPSYON'},
+        {Id: 5, Name:'MARYAJ'},
         {Id: 6, Name:'EXTRA'}
     ],
     PaymentType: [

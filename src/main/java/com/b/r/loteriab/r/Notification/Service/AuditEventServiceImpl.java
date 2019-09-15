@@ -47,8 +47,10 @@ public class AuditEventServiceImpl implements AuditEventService {
             }
         }
 
-        if (last != null && last.getType() > 0 && (last.getType() == NotificationType.PosBlocked.ordinal() || last.getType() == NotificationType.CombinationPriceLimit.ordinal() || last.getType() == NotificationType.UserConnected.ordinal())) {
-            System.out.println("There2222222222222222222222222 "+last.getType());
+        if (last != null && last.getType() > 0 && (last.getType() == NotificationType.PosBlocked.ordinal()
+                || last.getType() == NotificationType.CombinationPriceLimit.ordinal()
+                || last.getType() == NotificationType.TopSoldCombination.ordinal()
+                || last.getType() == NotificationType.UserConnected.ordinal())) {
             brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId.toString() + "/" + last.getType() + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
         }
 

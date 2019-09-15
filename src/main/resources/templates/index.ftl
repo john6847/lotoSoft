@@ -132,17 +132,12 @@
                                     <a href="#" class="list-group-item purple-bg text-center">
                                       <h3 class="list-group-item-heading">Bolet</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">36</spap>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">25</span>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">52</span>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['BOLET'] || global.topSoldCombinations['BOLET'].length < 0">
+                                          <span class="list-group-item-text">Poko gen bolet ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['BOLET'] track by $index">
+                                      <spap class="list-group-item-text">{{item.result_combination}}</spap>
+                                      <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -151,17 +146,12 @@
                                     <a href="#" class="list-group-item facebook-bg text-center">
                                       <h3 class="list-group-item-heading">Maryaj</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">25 X 36</spap>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">25x36</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">25 X 36</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['MARYAJ'] || global.topSoldCombinations['MARYAJ'].length < 0">
+                                          <span class="list-group-item-text">Poko gen maryaj ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['MARYAJ'] track by $index">
+                                        <span class="list-group-item-text">{{item.result_combination}}</span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -170,17 +160,12 @@
                                     <a href="#" class="list-group-item magenta-bg text-center">
                                       <h3 class="list-group-item-heading">Loto 3 chif</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">253</spap>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">536</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">256</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['LOTO_TWA_CHIF'] || global.topSoldCombinations['LOTO_TWA_CHIF'].length < 0">
+                                          <span class="list-group-item-text">Poko gen extra ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['LOTO_TWA_CHIF'] track by $index">
+                                        <span class="list-group-item-text">{{item.result_combination}}</span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -191,17 +176,12 @@
                                     <a href="#" class="list-group-item purple-bg text-center">
                                       <h3 class="list-group-item-heading">Loto 4 chif</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">36 67</spap>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">76 45</span>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">52 25</span>
-                                      <span class="badge badge-success badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['LOTO_KAT_CHIF'] || global.topSoldCombinations['LOTO_KAT_CHIF'].length < 0">
+                                          <span class="list-group-item-text">Poko gen loto 4 chif ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['LOTO_KAT_CHIF'] track by $index">
+                                        <span class="list-group-item-text">{{item.result_combination}}</span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -210,17 +190,12 @@
                                     <a href="#" class="list-group-item facebook-bg text-center">
                                       <h3 class="list-group-item-heading">Extra</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">253 36</spap>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">222 32</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">258 45</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['EXTRA'] || global.topSoldCombinations['EXTRA'].length < 0">
+                                          <span class="list-group-item-text">Poko gen extra ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['EXTRA'] track by $index">
+                                      <spap class="list-group-item-text">{{item.result_combination}}</spap>
+                                      <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -229,17 +204,12 @@
                                     <a href="#" class="list-group-item magenta-bg text-center">
                                       <h3 class="list-group-item-heading">Opsyon</h3>
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <spap class="list-group-item-text">25 33</spap>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">53 46</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-info">
-                                      <span class="list-group-item-text">25 16</span>
-                                      <span class="badge badge-primary badge-pill"><small>250 HTG</small></span>
+                                      <a href="#" class="list-group-item list-group-item-info" ng-if="!global.topSoldCombinations['OPSYON'] || global.topSoldCombinations['OPSYON'].length < 0">
+                                          <span class="list-group-item-text">Poko gen opsyon ki vann pou tiraj sa</span>
+                                      </a>
+                                    <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['OPSYON'] track by $index">
+                                        <span class="list-group-item-text">{{item.result_combination}}</span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -250,7 +220,7 @@
                         <div class="col-md-12 col-lg-3 col-xl-3 col-sm-12 col-xs-12">
                           <div class="info-box teal-bg tooltips" data-placement="top" style="max-height: 300px; overflow-y: auto;" data-toggle="tooltip" data-original-title="Konbinezon ki rive nan limit pri yo">
                             <span style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki rive nan limit pri yo</span>
-
+                              <p ng-if="global.combinationsLimited.length <= 0" style="mso-font-info: serif">Pa gen konbinezon ki rive nan limit li kounya</p>
                             <ul class="list-group" style="color: #263a4f;">
                               <li class="list-group-item" ng-repeat="item in global.combinationsLimited track by $index">
                                 <span class='lead label label-info' style="font-size: 14px">{{item.combination}}</span>

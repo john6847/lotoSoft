@@ -19,7 +19,7 @@ angular.module('lottery')
                         console.error(errResponse);
                         deferred.reject(errResponse);
                     });
-            return deferred.promise;
+                return deferred.promise;
         }
 
         function fetchAllBankFiltered(pageno,itemsPerPage,state) {

@@ -8,4 +8,5 @@ public enum NotificationType {
     SendSystemDate,
     CombinationPriceLimit,
     UserConnected,
+    TopSoldCombination,
 }

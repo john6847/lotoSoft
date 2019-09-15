@@ -46,14 +46,13 @@ public class WebSocketPingScheduler {
    private SaleRepository saleRepository;
 
    @Autowired
-   private SaleDetailRepository saleDetailRepository;
-
-   @Autowired
    private TicketRepository ticketRepository;
 
    @Autowired
    private CombinationRepository combinationRepository;
 
+   @Autowired
+   private EnterpriseRepository enterpriseRepository;
     /**
      * Schedule to send notification to enable and disable shift every 10 seconds.
      * @return configuration
@@ -224,5 +223,28 @@ public class WebSocketPingScheduler {
 
         sampleResponse.getBody().put("date", Helper.getSystemDate());
         service.sendMessage(sampleResponse, 0L, last);
+    }
+
+    /**
+     * Schedule to send notification about the server time
+     * @return configuration
+     */
+    @Scheduled(fixedRate = 30 * 60 * 1000)
+    public void sendTop3SoldCombinationByCombinationType() {
+        List <Enterprise> enterprises = enterpriseRepository.selectAllEnterpriseExcept("BR-tenant");
+        for (Enterprise enterprise: enterprises){
+           SampleResponse sampleResponse = new SampleResponse();
+           sampleResponse.setBody(new HashMap());
+
+           LastNotification last = new LastNotification();
+           last.setChanged(false);
+           last.setDate(new Date());
+           last.setEnterpriseId(enterprise.getId());
+           last.setType(NotificationType.TopSoldCombination.ordinal());
+
+           sampleResponse.getBody().put("combinations", combinationRepository.selectTop3MostSoldCombinationByCombinationType(enterprise.getId(), Combination.class));
+           service.sendMessage(sampleResponse, enterprise.getId(), last);
+        }
+
     }
 }

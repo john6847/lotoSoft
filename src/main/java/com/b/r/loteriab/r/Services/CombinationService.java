@@ -183,7 +183,6 @@ public class CombinationService {
                 .findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, reverseResultCombination, combinationType1, combinationType2, enterprise, Combination.class);
     }
 
-
     public Combination findCombinationById(Long id){
         return combinationRepository.findCombinationById(id);
     }
@@ -201,7 +200,7 @@ public class CombinationService {
     }
 
     public List<Combination> selectTop3MostSoldCombinationByCombintionType(Long enterpriseId){
-        return combinationRepository.selectTop3MostSoldCombinationByCombintionType(enterpriseId, Combination.class) ;
+        return combinationRepository.selectTop3MostSoldCombinationByCombinationType(enterpriseId, Combination.class) ;
     }
 
 }

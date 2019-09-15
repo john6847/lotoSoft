@@ -1,9 +1,14 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function ($http, BankService, PosService, $scope, DTOptionsBuilder) {
+app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function (NgTableParams ,$http, BankService, PosService, $scope, DTOptionsBuilder) {
     $scope.banks = [];
     $scope.pos = [];
+
+    $scope.global={
+        tableParams: null,
+        stateFilter: ["Actif", "Bloke"]
+    };
     $scope.serial = '';
     $scope.pageno = 1;
     $scope.totalCount = 0;
@@ -12,66 +17,90 @@ app.controller("bankController", ['$http', 'BankService','PosService', '$scope',
     $scope.selectedSeller = null;
     $scope.selectedPos = null;
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
+    // $scope.dtOptions = DTOptionsBuilder.newOptions()
+    //     .withDisplayLength(5)
+    //     .withBootstrapOptions(
+    //         {
+    //             pagination:{
+    //                 classes:{
+    //                     ul: 'pagination pagination-sm'
+    //                 }
+    //             }
+    //         }
+    //     )
+    //     .withOption("destroy", true)
+    //     .withOption('responsive', true)
+    //     .withOption('scrollX', '100%')
+    //     .withOption('deferRender', true)
+    //     .withColumnFilter({
+    //         aoColumns: [
+    //             {
+    //             type: 'number'
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'text',
+    //                 bRegex: true,
+    //                 bSmart: true
+    //             },
+    //             {
+    //                 type: 'select',
+    //                 bRegex: false,
+    //                 values: ['Wi','Non']
+    //             }
+    //         ]
+    //     });
+
+    $scope.global.tableParams = new NgTableParams({
+        count: 5,
+
+    }, {
+        counts: [5, 10, 25, 50, 100],
+        paginationMaxBlocks: 5,
+        paginationMinBlocks: 2,
+        getData: function () {
+            return BankService.fetchAllBank().then(function (d) {
+                    if (d === null || d === undefined) {
+                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+                        // $scope.banks = [];
+                    } else {
+                        // $scope.banks = createAddress(d.content);
                     }
-                }
-            }
-        )
-        .withOption("destroy", true)
-        .withOption('responsive', true)
-        .withOption('scrollX', '100%')
-        .withOption('deferRender', true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                type: 'number'
+                    return  createAddress(d);
                 },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                }
-            ]
-        });
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+
+        }
+    });
 
 
-    fetchAllBank();
+    // fetchAllBank();
 
     $scope.getData = function () {
         $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;

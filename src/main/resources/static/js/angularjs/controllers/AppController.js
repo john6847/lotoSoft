@@ -1,13 +1,15 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService','UserService', 'CombinationService', function ($http, $scope, $stomp, EnterpriseService,UserService, CombinationService) {
+app.controller("appController", ['$http', '$scope','$stomp','Constants','EnterpriseService','UserService', 'CombinationService', function ($http, $scope, $stomp, Constants, EnterpriseService,UserService, CombinationService) {
     $scope.global = {
         systemDate: new Date(),
         combinationsLimited: [],
         users: [],
-        topSoldCombinations: []
+        topSoldCombinations: [],
+        constant: Constants.Products
     };
+
     $scope.enterpriseId = 0;
     fetchEnterprise();
     $stomp.connect('http://localhost:3200/live', {})
@@ -32,6 +34,15 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                         console.log(payload);
                         $scope.global.users = merge($scope.global.users, payload.body.users);
                         $scope.$apply($scope.global.users);
+                    });
+            }
+
+            if($scope.enterpriseId > 0) {
+                $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 7 + '/event',
+                    function (payload, headers, res) {
+                        console.log(payload);
+                        $scope.global.topSoldCombinations = groupArrayByCombinationType(payload.body.combinations);
+                        $scope.$apply($scope.global.topSoldCombinations);
                     });
             }
         });
@@ -65,8 +76,7 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
         CombinationService.fetchAllTop3SoldCombination()
             .then(
                 function (d) {
-                    $scope.global.topSoldCombinations = d;
-                    console.log(d)
+                    $scope.global.topSoldCombinations = groupArrayByCombinationType(d);
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -80,6 +90,48 @@ app.controller("appController", ['$http', '$scope','$stomp','EnterpriseService',
                 d.push(item);
         });
         return d;
+    }
+
+    function groupArrayByCombinationType(array) {
+        $scope.global.topSoldCombinations = [];
+        var arrReduce = [];
+        if (array && array.length > 0){
+            var data = readElements(array);
+            if (data && data.length > 0){
+                arrReduce = data.reduce(function(results, org) {
+                    (results[org.combination_type_description] = results[org.combination_type_description] || []).push(org);
+                    return results;
+                }, {});
+            }
+        }
+        return arrReduce;
+    }
+
+    function readElements(array) {
+        var resultArr = [];
+        for (var i = 0; i< array.length; i++) {
+            resultArr.push(convertArrayToObject(array[i]));
+        }
+        return resultArr;
+    }
+
+    function convertArrayToObject(array) {
+        var obj = {};
+        obj["r"] = array[0];
+        obj["id"] = array[1];
+        obj["enabled"] = array[2];
+        obj["max_price"] = array[3];
+        obj["result_combination"] = array[4];
+        obj["sale_total"] = array[5];
+        obj["sequence"] = array[6];
+        obj["combination_type_id"] = array[7];
+        obj["combination_type_description"] = $scope.global.constant.find(function (constant) {
+            return constant.Id === array[7];
+        }).Name;
+        obj["enterprise_id"] = array[8];
+        obj["number_three_digits_id"] = array[9];
+
+        return obj;
     }
 
 

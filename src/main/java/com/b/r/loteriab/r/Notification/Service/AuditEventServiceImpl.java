@@ -57,7 +57,7 @@ public class AuditEventServiceImpl implements AuditEventService {
         if (last != null  && last.getType() > 0 && last.getType() == NotificationType.SendSystemDate.ordinal()) {
             brokerMessagingTemplate.convertAndSend("/topics/time", JSON.toJSONString(Helper.getSystemDate(), SerializerFeature.BrowserCompatible));
         }
-        brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));
+        brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible,SerializerFeature.PrettyFormat, SerializerFeature.DisableCircularReferenceDetect));
     }
 
     private void enqueue(SampleResponse sampleResponse, Long enterpriseId) {

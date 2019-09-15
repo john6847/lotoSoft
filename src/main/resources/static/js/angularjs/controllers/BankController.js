@@ -1,13 +1,13 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function (NgTableParams ,$http, BankService, PosService, $scope, DTOptionsBuilder) {
+app.controller("bankController", ['NgTableParams', '$resource',  '$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function (NgTableParams, $resource ,$http,  BankService, PosService, $scope, DTOptionsBuilder) {
     $scope.banks = [];
     $scope.pos = [];
 
     $scope.global={
         tableParams: null,
-        stateFilter: ["Actif", "Bloke"]
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Actif"}, ]
     };
     $scope.serial = '';
     $scope.pageno = 1;
@@ -75,28 +75,53 @@ app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosSe
     //         ]
     //     });
 
+    // $scope.global.tableParams = new NgTableParams({
+    //     count: 5,
+    //
+    // }, {
+    //     counts: [5, 10, 25, 50, 100],
+    //     paginationMaxBlocks: 5,
+    //     paginationMinBlocks: 2,
+    //     getData: function () {
+    //         return BankService.fetchAllBank().then(function (d) {
+    //                 if (d === null || d === undefined) {
+    //                     $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+    //                     // $scope.banks = [];
+    //                 } else {
+    //                     // $scope.banks = createAddress(d.content);
+    //                 }
+    //                 return  createAddress(d);
+    //             },
+    //             function (errorResponse) {
+    //                 console.error(errorResponse);
+    //             });
+    //
+    //     }
+    // });
+    $scope.Api = $resource("/api/bank");
     $scope.global.tableParams = new NgTableParams({
-        count: 5,
-
+        // count: 5
     }, {
-        counts: [5, 10, 25, 50, 100],
+        counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
         paginationMaxBlocks: 5,
         paginationMinBlocks: 2,
-        getData: function () {
-            return BankService.fetchAllBank().then(function (d) {
-                    if (d === null || d === undefined) {
-                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
-                        // $scope.banks = [];
-                    } else {
-                        // $scope.banks = createAddress(d.content);
-                    }
-                    return  createAddress(d);
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                });
+        getData: function (params) {
+            return $scope.Api.get(params.url()).$promise.then(function (data) {
+                params.total(data.totalElements);
+                if (data.content === null || data.content === undefined)
+                    // $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
+                    return  [];
+                else{
+                    // $scope.pos = data.results;
+                    return  createAddress(data.content);
+                }
+            },
+            function (errorResponse) {
+                console.error(errorResponse);
+            });
 
-        }
+            }
+
     });
 
 
@@ -105,7 +130,7 @@ app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosSe
     $scope.getData = function () {
         $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
 
-        fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
+        // fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
 
     $scope.sellerChange = function (updating){

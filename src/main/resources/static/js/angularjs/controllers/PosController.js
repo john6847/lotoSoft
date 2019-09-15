@@ -1,105 +1,33 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("posController", ['$http', 'PosService', '$scope', 'DTOptionsBuilder', function ($http, PosService, $scope, DTOptionsBuilder) {
-
+app.controller("posController", ['NgTableParams', '$resource', 'PosService', '$scope', function (NgTableParams, $resource, PosService, $scope) {
     $scope.global = {
-        dtOptions: loadDT(),
-        pos: [],
-
-    }
-    $scope.serial = '';
-    $scope.pageno = 1;
-    $scope.itemsPerPage = 1000;
-    $scope.state = 1;
-    // http://blog.ashwani.co.in/new/2015/12/07/How-to-use-Angular-Datatables.html
-
-    fetchAllPos();
-
-
-    $scope.getData = function () {
-        fetchAllPosFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        Api: $resource("/api/pos")
     };
 
-    function fetchAllPos() {
-        PosService.fetchAllPos()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.global.pos = [];
-                    else{
-                        $scope.global.pos = d;
-                        loadDT();
-                    }
-
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function loadDT() {
-        return DTOptionsBuilder.newOptions()
-            .withDisplayLength(5)
-            .withBootstrapOptions(
-                {
-                    pagination:{
-                        classes:{
-                            ul: 'pagination pagination-sm'
-                        }
-                    }
+    $scope.global.tableParams = new NgTableParams({
+        count: 5,
+        sorting: { id: "asc" }
+    }, {
+        counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+        paginationMaxBlocks: 5,
+        paginationMinBlocks: 2,
+        getData: function (params) {
+            return $scope.global.Api.get(params.url()).$promise.then(function (data) {
+                params.total(data.content.length);
+                if (data.content === null || data.content === undefined)
+                    return  [];
+                else{
+                    return data.content;
                 }
-            )
-            .withOption("destroy", true)
-            .withOption('responsive', true)
-            .withOption('scrollX', '100%')
-            .withOption('deferRender', true)
-            .withColumnFilter({
-                aoColumns: [
-                    {
-                        type: 'number'
-                    },
-                    {
-                        type: 'text',
-                        bRegex: true,
-                        bSmart: true
-                    },
-                    {
-                        type: 'text',
-                        bRegex: true,
-                        bSmart: true
-                    },
-                    {
-                        type: 'text',
-                        bRegex: true,
-                        bSmart: true
-                    },
-                    {
-                        type: 'select',
-                        bRegex: false,
-                        values: ['Wi','Non']
-                    },
-                    {
-                        type: 'select',
-                        bRegex: false,
-                        values: ['Wi','Non']
-                    }
-                ]
+            },
+            function (errorResponse) {
+                console.error(errorResponse);
             });
-    }
-
-    function fetchAllPosFiltered(pageno, itemsPerPage, state) {
-        PosService.fetchAllPosFiltered(pageno, itemsPerPage, state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.global.pos = [];
-                    else
-                        $scope.global.pos = d.content;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
+        }
+    });
 
 }]);

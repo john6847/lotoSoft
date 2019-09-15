@@ -3,9 +3,6 @@
 
 <head>
 <#include "../header.ftl">
-    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
-<#--    <script rel="stylesheet" src="/dist/css/ng-table.min.css"></script>-->
-
 
 </head>
 
@@ -105,57 +102,60 @@
 <#--                                           </thead>-->
 <#--                                            <tbody>-->
 <#--                                            <tr ng-repeat="bank in banks">-->
-                                            <tr ng-repeat="bank in $data track by row.id">
-<#--                                                <td>{{start+$index+1}}</td>-->
-<#--                                                <td>{{bank.description}}</td>-->
-<#--                                                <td>{{bank.serial}}</td>-->
-<#--                                                <td>{{bank.address.address}}</td>-->
-<#--                                                <td>{{bank.seller.user.name}}</td>-->
-<#--                                                <td>{{bank.seller.pos.description}}</td>-->
-<#--                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>-->
-<#--                                                <td style="text-align: center"><i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>  -->
-<#--                                                -->
-                                                <td style="vertical-align: middle;" data-title="'Id'" filter="{Id: 'number'}" sortable="'Id'">{{start+$index+1}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Deskripsyon'" filter="{Deskripsyon: 'text'}" sortable="'Deskripsyon'">{{bank.description}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Nimewo'" filter="{Nimewo: 'text'}" sortable="'Nimewo'">{{bank.serial}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Adres'" filter="{Adres: 'text'}" sortable="'Adres'">{{bank.address.address}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Vande'" filter="{Vande: 'text'}" sortable="'Vande'">{{bank.seller.user.name}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Machin'" filter="{Machin: 'text'}" sortable="'Machin'">{{bank.seller.pos.description}}</td>
-                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'" filter="{DatKreyasyon: 'text'}" sortable="'Dat Kreyasyon'">{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
-                                                <td style="text-align: center; vertical-align: middle" data-title="'Actif'" filter="{ Actif: 'select'}" filter-data="['Actif', 'Bloke']">
-                                                    <i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>
-                                                <td>
-                                                    <a class="btn btn-warning btn-xs" href="/bank/update/{{bank.id}}">
-                                                        <i class="fa fa-edit"></i> Aktyalize
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/bank/delete/{{bank.id}}">
-                                                        <i class="fa fa-trash-o"></i> Elimine
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-{{bank.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/bank/{{bank.id}}">
-                                                        <i class="fa fa-{{bank.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{bank.enabled? 'Bloke' : 'Debloke'}}
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                <tbody>
+                                                    <tr ng-repeat="row in $data track by row.id">
+        <#--                                                <td>{{start+$index+1}}</td>-->
+        <#--                                                <td>{{bank.description}}</td>-->
+        <#--                                                <td>{{bank.serial}}</td>-->
+        <#--                                                <td>{{bank.address.address}}</td>-->
+        <#--                                                <td>{{bank.seller.user.name}}</td>-->
+        <#--                                                <td>{{bank.seller.pos.description}}</td>-->
+        <#--                                                <td>{{bank.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>-->
+        <#--                                                <td style="text-align: center"><i class="fa fa-{{bank.enabled? 'check' : 'times' }}" style="color: {{bank.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{bank.enabled? 'Wi' : 'Non' }}</p> </td>  -->
+        <#--                                                -->
+                                                        <td style="vertical-align: middle;" data-title="'Id'" filter="{Id: 'number'}" sortable="'Id'">{{start+$index+1}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'Deskripsyon'" filter="{deskripsyon: 'text'}" sortable="'Deskripsyon'">{{row.description}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'Nimewo'" filter="{dimewo: 'text'}" sortable="'Nimewo'">{{row.serial}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'Adres'" filter="{ddres: 'text'}" sortable="'Adres'">{{row.address.address}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'Vande'" filter="{vande: 'text'}" sortable="'Vande'">{{row.seller.user.name}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'Machin'" filter="{machin: 'text'}" sortable="'Machin'">{{row.seller.pos.description}}</td>
+                                                        <td style="vertical-align: middle;" data-title="'DatKreyasyon'" filter="{datKreyasyon: 'text'}" sortable="'Dat Kreyasyon'">{{row.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
+                                                        <td style="text-align: center; vertical-align: middle" data-title="'Actif'" filter="{ actif: 'select'}" filter-data="global.stateFilter">
+                                                            <i class="fa fa-{{row.enabled? 'check' : 'times' }}" style="color: {{row.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{row.enabled? 'Wi' : 'Non' }}</p> </td>
+                                                        <td  style="vertical-align: middle;" data-title="'Aktyalize'">
+                                                            <a class="btn btn-warning btn-xs" href="/bank/update/{{row.id}}">
+                                                                <i class="fa fa-edit"></i> Aktyalize
+                                                            </a>
+                                                        </td>
+                                                        <td  style="vertical-align: middle;" data-title="'Elimine'">
+                                                            <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/bank/delete/{{row.id}}">
+                                                                <i class="fa fa-trash-o"></i> Elimine
+                                                            </a>
+                                                        </td>
+                                                        <td style="vertical-align: middle;" data-title="'Bloke/Debloke'">
+                                                            <a class="btn btn-{{row.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/bank/{{row.id}}">
+                                                                <i class="fa fa-{{row.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{row.enabled? 'Bloke' : 'Debloke'}}
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
 <#--                                            </tbody>-->
-                                            <tfoot>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th style="width:15%">Deskripsyon</th>
-                                                    <th style="width:15%">Nimewo</th>
-                                                    <th style="width:15%">Adres</th>
-                                                    <th style="width:15%">Vande</th>
-                                                    <th style="width:15%">Machin</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:15%; text-align: center">Actif</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                </tr>
-                                            </tfoot>
+<#--                                            <tfoot>-->
+<#--                                                <tr>-->
+<#--                                                    <th>#</th>-->
+<#--                                                    <th style="width:15%">Deskripsyon</th>-->
+<#--                                                    <th style="width:15%">Nimewo</th>-->
+<#--                                                    <th style="width:15%">Adres</th>-->
+<#--                                                    <th style="width:15%">Vande</th>-->
+<#--                                                    <th style="width:15%">Machin</th>-->
+<#--                                                    <th style="width:15%">Dat Kreyasyon</th>-->
+<#--                                                    <th style="width:15%; text-align: center">Actif</th>-->
+<#--                                                    <th style="width:5%"></th>-->
+<#--                                                    <th style="width:5%"></th>-->
+<#--                                                    <th style="width:5%"></th>-->
+<#--                                                </tr>-->
+<#--                                            </tfoot>-->
                                         </table>
                                     </div>
                                 </div>
@@ -239,7 +239,6 @@
         });
     }
 </script>
-<#--<script src="/dist/js/ng-table.min.js"></script>-->
 
 </body>
 

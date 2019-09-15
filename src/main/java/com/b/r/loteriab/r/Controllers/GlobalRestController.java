@@ -16,6 +16,7 @@ import org.javatuples.Pair;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -280,16 +281,19 @@ public class GlobalRestController {
      * Get All Bank
      * @return banks
      */
-    @GetMapping(value = "/bank/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Bank>> getBankList(HttpServletRequest request){
+    @GetMapping(value = "/bank", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Bank>> getBankList(HttpServletRequest request,
+                                                  @RequestParam(value ="count", defaultValue = "10") String count,
+                                                  @RequestParam(value ="state", defaultValue = "1") String state,
+                                                  @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Bank> banks = bankService.findAllBankByEnterprise(enterprise.getId());
+            Page<Bank> banks = bankService.findAllBankByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (banks.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(banks, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK); //TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK); //TODO: Sattus code
     }
 
     /**
@@ -453,16 +457,29 @@ public class GlobalRestController {
      * @return posList
      */
 
-    @GetMapping(value = "/pos/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Pos>> getPosList(HttpServletRequest request){
+    @GetMapping(value = "/pos", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Pos>> getPosList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="page", defaultValue = "1") String page,
+            @RequestParam(value ="filter[id]", defaultValue = "") String id,
+            @RequestParam(value ="filter[deskripsyon]", defaultValue = "") String description,
+            @RequestParam(value ="filter[serial]", defaultValue = "") String serial,
+            @RequestParam(value ="filter[datKreyasyon]", defaultValue = "") String creationDate,
+            @RequestParam(value ="filter[actif]", defaultValue = "1") String state,
+            @RequestParam(value ="sorting[id]", defaultValue = "desc") String sortId,
+            @RequestParam(value ="sorting[deskripsyon]", defaultValue = "") String sortDescription,
+            @RequestParam(value ="sorting[datKreyasyon]", defaultValue = "") String sortCreationDate,
+            @RequestParam(value ="sorting[serial]", defaultValue = "") String sortSerial,
+            @RequestParam(value ="sorting[actif]", defaultValue = "") String sortState){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Pos> pos = posService.findAllPos(enterprise.getId());
+            Page<Pos> pos = posService.findAllPosByState(Integer.parseInt(page),Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (pos.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(pos, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);//TODO: Sattus code
     }
 
     /**
@@ -755,6 +772,21 @@ public class GlobalRestController {
             return new ResponseEntity<>(combinations, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
+    private Boolean getStateEj (String state){
+        int resState = Integer.parseInt(state);
+        Boolean resultState = false;
+        if (resState == 0){
+            resultState = false;
+        }
+        if (resState == 1){
+            resultState = null;
+        }
+        if (resState == 2){
+            resultState = true;
+        }
+        return resultState;
     }
 
     private Boolean getState (int state){

@@ -106,7 +106,7 @@ public class PosService {
     }
 
     public Page<Pos> findAllPosByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page,itemPerPage);
+        Pageable pageable = PageRequest.of(page - 1 ,itemPerPage);
         if(state != null){
             return posRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }

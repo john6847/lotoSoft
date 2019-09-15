@@ -115,11 +115,11 @@ public class BankService {
     }
 
     public Page<Bank> findAllBankByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page,itemPerPage);
+        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
         if(state != null){
-            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(state, enterpriseId,pageable);
         }
-        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId, pageable);
     }
 
     public Bank findBankById(Long id, Long enterpriseId){

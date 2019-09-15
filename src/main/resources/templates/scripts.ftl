@@ -22,6 +22,7 @@
 <script type="text/javascript" src="/dist/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/js/angular.js"></script>
 <script type="text/javascript" src="/js/ng-stomp/dist/ng-stomp.standalone.min.js"></script>
+<script src="/dist/js/ng-table.min.js"></script>
 
 <script src="/js/jquery.hotkeys.js"></script>
 <script src="/js/bootstrap-wysiwyg.js"></script>
@@ -99,4 +100,3 @@
 <script src="/js/angularjs/controllers/AppController.js"></script>
 
 
-<script src="/dist/js/ng-table.min.js"></script>

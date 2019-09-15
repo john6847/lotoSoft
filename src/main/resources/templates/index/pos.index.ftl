@@ -77,7 +77,7 @@
                             <#--style="overflow-y:scroll; height:150px;"-->
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table datatable="ng" dt-options="dtOptions"
+                                        <table datatable="ng" dt-options="global.dtOptions"
                                                class="table table-striped table-advance table-hover" ng-init="fetchAllPos()">
                                            <thead>
                                                 <tr>
@@ -94,7 +94,7 @@
                                                 </tr>
                                            </thead>
                                             <tbody>
-                                            <tr ng-repeat="pos in pos">
+                                            <tr ng-repeat="pos in global.pos">
                                                 <td>{{start+$index+1}}</td>
                                                 <td>{{pos.description}}</td>
                                                 <td>{{pos.serial}}</td>

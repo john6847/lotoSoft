@@ -70,7 +70,7 @@ public class TokenService {
     public static void sendNotification(Long enterpriseId){
         SampleResponse sampleResponse = new SampleResponse();
         LastNotification last = new LastNotification();
-        last.setChanged(true);
+        last.setChanged(false);
         last.setEnterpriseId(enterpriseId);
         last.setDate(new Date());
         last.setIdType((long) 0);

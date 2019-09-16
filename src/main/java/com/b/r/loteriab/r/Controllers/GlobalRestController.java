@@ -143,16 +143,19 @@ public class GlobalRestController {
      * @return Groups
      */
 
-    @GetMapping(value = "/group/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Groups>> getGroupList(HttpServletRequest request){
+    @GetMapping(value = "/group", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Groups>> getGroupList(HttpServletRequest request,
+                                                     @RequestParam(value ="count", defaultValue = "10") String count,
+                                                     @RequestParam(value ="state", defaultValue = "1") String state,
+                                                     @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Groups> groups = groupsService.findAllGroups(enterprise.getId());
+            Page<Groups> groups = groupsService.findAllGroupByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (groups.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(groups, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     /**

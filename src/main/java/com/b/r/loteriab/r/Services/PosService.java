@@ -1,15 +1,19 @@
 package com.b.r.loteriab.r.Services;
 
-import com.b.r.loteriab.r.Model.Combination;
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Filter.Dto.PosDto;
+import com.b.r.loteriab.r.Model.Filter.Dto.PosListRequest;
+import com.b.r.loteriab.r.Model.Filter.Mapper.PosMapper;
+import com.b.r.loteriab.r.Model.Filter.Specification.PosListSpecification;
 import com.b.r.loteriab.r.Model.Pos;
-import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Repository.PosRepository;
+import com.b.r.loteriab.r.Services.errors.ErrorResponse;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,12 @@ public class PosService {
 
     @Autowired
     private  EnterpriseService enterpriseService;
+
+    private final PosListSpecification posListSpecification;
+
+    public PosService(PosListSpecification posListSpecification) {
+        this.posListSpecification = posListSpecification;
+    }
 
     private Result validateModel (Pos pos){
         Result result = new Result();
@@ -110,7 +120,7 @@ public class PosService {
         if(state != null){
             return posRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }
-        return posRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+        return posRepository.findAllByEnterpriseId(pageable, enterpriseId);
     }
 
     public Pos findPosById(Long id, Long enterpriseId){
@@ -163,4 +173,41 @@ public class PosService {
         }
         return result;
     }
+
+    public Page<Pos> findAll(PosListRequest request, int page, int count) {
+        Pageable pageable = PageRequest.of(page - 1 , count, sort(request));
+
+
+//        Pageable sortedByName =
+//                PageRequest.of(0, 3, Sort.by("name"));
+//
+//        Pageable sortedByPriceDesc =
+//                PageRequest.of(0, 3, Sort.by("price").descending());
+//
+//        Pageable sortedByPriceDescNameAsc =
+//                PageRequest.of(0, 5, Sort.by("price").descending().and(Sort.by("name")));
+
+
+
+
+        return posRepository.findAll(posListSpecification.getFilter(request), pageable);
+    }
+    public boolean isAsc (String isAsc){
+        return isAsc.equals("asc");
+    }
+    public Sort sort (PosListRequest request){
+        Sort sort = Sort.by("id");
+        if (!request.getSortDescription().isEmpty()){
+            sort.and(Sort.by("serial"));
+            if (isAsc(request.getSerial())){
+                sort.ascending();
+            }else {
+                sort.descending();
+            }
+        }
+
+//        TODO: add what left
+        return sort;
+    }
+
 }

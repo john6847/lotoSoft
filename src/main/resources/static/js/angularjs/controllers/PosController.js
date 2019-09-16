@@ -10,7 +10,7 @@ app.controller("posController", ['NgTableParams', '$resource', 'PosService', '$s
 
     $scope.global.tableParams = new NgTableParams({
         count: 5,
-        sorting: { id: "asc" }
+        sorting: { id: "desc"}
     }, {
         counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
         paginationMaxBlocks: 5,
@@ -18,7 +18,7 @@ app.controller("posController", ['NgTableParams', '$resource', 'PosService', '$s
         getData: function (params) {
             return $scope.global.Api.get(params.url()).$promise.then(function (data) {
                 params.total(data.content.length);
-                if (data.content === null || data.content === undefined)
+                if (data && (data.content === null || data.content === undefined))
                     return  [];
                 else{
                     return data.content;

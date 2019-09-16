@@ -48,7 +48,7 @@
                                             <table ng-table="global.tableParams" show-filter="true"
                                                class="table table-striped table-bordered table-striped table-condensed table-hover">
                                             <tr ng-repeat="pos in $data track by pos.id">
-                                                <td style="vertical-align: middle;" filter="{id: 'number'}" data-title="'Id'" sortable="'id'">{{start+$index+1}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Id'" sortable="'id'">{{start+$index+1}}</td>
                                                 <td style="vertical-align: middle;" filter="{deskripsyon: 'text'}" data-title="'Deskripsyon'" sortable="'deskripsyon'">{{pos.description}}</td>
                                                 <td style="vertical-align: middle;" filter="{serial: 'text'}" data-title="'Serial'" sortable="'serial'">{{pos.serial}}</td>
                                                 <td style="vertical-align: middle;" filter="{datKreyasyon: 'text'}" data-title="'Dat Kreyasyon'" sortable="'datKreyasyon'">{{pos.modificationDate | date}}</td>

@@ -1,6 +1,7 @@
 package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Model.Filter.Dto.PosListRequest;
 import com.b.r.loteriab.r.Model.Interaces.CombinationViewModel;
 import com.b.r.loteriab.r.Model.Interaces.IReportViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.CombinationVm;
@@ -474,7 +475,21 @@ public class GlobalRestController {
             @RequestParam(value ="sorting[actif]", defaultValue = "") String sortState){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            Page<Pos> pos = posService.findAllPosByState(Integer.parseInt(page),Integer.parseInt(count), getStateEj(state), enterprise.getId());
+            PosListRequest posListRequest = new PosListRequest();
+            posListRequest.setDescription(description);
+            posListRequest.setId(id);
+            posListRequest.setEnabled(getStateEj(state));
+            posListRequest.setSerial(serial);
+            posListRequest.setEnterpriseId(enterprise.getId().toString());
+//            posListRequest.setCreationDate();
+            posListRequest.setSortDescription(sortDescription);
+            posListRequest.setSortId(sortId);
+            posListRequest.setSortCreationDate(sortCreationDate);
+            posListRequest.setSortDescription(sortDescription);
+            posListRequest.setSortSerial(sortSerial);
+            posListRequest.setSortState(sortState);
+
+            Page<Pos> pos = posService.findAll(posListRequest, Integer.parseInt(page),Integer.parseInt(count) );
             if (pos.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(pos, HttpStatus.OK);

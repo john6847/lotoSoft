@@ -5,6 +5,7 @@ import com.b.r.loteriab.r.Model.Pos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public interface PosRepository extends JpaRepository<Pos, Long> {
+public interface PosRepository extends JpaRepository<Pos, Long>, JpaSpecificationExecutor<Pos> {
 
     Pos findPosByIdAndEnterpriseId(Long id, Long enterpriseId);
 
@@ -24,7 +25,8 @@ public interface PosRepository extends JpaRepository<Pos, Long> {
 
     Page<Pos> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean state, Long enterpriseId);
 
-    Page<Pos> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+//    Page<Pos> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+    Page<Pos> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
 
     List <Pos> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 

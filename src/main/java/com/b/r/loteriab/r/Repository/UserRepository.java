@@ -58,12 +58,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     List<Users> selectAllUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId);
 
     String q6 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and u.enterprise_id=?3 order by u.id ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?3 and rol.name NOT IN (?1, ?2)) and u.enterprise_id=?3 ORDER BY u.id DESC, ?#{#pageable}";
     @Query(value = q6, nativeQuery = true)
     Page<Users> selectUserExceptSuperAdminAndEnterpriseId(String name, String name1, Long enterpriseId, Pageable pageable);
 
     String q7 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
-            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) u.enabled =?3 and u.enterprise_id=?4 order by u.id, ?#{#pageable}";
+            "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) u.enabled =?3 and u.enterprise_id=?4 ORDER BY u.id DESC, ?#{#pageable}";
     @Query(value = q7, nativeQuery = true)
     Page<Users> selectUserExceptSuperAdminAndEnabledAndEnterpriseId(String name, String name1, boolean state, Long enterpriseId, Pageable pageable);
 

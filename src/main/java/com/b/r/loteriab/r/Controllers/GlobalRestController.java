@@ -362,16 +362,19 @@ public class GlobalRestController {
      * * @param type
      * @return users
      */
-    @GetMapping(value = "/user/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Users>> getUsersList(HttpServletRequest request){
+    @GetMapping(value = "/user", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Users>> getUsersList(HttpServletRequest request,
+                                                    @RequestParam(value ="count", defaultValue = "10") String count,
+                                                    @RequestParam(value ="state", defaultValue = "1") String state,
+                                                    @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Users> users = usersService.findAllUsersExceptSuperAdminAndEnterpriseId(enterprise.getId());
+            Page<Users> users = usersService.findAllUsersByState(Integer.parseInt(page) - 1, Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (users.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     @GetMapping(value = "/user/exist", produces = ACCECPT_TYPE)

@@ -1,81 +1,16 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuilder',function ($http, $scope,UserService, DTOptionsBuilder  ) {
-    $scope.users = [];
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage= 1000;
-    $scope.state = 1;
+app.controller("userController", ['ReadService', '$resource','$http','$scope', 'UserService','DTOptionsBuilder',function (ReadService, $resource,$http, $scope,UserService, DTOptionsBuilder  ) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api: $resource("/api/user")
+    };
     $scope.usernameExist = false;
     $scope.message ='';
     $scope.username ='';
     $scope.suggestedUsername =[];
-
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
-                    }
-                }
-            }
-        )
-        .withOption("destroy", true)
-        .withOption('responsive', true)
-        .withOption('scrollX', '100%')
-        .withOption('deferRender', true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                    type: 'number'
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                }
-            ]
-        });
-
-
 
     $scope.isRole = function (roles, role){
         if (!roles || roles.length <= 0)
@@ -94,40 +29,27 @@ app.controller("userController", ['$http','$scope', 'UserService','DTOptionsBuil
         }
     };
 
-    fetchAllUser();
-
-    $scope.getData = function () {
-        console.log("Get Data")
-        fetchAllUserFiltered($scope.pageno,$scope.itemsPerPage,$scope.state);
-    };
-
-    function fetchAllUser() {
-        UserService.fetchAllUsers()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.users = [];
-                    else
-                        $scope.users = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllUserFiltered(pageno, itemsPerPage, state) {
-        UserService.fetchAllUsersFiltered(pageno, itemsPerPage, state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.users = [];
-                    else
-                        $scope.users = d.content;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
+    $scope.global.tableParams = ReadService.fetchData($scope.global.api);
+        // $scope.global.tableParams = new NgTableParams({
+    //     count: 5,
+    //     sorting: { id: "asc" }
+    // }, {
+    //     counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+    //     paginationMaxBlocks: 5,
+    //     paginationMinBlocks: 2,
+    //     getData: function (params) {
+    //         return $scope.global.api.get(params.url()).$promise.then(function (data) {
+    //                 if (data && data.content !== undefined){
+    //                     params.total(data.totalElements);
+    //                     return data.content;
+    //                 }
+    //                 return  [];
+    //             },
+    //             function (errorResponse) {
+    //                 console.error(errorResponse);
+    //             });
+    //     }
+    // });
 
     function fetchUser(username) {
         UserService.fetchUser(username)

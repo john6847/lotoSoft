@@ -183,16 +183,20 @@ public class GlobalRestController {
      * @return combinationTypes
      */
 
-    @GetMapping(value = "/combinationType/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<CombinationType>> getCombinationTypeList(HttpServletRequest request){
+    @GetMapping(value = "/combinationType", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<CombinationType>> getCombinationTypeList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<CombinationType> combinationTypes = combinationTypeService.findallByEnterpriseId(enterprise.getId());
+            Page<CombinationType> combinationTypes = combinationTypeService.findAllCombinationByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (combinationTypes.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(combinationTypes, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     /**
@@ -257,7 +261,7 @@ public class GlobalRestController {
 
     /**
      * Get All combination filtered
-     * @return sellers
+     * @return combinations
      */
     @GetMapping(value = "/combination/find", produces = ACCECPT_TYPE)
     public ResponseEntity<ArrayList<Combination>> findCombinationByPage(
@@ -338,16 +342,19 @@ public class GlobalRestController {
      * Get All Seller
      * @return sellers
      */
-    @GetMapping(value = "/seller/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Seller>> getSellerList(HttpServletRequest request){
+    @GetMapping(value = "/seller", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Seller>> getSellerList(HttpServletRequest request,
+                                                      @RequestParam(value ="count", defaultValue = "10") String count,
+                                                      @RequestParam(value ="state", defaultValue = "1") String state,
+                                                      @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Seller> sellers = sellerService.findAllSellersByEnterpriseId(enterprise.getId());// TODO
+            Page<Seller> sellers = sellerService.findAllSellerByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());// TODO
             if (sellers.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(sellers, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     /**
@@ -531,7 +538,6 @@ public class GlobalRestController {
             return new ResponseEntity<>(products, HttpStatus.OK);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-
     }
 
     /**
@@ -563,7 +569,6 @@ public class GlobalRestController {
      * Get All Enterprise
      * @return enterpriseList
      */
-
     @GetMapping(value = "/enterprises/", produces = ACCECPT_TYPE)
     public ResponseEntity<List<Enterprise>> getEnterpriseList(){
         List<Enterprise> enterprises = enterpriseService.findAllEnterprise();

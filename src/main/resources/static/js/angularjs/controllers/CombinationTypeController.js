@@ -1,80 +1,31 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("combinationTypeController", ['$http', 'Constants','CombinationTypeService','$scope',function ($http, Constants, CombinationTypeService, $scope) {
-    $scope.combinationTypes = [];
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage= 10;
-    $scope.state = 1;
-    $scope.products = [];
+app.controller("combinationTypeController", ['NgTableParams', '$resource', '$http', 'Constants','CombinationTypeService','$scope',function (NgTableParams, $resource, $http, Constants, CombinationTypeService, $scope) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api:  $resource("/api/combinationType")
+    };
     $scope.constant = Constants.Products;
 
-    $scope.getData = function (pageno) {
-        $scope.combinationTypes=[];
-
-        $scope.start= pageno*$scope.itemsPerPage-$scope.itemsPerPage;
-
-        fetchAllCombinationTypesSize($scope.state);
-
-        fetchAllCombinationTypesFiltered(pageno,$scope.itemsPerPage,$scope.state);
-    };
-    fetchAllCombinationTypes();
-
-    function fetchAllCombinationTypes() {
-        CombinationTypeService.fetchAllCombinationTypes()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.combinationTypes = [];
-                    else
-                        $scope.combinationTypes = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllCombinationTypesFiltered(pageno,itemsPerPage,state) {
-        CombinationTypeService.fetchAllCombinationTypesFiltered(pageno,itemsPerPage,state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.combinationTypes = [];
-                    else
-                       $scope.combinationTypes = d.content;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllCombinationTypesSize(state) {
-        CombinationTypeService.fetchAllCombinationTypesSize(state)
-            .then(
-                function (d) {
-                    if (d=== 0 || d === null || d === undefined)
-                        $scope.totalCount = 0;
-                    else
-                        $scope.totalCount = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllProducts() {
-        CombinationTypeService.fetchAllProducts()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.products = [];
-                    else
-                        $scope.products = d;
-
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
+    $scope.global.tableParams = new NgTableParams({
+        sorting: { id: "asc" }
+    }, {
+        counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+        paginationMaxBlocks: 5,
+        paginationMinBlocks: 2,
+        getData: function (params) {
+            return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                if (data && data.content !== undefined){
+                    params.total(data.totalElements);
+                    return data.content;
+                }
+                return  [];
+            },
+            function (errorResponse) {
+                console.error(errorResponse);
+            });
+        }
+    });
 }]);

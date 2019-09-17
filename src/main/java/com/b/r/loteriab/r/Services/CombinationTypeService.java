@@ -143,6 +143,14 @@ public class CombinationTypeService {
         return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
+    public Page<CombinationType> findAllCombinationByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
+        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
+        if(state != null){
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+        }
+        return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+    }
+
     public void initCombinationTypeForEnterprise (String enterpriseName, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra){
         initServices.createCombinationType(enterpriseService.findEnterpriseByName(enterpriseName), bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
     }

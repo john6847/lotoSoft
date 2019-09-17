@@ -50,34 +50,24 @@
                     <div class="table-responsive">
                       <table ng-table="global.tableParams"
                              class="table table-striped table-bordered table-striped table-condensed table-hover">
-                                <tr ng-repeat="group in $data track by group.id">
-                                    <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{group.description}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Responsab'">{{group.parentSeller.user.name}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Adrès'">{{group.address.address}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
-                                    <td data-title="'Actif'" style="text-align: center; vertical-align: middle;"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
-                                    <td style="vertical-align: middle;text-align: center;" data-title="''">
-                                        <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}">
-                                            <i class="fa fa-trash-o"></i> Elimine
-                                        </a>
-                                    </td>
-                                    <td style="vertical-align: middle;text-align: center;" data-title="''">
-                                        <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}">
-                                            <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            <tfoot>
-                                <tr>
-                                    <th style="width:5%">#</th>
-                                    <th style="width:15%">Deskripsyon</th>
-                                    <th style="width:15%">Responsab</th>
-                                    <th style="width:25%">Adrès</th>
-                                    <th style="width:10% text-align: center">Dat Kreyasyon</th>
-                                    <th style="width:10% text-align: center">Actif</th>
-                                </tr>
-                            </tfoot>
+                            <tr ng-repeat="group in $data track by group.id">
+                                <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
+                                <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{group.description}}</td>
+                                <td style="vertical-align: middle;" data-title="'Responsab'">{{group.parentSeller.user.name}}</td>
+                                <td style="vertical-align: middle;" data-title="'Adrès'">{{group.address.address}}</td>
+                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
+                                <td data-title="'Actif'" style="text-align: center; vertical-align: middle;"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
+                                <td style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
+                                    <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}">
+                                        <i class="fa fa-trash-o"></i> Elimine
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
+                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}">
+                                        <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
+                                    </a>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

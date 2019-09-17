@@ -5,7 +5,7 @@ app.controller("posController", ['NgTableParams', '$resource', 'PosService', '$s
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
-        Api: $resource("/api/pos")
+        api: $resource("/api/pos")
     };
 
     $scope.global.tableParams = new NgTableParams({
@@ -16,13 +16,12 @@ app.controller("posController", ['NgTableParams', '$resource', 'PosService', '$s
         paginationMaxBlocks: 5,
         paginationMinBlocks: 2,
         getData: function (params) {
-            return $scope.global.Api.get(params.url()).$promise.then(function (data) {
-                params.total(data.content.length);
-                if (data.content === null || data.content === undefined)
-                    return  [];
-                else{
+            return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                if (data && data.content !== undefined){
+                    params.total(data.totalElements);
                     return data.content;
                 }
+                return  [];
             },
             function (errorResponse) {
                 console.error(errorResponse);

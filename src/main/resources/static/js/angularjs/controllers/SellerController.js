@@ -1,17 +1,17 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("sellerController", ['$http', 'SellerService','UserService','$scope','DTOptionsBuilder','Constants',function ($http, SellerService,UserService, $scope,DTOptionsBuilder,Constants) {
-    $scope.sellers = [];
-
+app.controller("sellerController", ['NgTableParams', '$resource', '$http', 'SellerService','UserService','$scope','Constants',function (NgTableParams, $resource, $http, SellerService,UserService, $scope, Constants) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api:  $resource("/api/seller")
+    };
     $scope.haveUser = false;
     $scope.haveGroup = false;
     $scope.isParentSeller = false;
-    $scope.useMonthlyPayment =false;
-    $scope.pageno = 1;
+    $scope.useMonthlyPayment = false;
     $scope.paymentType = Constants.PaymentType;
-    $scope.itemsPerPage = 1000;
-    $scope.state = 1;
 
     $scope.username = {
         sellerUsername :'',
@@ -19,66 +19,27 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
         suggestedUsername: []
     };
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
-                    }
+    $scope.global.tableParams = new NgTableParams({
+        count: 5,
+        sorting: { id: "asc" }
+    }, {
+        counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+        paginationMaxBlocks: 5,
+        paginationMinBlocks: 2,
+        getData: function (params) {
+            return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                if (data && data.content !== undefined){
+                    params.total(data.totalElements);
+                    return data.content;
                 }
-            }
-        )
-        .withOption("destroy", true)
-        .withOption('responsive', true)
-        .withOption('scrollX', '100%')
-        .withOption('deferRender', true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                    type: 'number'
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'number',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                }
+                return  [];
+            },
+            function (errorResponse) {
+                console.error(errorResponse);
+            });
+        }
+    });
 
-                ]
-        });
-
-    fetchAllSellers();
 
     $scope.usernameChange = function (){
         $scope.username.suggestedUsername =[];
@@ -86,42 +47,6 @@ app.controller("sellerController", ['$http', 'SellerService','UserService','$sco
             fetchUser($scope.username.sellerUsername);
         }
     };
-
-    $scope.getData = function () {
-        $scope.start= $scope.pageno *$scope.itemsPerPage-$scope.itemsPerPage;
-
-        fetchAllSellerFiltered($scope.pageno,$scope.itemsPerPage,$scope.state);
-    };
-
-    function fetchAllSellers() {
-        SellerService.fetchAllSellers()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.sellers = [];
-                    else
-                        $scope.sellers = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-
-    }
-
-    function fetchAllSellerFiltered(pageno,itemsPerPage,state) {
-        SellerService.fetchAllSellersFiltered(pageno,itemsPerPage,state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.sellers = [];
-                    else
-                        $scope.sellers = d.content;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
 
     function fetchUser(username) {
         UserService.fetchUser(username)

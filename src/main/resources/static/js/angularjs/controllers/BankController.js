@@ -19,12 +19,11 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http', 'BankS
         paginationMinBlocks: 2,
         getData: function (params) {
             return $scope.global.api.get(params.url()).$promise.then(function (data) {
-                params.total(data.totalElements);
-                if (data.content === null || data.content === undefined)
-                    return  [];
-                else{
-                    return  createAddress(data.content);
+                if (data && data.content !== undefined) {
+                    params.total(data.totalElements);
+                    return createAddress(data.content);
                 }
+                return  [];
             },
             function (errorResponse) {
                 console.error(errorResponse);

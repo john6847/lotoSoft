@@ -13,6 +13,7 @@ import com.b.r.loteriab.r.Validation.NumberHelper;
 import com.b.r.loteriab.r.Validation.Result;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -196,6 +197,14 @@ public class DrawService {
         }
 
         return result;
+    }
+
+    public Page<Draw> findAllDrawByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
+        Pageable pageable = PageRequest.of(page - 1 ,itemPerPage);
+        if(state != null){
+            return drawRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(state, enterpriseId, pageable);
+        }
+        return drawRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
     public List<Draw> findAllDraw(int page, int itemPerPage, Boolean state, int day, int month, int year, Long enterpriseId){

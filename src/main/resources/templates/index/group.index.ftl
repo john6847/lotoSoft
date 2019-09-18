@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="groupController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou wè tout Gwoup yo</h3>

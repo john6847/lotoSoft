@@ -1,11 +1,12 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("drawController", ['$http', 'DrawService','$scope','DTOptionsBuilder',function ($http, DrawService, $scope, DTOptionsBuilder) {
-    $scope.draws = [];
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage= 999999;
+app.controller("drawController", ['ReadService','$resource', 'DrawService','$scope',function (ReadService, $resource, DrawService, $scope) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api:  $resource("/api/draw")
+    };
     $scope.selectedMonth = new Date().getMonth()+1;
     $scope.selectedYear = new Date().getFullYear();
     $scope.months = DrawService.months();
@@ -23,87 +24,12 @@ app.controller("drawController", ['$http', 'DrawService','$scope','DTOptionsBuil
     $scope.year = 0;
     $scope.state = 1;
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
-                    }
-                }
-            }
-        )
-        .withOption("destroy", true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                    type: 'number'
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-            ]
-        });
-    fetchAllDraws();
-    $scope.getData = function () {
-        // $scope.draws=[];
-        // $scope.start= pageno*$scope.itemsPerPage-$scope.itemsPerPage;
-
-        fetchAllDrawsFiltered($scope.pageno,$scope.itemsPerPage,$scope.state,$scope.day,$scope.month,$scope.year);
+    $scope.init = function (reading) {
+        if (reading)
+            $scope.global.tableParams = ReadService.fetchData($scope.global.api);
     };
 
     $scope.replaceString = function(str, newString) {
         return str.replace(/_/g, newString);
     };
-
-    function fetchAllDraws() {
-        DrawService.fetchAllDraws()
-            .then(
-                function (d) {
-                   $scope.draws = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllDrawsFiltered(pageno,itemsPerPage,state, day, month, year) {
-        DrawService.fetchAllDrawsFiltered(pageno,itemsPerPage,state, day, month, year)
-            .then(
-                function (d) {
-                   $scope.draws = d;
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
 }]);

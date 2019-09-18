@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="userController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou wè tout itilizatè yo</h3>
@@ -41,7 +41,7 @@
               </div>
           </#if>
         <div class="row">
-          <div class="col-lg-12" ng-init="getData()">
+          <div class="col-lg-12">
             <section class="panel">
               <header class="panel-heading">
                 Itilizatè

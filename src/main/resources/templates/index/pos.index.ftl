@@ -20,7 +20,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="posController">
-        <section class="wrapper">
+        <section class="wrapper"  ng-init="init(true)">
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade Machin</h3>
@@ -45,14 +45,14 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                            <table ng-table="global.tableParams" show-filter="true"
+                                        <table ng-table="global.tableParams" show-filter="true"
                                                class="table table-striped table-bordered table-striped table-condensed table-hover">
                                             <tr ng-repeat="pos in $data track by pos.id">
-                                                <td style="vertical-align: middle;" filter="{id: 'number'}" data-title="'Id'" sortable="'id'">{{start+$index+1}}</td>
-                                                <td style="vertical-align: middle;" filter="{deskripsyon: 'text'}" data-title="'Deskripsyon'" sortable="'deskripsyon'">{{pos.description}}</td>
-                                                <td style="vertical-align: middle;" filter="{serial: 'text'}" data-title="'Serial'" sortable="'serial'">{{pos.serial}}</td>
-                                                <td style="vertical-align: middle;" filter="{datKreyasyon: 'text'}" data-title="'Dat Kreyasyon'" sortable="'datKreyasyon'">{{pos.modificationDate | date}}</td>
-                                                <td style="vertical-align: middle; text-align: center;" filter="{actif: 'select'}" data-title="'Actif'" filter-data="global.stateFilter" sortable="'actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
+                                                <td style="vertical-align: middle;" data-title="'Id'">{{start+$index+1}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{pos.description}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Serial'">{{pos.serial}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{pos.modificationDate | date}}</td>
+                                                <td style="vertical-align: middle; text-align: center;" data-title="'Actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
                                                     <a class="btn btn-warning btn-xs" href="/pos/update/{{pos.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
@@ -160,3 +160,30 @@
 </body>
 
 </html>
+
+
+<#--<table ng-table="global.tableParams" show-filter="true"-->
+<#--       class="table table-striped table-bordered table-striped table-condensed table-hover">-->
+<#--    <tr ng-repeat="pos in $data track by pos.id">-->
+<#--        <td style="vertical-align: middle;" filter="{id: 'number'}" data-title="'Id'" sortable="'id'">{{start+$index+1}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{deskripsyon: 'text'}" data-title="'Deskripsyon'" sortable="'deskripsyon'">{{pos.description}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{serial: 'text'}" data-title="'Serial'" sortable="'serial'">{{pos.serial}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{datKreyasyon: 'text'}" data-title="'Dat Kreyasyon'" sortable="'datKreyasyon'">{{pos.modificationDate | date}}</td>-->
+<#--        <td style="vertical-align: middle; text-align: center;" filter="{actif: 'select'}" data-title="'Actif'" filter-data="global.stateFilter" sortable="'actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>-->
+<#--        <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">-->
+<#--            <a class="btn btn-warning btn-xs" href="/pos/update/{{pos.id}}">-->
+<#--                <i class="fa fa-edit"></i> Aktyalize-->
+<#--            </a>-->
+<#--        </td>-->
+<#--        <td  style="vertical-align: middle;text-align: center;" data-title="'Elimine'">-->
+<#--            <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/pos/delete/{{pos.id}}">-->
+<#--                <i class="fa fa-trash-o"></i> Elimine-->
+<#--            </a>-->
+<#--        </td>-->
+<#--        <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">-->
+<#--            <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">-->
+<#--                <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{pos.enabled? 'Bloke' : 'Debloke'}}-->
+<#--            </a>-->
+<#--        </td>-->
+<#--    </tr>-->
+<#--</table>-->

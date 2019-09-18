@@ -20,10 +20,10 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="sellerController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12" ng-int="getData()">
-            <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade Vandè</h3>
+            <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade vandè</h3>
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="/home">Paj Akèy</a></li>
               <li><i class="fa fa-eye"></i>Vandè</li>

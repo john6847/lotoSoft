@@ -7,7 +7,7 @@ angular.module('lottery')
         function fetchData(api) {
             return new NgTableParams({
                 count: 5,
-                sorting: { id: "asc" }
+                sorting: { id: "desc" }
             }, {
                 counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
                 paginationMaxBlocks: 5,

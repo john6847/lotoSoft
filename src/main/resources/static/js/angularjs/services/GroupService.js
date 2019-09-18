@@ -5,10 +5,8 @@
 angular.module('lottery')
     .factory('GroupService', ['$http','$q', function ($http, $q) {
     return {
-        fetchAllGroups: fetchAllGroups,
-        fetchAllGroupsFiltered: fetchAllGroupsFiltered,
+        fetchAllGroups: fetchAllGroups
     };
-
 
     function fetchAllGroups() {
         var deferred = $q.defer();
@@ -22,19 +20,5 @@ angular.module('lottery')
                 });
         return deferred.promise;
     }
-
-    function fetchAllGroupsFiltered(pageno,itemsPerPage,state) {
-        var deferred = $q.defer();
-        $http.get("/api/group/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state)
-            .then(
-                function (response) {
-                    deferred.resolve(response.data);
-                }, function (errResponse) {
-                    console.error(errResponse);
-                    deferred.reject(errResponse);
-                });
-        return deferred.promise;
-    }
-
 
 }]);

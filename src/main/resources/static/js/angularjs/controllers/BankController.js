@@ -12,26 +12,34 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http', 'BankS
     $scope.selectedSeller = null;
     $scope.selectedPos = null;
 
-    $scope.global.tableParams = new NgTableParams({
-    }, {
-        counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
-        paginationMaxBlocks: 5,
-        paginationMinBlocks: 2,
-        getData: function (params) {
-            return $scope.global.api.get(params.url()).$promise.then(function (data) {
-                if (data && data.content !== undefined) {
-                    params.total(data.totalElements);
-                    return createAddress(data.content);
+    $scope.init = function (reading) {
+        if (reading){
+            $scope.global.tableParams = new NgTableParams({
+                count: 5,
+                sorting: { id: "desc" }
+            }, {
+                counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+                paginationMaxBlocks: 5,
+                paginationMinBlocks: 2,
+                getData: function (params) {
+                    return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                            if (data && data.content !== undefined) {
+                                params.total(data.totalElements);
+                                return createAddress(data.content);
+                            }
+                            return  [];
+                        },
+                        function (errorResponse) {
+                            console.error(errorResponse);
+                        });
+
                 }
-                return  [];
-            },
-            function (errorResponse) {
-                console.error(errorResponse);
+
             });
+        }
+    };
 
-            }
 
-    });
 
     $scope.sellerChange = function (updating){
         if ($scope.selectedSeller){

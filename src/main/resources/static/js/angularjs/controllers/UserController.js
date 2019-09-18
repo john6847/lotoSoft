@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("userController", ['ReadService', '$resource','$http','$scope', 'UserService','DTOptionsBuilder',function (ReadService, $resource,$http, $scope,UserService, DTOptionsBuilder  ) {
+app.controller("userController", ['ReadService','$scope', 'UserService',function (ReadService, $scope,UserService) {
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
@@ -22,34 +22,17 @@ app.controller("userController", ['ReadService', '$resource','$http','$scope', '
         return result!=null;
     };
 
+    $scope.init = function (reading) {
+        if (reading)
+            $scope.global.tableParams = ReadService.fetchData($scope.global.api);
+    };
+
     $scope.usernameChange = function (){
         $scope.suggestedUsername =[];
         if ($scope.username !== ''){
             fetchUser($scope.username);
         }
     };
-
-    $scope.global.tableParams = ReadService.fetchData($scope.global.api);
-        // $scope.global.tableParams = new NgTableParams({
-    //     count: 5,
-    //     sorting: { id: "asc" }
-    // }, {
-    //     counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
-    //     paginationMaxBlocks: 5,
-    //     paginationMinBlocks: 2,
-    //     getData: function (params) {
-    //         return $scope.global.api.get(params.url()).$promise.then(function (data) {
-    //                 if (data && data.content !== undefined){
-    //                     params.total(data.totalElements);
-    //                     return data.content;
-    //                 }
-    //                 return  [];
-    //             },
-    //             function (errorResponse) {
-    //                 console.error(errorResponse);
-    //             });
-    //     }
-    // });
 
     function fetchUser(username) {
         UserService.fetchUser(username)

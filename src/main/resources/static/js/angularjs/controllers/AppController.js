@@ -7,6 +7,7 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
         combinationsLimited: [],
         users: [],
         topSoldCombinations: [],
+        blockedCombinations: [],
         constant: Constants.Products
     };
 
@@ -45,6 +46,8 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
                         $scope.$apply($scope.global.topSoldCombinations);
                     });
             }
+
+            // therrrrrrrrrrrrreeeeeeeeeeeeeeee get the push notif from the server for blocked combination
         });
 
     function fetchEnterprise() {
@@ -54,6 +57,7 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
                     $scope.enterpriseId = d;
                     fetchAllUsersLogged();
                     fetchAllTop3SoldCombination();
+                    fetchAllBlockedCombination();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -77,6 +81,17 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
             .then(
                 function (d) {
                     $scope.global.topSoldCombinations = groupArrayByCombinationType(d);
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+    }
+
+    function fetchAllBlockedCombination() {
+        CombinationService.fetchAllBlockedCombination()
+            .then(
+                function (d) {
+                    $scope.global.blockedCombinations = d;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

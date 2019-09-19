@@ -101,6 +101,25 @@ public class GlobalRestController {
     }
 
     /**
+     * Get All Blocked Combination
+     * @return combinations
+     */
+
+    @GetMapping(value = "/combination/blocked", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Combination>> getBlockedCombinationList(
+            HttpServletRequest request
+    ){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<Combination> combinations = combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId());
+            if (combinations.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(combinations, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+    }
+
+    /**
      * Get All Groups
      * @return Groups
      */

@@ -3,6 +3,7 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Repository.AddressRepository;
+import com.b.r.loteriab.r.Repository.GroupsRepository;
 import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.GroupsService;
 import com.b.r.loteriab.r.Services.SellerService;
@@ -26,6 +27,8 @@ public class GroupController {
     @Autowired
     private GroupsService groupService;
 
+    @Autowired
+    private GroupsRepository groupsRepository;
     @Autowired
     private UsersService usersService;
 
@@ -111,7 +114,7 @@ public class GroupController {
                 redirectAttributes.addFlashAttribute("error", "Group sa pa egziste, antre on lot");
                 return "redirect:/group";
             }
-            Result result = groupService.deleteGroupsById(id, enterprise.getId());
+
             List<Seller> sellers = sellerService.findAllSellerByGroupsId(id, enterprise.getId());
 
             for (Seller seller : sellers) {
@@ -130,8 +133,10 @@ public class GroupController {
             }
             groups.setAddress(null);
             groups.setParentSeller(null);
-            addressRepository.deleteById(id);
+            groupsRepository.save(groups);
+            addressRepository.deleteById(addressId);
 
+            Result result = groupService.deleteGroupsById(id, enterprise.getId());
             if (!result.isValid()) {
                 model.addAttribute("error", result.getLista().get(0).getMessage());
             }

@@ -58,15 +58,22 @@
                                 <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
                                 <td data-title="'Actif'" style="text-align: center; vertical-align: middle;"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
                                 <td style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
-                                    <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}">
+                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/group/delete/{{group.id}}">
                                         <i class="fa fa-trash-o"></i> Elimine
                                     </a>
                                 </td>
                                 <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
-                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}">
+                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/group/{{group.id}}">
                                         <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
                                     </a>
                                 </td>
+
+                              therrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeeeeee Make block and delete button confirmation work
+
+
+
+
+
                             </tr>
                         </table>
                     </div>

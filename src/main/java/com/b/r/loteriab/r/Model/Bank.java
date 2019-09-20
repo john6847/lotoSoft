@@ -24,7 +24,7 @@ public class Bank implements Serializable {
     @JoinColumn(name = "enterprise_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Enterprise enterprise;
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address address;

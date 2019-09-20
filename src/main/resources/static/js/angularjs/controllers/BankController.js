@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['NgTableParams', '$resource',  '$http', 'BankService','PosService', '$scope', function (NgTableParams, $resource ,$http,  BankService, PosService, $scope) {
+app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosService', '$scope', function (NgTableParams, $resource ,$http, PosService, $scope) {
     $scope.pos = [];
     $scope.global={
         tableParams: null,

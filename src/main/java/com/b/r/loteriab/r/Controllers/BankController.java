@@ -5,6 +5,8 @@ import com.b.r.loteriab.r.Model.Bank;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Repository.AddressRepository;
+import com.b.r.loteriab.r.Repository.BankRepository;
 import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
@@ -24,6 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 public class BankController {
     @Autowired
     private BankService bankService;
+
+    @Autowired
+    private BankRepository bankRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private UsersService usersService;
@@ -168,6 +176,19 @@ public class BankController {
                 model.addAttribute("error", "Bank sa pa agziste, antre on lot");
                 return "404";
             }
+            Bank bank = bankService.findBankById(id, enterprise.getId());
+
+            bank.setSeller(null);
+            bank.setPos(null);
+            long addressId = 0L;
+            if (bank.getAddress()!=null){
+             addressId = bank.getAddress().getId();
+            }
+            bank.setAddress(null);
+//            bank.setEnterprise(null);
+            bankRepository.save(bank);
+            addressRepository.deleteById(addressId);
+
             Result result = bankService.deleteBankById(id, enterprise.getId());
 
             if (!result.isValid()) {

@@ -106,4 +106,34 @@ public class GroupsService {
         return groupRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
+    public Address createAddres( String country, String city, String sector,String phone){
+        Address address = null;
+        if (!country.isEmpty()){
+            address = new Address();
+            address.setCountry(country);
+        }
+        if (!city.isEmpty()){
+            if (address == null) {
+                address = new Address();
+            }
+            address.setCity(city);
+        }
+        if (!sector.isEmpty()){
+            if (address == null) {
+                address = new Address();
+            }
+            address.setSector(sector);
+        }
+
+        if (!phone.isEmpty()){
+            if (address == null) {
+                address = new Address();
+            }
+            address.setPhone(phone);
+        }
+
+        return address;
+    }
+
+
 }

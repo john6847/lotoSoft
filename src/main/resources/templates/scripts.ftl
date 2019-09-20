@@ -83,7 +83,7 @@
 <script src="/js/angularjs/services/ConfigurationService.js"></script>
 <script src="/js/angularjs/services/EnterpriseService.js"></script>
 <script src="/js/angularjs/services/GroupService.js"></script>
-<script src="/js/angularjs/services/BankService.js"></script>
+<#--<script src="/js/angularjs/services/BankService.js"></script>-->
 <script src="/js/angularjs/services/CombinationService.js"></script>
 <script src="/js/angularjs/services/ReportService.js"></script>
 <script src="/js/angularjs/services/ReadService.js"></script>

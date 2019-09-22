@@ -161,7 +161,7 @@ public class SellerService {
     }
 
     public Page <Seller> findAllSellerByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page,itemPerPage);
+        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
         if(state != null){
             return sellerRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
         }

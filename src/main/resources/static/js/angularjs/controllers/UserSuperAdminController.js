@@ -1,59 +1,17 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTOptionsBuilder',function ($http, $scope,UserService, DTOptionsBuilder  ) {
-    $scope.users = [];
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage= 1000;
-    $scope.state = 1;
+app.controller("userSuperAdminController", ['ReadService','$scope', 'UserService',function (ReadService, $scope,UserService) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api: $resource("/api/user/superAdmin")
+    };
 
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
-                    }
-                }
-            }
-        )
-        .withOption("destroy", true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                    type: 'number'
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                }
-            ]
-        });
-
-
+    $scope.init = function (reading) {
+        if (reading)
+            $scope.global.tableParams = ReadService.fetchData($scope.global.api);
+    };
 
     $scope.isRole = function (roles, role){
         if (!roles || roles.length <= 0)
@@ -65,40 +23,4 @@ app.controller("userSuperAdminController", ['$http','$scope', 'UserService','DTO
         return result!=null;
     };
 
-    fetchAllUsersSuperAdmin();
-
-    $scope.getData = function () {
-        fetchAllUsersFilteredSuperAdmin($scope.pageno,$scope.itemsPerPage,$scope.state);
-    };
-
-        function fetchAllUsersSuperAdmin() {
-            UserService.fetchAllUsersSuperAdmin()
-                .then(
-                    function (d) {
-                        if (d === null || d === undefined)
-                            $scope.users = [];
-                        else
-                            $scope.users = d;
-
-                        console.log(d)
-                    },
-                    function (errorResponse) {
-                        console.error(errorResponse);
-                    })
-        }
-
-        function fetchAllUsersFilteredSuperAdmin(pageno, itemsPerPage, state) {
-            UserService.fetchAllUsersFilteredSuperAdmin(pageno, itemsPerPage, state)
-                .then(
-                    function (d) {
-                        if (d === null || d === undefined)
-                            $scope.users = [];
-                        else
-                            $scope.users = d.content;
-                        console.log(d)
-                    },
-                    function (errorResponse) {
-                        console.error(errorResponse);
-                    })
-        }
 }]);

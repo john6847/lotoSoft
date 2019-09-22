@@ -22,8 +22,8 @@
     <!--sidebar end-->
 
     <!--main content start-->
-    <section id="main-content" ng-controller="combinationTypeController" ng-init="change()">
-      <section class="wrapper">
+    <section id="main-content" ng-controller="combinationTypeController">
+      <section class="wrapper" ng-init="init(false)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-file-text-o"></i>Fòm Pou Kreye Tip Konbinezon</h3>

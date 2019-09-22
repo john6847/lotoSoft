@@ -20,10 +20,10 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="sellerController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12" ng-int="getData()">
-            <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade Vandè</h3>
+            <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade vandè</h3>
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="/home">Paj Akèy</a></li>
               <li><i class="fa fa-eye"></i>Vandè</li>
@@ -38,106 +38,47 @@
           </div>
         </#if>
         <div class="row">
-          <div class="col-lg-12" ng-init="getData()">
+          <div class="col-lg-12">
             <section class="panel">
-              <header class="panel-heading">
-                <div class="row">
-                  <div class="col-lg-4">
-                      Vandè
-                  </div>
-                  <div class="col-lg-8" >
-                    <div class="row text-right">
-                      <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                          <div class="col-lg-6 col-md-6 col-sm-6"></div>
-                          <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="form-group" style="margin: 10px">
-                              <select class="form-control m-bot15 selectpicker"
-                                      data-live-search="true"
-                                      data-size="5"
-                                      ng-model="state"
-                                      ng-change="getData()"
-                                      name="state"
-                                      id="state"
-                                      autofocus>
-                                <option value="0">Bloke</option>
-                                <option value="1" selected>Tout</option>
-                                <option value='2'>Actif</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </header>
+              <header class="panel-heading">Vandè</header>
               <div class="panel-body">
                 <div class="row">
-                  <#--style="overflow-y:scroll; height:150px;"-->
                   <div class="col-md-12">
                     <div class="table-responsive">
-                      <table datatable="ng" dt-options="dtOptions"
-                             class="table table-striped table-advance table-hover">
-                        <thead>
-                        <tr>
-                          <th style="width:5%">#</th>
-                          <th style="width:15%">Itilizatè</th>
-                          <th style="width:10%">Gwoup</th>
-                          <th style="width:10%">Machin</th>
-                          <th style="width:10%;" class="text-right">Pousantaj(%)</th>
-                          <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
-                          <th style="width:15%">Tip pèman</th>
-                          <th style="width:5%; text-align: center">Aktif</th>
-                          <th style="width:5%"></th>
-                          <th style="width:5%"></th>
-                          <th style="width:5%"></th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="seller in sellers">
-                          <td>{{start+$index+1}}</td>
-                          <td>{{seller.user.username}}</td>
-                          <td><span ng-if="seller.groups === null || seller.groups === undefined">N/A</span>{{seller.groups.description}}</td>
-                          <td>{{seller.pos.description}}</td>
-                          <td class="text-right"><span ng-if="seller.percentageCharged">{{seller.percentageCharged | number: 2}}</span> <span ng-if="!seller.percentageCharged">N/A</span></td>
-                          <td class="text-right"><span ng-if="seller.amountCharged">{{seller.amountCharged | number: 2}}</span> <span ng-if="!seller.amountCharged">N/A</span></td>
-                          <td>{{paymentType[seller.paymentType].Name}}</td>
-                          <td style="text-align: center">
+                      <table ng-table="global.tableParams"
+                               class="table table-striped table-bordered table-striped table-condensed table-hover">
+                        <tr ng-repeat="seller in $data track by seller.id">
+                          <td style="vertical-align: middle" data-title="'#'">{{start+$index+1}}</td>
+                          <td style="vertical-align: middle" data-title="'Itilizatè'">{{seller.user.username}}</td>
+                          <td style="vertical-align: middle" data-title="'Gwoup'"><span ng-if="seller.groups === null || seller.groups === undefined">N/A</span>{{seller.groups.description}}</td>
+                          <td style="vertical-align: middle" data-title="'Machin'">{{seller.pos.description}}</td>
+                          <td style="vertical-align: middle" data-title="'Pousantaj(%)'" class="text-right">
+                            <span ng-if="seller.percentageCharged">{{seller.percentageCharged | number: 2}}</span>
+                            <span ng-if="!seller.percentageCharged">N/A</span>
+                          </td>
+                          <td style="vertical-align: middle" data-title="'Kantite Lajan(HTG)'" class="text-right"><span ng-if="seller.amountCharged">{{seller.amountCharged | number: 2}}</span> <span ng-if="!seller.amountCharged">N/A</span></td>
+                          <td style="vertical-align: middle" data-title="'Tip pèman'">{{paymentType[seller.paymentType].Name}}</td>
+                          <td data-title="'Aktif'" style="text-align: center; vertical-align: middle">
                             <i class="fa fa-{{seller.enabled? 'check' : 'times' }}" style="color: {{seller.enabled? 'green' : 'red'}} ;"></i>
                             <p style="display: none">{{seller.enabled? 'Wi' : 'Non' }}</p>
                           </td>
 
-                          <td>
+                          <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
                             <a class="btn btn-warning btn-xs" href="/seller/update/{{seller.id}}">
                               <i class="fa fa-edit"></i> Aktyalize
                             </a>
                           </td>
-                          <td>
+                          <td style="vertical-align: middle; text-align: center;" data-title="'Elimine'">
                             <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/seller/delete/{{seller.id}}">
                               <i class="fa fa-trash-o"></i> Elimine
                             </a>
                           </td>
-                          <td>
+                          <td style="vertical-align: middle; text-align: center;" data-title="'Bloke/Debloke'">
                             <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/seller/{{seller.id}}">
                               <i class="fa fa-{{seller.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{seller.enabled? 'Bloke' : 'Debloke'}}
                             </a>
                           </td>
                         </tr>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <th style="width:5%">#</th>
-                            <th style="width:15%">Itilizatè</th>
-                            <th style="width:10%">Gwoup</th>
-                            <th style="width:10%">Machin</th>
-                            <th style="width:10%;" class="text-right">Pousantaj(%)</th>
-                            <th style="width:15%" class="text-right">Kantite Lajan(HTG)</th>
-                            <th style="width:15%">Tip pèman</th>
-                            <th style="width:5%; text-align: center">Aktif</th>
-                          </tr>
-                        </tfoot>
                       </table>
                     </div>
                   </div>

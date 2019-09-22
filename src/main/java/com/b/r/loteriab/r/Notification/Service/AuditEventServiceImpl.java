@@ -49,6 +49,7 @@ public class AuditEventServiceImpl implements AuditEventService {
 
         if (last != null && last.getType() > 0 && (last.getType() == NotificationType.PosBlocked.ordinal()
                 || last.getType() == NotificationType.CombinationPriceLimit.ordinal()
+                || last.getType() == NotificationType.CombinationBlocked.ordinal()
                 || last.getType() == NotificationType.TopSoldCombination.ordinal()
                 || last.getType() == NotificationType.UserConnected.ordinal())) {
             brokerMessagingTemplate.convertAndSend("/topics/" + enterpriseId.toString() + "/" + last.getType() + "/event", JSON.toJSONString(sampleResponse, SerializerFeature.BrowserCompatible));

@@ -1,104 +1,56 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("groupController", ['$http','$scope', 'GroupService','DTOptionsBuilder',function ($http, $scope,GroupService, DTOptionsBuilder  ) {
-    $scope.groups = [];
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage= 1000;
-    $scope.state = 1;
-
-    $scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDisplayLength(5)
-        .withBootstrapOptions(
-            {
-                pagination:{
-                    classes:{
-                        ul: 'pagination pagination-sm'
-                    }
-                }
-            }
-        )
-        .withOption("destroy", true)
-        .withColumnFilter({
-            aoColumns: [
-                {
-                    type: 'number'
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },{
-                    type: 'text',
-                    bRegex: true,
-                    bSmart: true
-                },
-                {
-                    type: 'select',
-                    bRegex: false,
-                    values: ['Wi','Non']
-                },
-            ]
-        });
-
-    fetchAllGroup();
-
-    $scope.getData = function () {
-        fetchAllGroupFiltered($scope.pageno,$scope.itemsPerPage,$scope.state);
+app.controller("groupController", ['NgTableParams', '$resource','$scope', 'GroupService', function (NgTableParams, $resource, $scope) {
+    $scope.global = {
+        tableParams: null,
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api:  $resource("/api/group")
     };
 
-    function fetchAllGroup() {
-        GroupService.fetchAllGroups().then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.groups = [];
-                    else
-                        $scope.groups = createAddress(d);
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
+    $scope.init = function (reading) {
+        if (reading){
+            $scope.global.tableParams = new NgTableParams({
+                count: 5,
+                sorting: { id: "desc" }
+            }, {
+                counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+                paginationMaxBlocks: 5,
+                paginationMinBlocks: 2,
+                getData: function (params) {
+                    return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                            if (data && data.content !== undefined) {
+                                params.total(data.totalElements);
+                                return createAddress(data.content);
+                            }
+                            return  [];
+                        },
+                        function (errorResponse) {
+                            console.error(errorResponse);
+                        });
+                }
+            });
+        }
+    };
 
-    function fetchAllGroupFiltered(pageno, itemsPerPage, state) {
-        GroupService.fetchAllGroupsFiltered(pageno, itemsPerPage, state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined)
-                        $scope.groups = [];
-                    else
-                        $scope.groups = createAddress(d.content);
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
+
 
     function createAddress(groups) {
-        for (var i=0 ; i< groups.length ; i++){
-            groups[i].address.address = ' ';
-            if (groups[i].address.city){
-                groups[i].address.address += groups[i].address.city +', '
-            }
-            if (groups[i].address.sector){
-                groups[i].address.address += groups[i].address.sector+', '
-            }
-            if (groups[i].address.country){
-                groups[i].address.address += groups[i].address.country +'\n '
-            }
-            if (groups[i].address.phone){
-                groups[i].address.address += groups[i].address.phone+' '
+        if (groups!== null && groups!== undefined){
+            for (var i=0 ; i< groups.length ; i++){
+                groups[i].address.address = ' ';
+                if (groups[i].address.city){
+                    groups[i].address.address += groups[i].address.city +', '
+                }
+                if (groups[i].address.sector){
+                    groups[i].address.address += groups[i].address.sector+', '
+                }
+                if (groups[i].address.country){
+                    groups[i].address.address += groups[i].address.country +'\n '
+                }
+                if (groups[i].address.phone){
+                    groups[i].address.address += groups[i].address.phone+' '
+                }
             }
         }
         return groups;

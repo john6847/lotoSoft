@@ -19,7 +19,7 @@
     <!--sidebar end-->
 
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" ng-init="init(true)">
         <section class="wrapper">
           <div class="row">
             <div class="col-lg-12">
@@ -51,37 +51,20 @@
                   <div class="row">
                     <div class=" col-md-12">
                     <div class="table-responsive">
-                      <table class="table table-striped table-advance table-hover" ng-init="fetchAllCombinationTypes()">
-                        <tbody>
-                          <tr>
-                            <th style="width:5%">#</th>
-                            <th style="width:15%">Konbinezon</th>
-                            <th style="width:15%">Pri Peman</th>
-                            <th style="width:15%">Dat Kreyasyon</th>
-                            <th style="width:15%">Dat Modifikasyon</th>
-                            <th style="width:5%"></th>
-                          </tr>
-                          <tr dir-paginate="combinationType in combinationTypes|itemsPerPage:itemsPerPage" total-items="totalCount">
-                              <td>{{start+$index+1}}</td>
-                              <td>{{combinationType.products.name}}</td>
-                              <td ng-if="combinationType.products.id === 1">{{combinationType.payedPriceFirstDraw}}, {{combinationType.payedPriceSecondDraw}}, {{combinationType.payedPriceThirdDraw}}</td>
-                              <td ng-if="combinationType.products.id !== 1">{{combinationType.payedPrice}}</td>
-                              <td>{{combinationType.creationDate | date:'dd/MM/yyyy'}}</td>
-                              <td>{{combinationType.modificationDate | date:'dd/MM/yyyy'}}</td>
-                              <td>
+                      <table  ng-table="global.tableParams"
+                              class="table table-striped table-bordered table-striped table-condensed table-hover">
+                          <tr ng-repeat="combinationType in $data track by combinationType.id">
+                              <td style="vertical-align: middle" data-title="'#'">{{$index+1}}</td>
+                              <td style="vertical-align: middle" data-title="'Konbinezon'">{{combinationType.products.name}}</td>
+                              <td style="vertical-align: middle" data-title="'Pri Peman'" ng-if="combinationType.products.id === 1">{{combinationType.payedPriceFirstDraw}}, {{combinationType.payedPriceSecondDraw}}, {{combinationType.payedPriceThirdDraw}}</td>
+                              <td style="vertical-align: middle" data-title="'Pri Peman'" ng-if="combinationType.products.id !== 1">{{combinationType.payedPrice}}</td>
+                              <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{combinationType.creationDate | date:'dd/MM/yyyy'}}</td>
+                              <td style="vertical-align: middle" data-title="'Dat Modifikasyon'">{{combinationType.modificationDate | date:'dd/MM/yyyy'}}</td>
+                              <td style="vertical-align: middle; text-align: center" data-title="'Aktyalize'">
                                   <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}"><i class="fa fa-edit"></i> Aktyalize</a>
                               </td>
                           </tr>
-                        </tbody>
                       </table>
-                        <div class="text-center">
-                          <dir-pagination-controls
-                            max-size="10"
-                            direction-links="true"
-                            boundary-links="true"
-                            on-page-change="getData(newPageNumber)">
-                          </dir-pagination-controls>
-                        </div>
                     </div>
                   </div>
                 </div>

@@ -8,9 +8,9 @@
 <#include "../header.ftl">
 </head>
 
-<body ng-app="lottery" ng-cloak>
+<body>
 <!-- container section start -->
-<section id="container" class="" ng-controller="posController">
+<section id="container" class="">
     <!--nav start-->
 <#include "../nav.ftl" >
     <!--header end-->

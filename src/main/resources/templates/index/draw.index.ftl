@@ -21,7 +21,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="drawController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade tiraj</h3>
@@ -42,140 +42,39 @@
           <div class="col-lg-12">
             <section class="panel">
               <header class="panel-heading">
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4">
-                    Tiraj
-                  </div>
-                  <div class="col-lg-8">
-                    <div class="row text-right">
-                      <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                          <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="form-group" style="padding: 10px">
-                              <select class="form-control m-bot15 selectpicker"
-                                  data-live-search="true"
-                                  data-size="5"
-                                  ng-model="state"
-                                  ng-change="getData()"
-                                  name="state"
-                                  id="state"
-                                  autofocus>
-                                <option value="0">Bloke</option>
-                                <option value="1">Tout</option>
-                                <option value="2">Actif</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-6" >
-                            <div class="row">
-                              <div class="col-lg-4 col-md-4 col-sm-4" >
-                                  <div class="form-group" style="padding: 10px">
-                                    <select title="Filtre pa jou"
-                                      class="form-control m-bot15 selectpicker"
-                                      data-live-search="true"
-                                      data-size="5"
-                                      ng-model="day"
-                                      ng-change="getData(1)"
-                                      name="day"
-                                      id="day">
-                                      <option ng-repeat="day in range(days.min, days.max)" value="{{day}}">{{day}}</option>
-                                    </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="form-group" style="padding: 10px">
-                                  <select class="form-control m-bot15 selectpicker"
-                                    data-live-search="true"
-                                    data-size="5"
-                                    ng-model="month"
-                                    ng-change="getData(1)"
-                                    name="month"
-                                    id="month"
-                                    title="Filtre pa mwa" >
-                                    <option ng-repeat="month in months" value="{{month.id}}">{{month.month}}</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-lg-4 col-md-4 col-sm-4">
-                                <div class="form-group" style="padding: 10px">
-                                  <select class="form-control m-bot15 selectpicker"
-                                        data-live-search="true"
-                                        data-size="5"
-                                        ng-model="year"
-                                        ng-change="getData(1)"
-                                        name="year"
-                                        id="year"
-                                        title="Filtre pa ane">
-                                    <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                Tiraj
               </header>
               <div class="panel-body">
                 <div class="row">
                   <div class=" col-md-12">
                   <div class="table-responsive">
-                    <table datatable="ng" dt-options="dtOptions"
-                           class="table table-striped table-advance table-hover">
-                      <thead>
+                    <table ng-table="global.tableParams"
+                           class="table table-striped table-bordered table-striped table-condensed table-hover">
 
-                      <tr>
-                        <th style="width:5%">#</th>
-                        <th style="width:10%">Dat Tiraj</th>
-                        <th style="width:10%">Tip</th>
-                        <th style="width:10%" class="text-center">Loto 3</th>
-                        <th style="width:25%; text-align: center">Bolet</th>
-                        <th style="width:10%">Dat Kreyayson</th>
-                        <th style="width:15%; text-align: center">Actif</th>
-                        <th style="width:5%"></th>
-                        <th style="width:5%"></th>
-
-                      </tr>
-                      </thead>
-                      <tbody>
-                        <tr dir-paginate="draw in draws|itemsPerPage:itemsPerPage" total-items="totalCount">
-                          <td>{{$index+1}}</td>
-                          <td>{{draw.drawDate | date:'dd/MM/yyyy'}}</td>
-                          <td>
+                        <tr ng-repeat="draw in $data track by draw.id">
+                          <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
+                          <td style="vertical-align: middle;" data-title="'Dat Tiraj'">{{draw.drawDate | date:'dd/MM/yyyy'}}</td>
+                          <td style="vertical-align: middle;" data-title="'Tip'">
                             {{draw.shift.name}}
                           </td>
-                          <td class="text-center"><span class="badge bg-primary">{{draw.numberThreeDigits.numberInStringFormat}}</span></td>
-                          <td class="text-center">
+                          <td style="vertical-align: middle;" data-title="'Loto 3'" class="text-center"><span class="badge bg-primary">{{draw.numberThreeDigits.numberInStringFormat}}</span></td>
+                          <td style="vertical-align: middle;" data-title="'Bolet'" class="text-center">
                             <span class="badge bg-warning">{{draw.firstDraw.numberInStringFormat}}</span>
                             <span class="badge bg-success">{{draw.secondDraw.numberInStringFormat}}</span>
                             <span class="badge bg-info">{{draw.thirdDraw.numberInStringFormat}}</span>
                           </td>
-                          <td>{{draw.modificationDate | date:'dd/MM/yyyy'}}</td>
-                          <td style="text-align: center">
+                          <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{draw.modificationDate | date:'dd/MM/yyyy'}}</td>
+                          <td style="vertical-align: middle;text-align: center" data-title="'Aktif'">
                             <i class="fa fa-{{draw.enabled? 'check' : 'times' }}" style="color: {{draw.enabled? 'green' : 'red'}} ;"></i>
                             <p style="display: none">{{draw.enabled? 'Wi' : 'Non' }}</p>
                           </td>
-                          <td>
+                          <td style="vertical-align: middle;text-align: center" data-title="'Aktyalize'">
                               <a class="btn btn-warning btn-xs" href="/draw/update/{{draw.id}}"><i class="fa fa-edit"></i> Aktyalize</a>
                           </td>
-                          <td>
+                          <td style="vertical-align: middle;text-align: center" data-title="'Anile'">
                               <a class="btn btn-danger btn-xs cancel" id="cancel" onclick="onCancel(event)" href="/draw/cancel/{{draw.id}}"><i class="fa fa-trash-o"></i> Anile</a>
                           </td>
                         </tr>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th style="width:5%">#</th>
-                          <th style="width:10%">Dat Tiraj</th>
-                          <th style="width:10%">Tip</th>
-                          <th style="width:10%" class="text-center">Loto 3</th>
-                          <th style="width:25%; text-align: center">Bolet</th>
-                          <th style="width:10%">Dat Kreyayson</th>
-                          <th style="width:15%; text-align: center">Actif</th>
-                        </tr>
-                      </tfoot>
                     </table>
                   </div>
                 </div>
@@ -242,3 +141,82 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+<#--<div class="row">-->
+<#--  <div class="col-lg-8">-->
+<#--    <div class="row text-right">-->
+<#--      <div class="col-lg-12 col-md-12 col-sm-12">-->
+<#--        <div class="row">-->
+<#--          <div class="col-lg-6 col-md-6 col-sm-6">-->
+<#--            <div class="form-group" style="padding: 10px">-->
+<#--              <select class="form-control m-bot15 selectpicker"-->
+<#--                      data-live-search="true"-->
+<#--                      data-size="5"-->
+<#--                      ng-model="state"-->
+<#--                      ng-change="getData()"-->
+<#--                      name="state"-->
+<#--                      id="state"-->
+<#--                      autofocus>-->
+<#--                <option value="0">Bloke</option>-->
+<#--                <option value="1">Tout</option>-->
+<#--                <option value="2">Actif</option>-->
+<#--              </select>-->
+<#--            </div>-->
+<#--          </div>-->
+<#--          <div class="col-lg-6 col-md-6 col-sm-6" >-->
+<#--            <div class="row">-->
+<#--              <div class="col-lg-4 col-md-4 col-sm-4" >-->
+<#--                <div class="form-group" style="padding: 10px">-->
+<#--                  <select title="Filtre pa jou"-->
+<#--                          class="form-control m-bot15 selectpicker"-->
+<#--                          data-live-search="true"-->
+<#--                          data-size="5"-->
+<#--                          ng-model="day"-->
+<#--                          ng-change="getData(1)"-->
+<#--                          name="day"-->
+<#--                          id="day">-->
+<#--                    <option ng-repeat="day in range(days.min, days.max)" value="{{day}}">{{day}}</option>-->
+<#--                  </select>-->
+<#--                </div>-->
+<#--              </div>-->
+<#--              <div class="col-lg-4 col-md-4 col-sm-4">-->
+<#--                <div class="form-group" style="padding: 10px">-->
+<#--                  <select class="form-control m-bot15 selectpicker"-->
+<#--                          data-live-search="true"-->
+<#--                          data-size="5"-->
+<#--                          ng-model="month"-->
+<#--                          ng-change="getData(1)"-->
+<#--                          name="month"-->
+<#--                          id="month"-->
+<#--                          title="Filtre pa mwa" >-->
+<#--                    <option ng-repeat="month in months" value="{{month.id}}">{{month.month}}</option>-->
+<#--                  </select>-->
+<#--                </div>-->
+<#--              </div>-->
+<#--              <div class="col-lg-4 col-md-4 col-sm-4">-->
+<#--                <div class="form-group" style="padding: 10px">-->
+<#--                  <select class="form-control m-bot15 selectpicker"-->
+<#--                          data-live-search="true"-->
+<#--                          data-size="5"-->
+<#--                          ng-model="year"-->
+<#--                          ng-change="getData(1)"-->
+<#--                          name="year"-->
+<#--                          id="year"-->
+<#--                          title="Filtre pa ane">-->
+<#--                    <option ng-repeat="year in years" value="{{year}}">{{year}}</option>-->
+<#--                  </select>-->
+<#--                </div>-->
+<#--              </div>-->
+<#--            </div>-->
+<#--          </div>-->
+<#--        </div>-->
+<#--      </div>-->
+<#--    </div>-->
+<#--  </div>-->
+<#--</div>-->

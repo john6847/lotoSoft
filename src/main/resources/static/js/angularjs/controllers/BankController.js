@@ -1,112 +1,45 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosService', '$scope', 'DTOptionsBuilder', function (NgTableParams ,$http, BankService, PosService, $scope, DTOptionsBuilder) {
-    $scope.banks = [];
+app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosService', '$scope', function (NgTableParams, $resource ,$http, PosService, $scope) {
     $scope.pos = [];
-
     $scope.global={
         tableParams: null,
-        stateFilter: ["Actif", "Bloke"]
+        stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
+        api:  $resource("/api/bank")
     };
     $scope.serial = '';
-    $scope.pageno = 1;
-    $scope.totalCount = 0;
-    $scope.itemsPerPage = 1000;
-    $scope.state = 1;
     $scope.selectedSeller = null;
     $scope.selectedPos = null;
 
-    // $scope.dtOptions = DTOptionsBuilder.newOptions()
-    //     .withDisplayLength(5)
-    //     .withBootstrapOptions(
-    //         {
-    //             pagination:{
-    //                 classes:{
-    //                     ul: 'pagination pagination-sm'
-    //                 }
-    //             }
-    //         }
-    //     )
-    //     .withOption("destroy", true)
-    //     .withOption('responsive', true)
-    //     .withOption('scrollX', '100%')
-    //     .withOption('deferRender', true)
-    //     .withColumnFilter({
-    //         aoColumns: [
-    //             {
-    //             type: 'number'
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'text',
-    //                 bRegex: true,
-    //                 bSmart: true
-    //             },
-    //             {
-    //                 type: 'select',
-    //                 bRegex: false,
-    //                 values: ['Wi','Non']
-    //             }
-    //         ]
-    //     });
+    $scope.init = function (reading) {
+        if (reading){
+            $scope.global.tableParams = new NgTableParams({
+                count: 5,
+                sorting: { id: "desc" }
+            }, {
+                counts: [5, 10, 15, 20, 25, 30, 40, 50, 100],
+                paginationMaxBlocks: 5,
+                paginationMinBlocks: 2,
+                getData: function (params) {
+                    return $scope.global.api.get(params.url()).$promise.then(function (data) {
+                            if (data && data.content !== undefined) {
+                                params.total(data.totalElements);
+                                return createAddress(data.content);
+                            }
+                            return  [];
+                        },
+                        function (errorResponse) {
+                            console.error(errorResponse);
+                        });
 
-    $scope.global.tableParams = new NgTableParams({
-        count: 5,
+                }
 
-    }, {
-        counts: [5, 10, 25, 50, 100],
-        paginationMaxBlocks: 5,
-        paginationMinBlocks: 2,
-        getData: function () {
-            return BankService.fetchAllBank().then(function (d) {
-                    if (d === null || d === undefined) {
-                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
-                        // $scope.banks = [];
-                    } else {
-                        // $scope.banks = createAddress(d.content);
-                    }
-                    return  createAddress(d);
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                });
-
+            });
         }
-    });
-
-
-    // fetchAllBank();
-
-    $scope.getData = function () {
-        $scope.start = $scope.pageno * $scope.itemsPerPage - $scope.itemsPerPage;
-
-        fetchAllBankFiltered($scope.pageno, $scope.itemsPerPage, $scope.state);
     };
+
+
 
     $scope.sellerChange = function (updating){
         if ($scope.selectedSeller){
@@ -122,40 +55,6 @@ app.controller("bankController", ['NgTableParams', '$http', 'BankService','PosSe
                         $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
                     else{
                         $scope.pos = d;
-                    }
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllBank() {
-        BankService.fetchAllBank()
-            .then(
-                function (d) {
-                    if (d === null || d === undefined){
-                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
-                        $scope.banks = [];
-                    }
-                    else{
-                        $scope.banks = createAddress(d);
-                    }
-                },
-                function (errorResponse) {
-                    console.error(errorResponse);
-                })
-    }
-
-    function fetchAllBankFiltered(pageno, itemsPerPage, state) {
-        BankService.fetchAllBankFiltered(pageno, itemsPerPage, state)
-            .then(
-                function (d) {
-                    if (d === null || d === undefined){
-                        $scope.message = 'Ou pa gen akse pou ou reyalize aksyon sa';
-                        $scope.banks = [];
-                    }
-                    else{
-                        $scope.banks = createAddress(d.content);
                     }
                 },
                 function (errorResponse) {

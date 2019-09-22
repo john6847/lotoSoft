@@ -7,6 +7,7 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
         combinationsLimited: [],
         users: [],
         topSoldCombinations: [],
+        blockedCombinations: [],
         constant: Constants.Products
     };
 
@@ -26,25 +27,29 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
                         $scope.global.combinationsLimited = merge($scope.global.combinationsLimited, [] );
                         $scope.$apply($scope.global.combinationsLimited);
                     });
-            }
 
-            if($scope.enterpriseId > 0) {
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 6 + '/event',
                     function (payload, headers, res) {
                         console.log(payload);
                         $scope.global.users = merge($scope.global.users, payload.body.users);
                         $scope.$apply($scope.global.users);
                     });
-            }
 
-            if($scope.enterpriseId > 0) {
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 7 + '/event',
                     function (payload, headers, res) {
                         console.log(payload);
                         $scope.global.topSoldCombinations = groupArrayByCombinationType(payload.body.combinations);
                         $scope.$apply($scope.global.topSoldCombinations);
                     });
+
+                $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 0 + '/event',
+                    function (payload, headers, res) {
+                        $scope.global.blockedCombinations = payload.body.combination;
+                        $scope.$apply($scope.global.blockedCombinations);
+                        console.log($scope.global.blockedCombinations);
+                    });
             }
+
         });
 
     function fetchEnterprise() {
@@ -54,6 +59,7 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
                     $scope.enterpriseId = d;
                     fetchAllUsersLogged();
                     fetchAllTop3SoldCombination();
+                    fetchAllBlockedCombination();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -65,7 +71,6 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
             .then(
                 function (d) {
                     $scope.global.users = d;
-                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -77,6 +82,18 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
             .then(
                 function (d) {
                     $scope.global.topSoldCombinations = groupArrayByCombinationType(d);
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+    }
+
+    function fetchAllBlockedCombination() {
+        CombinationService.fetchAllBlockedCombination()
+            .then(
+                function (d) {
+                    $scope.global.blockedCombinations = d;
+                    console.log($scope.global.blockedCombinations)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

@@ -22,6 +22,7 @@
 <script type="text/javascript" src="/dist/jquery.dataTables.js"></script>
 <script type="text/javascript" src="/js/angular.js"></script>
 <script type="text/javascript" src="/js/ng-stomp/dist/ng-stomp.standalone.min.js"></script>
+<script src="/dist/js/ng-table.min.js"></script>
 
 <script src="/js/jquery.hotkeys.js"></script>
 <script src="/js/bootstrap-wysiwyg.js"></script>
@@ -82,9 +83,10 @@
 <script src="/js/angularjs/services/ConfigurationService.js"></script>
 <script src="/js/angularjs/services/EnterpriseService.js"></script>
 <script src="/js/angularjs/services/GroupService.js"></script>
-<script src="/js/angularjs/services/BankService.js"></script>
+<#--<script src="/js/angularjs/services/BankService.js"></script>-->
 <script src="/js/angularjs/services/CombinationService.js"></script>
 <script src="/js/angularjs/services/ReportService.js"></script>
+<script src="/js/angularjs/services/ReadService.js"></script>
 <script src="/js/angularjs/controllers/DrawController.js"></script>
 <script src="/js/angularjs/controllers/CombinationTypeController.js"></script>
 <script src="/js/angularjs/controllers/PosController.js"></script>
@@ -99,4 +101,3 @@
 <script src="/js/angularjs/controllers/AppController.js"></script>
 
 
-<script src="/dist/js/ng-table.min.js"></script>

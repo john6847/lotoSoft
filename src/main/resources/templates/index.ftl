@@ -78,9 +78,30 @@
                   </#if>
                 </#list>
               </#if>
+            <#if user??>
+              <#list user.roles as rol>
+                <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
+                  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <section class="panel info-box" style="overflow-y: auto; max-height: 100px" data-placement="top" data-toggle="tooltip" data-original-title="Konbinezon ki bloke yo">
+                      <p style="color: darkblue; font-weight: bold; font-size: 16px">Konbinezon ki bloke yo</p>
+                      <div >
+                        <p ng-if="global.blockedCombinations.length <= 0" style="font-family: 'Lato, sans-serif'; color: red">Pa gen konbinezn ki bloke kounya</p>
 
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            </div>
+                        <span ng-repeat="combination in global.blockedCombinations track by $index">
+                          <span ng-if="combination.combinationType.products.id === 1" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}} <span style="margin-left: 10px;" class="label label-danger"> Bolet</span></span>
+                          <span ng-if="combination.combinationType.products.id === 2" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}}<span style="margin-left: 10px;" class="label label-success"> Loto 3 chif</span></span>
+                          <span ng-if="combination.combinationType.products.id === 3" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}} <span style="margin-left: 10px;" class="label label-default"> Loto 4 chif</span></span>
+                          <span ng-if="combination.combinationType.products.id === 4" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}}<span style="margin-left: 10px;" class="label label-default"> Opsyon</span></span>
+                          <span ng-if="combination.combinationType.products.id === 5" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}}<span style="margin-left: 10px;" class="label label-warning"> Maryaj</span></span>
+                          <span ng-if="combination.combinationType.products.id === 6" class="label label-info" style="font-size: 1em;vertical-align: middle">{{combination.resultCombination}}<span style="margin-left: 10px;" class="label label-primary"> Extra</span></span>
+                        </span>
+
+                      </div>
+                    </section>
+                  </div>
+                </#if>
+              </#list>
+            </#if>
               <!--/.info-box-->
           </div>
             <!--/.col-->

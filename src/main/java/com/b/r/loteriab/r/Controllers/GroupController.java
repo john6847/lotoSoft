@@ -2,6 +2,8 @@ package com.b.r.loteriab.r.Controllers;
 
 
 import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Repository.AddressRepository;
+import com.b.r.loteriab.r.Repository.GroupsRepository;
 import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.GroupsService;
 import com.b.r.loteriab.r.Services.SellerService;
@@ -26,6 +28,8 @@ public class GroupController {
     private GroupsService groupService;
 
     @Autowired
+    private GroupsRepository groupsRepository;
+    @Autowired
     private UsersService usersService;
 
     @Autowired
@@ -34,6 +38,8 @@ public class GroupController {
     @Autowired
     private SellerRepository sellerRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
 
     @RequestMapping("")
     public String index(Model model,  HttpServletRequest request) {
@@ -82,7 +88,7 @@ public class GroupController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
-            group.setAddress(createAddres(country, city, sector, phone));
+            group.setAddress(groupService.createAddres(country, city, sector, phone));
             Result result = groupService.save(group, enterprise);
             if (!result.isValid()) {
                 redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
@@ -105,10 +111,10 @@ public class GroupController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
             if (id <= 0) {
-                redirectAttributes.addFlashAttribute("error", "Group sa pa agziste, antre on lot");
+                redirectAttributes.addFlashAttribute("error", "Group sa pa egziste, antre on lot");
                 return "redirect:/group";
             }
-            Result result = groupService.deleteGroupsById(id, enterprise.getId());
+
             List<Seller> sellers = sellerService.findAllSellerByGroupsId(id, enterprise.getId());
 
             for (Seller seller : sellers) {
@@ -120,6 +126,17 @@ public class GroupController {
                 }
             }
 
+            Groups groups = groupService.findGroupsById(id, enterprise.getId());
+            long addressId = 0L;
+            if (groups.getAddress()!=null){
+                addressId = groups.getAddress().getId();
+            }
+            groups.setAddress(null);
+            groups.setParentSeller(null);
+            groupsRepository.save(groups);
+            addressRepository.deleteById(addressId);
+
+            Result result = groupService.deleteGroupsById(id, enterprise.getId());
             if (!result.isValid()) {
                 model.addAttribute("error", result.getLista().get(0).getMessage());
             }
@@ -130,32 +147,5 @@ public class GroupController {
         return "access-denied";
     }
 
-    private Address createAddres( String country, String city, String sector,String phone){
-        Address address = null;
-        if (!country.isEmpty()){
-            address = new Address();
-            address.setCountry(country);
-        }
-        if (!city.isEmpty()){
-            if (address == null) {
-                address = new Address();
-            }
-            address.setCity(city);
-        }
-        if (!sector.isEmpty()){
-            if (address == null) {
-                address = new Address();
-            }
-            address.setSector(sector);
-        }
 
-        if (!phone.isEmpty()){
-            if (address == null) {
-                address = new Address();
-            }
-            address.setPhone(phone);
-        }
-
-        return address;
-    }
 }

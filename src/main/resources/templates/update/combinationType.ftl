@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="combinationTypeController">
-      <section class="wrapper">
+      <section class="wrapper"  ng-init="init(false)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-edit"></i>Fòm pou Aktyalize Tip Konbinezon</h3>

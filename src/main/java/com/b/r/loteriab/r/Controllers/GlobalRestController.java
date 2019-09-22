@@ -16,6 +16,7 @@ import org.javatuples.Pair;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -76,63 +77,44 @@ public class GlobalRestController {
 
     private static final String ACCECPT_TYPE= "application/json";
 
-    /**
-     * Get All draw filtered
-     * @param page
-     * @param items
-     * @param state
-     * @param day
-     * @param month
-     * @param year
-     * @return draws
-     */
-    @GetMapping(value = "/draw/find/{page}/item/{items}/state/{state}/day/{day}/month/{month}/year/{year}", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Draw>> findDrawByPage(@PathVariable("items")int items,
-                                     @PathVariable("page")int page,
-                                     @PathVariable("day")int day,
-                                     @PathVariable("month")int month,
-                                     @PathVariable("year")int year,
-                                     @PathVariable("state")int state,
-                                     HttpServletRequest request){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            List<Draw> draws = drawService.findAllDraw(page, items, getState(state), day, month, year, enterprise.getId());
-
-            if (draws == null)
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        }
-        return new ResponseEntity<>(HttpStatus.OK); // TOD
-    }
-
-    /**
-     * Get All Draws size
-     * @param state
-     * @return size
-     */
-    @GetMapping(value = "/draw/find/size/state/{state}", produces = ACCECPT_TYPE)
-    public int getAllDraws(@PathVariable("state")int state,HttpServletRequest request){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            return drawService.findAllDrawByEnabled(getState(state), enterprise.getId()).size();
-        }
-        return 0;
-    }
 
     /**
      * Get All Draws
      * @return draws
      */
 
-    @GetMapping(value = "/draw/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Draw>> getDrawList(HttpServletRequest request){
+    @GetMapping(value = "/draw", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Draw>> getDrawList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page
+    ){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Draw> draws = drawService.findAllDraw(enterprise.getId());
+            Page<Draw> draws = drawService.findAllDrawByState(Integer.parseInt(page),Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (draws.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(draws, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    /**
+     * Get All Blocked Combination
+     * @return combinations
+     */
+
+    @GetMapping(value = "/combination/blocked", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Combination>> getBlockedCombinationList(
+            HttpServletRequest request
+    ){
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            List<Combination> combinations = combinationRepository.findAllByEnabledAndEnterpriseId(false, enterprise.getId());
+            if (combinations.isEmpty())
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(combinations, HttpStatus.OK);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
@@ -142,33 +124,17 @@ public class GlobalRestController {
      * @return Groups
      */
 
-    @GetMapping(value = "/group/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Groups>> getGroupList(HttpServletRequest request){
+    @GetMapping(value = "/group", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Groups>> getGroupList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Groups> groups = groupsService.findAllGroups(enterprise.getId());
+            Page<Groups> groups = groupsService.findAllGroupByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (groups.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(groups, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
-    }
-
-    /**
-     * Get All groups filtered
-     * @param page
-     * @param items
-     * @param state
-     * @return groups
-     */
-    @GetMapping(value = "/group/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Groups>> findGroupByPage(@PathVariable("items")int items,
-                                         @PathVariable("page")int page,
-                                         @PathVariable("state")int state,
-                                        HttpServletRequest request
-        ){ Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Groups> groups = groupsService.findAllGroupByState(page, items, getState(state), enterprise.getId());
             return new ResponseEntity<>(groups, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
@@ -179,81 +145,25 @@ public class GlobalRestController {
      * @return combinationTypes
      */
 
-    @GetMapping(value = "/combinationType/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<CombinationType>> getCombinationTypeList(HttpServletRequest request){
+    @GetMapping(value = "/combinationType", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<CombinationType>> getCombinationTypeList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<CombinationType> combinationTypes = combinationTypeService.findallByEnterpriseId(enterprise.getId());
-            if (combinationTypes.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(combinationTypes, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
-    }
-
-    /**
-     * Get All Combination Type filtered
-     * @param page
-     * @param items
-     * @param state
-     * @return combinationTypes
-     */
-    @GetMapping(value = "/combinationType/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<CombinationType>> getCombinationTypeListFiltered(
-        @PathVariable("items")int items,
-        @PathVariable("page")int page,
-        @PathVariable("state")int state,
-        HttpServletRequest request
-    ){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<CombinationType> combinationTypes = combinationTypeService.findAllCombinationTypeByEnterpriseId(page, items, getState(state), enterprise.getId());
-
+            Page<CombinationType> combinationTypes = combinationTypeService.findAllCombinationByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (combinationTypes.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(combinationTypes, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
-
-    }
-
-    /**
-     * Get All Combination Type size
-     * @param state
-     * @return size
-     */
-    @GetMapping(value = "/combinationType/find/size/state/{state}", produces = ACCECPT_TYPE)
-    public int getAllCombinationType(@PathVariable("state")int state, HttpServletRequest request) {
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise != null){
-            return combinationTypeService.findAllByEnabledAndEnterpriseId(getState(state), enterprise.getId()).size();
-        }
-        return 0;
-    }
-
-    /**
-     * Get All seller filtered
-     * @param page
-     * @param items
-     * @param state
-     * @return sellers
-     */
-    @GetMapping(value = "/seller/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Seller>> findSellerByPage(@PathVariable("items")int items,
-                                         @PathVariable("page")int page,
-                                         @PathVariable("state")int state,
-                                         HttpServletRequest request){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Seller> sellers =  sellerService.findAllSellerByState(page, items, getState(state), enterprise.getId());
-            return new ResponseEntity<>(sellers, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK); // //TODO: Sattus code
     }
 
     /**
      * Get All combination filtered
-     * @return sellers
+     * @return combinations
      */
     @GetMapping(value = "/combination/find", produces = ACCECPT_TYPE)
     public ResponseEntity<ArrayList<Combination>> findCombinationByPage(
@@ -280,36 +190,20 @@ public class GlobalRestController {
      * Get All Bank
      * @return banks
      */
-    @GetMapping(value = "/bank/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Bank>> getBankList(HttpServletRequest request){
+    @GetMapping(value = "/bank", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Bank>> getBankList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Bank> banks = bankService.findAllBankByEnterprise(enterprise.getId());
+            Page<Bank> banks = bankService.findAllBankByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (banks.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(banks, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK); //TODO: Sattus code
-    }
-
-    /**
-     * Get All bank filtered
-     * @param page
-     * @param items
-     * @param state
-     * @return groups
-     */
-    @GetMapping(value = "/bank/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Bank>> findBankByPage(@PathVariable("items")int items,
-                                                        @PathVariable("page")int page,
-                                                        @PathVariable("state")int state,
-                                                        HttpServletRequest request
-    ){ Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Bank> banks = bankService.findAllBankByState(page, items, getState(state), enterprise.getId());
-            return new ResponseEntity<>(banks, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK); //TODO: Sattus code
     }
 
     /**
@@ -331,16 +225,20 @@ public class GlobalRestController {
      * Get All Seller
      * @return sellers
      */
-    @GetMapping(value = "/seller/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Seller>> getSellerList(HttpServletRequest request){
+    @GetMapping(value = "/seller", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Seller>> getSellerList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Seller> sellers = sellerService.findAllSellersByEnterpriseId(enterprise.getId());// TODO
+            Page<Seller> sellers = sellerService.findAllSellerByState(Integer.parseInt(page), Integer.parseInt(count), getStateEj(state), enterprise.getId());// TODO
             if (sellers.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(sellers, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     /**
@@ -348,16 +246,20 @@ public class GlobalRestController {
      * * @param type
      * @return users
      */
-    @GetMapping(value = "/user/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Users>> getUsersList(HttpServletRequest request){
+    @GetMapping(value = "/user", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Users>> getUsersList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Users> users = usersService.findAllUsersExceptSuperAdminAndEnterpriseId(enterprise.getId());
+            Page<Users> users = usersService.findAllUsersByState(Integer.parseInt(page) - 1, Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (users.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
+        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     @GetMapping(value = "/user/exist", produces = ACCECPT_TYPE)
@@ -388,60 +290,15 @@ public class GlobalRestController {
      * @return users
      */
     @GetMapping(value = "/user/superAdmin", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Users>> getUsersSuperAdminList(HttpServletRequest request){
+    public ResponseEntity<Page<Users>> getUsersSuperAdminList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Users> users = usersService.findAllUsersSuperAdmin();
+            Page<Users> users = usersService.findAllUsersByStateSuperAdmin(Integer.parseInt(page) - 1, Integer.parseInt(count), getStateEj(state));
             if (users.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
-    }
-
-    /**
-     * Get All User Filtered
-     * @param state
-     * @param page
-     * @param items
-     * @return users
-     */
-    @GetMapping(value = "/user/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Users>> UserListFiltered(
-            @PathVariable("items")int items,
-            @PathVariable("page")int page,
-            @PathVariable("state")int state,
-            HttpServletRequest request
-    ){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Users> users = usersService.findAllUsersByState(page, items, getState(state), enterprise.getId());
-
-            if (users == null)
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
-    }
-
-    /**
-     * Get All User Filtered SuperAdmin
-     * @param state
-     * @param page
-     * @param items
-     * @return users
-     */
-    @GetMapping(value = "/user/find/{page}/item/{items}/state/{state}/superAdmin", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Users>> UserListFilteredSuperAdmin(
-            @PathVariable("items")int items,
-            @PathVariable("page")int page,
-            @PathVariable("state")int state,
-            HttpServletRequest request
-    ){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Users> users = usersService.findAllUsersByStateSuperAdmin(page, items, getState(state));
-            if (users == null)
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
@@ -453,30 +310,29 @@ public class GlobalRestController {
      * @return posList
      */
 
-    @GetMapping(value = "/pos/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Pos>> getPosList(HttpServletRequest request){
+    @GetMapping(value = "/pos", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Pos>> getPosList(
+            HttpServletRequest request,
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="page", defaultValue = "1") String page,
+            @RequestParam(value ="filter[id]", defaultValue = "") String id,
+            @RequestParam(value ="filter[deskripsyon]", defaultValue = "") String description,
+            @RequestParam(value ="filter[serial]", defaultValue = "") String serial,
+            @RequestParam(value ="filter[datKreyasyon]", defaultValue = "") String creationDate,
+            @RequestParam(value ="filter[actif]", defaultValue = "1") String state,
+            @RequestParam(value ="sorting[id]", defaultValue = "desc") String sortId,
+            @RequestParam(value ="sorting[deskripsyon]", defaultValue = "") String sortDescription,
+            @RequestParam(value ="sorting[datKreyasyon]", defaultValue = "") String sortCreationDate,
+            @RequestParam(value ="sorting[serial]", defaultValue = "") String sortSerial,
+            @RequestParam(value ="sorting[actif]", defaultValue = "") String sortState){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
-            List<Pos> pos = posService.findAllPos(enterprise.getId());
+            Page<Pos> pos = posService.findAllPosByState(Integer.parseInt(page),Integer.parseInt(count), getStateEj(state), enterprise.getId());
             if (pos.isEmpty())
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             return new ResponseEntity<>(pos, HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);//TODO: Sattus code
-    }
-
-    /**
-     * Get All Pos size
-     * @param state
-     * @return size
-     */
-    @GetMapping(value = "/pos/find/size/state/{state}", produces = ACCECPT_TYPE)
-    public int getAllPosSize(@PathVariable("state")int state, HttpServletRequest request){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            return posService.findPosByEnabled(getState(state), enterprise.getId()).size();
-        }
-        return 0;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);//TODO: Sattus code
     }
 
     /**
@@ -511,39 +367,12 @@ public class GlobalRestController {
             return new ResponseEntity<>(products, HttpStatus.OK);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-
-    }
-
-    /**
-     * Get All Pos
-     * @param state
-     * @param items
-     * @param page
-     * @return size
-     */
-    @GetMapping(value = "/pos/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Pos>> getPosListFiltered(
-            @PathVariable("items")int items,
-            @PathVariable("page")int page,
-            @PathVariable("state")int state,
-            HttpServletRequest request
-    ){
-        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
-            Page<Pos> pos = posService.findAllPosByState(page, items, getState(state), enterprise.getId());
-
-            if (pos == null)
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(pos, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
     }
 
     /**
      * Get All Enterprise
      * @return enterpriseList
      */
-
     @GetMapping(value = "/enterprises/", produces = ACCECPT_TYPE)
     public ResponseEntity<List<Enterprise>> getEnterpriseList(){
         List<Enterprise> enterprises = enterpriseService.findAllEnterprise();
@@ -755,6 +584,21 @@ public class GlobalRestController {
             return new ResponseEntity<>(combinations, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.OK);//TODO: Sattus code
+    }
+
+    private Boolean getStateEj (String state){
+        int resState = Integer.parseInt(state);
+        Boolean resultState = false;
+        if (resState == 0){
+            resultState = false;
+        }
+        if (resState == 1){
+            resultState = null;
+        }
+        if (resState == 2){
+            resultState = true;
+        }
+        return resultState;
     }
 
     private Boolean getState (int state){

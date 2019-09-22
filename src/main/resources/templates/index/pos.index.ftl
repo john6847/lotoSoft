@@ -20,7 +20,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="posController">
-        <section class="wrapper">
+        <section class="wrapper"  ng-init="init(true)">
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade Machin</h3>
@@ -38,99 +38,37 @@
                 </div>
             </#if>
             <div class="row">
-                <div class="col-lg-12" ng-init="getData()">
+                <div class="col-lg-12">
                     <section class="panel">
-                        <header class="panel-heading">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    Machin
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="row text-right">
-                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6"></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                                    <div class="form-group" style="margin: 10px">
-                                                        <select class="form-control m-bot15 selectpicker"
-                                                                data-live-search="true"
-                                                                data-size="5"
-                                                                ng-model="state"
-                                                                ng-change="getData()"
-                                                                name="state"
-                                                                id="state"
-                                                                autofocus>
-                                                            <option value="0">Bloke</option>
-                                                            <option value="1" selected>Tout</option>
-                                                            <option value='2'>Actif</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
+                        <header class="panel-heading">Machin</header>
                         <div class="panel-body">
                             <div class="row">
-                            <#--style="overflow-y:scroll; height:150px;"-->
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table datatable="ng" dt-options="global.dtOptions"
-                                               class="table table-striped table-advance table-hover" ng-init="fetchAllPos()">
-                                           <thead>
-                                                <tr>
-                                                    <th style="width: 10%">#</th>
-                                                    <th style="width:15%">Deskripsyon</th>
-                                                    <th style="width:15%">Serial</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:15%; text-align: center">Actif</th>
-                                                    <th style="width:15%; text-align: center">Bloke</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-
-                                                </tr>
-                                           </thead>
-                                            <tbody>
-                                            <tr ng-repeat="pos in global.pos">
-                                                <td>{{start+$index+1}}</td>
-                                                <td>{{pos.description}}</td>
-                                                <td>{{pos.serial}}</td>
-                                                <td>{{pos.modificationDate | date: 'dd/MM/yyyy'}}</td>
-                                                <td style="text-align: center"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
-                                                <td style="text-align: center"><i class="fa fa-{{pos.enabled? 'times' : 'check' }}" style="color: {{pos.enabled? 'red' :'green' }} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p></td>
-                                                <td>
+                                        <table ng-table="global.tableParams" show-filter="true"
+                                               class="table table-striped table-bordered table-striped table-condensed table-hover">
+                                            <tr ng-repeat="pos in $data track by pos.id">
+                                                <td style="vertical-align: middle;" data-title="'Id'">{{start+$index+1}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{pos.description}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Serial'">{{pos.serial}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{pos.modificationDate | date}}</td>
+                                                <td style="vertical-align: middle; text-align: center;" data-title="'Actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
+                                                <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
                                                     <a class="btn btn-warning btn-xs" href="/pos/update/{{pos.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td  style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
                                                     <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/pos/delete/{{pos.id}}">
                                                         <i class="fa fa-trash-o"></i> Elimine
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
                                                     <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">
                                                         <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{pos.enabled? 'Bloke' : 'Debloke'}}
                                                     </a>
                                                 </td>
                                             </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th style="width: 10%">#</th>
-                                                    <th style="width:15%">Deskripsyon</th>
-                                                    <th style="width:15%">Serial</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:15%; text-align: center">Actif</th>
-                                                    <th style="width:15%; text-align: center">Bloke</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -222,3 +160,30 @@
 </body>
 
 </html>
+
+
+<#--<table ng-table="global.tableParams" show-filter="true"-->
+<#--       class="table table-striped table-bordered table-striped table-condensed table-hover">-->
+<#--    <tr ng-repeat="pos in $data track by pos.id">-->
+<#--        <td style="vertical-align: middle;" filter="{id: 'number'}" data-title="'Id'" sortable="'id'">{{start+$index+1}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{deskripsyon: 'text'}" data-title="'Deskripsyon'" sortable="'deskripsyon'">{{pos.description}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{serial: 'text'}" data-title="'Serial'" sortable="'serial'">{{pos.serial}}</td>-->
+<#--        <td style="vertical-align: middle;" filter="{datKreyasyon: 'text'}" data-title="'Dat Kreyasyon'" sortable="'datKreyasyon'">{{pos.modificationDate | date}}</td>-->
+<#--        <td style="vertical-align: middle; text-align: center;" filter="{actif: 'select'}" data-title="'Actif'" filter-data="global.stateFilter" sortable="'actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>-->
+<#--        <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">-->
+<#--            <a class="btn btn-warning btn-xs" href="/pos/update/{{pos.id}}">-->
+<#--                <i class="fa fa-edit"></i> Aktyalize-->
+<#--            </a>-->
+<#--        </td>-->
+<#--        <td  style="vertical-align: middle;text-align: center;" data-title="'Elimine'">-->
+<#--            <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/pos/delete/{{pos.id}}">-->
+<#--                <i class="fa fa-trash-o"></i> Elimine-->
+<#--            </a>-->
+<#--        </td>-->
+<#--        <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">-->
+<#--            <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">-->
+<#--                <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{pos.enabled? 'Bloke' : 'Debloke'}}-->
+<#--            </a>-->
+<#--        </td>-->
+<#--    </tr>-->
+<#--</table>-->

@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="userController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou wè tout itilizatè yo</h3>
@@ -41,108 +41,42 @@
               </div>
           </#if>
         <div class="row">
-          <div class="col-lg-12" ng-init="getData()">
+          <div class="col-lg-12">
             <section class="panel">
               <header class="panel-heading">
-                <div class="row">
-                  <div class="col-lg-4">
-                      Itilizatè
-                  </div>
-
-                  <div class="col-lg-8">
-                      <div class="row text-right">
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                              <div class="row">
-                                  <div class="col-lg-6 col-md-6 col-sm-6"></div>
-                                  <div class="col-lg-6 col-md-6 col-sm-6">
-                                      <div class="form-group" style="margin: 10px">
-                                          <select class="form-control"
-                                                  data-live-search="true"
-                                                  data-size="5"
-                                                  ng-model="state"
-                                                  ng-change="getData()"
-                                                  name="state"
-                                                  id="state"
-                                                  autofocus>
-                                              <option value="0">Bloke</option>
-                                              <option value="1" selected>Tout</option>
-                                              <option value='2'>Actif</option>
-                                          </select>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                  </div>
-                </div>
+                Itilizatè
               </header>
               <div class="panel-body">
                 <div class="row">
                   <div class=" col-md-12" >
                     <div class="table-responsive">
-                        <table datatable="ng" dt-options="dtOptions"
-                                class="table table-striped table-advance table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%">#</th>
-                                    <th style="width:20%">Non</th>
-                                    <th style="width:10%">Itilizatè</th>
-                                    <th style="width:5% text-align: center">Vandè</th>
-                                    <th style="width:5% text-align: center">Adm</th>
-                                    <th style="width:5% text-align: center">Sipèvizè</th>
-                                    <th style="width:5% text-align: center">Rekolektè</th>
-                                    <th style="width:10%">Dat Kreyasyon</th>
-                                    <th style="width:5%; text-align: center">Actif</th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="user in users">
-                                    <td>{{$index+1}}</td>
-                                    <td>{{user.name}}</td>
-                                    <td>{{user.username}}</td>
-                                    <td style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_SELLER')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_SELLER')? 'green' : 'red'}};"></i> <p style="display: none">{{isRole(user.roles,'ROLE_SELLER')? 'Wi' : 'Non' }}</p> </td>
-                                    <td style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_ADMIN')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_ADMIN')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_ADMIN')? 'Wi' : 'Non' }}</p></td>
-                                    <td style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_SUPERVISOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_SUPERVISOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_SUPERVISOR')? 'Wi' : 'Non' }}</p></td>
-                                    <td style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_COLLECTOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_COLLECTOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_COLLECTOR')? 'Wi' : 'Non' }}</p></td>
-                                    <td>{{user.modificationDate | date: 'dd/MM/yyyy'}}</td>
-                                    <td style="text-align: center"><i class="fa fa-{{user.enabled? 'check' : 'times' }}" style="color: {{user.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{user.enabled? 'Wi' : 'Non' }}</p> </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-xs" href="/user/1/update/{{user.id}}">
-                                            <i class="fa fa-edit"></i> Aktyalize
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete{{user.id}}">
-                                            <i class="fa fa-trash-o"></i> Elimine
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/user/{{user.id}}">
-                                            <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style="width:10%">#</th>
-                                    <th style="width:20%">Non</th>
-                                    <th style="width:10%">Itilizatè</th>
-                                    <th style="width:20%">Vandè</th>
-                                    <th style="width:15%">Adm</th>
-                                    <th style="width:20%">Sipèvizè</th>
-                                    <th style="width:20%">Rekolektè</th>
-                                    <th style="width:10%">Kreyasyon</th>
-                                    <th style="width:10%; text-align: center">Actif</th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                </tr>
-                            </tfoot>
+                      <table ng-table="global.tableParams" class="table table-striped table-bordered table-striped table-condensed table-hover">
+                          <tr ng-repeat="user in $data track by user.id">
+                              <td style="vertical-align: middle" data-title="'#'">{{$index+1}}</td>
+                              <td style="vertical-align: middle" data-title="'Non'">{{user.name}}</td>
+                              <td style="vertical-align: middle" data-title="'Itilizatè'">{{user.username}}</td>
+                              <td style="vertical-align: middle;text-align: center" data-title="'Vandè'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_SELLER')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_SELLER')? 'green' : 'red'}};"></i> <p style="display: none">{{isRole(user.roles,'ROLE_SELLER')? 'Wi' : 'Non' }}</p> </td>
+                              <td style="vertical-align: middle;text-align: center" data-title="'Adm.'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_ADMIN')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_ADMIN')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_ADMIN')? 'Wi' : 'Non' }}</p></td>
+                              <td style="vertical-align: middle;text-align: center" data-title="'Sipèvizè'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_SUPERVISOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_SUPERVISOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_SUPERVISOR')? 'Wi' : 'Non' }}</p></td>
+                              <td style="vertical-align: middle;text-align: center" data-title="'Rekolektè'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_COLLECTOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_COLLECTOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_COLLECTOR')? 'Wi' : 'Non' }}</p></td>
+                              <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{user.modificationDate | date: 'dd/MM/yyyy'}}</td>
+                              <td style="vertical-align: middle; text-align: center" data-title="'Actif'"><i class="fa fa-{{user.enabled? 'check' : 'times' }}" style="color: {{user.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{user.enabled? 'Wi' : 'Non' }}</p> </td>
+                              <td style="vertical-align: middle; text-align: center" data-title="'ktyalize'">
+                                  <a class="btn btn-warning btn-xs" href="/user/1/update/{{user.id}}">
+                                      <i class="fa fa-edit"></i> Aktyalize
+                                  </a>
+                              </td>
+                              <td style="vertical-align: middle; text-align: center" data-title="'Elimine'">
+                                  <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete{{user.id}}">
+                                      <i class="fa fa-trash-o"></i> Elimine
+                                  </a>
+                              </td>
+                              <td style="vertical-align: middle; text-align: center" data-title="'Bloke/Debloke'">
+                                  <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/user/{{user.id}}">
+                                      <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
+                                  </a>
+                              </td>
+                          </tr>
                         </table>
                     </div>
                 </div>

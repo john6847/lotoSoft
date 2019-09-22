@@ -8,8 +8,6 @@ angular.module('lottery')
         months: months,
         days: days,
         years: years,
-        fetchAllDraws: fetchAllDraws,
-        fetchAllDrawsFiltered: fetchAllDrawsFiltered,
     };
 
     function months () {
@@ -64,33 +62,6 @@ angular.module('lottery')
         for(var i = start; i<= new Date().getFullYear(); i++)
             years.push(i);
         return years;
-    }
-
-    function fetchAllDraws() {
-        var deferred = $q.defer();
-        $http.get("/api/draw/")
-            .then(
-                function (response) {
-                    deferred.resolve(response.data);
-                }, function (errResponse) {
-                    console.error(errResponse);
-                    deferred.reject(errResponse);
-                });
-        return deferred.promise;
-    }
-
-    function fetchAllDrawsFiltered(pageno,itemsPerPage,state, day, month, year) {
-        var deferred = $q.defer();
-        $http.get("/api/draw/find/"+(pageno-1)+"/item/"+itemsPerPage+'/state/'+ state
-            +'/day/'+day+'/month/'+month+'/year/'+year)
-            .then(
-                function (response) {
-                    deferred.resolve(response.data);
-                }, function (errResponse) {
-                    console.error(errResponse);
-                    deferred.reject(errResponse);
-                });
-        return deferred.promise;
     }
 
 }]);

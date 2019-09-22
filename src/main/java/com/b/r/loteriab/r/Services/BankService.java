@@ -109,43 +109,27 @@ public class BankService {
         return  result;
     }
 
-
-    public ArrayList<Bank> findAllBankByEnterprise(Long enterpriseId){
-        return (ArrayList<Bank>)bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
-    }
-
     public Page<Bank> findAllBankByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page,itemPerPage);
+        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
         if(state != null){
-            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(state, enterpriseId,pageable);
         }
-        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId, pageable);
     }
 
     public Bank findBankById(Long id, Long enterpriseId){
         return bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Bank findBankByIdAndEnabled(Long id, boolean enabled, Long enterpriseId){
-        return bankRepository.findBankByIdAndEnabledAndEnterpriseId(id, enabled, enterpriseId);
-    }
-
-    public List<Bank> findBankByEnabled(Boolean enabled, Long enterpriseId){
-        if (enabled!= null){
-            return bankRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
-        }
-        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
-    }
-
     public Result deleteBankById(Long id, Long enterpriseId){
         Result result = new Result();
-        Bank pos = bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
-        if(pos == null) {
+        Bank bank = bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
+        if(bank == null) {
             result.add("Bank sa ou bezwen elimine a pa egziste");
             return result;
         }
         try{
-            bankRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
+            bankRepository.deleteById(id);
         }catch (Exception ex){
             result.add("Bank la pa ka elimine reeseye ankò");
         }

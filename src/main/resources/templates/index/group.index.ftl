@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="groupController">
-      <section class="wrapper">
+      <section class="wrapper" ng-init="init(true)">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou wè tout Gwoup yo</h3>
@@ -41,83 +41,40 @@
               </div>
           </#if>
         <div class="row">
-          <div class="col-lg-12" ng-init="getData()">
+          <div class="col-lg-12">
             <section class="panel">
-              <header class="panel-heading">
-                <div class="row">
-                  <div class="col-lg-4">
-                      Gwoup
-                  </div>
-                  <div class="col-lg-8 text-right" style="margin-top: 5px">
-                      <div class="row">
-                          <div class="col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
-                            <div class="form-group">
-                              <select class="form-control"
-                                      data-live-search="true"
-                                      data-size="5"
-                                      ng-model="state"
-                                      ng-change="getData()"
-                                      name="state"
-                                      id="state"
-                                      autofocus>
-                                  <option value="0">Bloke</option>
-                                  <option value="1" selected>Tout</option>
-                                  <option value='2'>Actif</option>
-                              </select>
-                            </div>
-                          </div>
-                      </div>
-                  </div>
-                </div>
-              </header>
+              <header class="panel-heading">Gwoup</header>
               <div class="panel-body">
                 <div class="row">
                   <div class=" col-md-12" >
                     <div class="table-responsive">
-                        <table datatable="ng" dt-options="dtOptions"
-                                class="table table-striped table-advance table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%">#</th>
-                                    <th style="width:15%">Deskripsyon</th>
-                                    <th style="width:15%">Responsab</th>
-                                    <th style="width:25%">Adrès</th>
-                                    <th style="width:10% text-align: center">Dat Kreyasyon</th>
-                                    <th style="width:10%; text-align: center">Actif</th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="group in groups">
-                                    <td>{{$index+1}}</td>
-                                    <td>{{group.description}}</td>
-                                    <td>{{group.parentSeller.user.name}}</td>
-                                    <td>{{group.address.address}}</td>
-                                    <td>{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
-                                    <td style="text-align: center"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
-                                    <td>
-                                        <a class="btn btn-danger btn-xs" href="/group/delete/{{group.id}}">
-                                            <i class="fa fa-trash-o"></i> Elimine
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/group/{{group.id}}">
-                                            <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style="width:5%">#</th>
-                                    <th style="width:15%">Deskripsyon</th>
-                                    <th style="width:15%">Responsab</th>
-                                    <th style="width:25%">Adrès</th>
-                                    <th style="width:10% text-align: center">Dat Kreyasyon</th>
-                                    <th style="width:10% text-align: center">Actif</th>
-                                </tr>
-                            </tfoot>
+                      <table ng-table="global.tableParams"
+                             class="table table-striped table-bordered table-striped table-condensed table-hover">
+                            <tr ng-repeat="group in $data track by group.id">
+                                <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
+                                <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{group.description}}</td>
+                                <td style="vertical-align: middle;" data-title="'Responsab'">{{group.parentSeller.user.name}}</td>
+                                <td style="vertical-align: middle;" data-title="'Adrès'">{{group.address.address}}</td>
+                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
+                                <td data-title="'Actif'" style="text-align: center; vertical-align: middle;"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
+                                <td style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
+                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/group/delete/{{group.id}}">
+                                        <i class="fa fa-trash-o"></i> Elimine
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
+                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/group/{{group.id}}">
+                                        <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
+                                    </a>
+                                </td>
+
+                              therrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeeeeee Make block and delete button confirmation work
+
+
+
+
+
+                            </tr>
                         </table>
                     </div>
                 </div>

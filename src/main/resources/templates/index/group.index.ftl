@@ -70,10 +70,6 @@
 
                               therrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeeeeee Make block and delete button confirmation work
 
-
-
-
-
                             </tr>
                         </table>
                     </div>
@@ -83,7 +79,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                    <a class="btn btn-primary" href="/group/create">
+                    <a class="btn btn-primary" id="create" href="/group/create">
                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Gwoup
                     </a>
                 </div>
@@ -104,10 +100,16 @@
           </div>
       </div>
   </section>
+  <#include "../loader.ftl">
 
   <#include "../scripts.ftl">
 
   <script>
+
+      $("#create").on("click", function () {
+          $("#custom-loader").fadeIn();
+      });//submit
+
       var responseDelete = false;
       function onDelete (e) {
           if(!responseDelete)

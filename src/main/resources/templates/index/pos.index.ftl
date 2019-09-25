@@ -77,7 +77,7 @@
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                                    <a class="btn btn-primary" href="/pos/create">
+                                    <a class="btn btn-primary" id="create" href="/pos/create">
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Machin
                                     </a>
                                 </div>
@@ -99,9 +99,14 @@
         </div>
     </div>
 </section>
+<#include "../loader.ftl">
 
 <#include "../scripts.ftl">
 <script>
+    $("#create").on("click", function () {
+        $("#custom-loader").fadeIn();
+    });//submit
+
     var responseDelete = false;
     function onDelete (e) {
         if(!responseDelete)

@@ -47,7 +47,7 @@
                             Machin
                         </header>
                         <div class="panel-body">
-                            <form class="form-horizontal form-validate" action="/pos/update" th:object="${pos}"
+                            <form class="form-horizontal form-validate" id="posForm" action="/pos/update" th:object="${pos}"
                                   method="post">
                                 <input type="hidden" name="id" id="id" value="${pos.id}">
                                 <div class="form-group">
@@ -108,9 +108,15 @@
             </div>
         </div>
     </section>
+    <#include "../loader.ftl">
 
+    <#include "../scripts.ftl">
+    <script type="text/javascript">
+        $("#posForm").on("submit", function () {
+            $("#custom-loader").fadeIn();
+        });//sumbmit
+    </script>
 
-<#include "../scripts.ftl">
 
 </body>
 

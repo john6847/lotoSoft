@@ -85,7 +85,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                    <a class="btn btn-primary" href="/user/1/create">
+                    <a class="btn btn-primary" id="create" href="/user/1/create">
                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Itilizatè
                     </a>
                 </div>
@@ -106,15 +106,20 @@
           </div>
       </div>
   </section>
+<#include "../loader.ftl">
 
   <#include "../scripts.ftl">
 <script>
+    $("#create").on("click", function () {
+        $("#custom-loader").fadeIn();
+    });//submit
+
     var responseDelete = false;
     function onDelete (e, ) {
         if(!responseDelete)
             e.preventDefault();
         bootbox.confirm({
-            message: "Ou preske elimine itilizate sa, ou deside kontinye?",
+            message: "Ou preske elimine itilizatè sa, ou deside kontinye?",
             size: 'small',
             buttons: {
                 confirm: {
@@ -139,7 +144,7 @@
         if(!responseBlock)
             e.preventDefault();
         bootbox.confirm({
-            message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke itilizate sa, ou deside kontinye?",
+            message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke itilizatè sa, ou deside kontinye?",
             size: 'small',
             buttons: {
                 confirm: {

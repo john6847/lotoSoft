@@ -109,6 +109,7 @@
 <div id="custom-loader">
     <i class="fa fa-spin fa-spinner"></i>
 </div>
+<#include "../loader.ftl">
 
 <#include "../scripts.ftl">
 <script>

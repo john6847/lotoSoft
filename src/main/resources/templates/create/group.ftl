@@ -47,7 +47,7 @@
                             Gwoup
                         </header>
                         <div class="panel-body">
-                            <form class="form-horizontal" action="/group/create" th:object="${group}" method="post">
+                            <form class="form-horizontal" id="groupForm" action="/group/create" th:object="${group}" method="post">
 
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Deskripsyon<span class="required">*</span></label>
@@ -183,15 +183,18 @@
     </section>
 
         <!-- container section end -->
-    <#include "../scripts.ftl">
-
-        <script
-            type = "text/javascript">
-            $(document).ready(function () {
-                $('.selectpicker').selectpicker();
-            });
-        </script>
 </section>
+<#include "../loader.ftl">
+
+<#include "../scripts.ftl">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+        });
+        $("#groupForm").on("submit", function(){
+            $("#custom-loader").fadeIn();
+    </script>
 </body>
 
 </html>

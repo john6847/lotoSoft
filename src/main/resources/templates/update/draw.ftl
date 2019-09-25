@@ -48,7 +48,7 @@
                 Aktyalize Tiraj
               </header>
               <div class="panel-body">
-                <form class="form-horizontal" action="/draw/update" th:object="${draw}" method="post">
+                <form class="form-horizontal" id="drawForm" action="/draw/update" th:object="${draw}" method="post">
                     <input type="hidden" name="id" id="id" value="${draw.id}">
 
                   <div class="form-group">
@@ -202,10 +202,16 @@
     </div>
   </div>
   </section>
+  <#include "../loader.ftl">
+
   <!-- container section end -->
   <#include "../scripts.ftl">
 
 <script>
+    // $("#draw").on("submit", function () {
+    //     $("#custom-loader").fadeIn();
+    // });//sumbmit
+
   var response = false;
   function onSave (e) {
     var date =  document.getElementById("drawDate").innerText.toString();

@@ -64,12 +64,12 @@
                                     </a>
                                 </td>
                                 <td style="vertical-align: middle;text-align: center" data-title="'Elimine'">
-                                    <a class="btn btn-danger btn-xs" href="/user/2/delete/{{user.id}}">
+                                    <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/2/delete/{{user.id}}">
                                         <i class="fa fa-trash-o"></i> Elimine
                                     </a>
                                 </td>
                                 <td style="vertical-align: middle;text-align: center" data-title="'Bloke/Debloke'">
-                                    <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/user/{{user.id}}">
+                                    <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/user/{{user.id}}">
                                         <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
                                     </a>
                                 </td>
@@ -82,7 +82,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                    <a class="btn btn-primary" href="/user/2/create">
+                    <a class="btn btn-primary" id="create" href="/user/2/create">
                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Kliyan
                     </a>
                 </div>
@@ -105,6 +105,61 @@
   </section>
 
   <#include "../scripts.ftl">
+
+<script>
+    $("#create").on("click", function () {
+        $("#custom-loader").fadeIn();
+    });//submit
+
+    var responseDelete = false;
+    function onDelete (e, ) {
+        if(!responseDelete)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Ou preske elimine itilizatè sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseDelete = true;
+                    document.getElementById('delete').click();
+                }
+            }
+        });
+    }
+
+    var responseBlock = false;
+    function onBlock (e) {
+        if(!responseBlock)
+            e.preventDefault();
+        bootbox.confirm({
+            message: "Wap reayilize yon aksyon ki ap bloke oubyen debloke itilizatè sa, ou deside kontinye?",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Wi',
+                    className: ' btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Non',
+                    className: 'btn-danger'
+                }
+            }, callback: function (result) {
+                if (result){
+                    responseBlock = true;
+                    document.getElementById('block').click();
+                }
+            }
+
+</script>
 
 </body>
 

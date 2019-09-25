@@ -47,7 +47,7 @@
                             Machin
                         </header>
                         <div class="panel-body">
-                            <form class="form-horizontal form-validate" action="/pos/create" th:object="${pos}" method="post">
+                            <form class="form-horizontal form-validate" id="posForm" action="/pos/create" th:object="${pos}" method="post">
                                 <div class="form-group">
                                     <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12">Deskripsyon<span class="required">*</span></label>
                                     <div class="col-lg-10   col-md-10 col-sm-10 col-xs-12">
@@ -103,6 +103,12 @@
         </div>
     </section>
 
+    <#include "../loader.ftl">
+
+    <script>
+        $("#posForm").on("submit", function(){
+            $("#custom-loader").fadeIn();
+    </script>
 
 <#include "../scripts.ftl">
 

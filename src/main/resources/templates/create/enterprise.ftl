@@ -41,13 +41,13 @@
                 </div>
             </#if>
             <div class="row">
-                <form class="form-horizontal form-validate" action="/enterprise/create" th:object="${enterprise}" method="post">
+                <form class="form-horizontal form-validate" id="enterpriseForm" action="/enterprise/create" th:object="${enterprise}" method="post">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-lg-12">
                                 <section class="panel">
                                     <header class="panel-heading">
-                                        Enfomasyon Antrepriz la
+                                        Enfòmasyon Antrepriz la
                                     </header>
                                     <div class="panel-body">
                                         <div class="form-group">
@@ -328,8 +328,14 @@
         </div>
     </section>
 
+    <#include "../loader.ftl">
 
-<#include "../scripts.ftl">
+    <#include "../scripts.ftl">
+
+    <script>
+        $("#enterpriseForm").on("submit", function(){
+            $("#custom-loader").fadeIn();
+    </script>
 
 </body>
 

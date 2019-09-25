@@ -20,7 +20,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="enterpriseController">
-        <section class="wrapper">
+        <section class="wrapper" ng-init="init(true)">
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-eye"></i>Paj pou gade antrepriz</h3>
@@ -38,94 +38,40 @@
                 </div>
             </#if>
             <div class="row">
-                <div class="col-lg-12" ng-init="getData()">
+                <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    Antrepriz
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="row">
-                                        <div class="text-right col-lg-offset-6 col-md-offset-6 col-xs-offset-6 col-lg-6 col-md-6 col-sm-6">
-                                            <div class="form-group">
-                                                <select class="form-control m-bot15"
-                                                        data-live-search="true"
-                                                        data-size="5"
-                                                        ng-model="state"
-                                                        ng-change="getData()"
-                                                        name="state"
-                                                        id="state"
-                                                        autofocus>
-                                                    <option value="0">Bloke</option>
-                                                    <option value="1" selected>Tout</option>
-                                                    <option value='2'>Actif</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            Antrepriz
                         </header>
                         <div class="panel-body">
                             <div class="row">
                             <#--style="overflow-y:scroll; height:150px;"-->
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table datatable="ng" dt-options="dtOptions"
-                                               class="table table-striped table-advance table-hover">
-                                           <thead>
-                                                <tr>
-                                                    <th style="width:10%">#</th>
-                                                    <th style="width:15%">Non Antrepriz</th>
-                                                    <th style="width:15%">Idantifikasyon</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:10%; text-align: center">Actif</th>
-                                                    <th style="width:10%; text-align: center">Bloke</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-
-                                                </tr>
-                                           </thead>
-                                            <tbody>
-                                            <tr ng-repeat="enterprise in enterprises">
-                                                <td>{{start+$index+1}}</td>
-                                                <td>{{enterprise.name}}</td>
-                                                <td>{{enterprise.identifier}}</td>
-                                                <td>{{enterprise.modificationDate | date: 'dd/MM/yyyy'}}</td>
-                                                <td style="text-align: center"><i class="fa fa-{{enterprise.enabled? 'check' : 'times' }}" style="color: {{enterprise.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p> </td>
-                                                <td style="text-align: center"><i class="fa fa-{{enterprise.enabled? 'times' : 'check' }}" style="color: {{enterprise.enabled? 'red' :'green' }} ;"></i><p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p></td>
-                                                <td>
+                                        <table ng-table="global.tableParams"
+                                               class="table table-striped table-bordered table-striped table-condensed table-hover">
+                                            <tr ng-repeat="enterprise in $data track by enterprise.id">
+                                                <td style="vertical-align: middle;" data-title="'#'">{{start+$index+1}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Non Antrepriz'">{{enterprise.name}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Idantifikasyon'">{{enterprise.identifier}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{enterprise.modificationDate | date: 'dd/MM/yyyy'}}</td>
+                                                <td style="vertical-align: middle; text-align: center" data-title="'Actif'"><i class="fa fa-{{enterprise.enabled? 'check' : 'times' }}" style="color: {{enterprise.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p> </td>
+                                                <td style="vertical-align: middle; text-align: center" data-title="'Actif'">
                                                     <a class="btn btn-warning btn-xs" href="/enterprise/update/{{enterprise.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td style="vertical-align: middle;text-align: center" data-title="'Elimine'">
                                                     <a class="btn btn-danger btn-xs" href="/enterprise/delete/{{enterprise.id}}">
                                                         <i class="fa fa-trash-o"></i> Elimine
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td style="vertical-align: middle;text-align: center" data-title="'Bloke/Debloke'">
                                                     <a class="btn btn-{{enterprise.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/enterprise/{{enterprise.id}}">
                                                         <i class="fa fa-{{enterprise.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{enterprise.enabled? 'Bloke' : 'Debloke'}}
                                                     </a>
                                                 </td>
                                             </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th style="width:10%">#</th>
-                                                    <th style="width:15%">Non Antrepriz</th>
-                                                    <th style="width:15%">Idantifikasyon</th>
-                                                    <th style="width:15%">Dat Kreyasyon</th>
-                                                    <th style="width:10%; text-align: center">Actif</th>
-                                                    <th style="width:10%; text-align: center">Bloke</th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                    <th style="width:5%"></th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>

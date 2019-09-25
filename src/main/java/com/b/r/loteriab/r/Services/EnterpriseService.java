@@ -32,11 +32,23 @@ public class EnterpriseService {
         Result result = new Result();
 
         if (enterprise.getName().isEmpty()){
-            return result.add("Ou dwe rantre yon nom pou antrepriz la");
+            result.add("Ou dwe rantre yon nom pou antrepriz la");
+            return result;
         }
 
         if (enterpriseRepository.findEnterpriseByName(enterprise.getName()) != null){
-            return result.add("Antrepriz sa egziste deja");
+            result.add("Antrepriz sa egziste deja");
+            return result;
+        }
+
+        if (enterprise.getSubDomain().isEmpty()){
+            result.add("Ou dwe rantre subdomen nan.");
+            return result;
+        }
+
+        if (enterpriseRepository.findEnterpriseBySubDomain(enterprise.getSubDomain()) != null){
+            result.add("Antrepriz sa egziste deja");
+            return result;
         }
 
         return result;

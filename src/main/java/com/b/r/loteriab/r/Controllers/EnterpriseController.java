@@ -47,7 +47,6 @@ public class EnterpriseController {
         return "/index/enterprise.index";
     }
 
-
     @RequestMapping("/create")
     public String createEnterprise(HttpServletRequest request, Model model){
         String username = request.getSession().getAttribute("username").toString();

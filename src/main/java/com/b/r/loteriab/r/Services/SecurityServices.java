@@ -59,6 +59,7 @@ public class SecurityServices implements UserDetailsService {
 
             Enterprise enterprise = new Enterprise();
             enterprise.setName("BR-tenant");
+            enterprise.setSubDomain("brtenant");
             enterpriseService.saveEnterprise(enterprise);
 
             Role rolSuperMegaAdmin = new Role();

@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("userSuperAdminController", ['ReadService','$scope', 'UserService',function (ReadService, $scope,UserService) {
+app.controller("userSuperAdminController", ['ReadService','$scope', '$resource',function (ReadService, $scope,$resource) {
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],

@@ -24,6 +24,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     Users findUsersByIdAndEnterpriseId(Long id, Long enterpriseId);
 
+    Users findUsersById(Long id);
+
     Page<Users> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
 
     List<Users>findAllByEnterpriseId(Long enterpriseId);
@@ -43,7 +45,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     List<Users> selectUserSuperAdmin(String name);
 
     String q3 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
-            "WHERE r.name=?1 and order by u.id, ?#{#pageable}";
+            "WHERE r.name=?1 ORDER BY u.id, ?#{#pageable}";
     @Query(value = q3, nativeQuery = true)
     Page<Users> selectUserSuperAdmin(String name,  Pageable pageable);
 

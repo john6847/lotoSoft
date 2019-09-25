@@ -51,54 +51,29 @@
                   <div class=" col-md-12" >
                     <div class="table-responsive">
                         <table ng-table="global.tableParams" class="table table-striped table-bordered table-striped table-condensed table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width:5%">#</th>
-                                    <th style="width:20%">Antrepriz</th>
-                                    <th style="width:20%">Kliyan</th>
-                                    <th style="width:10%">Itilizatè</th>
-                                    <th style="width:10%">Dat Kreyasyon</th>
-                                    <th style="width:5%; text-align: center">Actif</th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                    <th style="width:10%"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="user in $data track by user.id">
-                                    <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Antrepriz'">{{user.enterprise.name}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Kliyan'">{{user.name}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Itilizatè'">{{user.username}}</td>
-                                    <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{user.modificationDate | date: 'dd/MM/yyyy'}}</td>
-                                    <td style="vertical-align: middle;text-align: center" data-title="'Actif'"><i class="fa fa-{{user.enabled? 'check' : 'times' }}" style="color: {{user.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{user.enabled? 'Wi' : 'Non' }}</p> </td>
-                                    <td style="vertical-align: middle;text-align: center" data-title="'Aktyalize'">
-                                        <a class="btn btn-warning btn-xs" href="/user/2/update/{{user.id}}">
-                                            <i class="fa fa-edit"></i> Aktyalize
-                                        </a>
-                                    </td>
-                                    <td style="vertical-align: middle;text-align: center" data-title="'Elimine'">
-                                        <a class="btn btn-danger btn-xs" href="/user/2/delete/{{user.id}}">
-                                            <i class="fa fa-trash-o"></i> Elimine
-                                        </a>
-                                    </td>
-                                    <td style="vertical-align: middle;text-align: center" data-title="'Bloke/Debloke'">
-                                        <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/user/{{user.id}}">
-                                            <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th style="width:10%">#</th>
-                                    <th style="width:20%">Antrepriz</th>
-                                    <th style="width:20%">Kliyan</th>
-                                    <th style="width:10%">Itilizatè</th>
-                                    <th style="width:10%">Kreyasyon</th>
-                                    <th style="width:10%; text-align: center">Actif</th>
-                                </tr>
-                            </tfoot>
+                            <tr ng-repeat="user in $data track by user.id">
+                                <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
+                                <td style="vertical-align: middle;" data-title="'Antrepriz'">{{user.enterprise.name}}</td>
+                                <td style="vertical-align: middle;" data-title="'Kliyan'">{{user.name}}</td>
+                                <td style="vertical-align: middle;" data-title="'Itilizatè'">{{user.username}}</td>
+                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{user.modificationDate | date: 'dd/MM/yyyy'}}</td>
+                                <td style="vertical-align: middle;text-align: center" data-title="'Actif'"><i class="fa fa-{{user.enabled? 'check' : 'times' }}" style="color: {{user.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{user.enabled? 'Wi' : 'Non' }}</p> </td>
+                                <td style="vertical-align: middle;text-align: center" data-title="'Aktyalize'">
+                                    <a class="btn btn-warning btn-xs" href="/user/2/update/{{user.id}}">
+                                        <i class="fa fa-edit"></i> Aktyalize
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;text-align: center" data-title="'Elimine'">
+                                    <a class="btn btn-danger btn-xs" href="/user/2/delete/{{user.id}}">
+                                        <i class="fa fa-trash-o"></i> Elimine
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;text-align: center" data-title="'Bloke/Debloke'">
+                                    <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" href="/configuration/user/{{user.id}}">
+                                        <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
+                                    </a>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

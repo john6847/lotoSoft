@@ -29,6 +29,8 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseByName(String name);
 
+    Enterprise findEnterpriseBySubDomain(String subdomain);
+
     Page<Enterprise> findAllByEnabledOrderByIdDesc(Pageable pageable, boolean state);
 
     Page<Enterprise> findAllByOrderById(Pageable pageable);

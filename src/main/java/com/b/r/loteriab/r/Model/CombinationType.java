@@ -3,6 +3,8 @@ package com.b.r.loteriab.r.Model;
 import com.b.r.loteriab.r.Model.Serializers.CombinationTypeSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -19,9 +21,9 @@ public class CombinationType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @OneToOne(fetch = FetchType.EAGER,optional = false)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "products_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Products products;
     @Nullable
     private double payedPrice;

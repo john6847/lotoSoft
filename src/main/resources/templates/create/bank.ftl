@@ -41,7 +41,7 @@
                 </div>
             </#if>
             <div class="row">
-                <form class="form-horizontal form-validate" action="/bank/create" th:object="${bank}" method="post">
+                <form class="form-horizontal form-validate" id="bankForm" action="/bank/create" th:object="${bank}" method="post">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-lg-12">
@@ -205,12 +205,19 @@
             </div>
         </div>
     </section>
-
+    <div id="custom-loader">
+        <i class="fa fa-spin fa-spinner" style="font-size:48px;"></i>
+    </div>
 
 <#include "../scripts.ftl">
     <script type = "text/javascript" >
         $('.selectpicker').selectpicker();
         $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+
+        $("#bankForm").on("submit", function(){
+            $("#custom-loader").fadeIn();
+        });//submit
+
     </script>
 
 

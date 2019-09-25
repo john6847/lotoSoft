@@ -137,7 +137,7 @@ public class UsersService {
             return result;
         }
 
-        Users currentUser = usersRepository.findUsersByIdAndEnterpriseId(user.getId(),enterpriseId);
+        Users currentUser = usersRepository.findUsersById(user.getId());
         if(currentUser == null){
             result.add("Itilizatè ak nimewo "+ user.getId() + " pa egziste");
             return  result;
@@ -208,10 +208,15 @@ public class UsersService {
         return usersRepository.selectUserSuperAdmin(Roles.ROLE_SUPER_ADMIN.name(), pageable);
     }
 
-
     public Users findUser(Long id, Long enterpriseId){
         return usersRepository.findUsersByIdAndEnterpriseId(id, enterpriseId);
     }
+
+
+    public Users findUserById(Long id){
+        return usersRepository.findUsersById(id);
+    }
+
 
     public List<Users> findAllUsersByEnabled(String name, boolean enabled, Long enterpriseId){
         return usersRepository.selectUserByNameAndEnabledAndEnterpriseId(name, enabled, enterpriseId);

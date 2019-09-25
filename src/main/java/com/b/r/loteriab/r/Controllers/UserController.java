@@ -152,7 +152,7 @@ public class UserController {
                 return "404";
             }
 
-            Users users = usersService.findUser(id, enterprise.getId());
+            Users users = usersService.findUserById(id);
 
             if (type <= 0) {
                 type = 1;

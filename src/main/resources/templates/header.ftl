@@ -64,5 +64,3 @@
 
 
 <link rel="stylesheet" href="/dist/css/ng-table.min.css">
-
-

@@ -83,7 +83,7 @@
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                                    <a class="btn btn-primary" href="/bank/create">
+                                    <a class="btn btn-primary" id="create" href="/bank/create">
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Bank
                                     </a>
                                 </div>
@@ -106,9 +106,17 @@
     </div>
 </section>
 
+<div id="custom-loader">
+    <i class="fa fa-spin fa-spinner"></i>
+</div>
 
 <#include "../scripts.ftl">
 <script>
+
+    $("#create").on("click", function(){
+        $("#custom-loader").fadeIn();
+    });//submit
+
     var responseDelete = false;
     function onDelete (e, ) {
         if(!responseDelete)

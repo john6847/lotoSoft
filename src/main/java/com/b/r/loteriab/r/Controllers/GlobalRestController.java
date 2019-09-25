@@ -373,32 +373,17 @@ public class GlobalRestController {
      * Get All Enterprise
      * @return enterpriseList
      */
-    @GetMapping(value = "/enterprises/", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Enterprise>> getEnterpriseList(){
-        List<Enterprise> enterprises = enterpriseService.findAllEnterprise();
+    @GetMapping(value = "/enterprise", produces = ACCECPT_TYPE)
+    public ResponseEntity<Page<Enterprise>> getEnterpriseList(
+            @RequestParam(value ="count", defaultValue = "10") String count,
+            @RequestParam(value ="state", defaultValue = "1") String state,
+            @RequestParam(value ="page", defaultValue = "1") String page
+    ){
+        Page<Enterprise> enterprises = enterpriseService.findAllEnterpriseByState(Integer.parseInt(page) - 1, Integer.parseInt(count), getStateEj(state));
         if (enterprises.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(enterprises, HttpStatus.OK);
     }
-
-    /**
-     * Get All Enterprise size
-     * @param state
-     * @return size
-     */
-    @GetMapping(value = "/enterprises/find/{page}/item/{items}/state/{state}", produces = ACCECPT_TYPE)
-    public ResponseEntity<Page<Enterprise>> getEnterpriseListFiltered(
-            @PathVariable("items")int items,
-            @PathVariable("page")int page,
-            @PathVariable("state")int state
-    ){
-        Page<Enterprise> enterprises = enterpriseService.findAllEnterpriseByState(page, items, getState(state));
-
-        if (enterprises == null)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(enterprises, HttpStatus.OK);
-    }
-
     /**
      * Get actual enterprise
      * @return
@@ -415,8 +400,6 @@ public class GlobalRestController {
      * Update combination Combination
      * @return result
      */
-
-
     @PutMapping(value = "/combination/update", produces = ACCECPT_TYPE)
     public ResponseEntity<Map> saveCombinationConfiguration(@RequestBody CombinationVm combinationVm, HttpServletRequest request){
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");

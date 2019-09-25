@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("sellerController", ['ReadService', 'SellerService','UserService','$scope','Constants',function (ReadService, SellerService,UserService, $scope, Constants) {
+app.controller("sellerController", ['ReadService','$resource', 'SellerService','UserService','$scope','Constants',function (ReadService, $resource, SellerService,UserService, $scope, Constants) {
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],

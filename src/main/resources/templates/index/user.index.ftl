@@ -72,7 +72,7 @@
                                   </a>
                               </td>
                               <td style="vertical-align: middle; text-align: center" data-title="'Bloke/Debloke'">
-                                  <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/user/{{user.id}}">
+                                  <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/1/user/{{user.id}}">
                                       <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
                                   </a>
                               </td>

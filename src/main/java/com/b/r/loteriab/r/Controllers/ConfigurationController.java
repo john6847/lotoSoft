@@ -151,13 +151,13 @@ public class ConfigurationController {
      * @param id
      * @return
      */
-    @GetMapping("/user/{id}")
-    public String configurationUser (Model model, @PathVariable Long id, HttpServletRequest request) {
+    @GetMapping("/{type}/user/{id}")
+    public String configurationUser (Model model, @PathVariable("id") Long id, @PathVariable("type") Long type, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise!= null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo itilizatè sa pa egziste, itilize yon lòt");
-                return "redirect:/user";
+                return "redirect:/user/"+ type;
             }
             Users users = usersService.findUser(id, enterprise.getId());
             if (users == null) {
@@ -167,7 +167,7 @@ public class ConfigurationController {
                 userRepository.save(users);
             }
 
-            return "redirect:/user";
+            return "redirect:/user/"+ type;
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke itilizatè sa");
         return "access-denied";

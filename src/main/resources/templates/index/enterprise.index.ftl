@@ -62,7 +62,7 @@
                                   style="color: {{enterprise.enabled? 'green' : 'red'}} ;"></i>
                           <p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p></td>
                         <td style="vertical-align: middle; text-align: center" data-title="'Actif'">
-                          <a class="btn btn-warning btn-xs" href="/enterprise/update/{{enterprise.id}}">
+                          <a class="btn btn-warning btn-xs load" href="/enterprise/update/{{enterprise.id}}">
                             <i class="fa fa-edit"></i> Aktyalize
                           </a>
                         </td>
@@ -87,7 +87,7 @@
             <footer class="panel-footer">
               <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                  <a class="btn btn-primary" id="create" href="/enterprise/create">
+                  <a class="btn btn-primary load" href="/enterprise/create">
                     <i class="fa fa-plus-circle"></i> Ajoute Nouvo Antrepriz
                   </a>
                 </div>
@@ -112,7 +112,7 @@
 
 <#include "../scripts.ftl">
 <script>
-    $("#create").on("click", function () {
+    $(".load").on("click", function () {
         $("#custom-loader").fadeIn();
     });//submit
 </script>

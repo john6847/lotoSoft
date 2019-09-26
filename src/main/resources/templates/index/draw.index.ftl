@@ -53,12 +53,8 @@
 
                         <tr ng-repeat="draw in $data track by draw.id">
                           <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
-                          <td style="vertical-align: middle;" data-title="'Dat Tiraj'">{{draw.drawDate |
-                            date:'dd/MM/yyyy'}}
-                          </td>
-                          <td style="vertical-align: middle;" data-title="'Tip'">
-                            {{draw.shift.name}}
-                          </td>
+                          <td style="vertical-align: middle;" data-title="'Dat Tiraj'">{{draw.drawDate |date:'dd/MM/yyyy'}}</td>
+                          <td style="vertical-align: middle;" data-title="'Tip'">{{draw.shift.name}}</td>
                           <td style="vertical-align: middle;" data-title="'Loto 3'" class="text-center"><span
                                     class="badge bg-primary">{{draw.numberThreeDigits.numberInStringFormat}}</span></td>
                           <td style="vertical-align: middle;" data-title="'Bolet'" class="text-center">
@@ -66,8 +62,7 @@
                             <span class="badge bg-success">{{draw.secondDraw.numberInStringFormat}}</span>
                             <span class="badge bg-info">{{draw.thirdDraw.numberInStringFormat}}</span>
                           </td>
-                          <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{draw.modificationDate |
-                            date:'dd/MM/yyyy'}}
+                          <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{draw.modificationDate | date:'dd/MM/yyyy'}}
                           </td>
                           <td style="vertical-align: middle;text-align: center" data-title="'Aktif'">
                             <i class="fa fa-{{draw.enabled? 'check' : 'times' }}"
@@ -75,7 +70,7 @@
                             <p style="display: none">{{draw.enabled? 'Wi' : 'Non' }}</p>
                           </td>
                           <td style="vertical-align: middle;text-align: center" data-title="'Aktyalize'">
-                            <a class="btn btn-warning btn-xs" href="/draw/update/{{draw.id}}"><i class="fa fa-edit"></i>
+                            <a class="btn btn-warning btn-xs load" href="/draw/update/{{draw.id}}"><i class="fa fa-edit"></i>
                               Aktyalize</a>
                           </td>
                           <td style="vertical-align: middle;text-align: center" data-title="'Anile'">
@@ -92,7 +87,7 @@
           <footer class="panel-footer">
             <div class="row">
               <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                <a class="btn btn-primary" id="create" href="/draw/create">
+                <a class="btn btn-primary load" href="/draw/create">
                   <i class="fa fa-plus-circle"></i> Ajoute Nouvo Tiraj
                 </a>
               </div>
@@ -121,7 +116,7 @@
   <script type="text/javascript">
       $('.selectpicker').selectpicker();
 
-      $("#create").on("click", function () {
+      $(".load").on("click", function () {
           $("#custom-loader").fadeIn();
       });//submit
   </script>

@@ -56,11 +56,10 @@
                                                 <td style="vertical-align: middle;" data-title="'Vande'">{{row.seller.user.name}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Machin'">{{row.seller.pos.description}}</td>
                                                 <td style="vertical-align: middle;" data-title="'DatKreyasyon'">{{row.modificationDate | date: 'dd/MM/yyyy' :"America/Port-au-Prince"}}</td>
-<#--                                                <td style="text-align: center; vertical-align: middle" data-title="'Actif'" filter="{ actif: 'select'}" filter-data="global.stateFilter">-->
                                                 <td style="text-align: center; vertical-align: middle" data-title="'Actif'">
                                                     <i class="fa fa-{{row.enabled? 'check' : 'times' }}" style="color: {{row.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{row.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td  style="vertical-align: middle;text-align: center;" data-title="'Aktyalize'">
-                                                    <a class="btn btn-warning btn-xs" href="/bank/update/{{row.id}}">
+                                                    <a class="btn btn-warning btn-xs load" href="/bank/update/{{row.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
                                                     </a>
                                                 </td>
@@ -83,7 +82,7 @@
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                                    <a class="btn btn-primary" id="create" href="/bank/create">
+                                    <a class="btn btn-primary load" href="/bank/create">
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Bank
                                     </a>
                                 </div>
@@ -106,15 +105,12 @@
     </div>
 </section>
 
-<div id="custom-loader">
-    <i class="fa fa-spin fa-spinner"></i>
-</div>
 <#include "../loader.ftl">
 
 <#include "../scripts.ftl">
 <script>
 
-    $("#create").on("click", function(){
+    $(".load").on("click", function(){
         $("#custom-loader").fadeIn();
     });//submit
 

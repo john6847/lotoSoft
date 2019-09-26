@@ -93,6 +93,15 @@ public class SecurityServices implements UserDetailsService {
         if (usernameAndEnterprise == null || usernameAndEnterprise.length != 2) {
             throw new UsernameNotFoundException("Username and macAddress must be provided");
         }
+
+        Enterprise enterprise = enterpriseRepository.findEnterpriseByName(usernameAndEnterprise[1]);
+
+        if (!enterprise.isEnabled()){
+            throw new UsernameNotFoundException(
+                    String.format("Itilizatè sa pa egziste pou antrepriz sa, itilizatè=%s, antrepriz=%s",
+                            usernameAndEnterprise[0], usernameAndEnterprise[1]));
+        }
+
         Users user = userRepository.findByUsernameAndEnterpriseName(usernameAndEnterprise[0], usernameAndEnterprise[1]);
         if (user == null) {
             throw new UsernameNotFoundException(

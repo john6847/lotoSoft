@@ -54,7 +54,7 @@
                                                 <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{pos.modificationDate | date}}</td>
                                                 <td style="vertical-align: middle; text-align: center;" data-title="'Actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
-                                                    <a class="btn btn-warning btn-xs" href="/pos/update/{{pos.id}}">
+                                                    <a class="btn btn-warning btn-xs load" href="/pos/update/{{pos.id}}">
                                                         <i class="fa fa-edit"></i> Aktyalize
                                                     </a>
                                                 </td>
@@ -77,7 +77,7 @@
                         <footer class="panel-footer">
                             <div class="row">
                                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                                    <a class="btn btn-primary" id="create" href="/pos/create">
+                                    <a class="btn btn-primary load" href="/pos/create">
                                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Machin
                                     </a>
                                 </div>
@@ -103,7 +103,7 @@
 
 <#include "../scripts.ftl">
 <script>
-    $("#create").on("click", function () {
+    $(".load").on("click", function () {
         $("#custom-loader").fadeIn();
     });//submit
 

@@ -79,7 +79,7 @@
         <footer class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                    <a class="btn btn-primary" id="create" href="/group/create">
+                    <a class="btn btn-primary load" href="/group/create">
                         <i class="fa fa-plus-circle"></i> Ajoute Nouvo Gwoup
                     </a>
                 </div>
@@ -106,7 +106,7 @@
 
   <script>
 
-      $("#create").on("click", function () {
+      $(".load").on("click", function () {
           $("#custom-loader").fadeIn();
       });//submit
 

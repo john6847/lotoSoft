@@ -71,7 +71,7 @@
                         </td>
 
                         <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
-                          <a class="btn btn-warning btn-xs" href="/seller/update/{{seller.id}}">
+                          <a class="btn btn-warning btn-xs load" href="/seller/update/{{seller.id}}">
                             <i class="fa fa-edit"></i> Aktyalize
                           </a>
                         </td>
@@ -97,7 +97,7 @@
             <footer class="panel-footer">
               <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-6" style="float: left">
-                  <a class="btn btn-primary" id="create" href="/seller/create">
+                  <a class="btn btn-primary load" href="/seller/create">
                     <i class="fa fa-plus-circle"></i> Ajoute Nouvo Vandè
                   </a>
                 </div>
@@ -122,7 +122,7 @@
 
 <#include "../scripts.ftl">
 <script>
-    $("#create").on("click", function () {
+    $(".load").on("click", function () {
         $("#custom-loader").fadeIn();
     });//submit
 

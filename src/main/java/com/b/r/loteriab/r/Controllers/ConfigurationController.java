@@ -41,6 +41,12 @@ public class ConfigurationController {
     private PosService posService;
 
     @Autowired
+    private BankRepository bankRepository;
+
+    @Autowired
+    private BankService bankService;
+
+    @Autowired
     private PosRepository posRepository;
 
     @Autowired
@@ -109,6 +115,34 @@ public class ConfigurationController {
             return "redirect:/pos";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke machin sa");
+        return "access-denied";
+    }
+
+    /**
+     * Route to configigure Bank Type (Block and UnBlock)
+     * @param id
+     * @return configuration
+     */
+
+    @GetMapping("/bank/{id}")
+    public String configurationBank (Model model, @PathVariable Long id, HttpServletRequest request) {
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise!= null) {
+            if (id <= 0) {
+                model.addAttribute("error", "Nimewo bank sa pa egziste, itilize yon lòt");
+                return "redirect:/bank";
+            }
+            Bank bank = bankService.findBankById(id, enterprise.getId());
+            if (bank == null) {
+                model.addAttribute("error", "Bank sa pa egziste.");
+            } else {
+                bank.setEnabled(!bank.isEnabled());
+                bankRepository.save(bank);
+            }
+
+            return "redirect:/bank";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke bank sa");
         return "access-denied";
     }
 

@@ -138,13 +138,18 @@ public class SellerService {
 
     public Result deleteSellerById(Long id, Long enterpriseId) {
         Result result = new Result();
-        Seller draw = sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
-        if (draw == null) {
+        Seller seller = sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
+        if (seller== null) {
             result.add("Vandè sa ou bezwen elimine a pa egziste");
             return result;
         }
         try {
-            sellerRepository.deleteSellerByIdAndEnterpriseId(id, enterpriseId);
+            seller.setEnabled(false);
+            seller.setDeleted(true);
+            seller.setPos(null);
+            seller.setUser(null);
+            seller.setGroups(null);
+            sellerRepository.save(seller);
         } catch (Exception ex) {
             result.add("Vandè a pa ka elimine reeseye ankò");
         }

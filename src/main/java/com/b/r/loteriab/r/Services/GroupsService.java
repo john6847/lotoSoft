@@ -79,6 +79,10 @@ public class GroupsService {
         return groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);
     }
 
+    public Groups findGroupsByParentSellerIdAndEnterpriseId(Long sellerId, Long enterpriseId) {
+        return groupRepository.findGroupsByParentSellerIdAndEnterpriseId(sellerId, enterpriseId);
+    }
+
     public Result deleteGroupsById(Long id, Long enterpriseId) {
         Result result = new Result();
         Groups groups = groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);

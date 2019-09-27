@@ -35,4 +35,5 @@ public class Seller implements Serializable {
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     private boolean enabled;
+    private boolean deleted = false;
 }

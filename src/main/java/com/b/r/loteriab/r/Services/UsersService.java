@@ -155,7 +155,7 @@ public class UsersService {
             return result;
         }
         try {
-            usersRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
+            usersRepository.deleteById(id);
         } catch (Exception ex) {
             result.add("Ititilizatè la pa ka elimine reeseye ankò");
         }

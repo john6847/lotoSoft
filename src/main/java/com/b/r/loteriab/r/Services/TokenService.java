@@ -59,7 +59,6 @@ public class TokenService {
         last.setIdType((long) 0);
         last.setType(NotificationType.UserConnected.ordinal());
 
-
         sampleResponse.getBody().put("users", getConnectedUsers(enterpriseId));
         sampleResponse.getBody().put("added", true);
         last.setSampleResponse(sampleResponse);
@@ -68,6 +67,11 @@ public class TokenService {
 
     public static void remove(String token, Long enterpriseId) {
         TokenService.activeTokens.entrySet().removeIf(key -> key.getKey().equals(token));
+        sendNotification(enterpriseId);
+    }
+
+    public static void removeTokens(Long enterpriseId) {
+        TokenService.activeTokens.entrySet().removeIf(key -> key.getValue().getEnterpriseId().equals(enterpriseId));
         sendNotification(enterpriseId);
     }
 

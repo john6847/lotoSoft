@@ -9,6 +9,7 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Notification.Service.AuditEventServiceImpl;
 import com.b.r.loteriab.r.Repository.*;
+import com.b.r.loteriab.r.Services.TokenService;
 import com.b.r.loteriab.r.Validation.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -104,6 +105,7 @@ public class WebSocketPingScheduler {
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
                                 shiftRepository.save(other);
+                                cleanLoggedInUser(entry.getKey());
                             }
                         } else {
                             date = Helper.addDays(date, 1);
@@ -125,6 +127,7 @@ public class WebSocketPingScheduler {
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
                             shiftRepository.save(other);
+                            cleanLoggedInUser(entry.getKey());
                         }
                         System.out.println("Close date " + date);
                         System.out.println("Actual date " + new Date());
@@ -151,55 +154,6 @@ public class WebSocketPingScheduler {
                         AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal()).remove(lastNotification);
                     }
                 }
-            }
-        }
-    }
-
-    /**
-     * Method to set combination saleTotal back to the defauult value
-     *
-     * @return configuration
-     */
-    private void setSaleTotalBackToDefault(Long enterpriseId) {
-        combinationRepository.updateCombinationSaleTotal(enterpriseId);
-    }
-
-    /**
-     * Method to send notification to admin about combination that are at the price limit
-     *
-     * @return configuration
-     */
-    private void sendCombinationPriceLimitNotif() {
-        List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
-        if (lastNotifications != null) {
-            for (LastNotification lastNotification : lastNotifications) {
-                if (lastNotification.isChanged()) {
-                    service.sendMessage(lastNotification.getSampleResponse(), lastNotification.getEnterpriseId(), null);
-                }
-            }
-        }
-    }
-
-    private void deleteIncompleteSale(Long enterpriseId) {
-        List<Sale> sales = saleRepository.findAllByEnterpriseId(enterpriseId);
-        for (Sale sale : sales) {
-            if (sale.getSaleStatus() == SaleSatus.SAVING.ordinal()) {
-//               for (SaleDetail saleDetail: sale.getSaleDetails()){
-//                    saleDetailRepository.deleteByIdAndEnterpriseId(saleDetail.getId(), enterpriseId);
-//               }
-                sale.setEnterprise(null);
-                sale.setShift(null);
-                Long ticketId = sale.getTicket().getId();
-                sale.setSeller(null);
-                sale.setPos(null);
-                sale.setTicket(null);
-                saleRepository.save(sale);
-
-                Ticket ticket = ticketRepository.findTicketByIdAndEnterpriseId(ticketId, enterpriseId);
-                ticket.setEnterprise(null);
-                ticketRepository.save(ticket);
-                ticketRepository.deleteByIdAndEnterpriseId(enterpriseId, ticketId);
-                saleRepository.deleteSaleByIdAndEnterpriseId(sale.getId(), sale.getEnterprise().getId());
             }
         }
     }
@@ -245,5 +199,63 @@ public class WebSocketPingScheduler {
             service.sendMessage(sampleResponse, enterprise.getId(), last);
         }
 
+    }
+
+    /**
+     * Method to set combination saleTotal back to the defauult value
+     *
+     * @return
+     */
+    private void setSaleTotalBackToDefault(Long enterpriseId) {
+        combinationRepository.updateCombinationSaleTotal(enterpriseId);
+    }
+
+    /**
+     * Method to send notification to admin about combination that are at the price limit
+     *
+     * @return
+     */
+    private void sendCombinationPriceLimitNotif() {
+        List<LastNotification> lastNotifications = AuditEventServiceImpl.lastNotificationMapList.get(NotificationType.CombinationPriceLimit.ordinal());
+        if (lastNotifications != null) {
+            for (LastNotification lastNotification : lastNotifications) {
+                if (lastNotification.isChanged()) {
+                    service.sendMessage(lastNotification.getSampleResponse(), lastNotification.getEnterpriseId(), null);
+                }
+            }
+        }
+    }
+
+    /**
+     * Method to clean oall the logged in user
+     *
+     * @return
+     */
+    private void cleanLoggedInUser(Long enterpriseId) {
+        TokenService.removeTokens(enterpriseId);
+    }
+
+    private void deleteIncompleteSale(Long enterpriseId) {
+        List<Sale> sales = saleRepository.findAllByEnterpriseId(enterpriseId);
+        for (Sale sale : sales) {
+            if (sale.getSaleStatus() == SaleSatus.SAVING.ordinal()) {
+//               for (SaleDetail saleDetail: sale.getSaleDetails()){
+//                    saleDetailRepository.deleteByIdAndEnterpriseId(saleDetail.getId(), enterpriseId);
+//               }
+                sale.setEnterprise(null);
+                sale.setShift(null);
+                Long ticketId = sale.getTicket().getId();
+                sale.setSeller(null);
+                sale.setPos(null);
+                sale.setTicket(null);
+                saleRepository.save(sale);
+
+                Ticket ticket = ticketRepository.findTicketByIdAndEnterpriseId(ticketId, enterpriseId);
+                ticket.setEnterprise(null);
+                ticketRepository.save(ticket);
+                ticketRepository.deleteByIdAndEnterpriseId(enterpriseId, ticketId);
+                saleRepository.deleteSaleByIdAndEnterpriseId(sale.getId(), sale.getEnterprise().getId());
+            }
+        }
     }
 }

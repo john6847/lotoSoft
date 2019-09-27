@@ -1,8 +1,7 @@
 package com.b.r.loteriab.r.Controllers;
 
-import com.b.r.loteriab.r.Model.Enterprise;
-import com.b.r.loteriab.r.Model.Seller;
-import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Repository.BankRepository;
 import com.b.r.loteriab.r.Repository.GroupsRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
@@ -35,6 +34,12 @@ public class SellerController {
 
     @Autowired
     private GroupsRepository groupsRepository;
+
+    @Autowired
+    private BankService bankService;
+
+    @Autowired
+    private BankRepository bankRepository;
 
     @GetMapping("")
     public String index(Model model, HttpServletRequest request) {
@@ -197,9 +202,28 @@ public class SellerController {
             model.addAttribute("user", user);
 
             if (id <= 0) {
+                redirectAttributes.addFlashAttribute("error", "Nimewo vandè a pa egziste");
+                return "redirect:/seller";
+            }
+            Seller savedSeller = sellerService.findSellerById(id, enterprise.getId());
+
+            if (savedSeller == null) {
                 redirectAttributes.addFlashAttribute("error", "Vandè a pa egziste");
                 return "redirect:/seller";
             }
+
+            Bank bank = bankService.findBankBySellerIdAndEnterpriseId(savedSeller.getId(), enterprise.getId());
+            if (bank != null) {
+                bank.setSeller(null);
+                bankRepository.save(bank);
+            }
+
+            Groups group = groupsService.findGroupsByParentSellerIdAndEnterpriseId(savedSeller.getId(), enterprise.getId());
+            if (group != null) {
+                group.setParentSeller(null);
+                groupsRepository.save(group);
+            }
+
             Result result = sellerService.deleteSellerById(id, enterprise.getId());
             if (!result.isValid()) {
                 redirectAttributes.addFlashAttribute("error", result.getValue());

@@ -26,4 +26,5 @@ public class Pos implements Serializable {
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     private boolean enabled;
+    private boolean deleted = false;
 }

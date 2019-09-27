@@ -3,9 +3,12 @@ package com.b.r.loteriab.r.Controllers;
 import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Enums.Roles;
 import com.b.r.loteriab.r.Model.Role;
+import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.EnterpriseService;
 import com.b.r.loteriab.r.Services.RoleService;
+import com.b.r.loteriab.r.Services.SellerService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,12 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private SellerService sellerService;
+
+    @Autowired
+    private SellerRepository sellerRepository;
 
     /*
      * Param id
@@ -115,7 +124,7 @@ public class UserController {
                     redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
                     return "redirect:/user/1/create";
                 }
-                users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector, enterprise.getId()));
+                users.setRoles(roleService.getSelectedRoles(isAdmin, isSeller, isSupervisor, isCollector, enterprise.getId()));
             }
 
 
@@ -199,7 +208,7 @@ public class UserController {
                     redirectAttributes.addFlashAttribute("error", "Ou dwe chwazi o mwen on tip pou itilizatè a");
                     return "redirect:/user/1/update/" + user.getId();
                 }
-                users.setRoles(getListRoles(isAdmin, isSeller, isSupervisor, isCollector, enterprise.getId()));
+                users.setRoles(roleService.getSelectedRoles(isAdmin, isSeller, isSupervisor, isCollector, enterprise.getId()));
             }
 
             if (id > 0) {
@@ -239,9 +248,32 @@ public class UserController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
+            if (type <= 1){
+                type = 1;
+            } else{
+                type = 2;
+            }
+
             if (id <= 0) {
-                model.addAttribute("error", "Itilizatè sa pa egziste, antre on lòt");
-                return "404";
+                model.addAttribute("error", "Nimewo Itilizatè sa pa egziste");
+                return "redirect:/user/"+ type;
+            }
+
+            Users savedUser = usersService.findUserById(id);
+            if (savedUser == null){
+                model.addAttribute("error", "Itilizatè sa pa egziste");
+                return "redirect:/user/"+ type;
+            }
+
+            Seller seller;
+            if (type == 2)
+                seller = sellerRepository.findSellerByUserId(savedUser.getId());
+            else
+                seller = sellerRepository.findSellerByUserIdAndEnterpriseId(savedUser.getId(), enterprise.getId());
+
+            if(seller != null){
+                seller.setUser(null);
+                sellerRepository.save(seller);
             }
 
             Result result = usersService.deleteUserById(id, enterprise.getId());
@@ -256,20 +288,5 @@ public class UserController {
         return "access-denied";
     }
 
-    private List<Role> getListRoles(String isAdmin, String isSeller, String isSupervisor, String isCollector, Long enterpriseId) {
-        List<Role> roleSet = new ArrayList<>();
-        if (isAdmin.equals("on")) {
-            roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_ADMIN.name(), enterpriseId));
-        }
-        if (isSeller.equals("on")) {
-            roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SELLER.name(), enterpriseId));
-        }
-        if (isSupervisor.equals("on")) {
-            roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SUPERVISOR.name(), enterpriseId));
-        }
-        if (isCollector.equals("on")) {
-            roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_COLLECTOR.name(), enterpriseId));
-        }
-        return roleSet;
-    }
+
 }

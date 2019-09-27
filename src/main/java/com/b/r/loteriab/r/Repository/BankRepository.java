@@ -18,6 +18,8 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
 
     Bank findBankByIdAndEnterpriseId(Long id, Long enterpriseId);
 
+    Bank findBankBySellerIdAndEnterpriseId(Long sellerId, Long enterpriseId);
+
     Page<Bank> findAllByEnabledAndEnterpriseIdOrderByIdDesc(boolean state, Long enterpriseId, Pageable pageable);
 
     Page<Bank> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId, Pageable pageable);

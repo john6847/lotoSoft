@@ -30,6 +30,10 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
 
     Seller findSellerByIdAndEnterpriseId(Long id, Long enterpriseId);
 
+    Seller findSellerByUserId(Long id);
+
+    Seller findSellerByUserIdAndEnterpriseId(Long id, Long enterpriseId);
+
     Page<Seller> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
 
     Page<Seller> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);

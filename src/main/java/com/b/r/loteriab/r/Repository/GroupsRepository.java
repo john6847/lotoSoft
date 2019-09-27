@@ -18,6 +18,8 @@ public interface GroupsRepository extends JpaRepository<Groups, Long> {
 
     Groups findGroupsByIdAndEnterpriseId(Long id, Long enterpriseId);
 
+    Groups findGroupsByParentSellerIdAndEnterpriseId(Long parentSellerId, Long enterpriseId);
+
     Page<Groups> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
 
     List<Groups> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);

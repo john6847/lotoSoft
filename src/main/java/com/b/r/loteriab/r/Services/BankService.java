@@ -119,6 +119,10 @@ public class BankService {
         return bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
     }
 
+    public Bank findBankBySellerIdAndEnterpriseId(Long sellerId, Long enterpriseId) {
+        return bankRepository.findBankBySellerIdAndEnterpriseId(sellerId, enterpriseId);
+    }
+
     public Result deleteBankById(Long id, Long enterpriseId) {
         Result result = new Result();
         Bank bank = bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);

@@ -61,14 +61,13 @@
                             ng-if="combinationType.products.id === 1">{{combinationType.payedPriceFirstDraw}},
                           {{combinationType.payedPriceSecondDraw}}, {{combinationType.payedPriceThirdDraw}}
                         </td>
-                        <td style="vertical-align: middle" data-title="'Pri Peman'"
+                        <td style="vertical-align: middle; text-align: right" data-title="'Pri Peman (HTG)'"
                             ng-if="combinationType.products.id !== 1">{{combinationType.payedPrice}}
                         </td>
-                        <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{combinationType.creationDate |
-                          date:'dd/MM/yyyy'}}
+                        <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{combinationType.creationDate | date :'short'}}
                         </td>
                         <td style="vertical-align: middle" data-title="'Dat Modifikasyon'">
-                          {{combinationType.modificationDate | date:'dd/MM/yyyy'}}
+                          {{combinationType.modificationDate | date : 'short'}}
                         </td>
                         <td style="vertical-align: middle; text-align: center" data-title="'Aktyalize'">
                           <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}"><i
@@ -84,7 +83,7 @@
         </div>
     </section>
   </section>
-
+<#--  https://docs.angularjs.org/api/ng/filter/date-->
   <!--main content end-->
   <div class="text-right">
     <div class="credits">

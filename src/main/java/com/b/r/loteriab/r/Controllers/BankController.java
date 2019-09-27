@@ -3,7 +3,6 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.Bank;
 import com.b.r.loteriab.r.Model.Enterprise;
-import com.b.r.loteriab.r.Model.Pos;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.AddressRepository;
 import com.b.r.loteriab.r.Repository.BankRepository;
@@ -49,9 +48,9 @@ public class BankController {
     private PosService posService;
 
     @RequestMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -63,9 +62,9 @@ public class BankController {
 
 
     @GetMapping("/create")
-    public String createBank(HttpServletRequest request, Model model){
+    public String createBank(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -81,19 +80,19 @@ public class BankController {
     @PostMapping("/create")
     public String saveBank(@ModelAttribute("bank") Bank bank,
                            @RequestParam(value = "region", defaultValue = "") String region,
-                           @RequestParam(value = "city", defaultValue = "") String  city,
-                           @RequestParam(value = "sector", defaultValue = "") String  sector,
+                           @RequestParam(value = "city", defaultValue = "") String city,
+                           @RequestParam(value = "sector", defaultValue = "") String sector,
                            @RequestParam(value = "street", defaultValue = "") String street,
                            HttpServletRequest request,
                            Model model,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
-            bank.setAddress(enterpriseService.buildAddress ("",region, city, sector, street, 0, "", ""));
+            bank.setAddress(enterpriseService.buildAddress("", region, city, sector, street, 0, "", ""));
 
             Result result = bankService.saveBank(bank, enterprise);
             if (!result.isValid()) {
@@ -107,9 +106,9 @@ public class BankController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateBank(@PathVariable("id") Long id,HttpServletRequest request,Model model){
+    public String updateBank(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -128,7 +127,7 @@ public class BankController {
 
             model.addAttribute("bank", bank);
             model.addAttribute("sellers", sellerService.findAllSellersByEnterpriseId(enterprise.getId()));
-            model.addAttribute("pos", posService.findPosBySellerId(bank.getSeller().getId(), enterprise.getId(),1));
+            model.addAttribute("pos", posService.findPosBySellerId(bank.getSeller().getId(), enterprise.getId(), 1));
             return "/update/bank";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye machin sa");
@@ -138,19 +137,19 @@ public class BankController {
     @PostMapping("/update")
     public String updateBank(@ModelAttribute("bank") Bank bank,
                              @RequestParam(value = "region", defaultValue = "") String region,
-                             @RequestParam(value = "city", defaultValue = "") String  city,
-                             @RequestParam(value = "sector", defaultValue = "") String  sector,
+                             @RequestParam(value = "city", defaultValue = "") String city,
+                             @RequestParam(value = "sector", defaultValue = "") String sector,
                              @RequestParam(value = "street", defaultValue = "") String street,
                              RedirectAttributes redirectAttributes,
                              HttpServletRequest request,
-                             Model model){
+                             Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
-            bank.setAddress(enterpriseService.buildAddress ("",region, city, sector, street, 0, "", ""));
+            bank.setAddress(enterpriseService.buildAddress("", region, city, sector, street, 0, "", ""));
 
             Result result = bankService.updateBank(bank, enterprise);
             if (!result.isValid()) {
@@ -165,9 +164,9 @@ public class BankController {
     }
 
     @RequestMapping("/delete/{id}")
-    public String deleteBank(HttpServletRequest request,Model model,@PathVariable("id") Long id){
+    public String deleteBank(HttpServletRequest request, Model model, @PathVariable("id") Long id) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -181,11 +180,10 @@ public class BankController {
             bank.setSeller(null);
             bank.setPos(null);
             long addressId = 0L;
-            if (bank.getAddress()!=null){
-             addressId = bank.getAddress().getId();
+            if (bank.getAddress() != null) {
+                addressId = bank.getAddress().getId();
             }
             bank.setAddress(null);
-//            bank.setEnterprise(null);
             bankRepository.save(bank);
             addressRepository.deleteById(addressId);
 

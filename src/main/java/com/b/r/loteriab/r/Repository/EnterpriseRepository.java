@@ -19,11 +19,9 @@ import java.util.List;
 @Transactional
 public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
+    String q = "SELECT * FROM enterprise e WHERE e.name IN (select e.NAME from enterprise e where e.name NOT IN (?1))";
+
     Enterprise findEnterpriseById(Long id);
-
-    Enterprise findAllByEnabledTrueAndIdGreaterThan(long id);
-
-    Enterprise findEnterpriseByEnabledAndId(boolean enabled, Long id);
 
     Enterprise findEnterpriseByEnabledAndNameContainingIgnoreCase(boolean enabled, String enterpriseName);
 
@@ -35,20 +33,15 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Page<Enterprise> findAllByOrderById(Pageable pageable);
 
-    List<Enterprise> findAllByEnabled(Boolean enabled);
-
     void deleteById(Long id);
 
     Enterprise save(Enterprise enterprise);
-    Enterprise findEnterpriseByIdentifier(String identifier);
 
     @Query("SELECT MAX(e.sequence) FROM Enterprise e")
     int selectMaxSequence();
 
-//    @Query( value = "SELECT  from enterprise e order by e.id desc", nativeQuery =true)
     Enterprise findTopByOrderByIdDesc();
 
-    String q = "SELECT * FROM enterprise e WHERE e.name IN (select e.NAME from enterprise e where e.name NOT IN (?1))";
     @Query(value = q, nativeQuery = true)
     List<Enterprise> selectAllEnterpriseExcept(String name);
 

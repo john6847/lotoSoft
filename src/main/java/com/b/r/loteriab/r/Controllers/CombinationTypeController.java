@@ -33,14 +33,14 @@ public class CombinationTypeController {
     @Autowired
     private ProductsService productsService;
     /*
-  * Param id
-  * Use to get the combination type
-  * */
+     * Param id
+     * Use to get the combination type
+     * */
 
     @GetMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -51,13 +51,13 @@ public class CombinationTypeController {
     }
 
     @GetMapping("/create")
-    public String createCombinationType(HttpServletRequest request, Model model){
+    public String createCombinationType(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
-            model.addAttribute("products",productsService.findAll());
+            model.addAttribute("products", productsService.findAll());
             model.addAttribute("combinationType", new CombinationType());
             return "/create/combinationType";
         }
@@ -66,9 +66,9 @@ public class CombinationTypeController {
     }
 
     @PostMapping("/create")
-    public String saveCombinationType (@ModelAttribute("combinationType") CombinationType combinationType, HttpServletRequest request, Model model){
+    public String saveCombinationType(@ModelAttribute("combinationType") CombinationType combinationType, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -86,9 +86,9 @@ public class CombinationTypeController {
     }
 
     @GetMapping("/update/{id}")
-    public String getCombinationType(@PathVariable("id")Long id, HttpServletRequest request, Model model){
+    public String getCombinationType(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -111,9 +111,9 @@ public class CombinationTypeController {
     }
 
     @PostMapping("/update")
-    public String updateCombinationType (@ModelAttribute("combinationType") CombinationType combinationType, @RequestParam("id") Long id, RedirectAttributes redirectAttributes,  HttpServletRequest request, Model model){
+    public String updateCombinationType(@ModelAttribute("combinationType") CombinationType combinationType, @RequestParam("id") Long id, RedirectAttributes redirectAttributes, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -124,10 +124,10 @@ public class CombinationTypeController {
                 return "redirect:/combinationType";
             }
 
-            Result result =  combinationTypeService.updateCombinationType(combinationType, enterprise);
-            if(!result.isValid()){
+            Result result = combinationTypeService.updateCombinationType(combinationType, enterprise);
+            if (!result.isValid()) {
                 redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
-                return "redirect:/combinationType/update/"+ combinationType.getId();
+                return "redirect:/combinationType/update/" + combinationType.getId();
             }
 
             return "redirect:/combinationType";

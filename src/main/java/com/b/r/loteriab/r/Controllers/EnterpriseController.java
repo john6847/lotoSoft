@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @Secured("ROLE_SUPER_MEGA_ADMIN")
@@ -39,7 +37,7 @@ public class EnterpriseController {
     private CombinationService combinationService;
 
     @RequestMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
@@ -48,7 +46,7 @@ public class EnterpriseController {
     }
 
     @RequestMapping("/create")
-    public String createEnterprise(HttpServletRequest request, Model model){
+    public String createEnterprise(HttpServletRequest request, Model model) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
@@ -61,14 +59,14 @@ public class EnterpriseController {
     public String saveEnterprise(@ModelAttribute("enterprise") Enterprise enterprise,
                                  @RequestParam(value = "country", defaultValue = "") String country,
                                  @RequestParam(value = "region", defaultValue = "") String region,
-                                 @RequestParam(value = "city", defaultValue = "") String  city,
-                                 @RequestParam(value = "sector", defaultValue = "") String  sector,
+                                 @RequestParam(value = "city", defaultValue = "") String city,
+                                 @RequestParam(value = "sector", defaultValue = "") String sector,
                                  @RequestParam(value = "street", defaultValue = "") String street,
                                  @RequestParam(value = "number") int number,
                                  @RequestParam(value = "phone", defaultValue = "") String phone,
                                  @RequestParam(value = "email", defaultValue = "") String email,
-                                 @RequestParam(value = "bolet", defaultValue = "off") String  bolet,
-                                 @RequestParam(value = "lotoTwaChif", defaultValue = "off") String  lotoTwaChif,
+                                 @RequestParam(value = "bolet", defaultValue = "off") String bolet,
+                                 @RequestParam(value = "lotoTwaChif", defaultValue = "off") String lotoTwaChif,
                                  @RequestParam(value = "lotoKatChif", defaultValue = "off") String lotoKatChif,
                                  @RequestParam(value = "opsyon", defaultValue = "off") String opsyon,
                                  @RequestParam(value = "maryaj", defaultValue = "off") String maryaj,
@@ -80,14 +78,14 @@ public class EnterpriseController {
                                  @RequestParam(value = "supervisor", defaultValue = "off") String supervisor,
                                  HttpServletRequest request,
                                  Model model,
-                                 RedirectAttributes redirectAttributes){
+                                 RedirectAttributes redirectAttributes) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
-        enterprise.setAddress(enterpriseService.buildAddress (country, region, city, sector, street, number, phone, email));
+        enterprise.setAddress(enterpriseService.buildAddress(country, region, city, sector, street, number, phone, email));
         Result result = enterpriseService.saveEnterprise(enterprise);
-        if(!result.isValid()){
+        if (!result.isValid()) {
             redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
             return "redirect:/enterprise/create";
         }
@@ -96,27 +94,27 @@ public class EnterpriseController {
         // create roles
         roleService.createRoleForEnterprise(enterprise.getName(), superAdmin, admin, seller, recollector, supervisor);// TODO: Save roles base on the roles chosen when creating the enterprise
         // Creating combinationTypes
-        combinationTypeService.initCombinationTypeForEnterprise(enterprise.getName(),bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
+        combinationTypeService.initCombinationTypeForEnterprise(enterprise.getName(), bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
         // creating combinations
         combinationService.initCombinationForEnterprise(enterprise.getName());
         return "redirect:/enterprise";
     }
 
     @GetMapping("/update/{id}")
-    public String updateEnterprise(@PathVariable("id") Long id,HttpServletRequest request,Model model){
+    public String updateEnterprise(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error","Nimewo enterprise sa pa egziste, cheche on lot");
+        if (id <= 0) {
+            model.addAttribute("error", "Nimewo enterprise sa pa egziste, cheche on lot");
             return "404";
         }
 
         Enterprise enterprise = enterpriseService.findEnterpriseById(id);
 
-        if(enterprise == null){
-            model.addAttribute("error","Nimewo enterprise sa pa egziste, cheche on lot");
+        if (enterprise == null) {
+            model.addAttribute("error", "Nimewo enterprise sa pa egziste, cheche on lot");
             return "404";
         }
 
@@ -125,33 +123,33 @@ public class EnterpriseController {
     }
 
     @PostMapping("/update")
-    public String updateEnterprise(@ModelAttribute("enterprise") Enterprise enterprise,HttpServletRequest request, Model model){
+    public String updateEnterprise(@ModelAttribute("enterprise") Enterprise enterprise, HttpServletRequest request, Model model) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
         Result result = enterpriseService.updateEnterprise(enterprise);
-        if(!result.isValid()){
+        if (!result.isValid()) {
             model.addAttribute("error", "Antrepriz la pa modifye, eseye ankò");
-            return "redirect:/enterprise/update/"+ enterprise.getId();
+            return "redirect:/enterprise/update/" + enterprise.getId();
         }
 
         return "redirect:/enterprise";
     }
 
     @RequestMapping("/delete/{id}")
-    public String deleteEnterprise(HttpServletRequest request,Model model,@PathVariable("id") Long id){
+    public String deleteEnterprise(HttpServletRequest request, Model model, @PathVariable("id") Long id) {
         String username = request.getSession().getAttribute("username").toString();
         Users user = usersService.findUserByUsername(username);
         model.addAttribute("user", user);
 
-        if(id <= 0){
-            model.addAttribute("error","Antrepriz sa pa egziste, antre on lòt");
+        if (id <= 0) {
+            model.addAttribute("error", "Antrepriz sa pa egziste, antre on lòt");
             return "404";
         }
-        Result result =  enterpriseService.deleteEnterpriseById(id);
+        Result result = enterpriseService.deleteEnterpriseById(id);
 
-        if(!result.isValid()){
+        if (!result.isValid()) {
             model.addAttribute("error", result.getLista().get(0).getMessage());
         }
 

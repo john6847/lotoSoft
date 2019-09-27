@@ -22,29 +22,29 @@ public class Helper {
         return str.length() == pos.getIndex();
     }
 
-    public static String createToken (int number) {
+    public static String createToken(int number) {
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[number];
         random.nextBytes(bytes);
         return bytes.toString();
     }
 
-    public  static String getSystemDate(){
+    public static String getSystemDate() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss");
         return format.format(calendar.getTime());
     }
 
-    public  static String getTimeFromDate(Date date, String shift){
-        if (date == null){
+    public static String getTimeFromDate(Date date, String shift) {
+        if (date == null) {
             return "";
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat format;
-        if (shift.equals("12")){
+        if (shift.equals("12")) {
             format = new SimpleDateFormat("hh:mm:ss a");
-        }else {
+        } else {
             format = new SimpleDateFormat("HH:mm:ss");
         }
         return format.format(calendar.getTime());
@@ -58,24 +58,24 @@ public class Helper {
     }
 
 
-    public  static int getDateValueFromDate (Date date, int type) {
+    public static int getDateValueFromDate(Date date, int type) {
         LocalDate localDate = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        switch (type){
+        switch (type) {
             case 0:
                 return localDate.getDayOfMonth();
-                case 1:
+            case 1:
                 return localDate.getMonthValue();
-                case 2:
+            case 2:
                 return localDate.getYear();
         }
         return 0;
     }
 
-    public static int getTimeValueFromDate(Date date, int type){
+    public static int getTimeValueFromDate(Date date, int type) {
         Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
         calendar.setTime(date);   // assigns calendar to given date
         calendar.get(Calendar.HOUR);        // gets hour in 12h format
-        switch (type){
+        switch (type) {
             case 0:
                 return calendar.get(Calendar.MINUTE);
             case 1:
@@ -86,32 +86,33 @@ public class Helper {
         return 0;
     }
 
-    public static Date setTimeToDate(Date date, String []time) {
+    public static Date setTimeToDate(Date date, String[] time) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(time[0]));
-        cal.set(Calendar.MINUTE,Integer.parseInt(time[1]));
-        cal.set(Calendar.SECOND,Integer.parseInt("00"));
-        cal.set(Calendar.MILLISECOND,0);
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+        cal.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+        cal.set(Calendar.SECOND, Integer.parseInt("00"));
+        cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
-    public static Pair<Date, Date> getStartDateAndEndDate (String start, String end, Date dayToFind, int dayToSubstract, String format){
+
+    public static Pair<Date, Date> getStartDateAndEndDate(String start, String end, Date dayToFind, int dayToSubstract, String format) {
 
         Date startDate = Helper.parseDate(start, format);
         Date endDate = Helper.parseDate(end, format);
 
-        String [] timeStart = Helper.getTimeFromDate(startDate, "").split(":");
+        String[] timeStart = Helper.getTimeFromDate(startDate, "").split(":");
         Date resultStartDate = Helper.setTimeToDate(dayToFind, timeStart);
-        if (dayToSubstract < 0){
+        if (dayToSubstract < 0) {
             resultStartDate = Helper.addDays(resultStartDate, -1);
         }
-        String [] timeEnd = Helper.getTimeFromDate(endDate, "").split(":");
+        String[] timeEnd = Helper.getTimeFromDate(endDate, "").split(":");
         Date resultEndDate = Helper.setTimeToDate(dayToFind, timeEnd);
 
-        return  Pair.with(resultStartDate, resultEndDate);
+        return Pair.with(resultStartDate, resultEndDate);
     }
 
-    public static Date parseDate(String date, String format){
+    public static Date parseDate(String date, String format) {
         Date newDate = new Date();
         try {
             newDate = new SimpleDateFormat(format).parse(date);
@@ -121,9 +122,9 @@ public class Helper {
         return newDate;
     }
 
-    public static Date getCloseDateTime(String closeTime, Date dateToApply){
+    public static Date getCloseDateTime(String closeTime, Date dateToApply) {
         Date date = Helper.convertStringToDate(closeTime, "dd/MM/yyyy, hh:mm:ss a");
-        String [] time = Helper.getTimeFromDate(date, "").split(":");
+        String[] time = Helper.getTimeFromDate(date, "").split(":");
         return Helper.setTimeToDate(dateToApply, time);
     }
 

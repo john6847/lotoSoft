@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Data
-public class Pos implements Serializable{
+public class Pos implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

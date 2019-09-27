@@ -1,7 +1,10 @@
 package com.b.r.loteriab.r.Controllers;
 
 
-import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Groups;
+import com.b.r.loteriab.r.Model.Seller;
+import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.AddressRepository;
 import com.b.r.loteriab.r.Repository.GroupsRepository;
 import com.b.r.loteriab.r.Repository.SellerRepository;
@@ -42,9 +45,9 @@ public class GroupController {
     private AddressRepository addressRepository;
 
     @RequestMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -54,11 +57,10 @@ public class GroupController {
         return "access-denied";
     }
 
-
     @GetMapping("/create")
-    public String createGroup(HttpServletRequest request, Model model){
+    public String createGroup(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -81,9 +83,9 @@ public class GroupController {
                             @RequestParam(value = "sector", defaultValue = "") String sector,
                             @RequestParam(value = "phone", defaultValue = "") String phone,
                             @RequestParam(value = "region", defaultValue = "") String region,
-                            HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+                            HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -103,10 +105,10 @@ public class GroupController {
 
     @RequestMapping("/delete/{id}")
     public String deleteGroup(HttpServletRequest request,
-                              Model model,@PathVariable("id") Long id,
-                              RedirectAttributes redirectAttributes){
+                              Model model, @PathVariable("id") Long id,
+                              RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -128,7 +130,7 @@ public class GroupController {
 
             Groups groups = groupService.findGroupsById(id, enterprise.getId());
             long addressId = 0L;
-            if (groups.getAddress()!=null){
+            if (groups.getAddress() != null) {
                 addressId = groups.getAddress().getId();
             }
             groups.setAddress(null);
@@ -146,6 +148,5 @@ public class GroupController {
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou modifye gwoup an");
         return "access-denied";
     }
-
 
 }

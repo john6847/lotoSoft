@@ -13,20 +13,4 @@ public class TicketService {
     public Ticket save(Ticket ticket){
         return ticketRepository.save(ticket);
     }
-
-    private Ticket findById(Long id, Long enterpriseId){return ticketRepository.findTicketByIdAndEnterpriseId(id, enterpriseId);}
-    private Ticket findByIdAndEnabled(Long id,boolean enabled, Long enterpriseId){
-        return ticketRepository.findTicketByIdAndEnabledAndEnterpriseId(id,enabled, enterpriseId);
-    }
-
-    private Ticket findBySerial(String serial, Long enterpriseId){
-        return ticketRepository.findBySerialAndEnterpriseId(serial, enterpriseId);
-    }
-
-    private Ticket findBySerialAndEnabled(String serial,boolean enabled, Long enterpriseId){
-        return ticketRepository.findBySerialAndEnabledAndEnterpriseId(serial,enabled, enterpriseId);
-    }
-
-
-
 }

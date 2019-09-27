@@ -16,11 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * Created by Dany on 09/05/2019.
@@ -44,14 +40,15 @@ public class DrawController {
 
     @Autowired
     private ShiftService shiftService;
+
     /*
-  * Param id
-  * Use to get the draw
-  * */
+     * Param id
+     * Use to get the draw
+     * */
     @GetMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -63,9 +60,9 @@ public class DrawController {
     }
 
     @GetMapping("/create")
-    public String createDraw(HttpServletRequest request, Model model){
+    public String createDraw(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -83,15 +80,15 @@ public class DrawController {
 
     @PostMapping("/create")
     public String saveDraw(@ModelAttribute("draw") Draw draw,
-                           @RequestParam(value ="date", defaultValue = "") String date,
-                           HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+                           @RequestParam(value = "date", defaultValue = "") String date,
+                           HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
-            Result result = drawService.saveDraw(draw,enterprise);
+            Result result = drawService.saveDraw(draw, enterprise);
             if (!result.isValid()) {
                 redirectAttributes.addFlashAttribute("error", result.getLista().get(0).getMessage());
                 return "redirect:/draw/create";
@@ -104,10 +101,10 @@ public class DrawController {
     }
 
     @GetMapping("/update/{id}")
-    public String getDraw(@PathVariable("id")Long id, HttpServletRequest request, Model model){
+    public String getDraw(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
 
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -135,9 +132,9 @@ public class DrawController {
     }
 
     @PostMapping("/update")
-    public String updateDraw(@ModelAttribute("draw") Draw draw, @RequestParam("id") Long id, HttpServletRequest request, Model model,  RedirectAttributes redirectAttributes){
+    public String updateDraw(@ModelAttribute("draw") Draw draw, @RequestParam("id") Long id, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -162,9 +159,9 @@ public class DrawController {
     }
 
     @RequestMapping("/cancel/{id}")
-    public String deleteDraw(HttpServletRequest request, Model model, @PathVariable("id") Long id){
+    public String deleteDraw(HttpServletRequest request, Model model, @PathVariable("id") Long id) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);

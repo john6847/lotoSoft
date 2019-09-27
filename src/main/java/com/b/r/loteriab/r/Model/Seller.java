@@ -1,8 +1,5 @@
 package com.b.r.loteriab.r.Model;
 
-import com.b.r.loteriab.r.Model.Serializers.CombinationTypeSerializer;
-import com.b.r.loteriab.r.Model.Serializers.SellerSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
@@ -12,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Seller implements Serializable{
+public class Seller implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

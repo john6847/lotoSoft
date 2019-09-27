@@ -15,12 +15,7 @@ public class NumberThreeDigitsService {
     @Autowired
     private NumberThreeDigitsRepository numberThreeDigitsRepository;
 
-    public NumberThreeDigits saveNumberThreeDigits (NumberThreeDigits numberThreeDigits ){
+    public NumberThreeDigits saveNumberThreeDigits(NumberThreeDigits numberThreeDigits) {
         return numberThreeDigitsRepository.save(numberThreeDigits);
     }
-
-    public NumberThreeDigits findNumberThreeDigitsById(Long id){
-        return numberThreeDigitsRepository.findNumberThreeDigitsById(id);
-    }
-
 }

@@ -20,7 +20,7 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
 
     List<Shift> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 
-    Shift findShiftByEnabledAndEnterpriseId (boolean state, Long enterpriseId);
+    Shift findShiftByEnabledAndEnterpriseId(boolean state, Long enterpriseId);
 
     Shift save(Shift shift);
 }

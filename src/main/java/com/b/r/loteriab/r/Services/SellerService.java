@@ -30,35 +30,35 @@ public class SellerService {
     private EnterpriseService enterpriseService;
 
     @Autowired
-    private  RoleService roleService;
+    private RoleService roleService;
 
     @Autowired
     private UserRepository userRepository;
 
-    private Result validateModel (Seller seller){
+    private Result validateModel(Seller seller) {
         Result result = new Result();
 
-        if (seller.getPos() == null){
+        if (seller.getPos() == null) {
             result.add("Vandè a dwe gen yon machin avan li anrejistre", "Pos");
         }
 
         return result;
     }
 
-    public Result saveSeller (Seller seller,  String useMonthlyPayment, String haveUser, Users users, Enterprise enterprise){
+    public Result saveSeller(Seller seller, String useMonthlyPayment, String haveUser, Users users, Enterprise enterprise) {
         Result result = validateModel(seller);
-        if (useMonthlyPayment.equals("on")){
-            if (seller.getAmountCharged() <= 0){
+        if (useMonthlyPayment.equals("on")) {
+            if (seller.getAmountCharged() <= 0) {
                 result.add("Ou dwe mete yon montan pa mwa");
                 return result;
             }
-        }else {
-            if (seller.getPercentageCharged() <= 0){
+        } else {
+            if (seller.getPercentageCharged() <= 0) {
                 result.add("Ou dwe mete yon pousantaj pa mwa");
-                return  result;
+                return result;
             }
         }
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
@@ -75,7 +75,7 @@ public class SellerService {
             Users resultingUser = userRepository.save(users);
             seller.setUser(resultingUser);
         }
-        int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal(): PaymentType.PERCENTAGE.ordinal();
+        int payment = useMonthlyPayment.equals("on") ? PaymentType.MONTHLY.ordinal() : PaymentType.PERCENTAGE.ordinal();
         seller.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         seller.setPaymentType(payment);
         seller.setCreationDate(new Date());
@@ -85,27 +85,27 @@ public class SellerService {
         try {
 
             sellerRepository.save(seller);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Vandè a pa ka anrejistre reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public Result updateSeller(Seller seller,String useMonthlyPayment, Long enterpriseId) {
+    public Result updateSeller(Seller seller, String useMonthlyPayment, Long enterpriseId) {
         Result result = new Result();
-        if (useMonthlyPayment.equals("on")){
-            if (seller.getAmountCharged() <= 0){
+        if (useMonthlyPayment.equals("on")) {
+            if (seller.getAmountCharged() <= 0) {
                 result.add("Ou dwe mete yon montan pa mwa");
                 return result;
             }
-        }else {
-            if (seller.getPercentageCharged() <= 0){
+        } else {
+            if (seller.getPercentageCharged() <= 0) {
                 result.add("Ou dwe mete yon pousantaj pa mwa");
-                return  result;
+                return result;
             }
         }
 
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
@@ -118,16 +118,14 @@ public class SellerService {
 
         try {
             sellerRepository.save(currentSeller);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Vandè a pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public Seller findSellerById(Long id,Long enterpriseId){return sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);}
-
-    public Seller findSellerByIdAndEnabled(Long id, boolean enabled, Long enterpriseId){
-        return sellerRepository.findSellerByIdAndEnabledAndEnterpriseId(id,enabled,enterpriseId);
+    public Seller findSellerById(Long id, Long enterpriseId) {
+        return sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
     }
 
     public ArrayList<Seller> findAllSellersByEnterpriseId(Long enterpriseId) {
@@ -138,38 +136,31 @@ public class SellerService {
         return (ArrayList<Seller>) sellerRepository.findAllByGroupsIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Result deleteSellerById(Long id, Long enterpriseId){
+    public Result deleteSellerById(Long id, Long enterpriseId) {
         Result result = new Result();
         Seller draw = sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
-        if(draw == null) {
+        if (draw == null) {
             result.add("Vandè sa ou bezwen elimine a pa egziste");
             return result;
         }
-        try{
+        try {
             sellerRepository.deleteSellerByIdAndEnterpriseId(id, enterpriseId);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Vandè a pa ka elimine reeseye ankò");
         }
-        sellerRepository.deleteSellerByIdAndEnterpriseId(id,enterpriseId);
+        sellerRepository.deleteSellerByIdAndEnterpriseId(id, enterpriseId);
         return result;
     }
-    public List<Seller> findAllSellerByEnabled(Boolean enabled, Long enterpriseId){
-        if (enabled!= null){
-            return sellerRepository.findAllByEnabledAndEnterpriseId(enabled, enterpriseId);
-        }
-        return sellerRepository.findAllByEnterpriseId(enterpriseId);
-    }
 
-    public Page <Seller> findAllSellerByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
-        if(state != null){
-            return sellerRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+    public Page<Seller> findAllSellerByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
+        Pageable pageable = PageRequest.of(page - 1, itemPerPage);
+        if (state != null) {
+            return sellerRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
         return sellerRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
-     public List <Seller> selectAllSellers(Long enterpriseId){
-            return sellerRepository.selectAllSellersByEnterpriseId(true, enterpriseId);
-        }
-
+    public List<Seller> selectAllSellers(Long enterpriseId) {
+        return sellerRepository.selectAllSellersByEnterpriseId(true, enterpriseId);
+    }
 }

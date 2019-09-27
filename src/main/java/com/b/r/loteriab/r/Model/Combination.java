@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name    = "combination",
+@Table(name = "combination",
         indexes = {@Index(name = "i_combination", columnList = "sequence,combination_type_id")})
 public class Combination implements Serializable {
     @Id
@@ -39,7 +39,7 @@ public class Combination implements Serializable {
     @Min(value = 1)
     private long sequence;
     private boolean enabled;
-    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 

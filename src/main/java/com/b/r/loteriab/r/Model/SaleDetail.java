@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Data
-public class SaleDetail implements Serializable{
+public class SaleDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,8 +21,8 @@ public class SaleDetail implements Serializable{
     @JsonIgnore
     @ManyToOne
     @JoinTable(name = "sale_Sale_details",
-            joinColumns = {@JoinColumn(name = "saleDetails_id",referencedColumnName = "id",insertable = false,updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "sale_id",referencedColumnName = "id",insertable = false,updatable = false)})
+            joinColumns = {@JoinColumn(name = "saleDetails_id", referencedColumnName = "id", insertable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "sale_id", referencedColumnName = "id", insertable = false, updatable = false)})
     private Sale sale;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -35,9 +35,6 @@ public class ConfigurationController {
     private CombinationTypeService combinationTypeService;
 
     @Autowired
-    private CombinationTypeRepository combinationTypeRepository;
-
-    @Autowired
     private PosService posService;
 
     @Autowired
@@ -81,14 +78,15 @@ public class ConfigurationController {
 
     /**
      * Route to configigure Pos Type (Block and UnBlock)
+     *
      * @param id
      * @return configuration
      */
 
     @GetMapping("/pos/{id}")
-    public String configurationPos (Model model, @PathVariable Long id, HttpServletRequest request) {
+    public String configurationPos(Model model, @PathVariable Long id, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo machin sa pa egziste, itilize yon lòt");
                 return "redirect:/pos";
@@ -125,9 +123,9 @@ public class ConfigurationController {
      */
 
     @GetMapping("/bank/{id}")
-    public String configurationBank (Model model, @PathVariable Long id, HttpServletRequest request) {
+    public String configurationBank(Model model, @PathVariable Long id, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo bank sa pa egziste, itilize yon lòt");
                 return "redirect:/bank";
@@ -152,12 +150,12 @@ public class ConfigurationController {
      * @return
      */
     @GetMapping("/{type}/user/{id}")
-    public String configurationUser (Model model, @PathVariable("id") Long id, @PathVariable("type") Long type, HttpServletRequest request) {
+    public String configurationUser(Model model, @PathVariable("id") Long id, @PathVariable("type") Long type, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo itilizatè sa pa egziste, itilize yon lòt");
-                return "redirect:/user/"+ type;
+                return "redirect:/user/" + type;
             }
             Users users = usersService.findUser(id, enterprise.getId());
             if (users == null) {
@@ -167,7 +165,7 @@ public class ConfigurationController {
                 userRepository.save(users);
             }
 
-            return "redirect:/user/"+ type;
+            return "redirect:/user/" + type;
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke itilizatè sa");
         return "access-denied";
@@ -179,9 +177,9 @@ public class ConfigurationController {
      * @return
      */
     @GetMapping("/draw/{id}")
-    public String configurationDraw (Model model, @PathVariable Long id, HttpServletRequest request) {
+    public String configurationDraw(Model model, @PathVariable Long id, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo Tiraj sa pa egziste, itilize yon lòt");
                 return "redirect:/draw";
@@ -196,7 +194,7 @@ public class ConfigurationController {
 
             return "redirect:/draw";
         }
-       model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke tiraj sa");
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke tiraj sa");
         return "access-denied";
     }
 
@@ -206,9 +204,9 @@ public class ConfigurationController {
      * @return
      */
     @GetMapping("/group/{id}")
-    public String configurationGroup (Model model, @PathVariable Long id, HttpServletRequest request) {
+    public String configurationGroup(Model model, @PathVariable Long id, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo Gwoup sa pa egziste, itilize yon lòt");
                 return "redirect:/group";
@@ -239,15 +237,16 @@ public class ConfigurationController {
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou bloke gwoup sa");
         return "access-denied";
     }
+
     /**
      * Route to configure seller (Block and UnBlock)
      * @param id
      * @return
      */
     @GetMapping("/seller/{id}")
-    public String configurationSeller (Model model, @PathVariable Long id,  HttpServletRequest request) {
+    public String configurationSeller(Model model, @PathVariable Long id, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             if (id <= 0) {
                 model.addAttribute("error", "Nimewo Vandè sa pa egziste, itilize yon lòt");
                 return "redirect:/seller";
@@ -272,16 +271,16 @@ public class ConfigurationController {
      * @return
      */
     @GetMapping("/enterprise/{id}")
-    public String configurationEnterprise (Model model, @PathVariable Long id) {
+    public String configurationEnterprise(Model model, @PathVariable Long id) {
 
-        if(id <=0){
-            model.addAttribute("error","Nimewo antrepriz sa pa egziste, itilize yon lòt");
+        if (id <= 0) {
+            model.addAttribute("error", "Nimewo antrepriz sa pa egziste, itilize yon lòt");
             return "redirect:/enterprise";
         }
         Enterprise enterprise = enterpriseService.findEnterpriseById(id);
-        if(enterprise == null){
-            model.addAttribute("error","Antrepriz sa pa egziste.");
-        }else {
+        if (enterprise == null) {
+            model.addAttribute("error", "Antrepriz sa pa egziste.");
+        } else {
             enterprise.setEnabled(!enterprise.isEnabled());
             enterpriseRepository.save(enterprise);
         }
@@ -291,12 +290,12 @@ public class ConfigurationController {
 
     /**
      * Route to configure combination (Block and UnBlock, Change Maximum price of a combination)
-     *      * @return
+     * * @return
      */
     @GetMapping("/combination")
-    public String blockAndChangePriceCombination(HttpServletRequest request, Model model){
+    public String blockAndChangePriceCombination(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -310,12 +309,12 @@ public class ConfigurationController {
 
     /**
      * Route to configure shift (Change open and close date)
-     *      * @return
+     * * @return
      */
     @GetMapping("/shift")
-    public String configureShift(HttpServletRequest request, Model model){
+    public String configureShift(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);

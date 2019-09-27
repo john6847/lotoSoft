@@ -5,7 +5,6 @@ import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.TenantContext;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.EnterpriseRepository;
-import com.b.r.loteriab.r.Repository.RoleRepository;
 import com.b.r.loteriab.r.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,12 +18,9 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-import static java.util.Arrays.*;
-
 /**
  * Created by Dany on 22/04/2019.
  */
-
 
 @Service
 public class SecurityServices implements UserDetailsService {
@@ -33,16 +29,7 @@ public class SecurityServices implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private EnterpriseRepository enterpriseRepository;
-
-    @Autowired
-    private UsersService usersService;
-
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     private EnterpriseService enterpriseService;
@@ -52,10 +39,10 @@ public class SecurityServices implements UserDetailsService {
     /**
      * Creando el usuario por defecto y su rol.
      */
-    public void crearUsuarioAdmin(){
+    public void crearUsuarioAdmin() {
         System.out.println("Creación del usuario y rol en la base de datos");
         Users userAdmin = userRepository.findByUsername("bradmin");
-        if (userAdmin == null){
+        if (userAdmin == null) {
 
             Enterprise enterprise = new Enterprise();
             enterprise.setName("BR-tenant");
@@ -64,8 +51,7 @@ public class SecurityServices implements UserDetailsService {
 
             Role rolSuperMegaAdmin = new Role();
             rolSuperMegaAdmin.setName("ROLE_SUPER_MEGA_ADMIN");
-//            Role savedSuperMegaAdmin = roleRepository.findTopByOrderByIdDesc();
-            List <Role> roles = new ArrayList<>();
+            List<Role> roles = new ArrayList<>();
             roles.add(rolSuperMegaAdmin);
             Users admin = new Users();
             admin.setRoles(roles);
@@ -88,7 +74,7 @@ public class SecurityServices implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String[] usernameAndEnterprise= StringUtils.split(
+        String[] usernameAndEnterprise = StringUtils.split(
                 username, String.valueOf(Character.LINE_SEPARATOR));
         if (usernameAndEnterprise == null || usernameAndEnterprise.length != 2) {
             throw new UsernameNotFoundException("Username and macAddress must be provided");
@@ -96,7 +82,7 @@ public class SecurityServices implements UserDetailsService {
 
         Enterprise enterprise = enterpriseRepository.findEnterpriseByName(usernameAndEnterprise[1]);
 
-        if (!enterprise.isEnabled()){
+        if (!enterprise.isEnabled()) {
             throw new UsernameNotFoundException(
                     String.format("Itilizatè sa pa egziste pou antrepriz sa, itilizatè=%s, antrepriz=%s",
                             usernameAndEnterprise[0], usernameAndEnterprise[1]));
@@ -105,11 +91,11 @@ public class SecurityServices implements UserDetailsService {
         Users user = userRepository.findByUsernameAndEnterpriseName(usernameAndEnterprise[0], usernameAndEnterprise[1]);
         if (user == null) {
             throw new UsernameNotFoundException(
-                        String.format("Itilizatè sa pa egziste pou antrepriz sa, itilizatè=%s, antrepriz=%s",
-                                usernameAndEnterprise[0], usernameAndEnterprise[1]));
+                    String.format("Itilizatè sa pa egziste pou antrepriz sa, itilizatè=%s, antrepriz=%s",
+                            usernameAndEnterprise[0], usernameAndEnterprise[1]));
         }
 
-        TenantContext tenantContext = new TenantContext(usernameAndEnterprise[0],user.getEnterprise().getId());
+        TenantContext tenantContext = new TenantContext(usernameAndEnterprise[0], user.getEnterprise().getId());
         new Thread(tenantContext).start();
 
         Set<GrantedAuthority> roles = new HashSet<>();

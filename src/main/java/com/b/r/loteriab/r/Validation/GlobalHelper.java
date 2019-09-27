@@ -17,15 +17,14 @@ public class GlobalHelper {
     private DrawRepository drawRepository;
 
     public Draw getLastDraw(Long enterpriseId, Shift activeShift, Shift inactiveShift) {
-        if (activeShift != null && inactiveShift != null){
-            if (activeShift.getName().equals(Shifts.Maten.name())){
+        if (activeShift != null && inactiveShift != null) {
+            if (activeShift.getName().equals(Shifts.Maten.name())) {
                 Date date = Helper.addDays(new Date(), -1);
-                return drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(date, "00:00:00".split(":")),enterpriseId, inactiveShift.getId());
-            }
-            else {
-                return drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(new Date(), "00:00:00".split(":")),enterpriseId, inactiveShift.getId());
+                return drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(date, "00:00:00".split(":")), enterpriseId, inactiveShift.getId());
+            } else {
+                return drawRepository.findByDrawDateAndEnterpriseIdAndShiftId(Helper.setTimeToDate(new Date(), "00:00:00".split(":")), enterpriseId, inactiveShift.getId());
             }
         }
-        return  null;
+        return null;
     }
 }

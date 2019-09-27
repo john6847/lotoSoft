@@ -1,7 +1,5 @@
 package com.b.r.loteriab.r.Services;
 
-
-import com.b.r.loteriab.r.Model.Enterprise;
 import com.b.r.loteriab.r.Model.Shift;
 import com.b.r.loteriab.r.Repository.ShiftRepository;
 import com.b.r.loteriab.r.Validation.Result;
@@ -26,37 +24,9 @@ public class ShiftService {
     @Autowired
     private InitServices initServices;
 
-    private Result validateModel (Shift shift){
-        Result result = new Result();
-
-        if (shift.getName().isEmpty()){
-            result.add("non an pa ka vid", "name");
-        }
-
-        return result;
-    }
-
-    public Result saveShift(Shift shift, Enterprise enterprise){
-        Result result = validateModel(shift);
-        if (!result.isValid()){
-            return result;
-        }
-        try {
-            shift.setName(shift.getName());
-            shift.setOpenTime(shift.getOpenTime());
-            shift.setCloseTime(shift.getCloseTime());
-            shift.setEnabled(true);
-            shift.setEnterprise(enterprise);
-            shiftRepository.save(shift);
-        }catch (Exception ex){
-            result.add("Pa ka aktyalize reeseye ankò");
-        }
-        return  result;
-    }
-
     public Result updateShift(Shift shift, Long enterpriseId) {
         Result result = new Result();
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
@@ -68,21 +38,21 @@ public class ShiftService {
 
         try {
             shiftRepository.save(currentShift);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Tip tiraj la pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public Shift findShiftById(Long id, Long enterpriseId){
+    public Shift findShiftById(Long id, Long enterpriseId) {
         return shiftRepository.findShiftByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public ArrayList<Shift> findAllByEnterpriseId(Long enterpriseId){
-        return (ArrayList<Shift>)shiftRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
+    public ArrayList<Shift> findAllByEnterpriseId(Long enterpriseId) {
+        return (ArrayList<Shift>) shiftRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
-    public void createShiftForEnterprise(String enterpriseName){
+    public void createShiftForEnterprise(String enterpriseName) {
         initServices.createShift(enterpriseService.findEnterpriseByName(enterpriseName));
     }
 

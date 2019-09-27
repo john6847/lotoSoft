@@ -15,12 +15,8 @@ public class NumberTwoDigitsService {
     @Autowired
     private NumberTwoDigitsRepository numberTwoDigitsRepository;
 
-    public NumberTwoDigits saveNumberTwoDigits (NumberTwoDigits numberTwoDigits){
+    public NumberTwoDigits saveNumberTwoDigits(NumberTwoDigits numberTwoDigits) {
         return numberTwoDigitsRepository.save(numberTwoDigits);
-    }
-
-    public NumberTwoDigits findNumberTwoDigitsById(Long id){
-        return numberTwoDigitsRepository.findNumberTwoDigitsById(id);
     }
 
 }

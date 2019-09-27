@@ -16,8 +16,6 @@ import java.util.List;
 @Transactional
 public interface NumberThreeDigitsRepository extends JpaRepository<NumberThreeDigits, Long> {
 
-    NumberThreeDigits findNumberThreeDigitsById(Long id);
-
     Page<NumberThreeDigits> findAll(Pageable pageable);
 
     List<NumberThreeDigits> findAll();

@@ -32,32 +32,32 @@ public class GroupsService {
     @Autowired
     private EnterpriseService enterpriseService;
 
-    private Result validateModel (Groups groups){
+    private Result validateModel(Groups groups) {
         Result result = new Result();
 
-        if (groups.getDescription().isEmpty()){
+        if (groups.getDescription().isEmpty()) {
             result.add("Ou sipoze bay yon deskripsyon pou gwoup la");
         }
 
-        if (groups.getParentSeller() == null){
+        if (groups.getParentSeller() == null) {
             result.add("Responsab gwoup la pa ka vid");
         }
 
-        if (groups.getAddress() == null){
+        if (groups.getAddress() == null) {
             result.add("Ou dwe antre yon adrès pou gwoup la");
         }
 
         return result;
     }
 
-    public Result save(Groups groups, Enterprise enterprise){
+    public Result save(Groups groups, Enterprise enterprise) {
         Result result = validateModel(groups);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
         try {
             Address address = addressRepository.save(groups.getAddress());
-            if (address!=null){
+            if (address != null) {
                 groups.setAddress(address);
             }
             groups.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
@@ -65,67 +65,63 @@ public class GroupsService {
             groups.setModificationDate(new Date());
             groups.setEnabled(true);
             groupRepository.save(groups);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Gwoup la pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public void deleteGroupsId(Long id){
-        groupRepository.deleteById(id);
-    }
-
-    public List <Groups> findAllGroups(Long enterpriseId){
+    public List<Groups> findAllGroups(Long enterpriseId) {
         return groupRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
-    public Groups findGroupsById (Long id, Long enterpriseId) {
+    public Groups findGroupsById(Long id, Long enterpriseId) {
         return groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public Result deleteGroupsById(Long id, Long enterpriseId){
+    public Result deleteGroupsById(Long id, Long enterpriseId) {
         Result result = new Result();
         Groups groups = groupRepository.findGroupsByIdAndEnterpriseId(id, enterpriseId);
-        if(groups == null) {
+        if (groups == null) {
             result.add("Gwoup sa pa egziste");
             return result;
         }
-        try{
+        try {
             groupRepository.deleteById(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return result.add("Gwoup la pa ka elimine reeseye ankò");
         }
         return result;
     }
 
-    public Page<Groups> findAllGroupByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page - 1,  itemPerPage);
-        if(state != null){
-            return groupRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+    public Page<Groups> findAllGroupByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
+        Pageable pageable = PageRequest.of(page - 1, itemPerPage);
+        if (state != null) {
+            return groupRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
         return groupRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
-    public Address createAddres( String country, String city, String sector,String phone){
+    public Address createAddres(String country, String city, String sector, String phone) {
         Address address = null;
-        if (!country.isEmpty()){
+        if (!country.isEmpty()) {
             address = new Address();
             address.setCountry(country);
         }
-        if (!city.isEmpty()){
+        if (!city.isEmpty()) {
             if (address == null) {
                 address = new Address();
             }
             address.setCity(city);
         }
-        if (!sector.isEmpty()){
+        if (!sector.isEmpty()) {
             if (address == null) {
                 address = new Address();
             }
             address.setSector(sector);
         }
 
-        if (!phone.isEmpty()){
+        if (!phone.isEmpty()) {
             if (address == null) {
                 address = new Address();
             }

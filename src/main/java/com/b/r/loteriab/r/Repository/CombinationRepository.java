@@ -3,7 +3,6 @@ package com.b.r.loteriab.r.Repository;
 import com.b.r.loteriab.r.Model.Combination;
 import com.b.r.loteriab.r.Model.CombinationType;
 import com.b.r.loteriab.r.Model.Enterprise;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,43 +19,6 @@ import java.util.List;
 @Repository
 public interface CombinationRepository extends JpaRepository<Combination, Long> {
 
-    Combination findCombinationById(Long id);
-
-    <T>List<T> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId, Long enterpriseId, Class<T> classType); // bolet loto3 extra and maryaj when equal
-
-    <T>List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId, Class<T> classType); //Maryaj
-
-    @Query(" select c from Combination c where c.enterprise = :enterprise and (c.resultCombination = :resultCombination or c.resultCombination=:reverseResultCombination) and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
-    <T>List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("reverseResultCombination")String reverseResultCombination, @Param("combinationType1")CombinationType combinationType1, @Param("combinationType2")CombinationType combinationType2, @Param("enterprise") Enterprise enterprise, Class<T> classType); // Case is important
-
-    @Query(" select c from Combination c where c.enterprise = :enterprise and c.resultCombination = :resultCombination  and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
-    <T>List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("combinationType1")CombinationType combinationType1, @Param("combinationType2")CombinationType combinationType2, @Param("enterprise") Enterprise enterprise,Class<T> classType); // Case is important
-
-
-    List<Combination> findAllByCombinationTypeProductsNameAndEnterpriseId(String Name, Long enterpriseId); // TODO:
-
-    List<Combination> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
-
-    List<Combination> findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(Long enterpriseId, String name );
-    Combination save (Combination combination);
-
-    @Modifying
-    @Query("UPDATE Combination c SET c.maxPrice = :maxPrice, c.enabled= :enabled WHERE c.combinationType = :combinationType AND c.enterprise= :enterprise")
-    int updateCombinationMaxPrice(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("maxPrice") double maxPrice, @Param("enterprise")Enterprise enterprise);
-
-    @Modifying
-    @Query("UPDATE Combination c SET c.enabled = :enabled  WHERE c.combinationType  = :combinationType AND c.enterprise= :enterprise")
-    int updateCombinationState(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("enterprise")Enterprise enterprise);
-
-    Combination findByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, long combinationTypeId, Long enterpriseId);
-
-
-    @Modifying
-    @Query("UPDATE Combination c SET c.saleTotal = 0  WHERE c.saleTotal > 0 AND c.enterprise.id= :enterpriseId")
-    void updateCombinationSaleTotal(@Param("enterpriseId") Long enterpriseId);
-
-
-
     String q1 = "SELECT\n" +
             "    *\n" +
             "    FROM (\n" +
@@ -67,8 +29,43 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
             "      combination c where c.sale_total > 0 and enterprise_id =?1 ) x\n" +
             "   WHERE\n" +
             "      x.r <= 3";
+
+    Combination findCombinationById(Long id);
+
+    <T> List<T> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId, Long enterpriseId, Class<T> classType); // bolet loto3 extra and maryaj when equal
+
+    <T> List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId, Class<T> classType); //Maryaj
+
+    @Query(" select c from Combination c where c.enterprise = :enterprise and (c.resultCombination = :resultCombination or c.resultCombination=:reverseResultCombination) and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
+    <T> List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("reverseResultCombination") String reverseResultCombination, @Param("combinationType1") CombinationType combinationType1, @Param("combinationType2") CombinationType combinationType2, @Param("enterprise") Enterprise enterprise, Class<T> classType); // Case is important
+
+    @Query(" select c from Combination c where c.enterprise = :enterprise and c.resultCombination = :resultCombination  and  (c.combinationType =:combinationType1 or c.combinationType =:combinationType2)")
+    <T> List<T> findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(@Param("resultCombination") String resultCombination, @Param("combinationType1") CombinationType combinationType1, @Param("combinationType2") CombinationType combinationType2, @Param("enterprise") Enterprise enterprise, Class<T> classType); // Case is important
+
+    List<Combination> findAllByCombinationTypeProductsNameAndEnterpriseId(String Name, Long enterpriseId); // TODO:
+
+    List<Combination> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
+
+    List<Combination> findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(Long enterpriseId, String name);
+
+    Combination save(Combination combination);
+
+    @Modifying
+    @Query("UPDATE Combination c SET c.maxPrice = :maxPrice, c.enabled= :enabled WHERE c.combinationType = :combinationType AND c.enterprise= :enterprise")
+    int updateCombinationMaxPrice(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("maxPrice") double maxPrice, @Param("enterprise") Enterprise enterprise);
+
+    @Modifying
+    @Query("UPDATE Combination c SET c.enabled = :enabled  WHERE c.combinationType  = :combinationType AND c.enterprise= :enterprise")
+    int updateCombinationState(@Param("combinationType") CombinationType combinationType, @Param("enabled") boolean enabled, @Param("enterprise") Enterprise enterprise);
+
+    Combination findByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, long combinationTypeId, Long enterpriseId);
+
+    @Modifying
+    @Query("UPDATE Combination c SET c.saleTotal = 0  WHERE c.saleTotal > 0 AND c.enterprise.id= :enterpriseId")
+    void updateCombinationSaleTotal(@Param("enterpriseId") Long enterpriseId);
+
     @Query(value = q1, nativeQuery = true)
-    <T>List<T>selectTop3MostSoldCombinationByCombinationType(Long enterpriseId,  Class<T> classType);
+    <T> List<T> selectTop3MostSoldCombinationByCombinationType(Long enterpriseId, Class<T> classType);
 
 
 //    List<Combination> findByNumberThreeDigits_NumberInStringFormat(Pageable pageable);
@@ -102,7 +99,6 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 //
 //    @Query(value = q2, nativeQuery = true)
 //    <T>List<T> selectAllByNumberTwoDigitsByEnterpriseId(String numberInStringFormat, int limit, String type, Long enterpriseId, Class<T> classType);
-
 
 
 //    String q3 ="SELECT\n" +

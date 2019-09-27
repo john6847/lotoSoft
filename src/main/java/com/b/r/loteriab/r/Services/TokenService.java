@@ -26,31 +26,14 @@ public class TokenService {
     private static AuditEventServiceImpl auditEventService;
 
     @Autowired
-    public TokenService(AuditEventServiceImpl auditEventService){
+    public TokenService(AuditEventServiceImpl auditEventService) {
         TokenService.auditEventService = auditEventService;
-    }
-    @Scheduled(fixedRate = HALF_AN_HOUR_IN_MILLISECONDS)
-    public void evictExpiredTokens() {
-        logger.info("Evicting expired tokens");
-        List<Token> tokens = new ArrayList<>();
-        TokenService.activeTokens.forEach((key, value) -> {
-            if (new Date().getTime() - value.getCreatedAt().getTime() > value.getLifetime()) {
-                tokens.add(value);
-            }
-        });
-        TokenService.activeTokens.entrySet().removeIf(entry -> (new Date().getTime() - entry.getValue().getCreatedAt().getTime()) > entry.getValue().getLifetime());
-        if (tokens.size() > 0){
-            for (Token token: tokens){
-                sendNotification(token.getEnterpriseId());
-            }
-        }
     }
 
     public static String createAndStoreToken(Users user, Long enterpriseId) {
         boolean existed = TokenService.activeTokens.values().stream().anyMatch(o -> o.getUser().equals(user.getId()));
-        if (existed){
-            String key = TokenService.activeTokens.entrySet().stream().filter(o -> o.getValue().getUser().equals(user.getId())).findAny().get().getKey();
-            return key;
+        if (existed) {
+            return TokenService.activeTokens.entrySet().stream().filter(o -> o.getValue().getUser().equals(user.getId())).findAny().get().getKey();
         }
         Token token = new Token();
         String generatedToken = UUID.randomUUID().toString();
@@ -59,7 +42,7 @@ public class TokenService {
         token.setName(user.getName());
         token.setToken(generatedToken);
         token.setLifetime(120 * 60 * 1000);
-        if(contains(generatedToken)){
+        if (contains(generatedToken)) {
             createAndStoreToken(user, enterpriseId);
         }
         activeTokens.put(generatedToken, token);
@@ -67,7 +50,7 @@ public class TokenService {
         return generatedToken;
     }
 
-    public static void sendNotification(Long enterpriseId){
+    public static void sendNotification(Long enterpriseId) {
         SampleResponse sampleResponse = new SampleResponse();
         LastNotification last = new LastNotification();
         last.setChanged(false);
@@ -83,13 +66,13 @@ public class TokenService {
         TokenService.auditEventService.sendMessage(sampleResponse, enterpriseId, last);
     }
 
-    public static void remove(String token, Long enterpriseId){
-        TokenService.activeTokens.entrySet().removeIf( key -> key.getKey().equals(token));
+    public static void remove(String token, Long enterpriseId) {
+        TokenService.activeTokens.entrySet().removeIf(key -> key.getKey().equals(token));
         sendNotification(enterpriseId);
     }
 
-    public static List<Pair<Long, String>> getConnectedUsers(Long enterpriseId){
-        return TokenService.activeTokens.values().stream().filter(o -> o.getEnterpriseId().equals(enterpriseId)).map(e -> Pair.with(e.getUser(),  e.getName()) ).collect(Collectors.toList());
+    public static List<Pair<Long, String>> getConnectedUsers(Long enterpriseId) {
+        return TokenService.activeTokens.values().stream().filter(o -> o.getEnterpriseId().equals(enterpriseId)).map(e -> Pair.with(e.getUser(), e.getName())).collect(Collectors.toList());
     }
 
     public static boolean contains(String token) {
@@ -98,5 +81,22 @@ public class TokenService {
 
     public static Token retrieve(String token) {
         return activeTokens.get(token);
+    }
+
+    @Scheduled(fixedRate = HALF_AN_HOUR_IN_MILLISECONDS)
+    public void evictExpiredTokens() {
+        logger.info("Evicting expired tokens");
+        List<Token> tokens = new ArrayList<>();
+        TokenService.activeTokens.forEach((key, value) -> {
+            if (new Date().getTime() - value.getCreatedAt().getTime() > value.getLifetime()) {
+                tokens.add(value);
+            }
+        });
+        TokenService.activeTokens.entrySet().removeIf(entry -> (new Date().getTime() - entry.getValue().getCreatedAt().getTime()) > entry.getValue().getLifetime());
+        if (tokens.size() > 0) {
+            for (Token token : tokens) {
+                sendNotification(token.getEnterpriseId());
+            }
+        }
     }
 }

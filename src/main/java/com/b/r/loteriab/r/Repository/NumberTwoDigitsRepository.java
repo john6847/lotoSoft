@@ -16,9 +16,8 @@ import java.util.List;
 @Transactional
 public interface NumberTwoDigitsRepository extends JpaRepository<NumberTwoDigits, Long> {
 
-    NumberTwoDigits findNumberTwoDigitsById(Long id);
-
     Page<NumberTwoDigits> findAll(Pageable pageable);
+
     List<NumberTwoDigits> findAll();
 
     NumberTwoDigits save(NumberTwoDigits numberTwoDigits);

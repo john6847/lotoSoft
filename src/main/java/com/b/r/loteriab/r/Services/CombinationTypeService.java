@@ -34,45 +34,46 @@ public class CombinationTypeService {
     @Autowired
     private Helper helper;
 
-    private Result validateModel (CombinationType combinationType){
+    private Result validateModel(CombinationType combinationType) {
         Result result = new Result();
 
-        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
-            if (combinationType.getPayedPriceFirstDraw() <= 0){
+        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())) {
+            if (combinationType.getPayedPriceFirstDraw() <= 0) {
                 result.add("Ou dwe antre yon pri pou premye lo a", "payedPriceFirstDraw");
                 return result;
             }
-            if (combinationType.getPayedPriceSecondDraw() <= 0){
+            if (combinationType.getPayedPriceSecondDraw() <= 0) {
                 result.add("Ou dwe antre yon pri pou dezyèm lo a", "payedPriceSecondDraw");
                 return result;
             }
-            if (combinationType.getPayedPriceThirdDraw() <= 0){
+            if (combinationType.getPayedPriceThirdDraw() <= 0) {
                 result.add("Ou dwe antre yon pri pou twazyèm lo a", "payedPriceThirdDraw");
                 return result;
             }
         } else {
-            if (combinationType.getPayedPrice() <= 0){
-                result.add("Ou dwe antre yon pri pou " + helper.replace(combinationType.getProducts().getName(), "_", ""). toLowerCase(), "payedPriceThirdDraw");
+            if (combinationType.getPayedPrice() <= 0) {
+                result.add("Ou dwe antre yon pri pou " + helper.replace(combinationType.getProducts().getName(), "_", "").toLowerCase(), "payedPriceThirdDraw");
                 return result;
             }
         }
         return result;
     }
 
-    private CombinationType cleanModel (CombinationType combinationType) {
-        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
+    private CombinationType cleanModel(CombinationType combinationType) {
+        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())) {
             combinationType.setPayedPrice(0);
-        }else {
+        } else {
             combinationType.setPayedPriceFirstDraw(0);
             combinationType.setPayedPriceSecondDraw(0);
             combinationType.setPayedPriceThirdDraw(0);
         }
-        return  combinationType;
+        return combinationType;
     }
-    public Result saveCombinationType (CombinationType combinationType, Enterprise enterprise){
+
+    public Result saveCombinationType(CombinationType combinationType, Enterprise enterprise) {
         combinationType = cleanModel(combinationType);
         Result result = validateModel(combinationType);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
@@ -82,10 +83,10 @@ public class CombinationTypeService {
             combinationType.setCreationDate(new Date());
             combinationType.setModificationDate(new Date());
             combinationTypeRepository.save(combinationType);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Tip konbinezon an pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
 
@@ -94,15 +95,15 @@ public class CombinationTypeService {
         combinationType.setProducts(currentCombinationType.getProducts());
         combinationType = cleanModel(combinationType);
         Result result = validateModel(combinationType);
-            if (!result.isValid()){
-                return result;
-            }
+        if (!result.isValid()) {
+            return result;
+        }
 
-        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())){
+        if (combinationType.getProducts().getName().equals(CombinationTypes.BOLET.name())) {
             currentCombinationType.setPayedPriceFirstDraw(combinationType.getPayedPriceFirstDraw());
             currentCombinationType.setPayedPriceSecondDraw(combinationType.getPayedPriceSecondDraw());
             currentCombinationType.setPayedPriceThirdDraw(combinationType.getPayedPriceThirdDraw());
-        }else {
+        } else {
             currentCombinationType.setPayedPrice(combinationType.getPayedPrice());
         }
         currentCombinationType.setNote(combinationType.getNote());
@@ -110,48 +111,40 @@ public class CombinationTypeService {
 
         try {
             combinationTypeRepository.save(currentCombinationType);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Tip konbinezon an pa ka aktyalize, reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public Page<CombinationType> findAllCombinationTypeByEnterpriseId(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page,itemPerPage);
-        if (state!= null){
-            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
-        }
-        return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
-    }
-
-    public CombinationType findCombinationTypeByIdAndEntepriseId(Long id,Long enterpriseId){
+    public CombinationType findCombinationTypeByIdAndEntepriseId(Long id, Long enterpriseId) {
         return combinationTypeRepository.findCombinationTypeByIdAndEnterpriseId(id, enterpriseId);
     }
 
-    public List<CombinationType> findallByEnterpriseId (Long enterpriseId){
+    public List<CombinationType> findallByEnterpriseId(Long enterpriseId) {
         return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
-     public List<CombinationType> findAllByEnterpriseName (String enterpriseName){
+    public List<CombinationType> findAllByEnterpriseName(String enterpriseName) {
         return combinationTypeRepository.findAllByEnterpriseName(enterpriseName);
-     }
+    }
 
-    public List<CombinationType> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId){
-        if (enabled!= null){
+    public List<CombinationType> findAllByEnabledAndEnterpriseId(Boolean enabled, Long enterpriseId) {
+        if (enabled != null) {
             return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(enabled, enterpriseId);
         }
         return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId);
     }
 
-    public Page<CombinationType> findAllCombinationByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
-        if(state != null){
-            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable,state, enterpriseId);
+    public Page<CombinationType> findAllCombinationByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
+        Pageable pageable = PageRequest.of(page - 1, itemPerPage);
+        if (state != null) {
+            return combinationTypeRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
         return combinationTypeRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
     }
 
-    public void initCombinationTypeForEnterprise (String enterpriseName, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra){
+    public void initCombinationTypeForEnterprise(String enterpriseName, String bolet, String lotoTwaChif, String lotoKatChif, String opsyon, String maryaj, String extra) {
         initServices.createCombinationType(enterpriseService.findEnterpriseByName(enterpriseName), bolet, lotoTwaChif, lotoKatChif, opsyon, maryaj, extra);
     }
 

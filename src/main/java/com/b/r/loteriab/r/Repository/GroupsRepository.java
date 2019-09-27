@@ -17,12 +17,14 @@ import java.util.List;
 public interface GroupsRepository extends JpaRepository<Groups, Long> {
 
     Groups findGroupsByIdAndEnterpriseId(Long id, Long enterpriseId);
-    Groups findGroupsByIdAndEnabledAndEnterpriseId(Long id, boolean enabled, Long enterpriseId);
-    Page<Groups> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
-    List<Groups> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
-    Page<Groups> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
-    List<Groups> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
 
+    Page<Groups> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+
+    List<Groups> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
+
+    Page<Groups> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
+
+    List<Groups> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
 
     void deleteById(Long id);
 

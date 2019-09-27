@@ -28,25 +28,25 @@ public class EnterpriseService {
     @Autowired
     private Helper helper;
 
-    private Result validateModel (Enterprise enterprise){
+    private Result validateModel(Enterprise enterprise) {
         Result result = new Result();
 
-        if (enterprise.getName().isEmpty()){
+        if (enterprise.getName().isEmpty()) {
             result.add("Ou dwe rantre yon nom pou antrepriz la");
             return result;
         }
 
-        if (enterpriseRepository.findEnterpriseByName(enterprise.getName()) != null){
+        if (enterpriseRepository.findEnterpriseByName(enterprise.getName()) != null) {
             result.add("Antrepriz sa egziste deja");
             return result;
         }
 
-        if (enterprise.getSubDomain().isEmpty()){
+        if (enterprise.getSubDomain().isEmpty()) {
             result.add("Ou dwe rantre subdomen nan.");
             return result;
         }
 
-        if (enterpriseRepository.findEnterpriseBySubDomain(enterprise.getSubDomain()) != null){
+        if (enterpriseRepository.findEnterpriseBySubDomain(enterprise.getSubDomain()) != null) {
             result.add("Antrepriz sa egziste deja");
             return result;
         }
@@ -54,28 +54,28 @@ public class EnterpriseService {
         return result;
     }
 
-    public Result saveEnterprise(Enterprise enterprise){
+    public Result saveEnterprise(Enterprise enterprise) {
         Result result = validateModel(enterprise);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
         try {
-            Pair <String, Integer> enterpriseIdentifier= helper.createNewEnterpriseIdentifier();
+            Pair<String, Integer> enterpriseIdentifier = helper.createNewEnterpriseIdentifier();
             enterprise.setIdentifier(enterpriseIdentifier.getValue0());
             enterprise.setSequence(enterpriseIdentifier.getValue1());
             enterprise.setCreationDate(new Date());
             enterprise.setModificationDate(new Date());
             enterprise.setEnabled(true);
             enterpriseRepository.save(enterprise);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Antrepriz la pa ka Kreye reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
     public Result updateEnterprise(Enterprise enterprise) {
         Result result = validateModel(enterprise);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
@@ -84,79 +84,72 @@ public class EnterpriseService {
         currentEnterprise.setModificationDate(new Date());
         try {
             enterpriseRepository.save(currentEnterprise);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Antrepriz la pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
-    public ArrayList<Enterprise> findAllEnterprise(){
-        return (ArrayList<Enterprise>)enterpriseRepository.findAll();
+    public ArrayList<Enterprise> selectAllEnterpriseExcept() {
+        return (ArrayList<Enterprise>) enterpriseRepository.selectAllEnterpriseExcept("BR-tenant");
     }
 
-    public ArrayList<Enterprise> selectAllEnterpriseExcept(){
-        return (ArrayList<Enterprise>)enterpriseRepository.selectAllEnterpriseExcept("BR-tenant");
-    }
-
-    public Page<Enterprise> findAllEnterpriseByState(int page, int itemPerPage, Boolean state){
+    public Page<Enterprise> findAllEnterpriseByState(int page, int itemPerPage, Boolean state) {
         Pageable pageable = PageRequest.of(page, itemPerPage);
-        if(state != null){
-            return enterpriseRepository.findAllByEnabledOrderByIdDesc(pageable,state);
+        if (state != null) {
+            return enterpriseRepository.findAllByEnabledOrderByIdDesc(pageable, state);
         }
         return enterpriseRepository.findAllByOrderById(pageable);
     }
 
-    public Enterprise findEnterpriseById(Long id){
+    public Enterprise findEnterpriseById(Long id) {
         return enterpriseRepository.findEnterpriseById(id);
     }
-    public Enterprise findEnterpriseByName(String name){
+
+    public Enterprise findEnterpriseByName(String name) {
         return enterpriseRepository.findEnterpriseByName(name);
     }
 
-    public Enterprise findEnterpriseByIdAndEnabled(Long id, boolean enabled){
-        return enterpriseRepository.findEnterpriseByEnabledAndId(enabled, id);
-    }
-
-    public Result deleteEnterpriseById(Long id){
+    public Result deleteEnterpriseById(Long id) {
         Result result = new Result();
-        Enterprise enterprise= enterpriseRepository.findEnterpriseById(id);
-        if(enterprise == null) {
+        Enterprise enterprise = enterpriseRepository.findEnterpriseById(id);
+        if (enterprise == null) {
             result.add("Antrepriz sa ou bezwen elimine a pa egziste");
             return result;
         }
-        try{
+        try {
             enterpriseRepository.deleteById(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Machin la pa ka elimine reeseye ankò");
         }
         return result;
     }
 
-    public Address buildAddress (String country, String region, String city, String sector, String street, int number, String phone, String email){
+    public Address buildAddress(String country, String region, String city, String sector, String street, int number, String phone, String email) {
 
         Address address = new Address();
-        if (!country.isEmpty()){
+        if (!country.isEmpty()) {
             address.setCountry(country);
         }
-        if (!region.isEmpty()){
+        if (!region.isEmpty()) {
             address.setRegion(region);
         }
-        if (!city.isEmpty()){
+        if (!city.isEmpty()) {
             address.setCity(city);
         }
-        if (!sector.isEmpty()){
+        if (!sector.isEmpty()) {
             address.setSector(sector);
         }
-        if (number!=0){
+        if (number != 0) {
             address.setNumber(number);
         }
-        if (!street.isEmpty()){
+        if (!street.isEmpty()) {
             address.setStreet(street);
         }
-        if (!phone.isEmpty()){
+        if (!phone.isEmpty()) {
             address.setPhone(phone);
         }
-        if (!email.isEmpty()){
+        if (!email.isEmpty()) {
             address.setEmail(email);
         }
         return address;

@@ -31,13 +31,13 @@ public class IndexController {
     private GlobalHelper helper;
 
     @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
-    public ModelAndView dashboard(Model model, Principal user, HttpServletRequest request){
+    public ModelAndView dashboard(Model model, Principal user, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if(user!=null && enterprise!=null){
-            model.addAttribute("user", usersService.findUserByUsernameAndEnterpriseId(user.getName(),enterprise.getId()));
+        if (user != null && enterprise != null) {
+            model.addAttribute("user", usersService.findUserByUsernameAndEnterpriseId(user.getName(), enterprise.getId()));
             Shift activeShift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, enterprise.getId());
             Shift inactiveShift = shiftRepository.findShiftByEnabledAndEnterpriseId(false, enterprise.getId());
-            if (activeShift !=null && inactiveShift !=null){
+            if (activeShift != null && inactiveShift != null) {
                 Draw draw = helper.getLastDraw(enterprise.getId(), activeShift, inactiveShift);
                 model.addAttribute("draw", draw);
             }

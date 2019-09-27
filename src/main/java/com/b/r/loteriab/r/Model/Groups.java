@@ -14,7 +14,6 @@ import java.util.Date;
 @Entity
 @Data
 public class Groups implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

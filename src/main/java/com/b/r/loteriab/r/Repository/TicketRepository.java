@@ -10,8 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
+
+/**
+ * Created by Dany on 04/05/2019.
+ */
 @Transactional
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
@@ -24,12 +27,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Ticket findTicketBySerialAndEnterpriseId(String serial, Long enterpriseId);
 
-    Ticket findTicketByIdAndEnabledAndEnterpriseId(Long id,boolean enabled, Long enterpriseId);
-
-    Ticket findBySerialAndEnterpriseId(String name, Long enterpriseId);
-
-    Ticket findBySerialAndEnabledAndEnterpriseId(String name, boolean enabled, Long enterpriseId);
-
     List<Ticket> findAllByEnterpriseId(long id);
 
     Page<Ticket> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);
@@ -37,8 +34,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAllByEnabledAndEnterpriseId(Pageable pageable, boolean enabled, Long enterpriseId);
 
     @Query("SELECT max(t.sequence) FROM Ticket t where t.enterprise = :enterprise")
-    int selectMaxSequence(@Param("enterprise")Enterprise enterprise);
-
-    List<Ticket> findAllByWonTrueAndEnterpriseIdAndEmissionDateAndShiftId(Long enterpriseId, Date emissionDate, Long shiftId);
-
+    int selectMaxSequence(@Param("enterprise") Enterprise enterprise);
 }

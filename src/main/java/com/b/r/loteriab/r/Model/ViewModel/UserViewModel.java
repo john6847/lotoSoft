@@ -1,6 +1,5 @@
 package com.b.r.loteriab.r.Model.ViewModel;
 
-import com.b.r.loteriab.r.Model.Enterprise;
 import lombok.Data;
 
 @Data

@@ -21,10 +21,7 @@ public class Draw implements Serializable{
     private Long id;
     @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
-    private Shift shift; // tanda
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinTable(name="draw_numberTwoDigits", joinColumns=@JoinColumn(name="draw_id"), inverseJoinColumns=@JoinColumn(name="numberTwoDigits_id"))
-//    private List<NumberTwoDigits> numberTwoDigits;
+    private Shift shift;
     @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -54,6 +51,5 @@ public class Draw implements Serializable{
     private Double amountSold;
     private Double amountWon;
     private Double amountLost;
-
 
 }

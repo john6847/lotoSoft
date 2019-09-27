@@ -35,14 +35,15 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
     /*
-  * Param id
-  * Use to get the draw
-  * */
+     * Param id
+     * Use to get the draw
+     * */
     @GetMapping("/{type}")
-    public String index(Model model,  HttpServletRequest request, @PathVariable long type) {
+    public String index(Model model, HttpServletRequest request, @PathVariable long type) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -57,9 +58,9 @@ public class UserController {
     }
 
     @GetMapping("/{type}/create")
-    public String createUser(HttpServletRequest request, @PathVariable int type, Model model){
+    public String createUser(HttpServletRequest request, @PathVariable int type, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -86,14 +87,14 @@ public class UserController {
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("users") Users users,
                            @RequestParam(value = "confirmPassword") String confirmPassword,
-                           @RequestParam(value = "isSuperAdmin", defaultValue = "off") String  isSuperAdmin,
-                           @RequestParam(value = "isAdmin", defaultValue = "off") String  isAdmin,
+                           @RequestParam(value = "isSuperAdmin", defaultValue = "off") String isSuperAdmin,
+                           @RequestParam(value = "isAdmin", defaultValue = "off") String isAdmin,
                            @RequestParam(value = "isSeller", defaultValue = "off") String isSeller,
                            @RequestParam(value = "isSupervisor", defaultValue = "off") String isSupervisor,
                            @RequestParam(value = "isCollector", defaultValue = "off") String isCollector,
-                           HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+                           HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
 
             if (!confirmPassword.equals(users.getPassword())) {
                 redirectAttributes.addFlashAttribute("error", "Modpas yo sipoze menm");
@@ -130,7 +131,7 @@ public class UserController {
                 return "redirect:/user/1/create";
             }
 
-            if (isSuperAdmin.equals("on")){
+            if (isSuperAdmin.equals("on")) {
                 return "redirect:/user/2";
             }
             return "redirect:/user/1";
@@ -140,9 +141,9 @@ public class UserController {
     }
 
     @GetMapping("/{type}/update/{id}")
-    public String getDraw(@PathVariable("id")Long id,  @PathVariable("type") int type, HttpServletRequest request, Model model){
+    public String getDraw(@PathVariable("id") Long id, @PathVariable("type") int type, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -181,14 +182,14 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("users") Users users,
                              @RequestParam(value = "isAdmin", defaultValue = "off") String isAdmin,
-                             @RequestParam(value = "isSuperAdmin", defaultValue = "off") String  isSuperAdmin,
+                             @RequestParam(value = "isSuperAdmin", defaultValue = "off") String isSuperAdmin,
                              @RequestParam(value = "isSeller", defaultValue = "off") String isSeller,
                              @RequestParam(value = "isSupervisor", defaultValue = "off") String isSupervisor,
                              @RequestParam(value = "isCollector", defaultValue = "off") String isCollector,
                              @RequestParam("id") Long id, HttpServletRequest request,
-                             Model model,  RedirectAttributes redirectAttributes){
+                             Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -231,9 +232,9 @@ public class UserController {
     public String deleteUser(HttpServletRequest request,
                              Model model,
                              @PathVariable("id") Long id,
-                             @PathVariable("type") int type){
+                             @PathVariable("type") int type) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -255,18 +256,18 @@ public class UserController {
         return "access-denied";
     }
 
-    private List<Role> getListRoles (String isAdmin, String isSeller, String isSupervisor, String isCollector, Long enterpriseId){
+    private List<Role> getListRoles(String isAdmin, String isSeller, String isSupervisor, String isCollector, Long enterpriseId) {
         List<Role> roleSet = new ArrayList<>();
-        if (isAdmin.equals("on")){
+        if (isAdmin.equals("on")) {
             roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_ADMIN.name(), enterpriseId));
         }
-        if (isSeller.equals("on")){
+        if (isSeller.equals("on")) {
             roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SELLER.name(), enterpriseId));
         }
-        if (isSupervisor.equals("on")){
+        if (isSupervisor.equals("on")) {
             roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_SUPERVISOR.name(), enterpriseId));
         }
-        if (isCollector.equals("on")){
+        if (isCollector.equals("on")) {
             roleSet.add(roleService.findRoleByNameAndEnterpriseId(Roles.ROLE_COLLECTOR.name(), enterpriseId));
         }
         return roleSet;

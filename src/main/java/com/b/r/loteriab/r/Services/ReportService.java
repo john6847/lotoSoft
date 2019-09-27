@@ -33,20 +33,20 @@ public class ReportService {
     private SellerRepository sellerRepository;
 
 
-    public List<IReportViewModel> getSalesReport(SalesReportViewModel salesReportViewModel){
-        if (salesReportViewModel.getSellerId()!= null){
-           return proceedToFindSalesReport(salesReportViewModel, true);
+    public List<IReportViewModel> getSalesReport(SalesReportViewModel salesReportViewModel) {
+        if (salesReportViewModel.getSellerId() != null) {
+            return proceedToFindSalesReport(salesReportViewModel, true);
         } else {
-            if (salesReportViewModel.getGroupId()!= null){
+            if (salesReportViewModel.getGroupId() != null) {
                 List<IReportViewModel> salesReportViewModels = new ArrayList<>();
                 List<Seller> sellers = sellerRepository.selectAllSellersInGroupsByEnterpriseId(salesReportViewModel.getGroupId(), true, salesReportViewModel.getEnterpriseId());
-                for(Seller seller: sellers){
+                for (Seller seller : sellers) {
                     salesReportViewModel.setSellerId(seller.getId());
                     salesReportViewModels.addAll(proceedToFindSalesReport(salesReportViewModel, true));
                 }
                 return salesReportViewModels;
             }
-            return  proceedToFindSalesReport(salesReportViewModel, false);
+            return proceedToFindSalesReport(salesReportViewModel, false);
         }
     }
 
@@ -54,19 +54,19 @@ public class ReportService {
         Shift other;
         Date start;
         Date end;
-        if (shift.getName().equals(Shifts.Maten.name())){
+        if (shift.getName().equals(Shifts.Maten.name())) {
             other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), enterpriseId);
             start = Helper.getCloseDateTime(other.getCloseTime(), startDate);
             start = Helper.addDays(start, -1);
-            if (endDate!=null){
+            if (endDate != null) {
                 end = Helper.getCloseDateTime(shift.getCloseTime(), endDate);
             } else {
                 end = Helper.getCloseDateTime(shift.getCloseTime(), startDate);
             }
-        }else {
+        } else {
             other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), enterpriseId);
             start = Helper.getCloseDateTime(other.getCloseTime(), startDate);
-            if (endDate!=null){
+            if (endDate != null) {
                 end = Helper.getCloseDateTime(shift.getCloseTime(), endDate);
             } else {
                 end = Helper.getCloseDateTime(shift.getCloseTime(), startDate);
@@ -77,17 +77,17 @@ public class ReportService {
     }
 
     private List<IReportViewModel> proceedToFindSalesReport(SalesReportViewModel salesReportViewModel, boolean haveSeller) {
-        if (salesReportViewModel.getShiftId()!= null){
+        if (salesReportViewModel.getShiftId() != null) {
             Shift shift = shiftRepository.findShiftByIdAndEnterpriseId(salesReportViewModel.getShiftId(), salesReportViewModel.getEnterpriseId());
-            if (salesReportViewModel.getStartDate()!= null && salesReportViewModel.getEndDate() !=null){
-                if (shift!=null){
-                    Pair<Date, Date> startAndEnd = getStartAndEndDate(shift, Helper.convertStringToDate(salesReportViewModel.getStartDate(), "yyyy-MM-dd"),Helper.convertStringToDate(salesReportViewModel.getEndDate(), "yyyy-MM-dd") , salesReportViewModel.getEnterpriseId());
+            if (salesReportViewModel.getStartDate() != null && salesReportViewModel.getEndDate() != null) {
+                if (shift != null) {
+                    Pair<Date, Date> startAndEnd = getStartAndEndDate(shift, Helper.convertStringToDate(salesReportViewModel.getStartDate(), "yyyy-MM-dd"), Helper.convertStringToDate(salesReportViewModel.getEndDate(), "yyyy-MM-dd"), salesReportViewModel.getEnterpriseId());
                     return getResult(salesReportViewModel, startAndEnd, haveSeller);
                 }
             } else {
-                if (salesReportViewModel.getStartDate()!= null){
-                    if (shift!=null){
-                        Pair<Date, Date> startAndEnd = getStartAndEndDate(shift, Helper.convertStringToDate(salesReportViewModel.getStartDate(), "yyyy-MM-dd") , null, salesReportViewModel.getEnterpriseId());
+                if (salesReportViewModel.getStartDate() != null) {
+                    if (shift != null) {
+                        Pair<Date, Date> startAndEnd = getStartAndEndDate(shift, Helper.convertStringToDate(salesReportViewModel.getStartDate(), "yyyy-MM-dd"), null, salesReportViewModel.getEnterpriseId());
                         return getResult(salesReportViewModel, startAndEnd, haveSeller);
                     }
                 }
@@ -97,23 +97,23 @@ public class ReportService {
 
     }
 
-private List<IReportViewModel> getResult (SalesReportViewModel salesReportViewModel, Pair<Date, Date> startAndEndDate, boolean haveSeller){
-    if (haveSeller){
-        return saleRepository.selectSaleReportGloballyOverAPeriodBySeller(
-                salesReportViewModel.getEnterpriseId(),
-                salesReportViewModel.getShiftId(),
-                salesReportViewModel.getSellerId(),
-                Helper.convertDateToString(startAndEndDate.getValue0(), "yyyy-MM-dd, HH:mm:ss"),
-                Helper.convertDateToString(startAndEndDate.getValue1(), "yyyy-MM-dd, HH:mm:ss")
-        );
-    }else {
-        return saleRepository.selectSaleReportGloballyOverAPeriod(
-                salesReportViewModel.getEnterpriseId(),
-                salesReportViewModel.getShiftId(),
-                Helper.convertDateToString(startAndEndDate.getValue0(), "yyyy-MM-dd, HH:mm:ss"),
-                Helper.convertDateToString(startAndEndDate.getValue1(), "yyyy-MM-dd, HH:mm:ss")
-        );
+    private List<IReportViewModel> getResult(SalesReportViewModel salesReportViewModel, Pair<Date, Date> startAndEndDate, boolean haveSeller) {
+        if (haveSeller) {
+            return saleRepository.selectSaleReportGloballyOverAPeriodBySeller(
+                    salesReportViewModel.getEnterpriseId(),
+                    salesReportViewModel.getShiftId(),
+                    salesReportViewModel.getSellerId(),
+                    Helper.convertDateToString(startAndEndDate.getValue0(), "yyyy-MM-dd, HH:mm:ss"),
+                    Helper.convertDateToString(startAndEndDate.getValue1(), "yyyy-MM-dd, HH:mm:ss")
+            );
+        } else {
+            return saleRepository.selectSaleReportGloballyOverAPeriod(
+                    salesReportViewModel.getEnterpriseId(),
+                    salesReportViewModel.getShiftId(),
+                    Helper.convertDateToString(startAndEndDate.getValue0(), "yyyy-MM-dd, HH:mm:ss"),
+                    Helper.convertDateToString(startAndEndDate.getValue1(), "yyyy-MM-dd, HH:mm:ss")
+            );
+        }
     }
-}
 
 }

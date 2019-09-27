@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class CombinationTypeSerializer  extends StdSerializer<CombinationType> {
+public class CombinationTypeSerializer extends StdSerializer<CombinationType> {
 
     public CombinationTypeSerializer() {
         this(null);

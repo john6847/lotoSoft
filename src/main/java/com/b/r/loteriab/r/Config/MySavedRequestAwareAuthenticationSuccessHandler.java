@@ -48,7 +48,4 @@ public class MySavedRequestAwareAuthenticationSuccessHandler
         clearAuthenticationAttributes(request);
     }
 
-    public void setRequestCache(RequestCache requestCache) {
-        this.requestCache = requestCache;
-    }
 }

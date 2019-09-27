@@ -28,9 +28,9 @@ public class PosController {
     private UsersService usersService;
 
     @RequestMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -43,9 +43,9 @@ public class PosController {
 
 
     @GetMapping("/create")
-    public String createPos(HttpServletRequest request, Model model){
+    public String createPos(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -58,9 +58,9 @@ public class PosController {
     }
 
     @PostMapping("/create")
-    public String savePos(@ModelAttribute("pos") Pos pos, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes){
+    public String savePos(@ModelAttribute("pos") Pos pos, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -77,9 +77,9 @@ public class PosController {
     }
 
     @GetMapping("/update/{id}")
-    public String updatePos(@PathVariable("id") Long id,HttpServletRequest request,Model model){
+    public String updatePos(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -104,9 +104,9 @@ public class PosController {
     }
 
     @PostMapping("/update")
-    public String updatePos(@ModelAttribute("pos") Pos pos,HttpServletRequest request, Model model,RedirectAttributes redirectAttributes ){
+    public String updatePos(@ModelAttribute("pos") Pos pos, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -124,9 +124,9 @@ public class PosController {
     }
 
     @RequestMapping("/delete/{id}")
-    public String deletePos(HttpServletRequest request,Model model,@PathVariable("id") Long id){
+    public String deletePos(HttpServletRequest request, Model model, @PathVariable("id") Long id) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);

@@ -7,10 +7,10 @@ import java.util.Date;
 
 @Data
 public class LastNotification {
-    private boolean changed;
-    private Date date;
-    private Long enterpriseId;
     int type;
     Long idType;
     SampleResponse sampleResponse;
+    private boolean changed;
+    private Date date;
+    private Long enterpriseId;
 }

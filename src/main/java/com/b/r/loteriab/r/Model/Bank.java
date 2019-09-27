@@ -19,7 +19,7 @@ public class Bank implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  String description;
+    private String description;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)

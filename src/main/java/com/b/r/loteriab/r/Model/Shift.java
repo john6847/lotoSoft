@@ -18,7 +18,7 @@ public class Shift implements Serializable {
     private String name;
     private String openTime;
     private String closeTime;
-    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     private boolean enabled;

@@ -5,43 +5,43 @@ package com.b.r.loteriab.r.Model.Interaces;
  */
 public interface CombinationViewModel {
 
-    public Long getCombinationId();
+    Long getCombinationId();
 
-    public void setCombinationId(Long combinationId);
+    void setCombinationId(Long combinationId);
 
-    public Long getMaxPrice();
+    Long getMaxPrice();
 
-    public void setMaxPrice(Long maxPrice);
+    void setMaxPrice(Long maxPrice);
 
-    public Long getCombinationTypeId();
+    Long getCombinationTypeId();
 
-    public void setCombinationTypeId(Long combinationTypeId);
+    void setCombinationTypeId(Long combinationTypeId);
 
-    public boolean isEnabled();
+    boolean isEnabled();
 
-    public void setEnabled(boolean enabled);
+    void setEnabled(boolean enabled);
 
-    public Long getNumberTwoDigitsId();
+    Long getNumberTwoDigitsId();
 
-    public void setNumberTwoDigitsId(Long numberTwoDigitsId);
+    void setNumberTwoDigitsId(Long numberTwoDigitsId);
 
-    public String getNumberTwoDigits();
+    String getNumberTwoDigits();
 
-    public void setNumberTwoDigits(String numberTwoDigits);
+    void setNumberTwoDigits(String numberTwoDigits);
 
-    public Long getNumberThreeDigitsId();
+    Long getNumberThreeDigitsId();
 
-    public void setNumberThreeDigitsId(Long numberThreeDigitsId);
+    void setNumberThreeDigitsId(Long numberThreeDigitsId);
 
-    public String getNumberThreeDigits();
+    String getNumberThreeDigits();
 
-    public void setNumberThreeDigits(String numberThreeDigits);
+    void setNumberThreeDigits(String numberThreeDigits);
 
-    public Long getProductsId();
+    Long getProductsId();
 
-    public void setProductsId(Long productsId);
+    void setProductsId(Long productsId);
 
-    public String getProductsName();
+    String getProductsName();
 
-    public void setProductsName(String productsName);
+    void setProductsName(String productsName);
 }

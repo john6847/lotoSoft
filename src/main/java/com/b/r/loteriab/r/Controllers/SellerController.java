@@ -1,12 +1,9 @@
 package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.Enterprise;
-import com.b.r.loteriab.r.Model.Enums.Roles;
-import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.GroupsRepository;
-import com.b.r.loteriab.r.Repository.UserRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 @ControllerAdvice
@@ -42,13 +36,10 @@ public class SellerController {
     @Autowired
     private GroupsRepository groupsRepository;
 
-    @Autowired
-    private EnterpriseService enterpriseService;
-
     @GetMapping("")
-    public String index(Model model,  HttpServletRequest request) {
+    public String index(Model model, HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
-        if (enterprise!= null) {
+        if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
@@ -60,7 +51,7 @@ public class SellerController {
     }
 
     @GetMapping("create")
-    public String createSeller(HttpServletRequest request,Model model) {
+    public String createSeller(HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
@@ -79,15 +70,15 @@ public class SellerController {
 
     @PostMapping("/create")
     public String saveSeller(@ModelAttribute("seller") Seller seller,
-                             @RequestParam(value ="username", defaultValue = "") String username,
-                             @RequestParam(value ="name", defaultValue = "") String sellerName,
+                             @RequestParam(value = "username", defaultValue = "") String username,
+                             @RequestParam(value = "name", defaultValue = "") String sellerName,
                              @RequestParam(value = "password", defaultValue = "") String password,
-                             @RequestParam(value = "confirmPassword",defaultValue = "") String confirmPassword,
+                             @RequestParam(value = "confirmPassword", defaultValue = "") String confirmPassword,
                              @RequestParam(value = "haveAUser", defaultValue = "off") String haveUser,
                              @RequestParam(value = "haveAGroup", defaultValue = "off") String haveAGroup,
                              @RequestParam(value = "useMonthlyPayment", defaultValue = "off") String useMonthlyPayment,
                              HttpServletRequest request,
-                             Model model, RedirectAttributes redirectAttributes){
+                             Model model, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
             String name = request.getSession().getAttribute("username").toString();
@@ -124,7 +115,7 @@ public class SellerController {
     }
 
     @GetMapping("/update/{id}")
-    public String getSeller(@PathVariable("id") Long id, HttpServletRequest request, Model model){
+    public String getSeller(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
@@ -142,7 +133,7 @@ public class SellerController {
             model.addAttribute("groups", sellerService.findAllSellersByEnterpriseId(enterprise.getId()));
             model.addAttribute("pos", posService.findAllFreePosByEnabled(true, enterprise.getId()));
 
-            if (groupsRepository.findByParentSellerIdAndEnterpriseId(id,enterprise.getId()) != null) {
+            if (groupsRepository.findByParentSellerIdAndEnterpriseId(id, enterprise.getId()) != null) {
                 model.addAttribute("isParentSeller", true);
             } else {
                 model.addAttribute("isParentSeller", false);
@@ -164,9 +155,9 @@ public class SellerController {
     public String updateSeller(@ModelAttribute("seller") Seller seller,
                                @RequestParam(value = "haveAGroup", defaultValue = "off") String haveAGroup,
                                @RequestParam(value = "useMonthlyPayment", defaultValue = "off") String useMonthlyPayment,
-                               @RequestParam("id") Long id,HttpServletRequest request,
+                               @RequestParam("id") Long id, HttpServletRequest request,
                                Model model,
-                               RedirectAttributes redirectAttributes){
+                               RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();
@@ -198,7 +189,7 @@ public class SellerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public  String deleteSeller(HttpServletRequest request,Model model,@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+    public String deleteSeller(HttpServletRequest request, Model model, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
             String username = request.getSession().getAttribute("username").toString();

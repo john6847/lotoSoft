@@ -9,13 +9,14 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Ticket implements Serializable{
+public class Ticket implements Serializable {
+    public long sequence;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String serial;
     private String shortSerial;
-    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
     private Shift shift; // tanda
     private Date emissionDate;
@@ -27,5 +28,4 @@ public class Ticket implements Serializable{
     private boolean won;
     private boolean enabled;
     private double amountWon;
-    public long sequence;
 }

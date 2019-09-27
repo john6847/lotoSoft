@@ -1,6 +1,5 @@
 package com.b.r.loteriab.r.Config;
 
-import com.b.r.loteriab.r.Model.TenantContext;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

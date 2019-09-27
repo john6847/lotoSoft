@@ -3,12 +3,11 @@ package com.b.r.loteriab.r.Config;
 /**
  * Created by Dany on 25/04/2019.
  */
+
 import com.b.r.loteriab.r.Model.TenantContext;
 import com.b.r.loteriab.r.Repository.EnterpriseRepository;
 import com.b.r.loteriab.r.Services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -23,9 +22,6 @@ import java.io.IOException;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    @Autowired
-    private UsersService usersService;
 
     @Autowired
     private EnterpriseRepository enterpriseRepository;

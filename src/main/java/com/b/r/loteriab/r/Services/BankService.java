@@ -14,9 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Dany on 04/05/2019.
@@ -31,7 +29,7 @@ public class BankService {
     private Helper helper;
 
     @Autowired
-    private  EnterpriseService enterpriseService;
+    private EnterpriseService enterpriseService;
 
     @Autowired
     private SellerService sellerService;
@@ -39,31 +37,31 @@ public class BankService {
     @Autowired
     private SellerRepository sellerRepository;
 
-    private Result validateModel (Bank pos){
+    private Result validateModel(Bank pos) {
         Result result = new Result();
 
-        if (pos.getDescription().isEmpty()){
+        if (pos.getDescription().isEmpty()) {
             result.add("Deskripsyon an pa ka vid", "description");
         }
 
-        if (pos.getSerial().isEmpty()){
+        if (pos.getSerial().isEmpty()) {
             result.add("Serial la pa ka vid", "serial");
         }
 
         return result;
     }
 
-    public Result saveBank(Bank bank, Enterprise enterprise){
+    public Result saveBank(Bank bank, Enterprise enterprise) {
         bank.setSerial(helper.createBankSerial(enterprise));
         Result result = validateModel(bank);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
         try {
             bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
-            if (bank.getSeller()!=null){
+            if (bank.getSeller() != null) {
                 Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
-                if (seller!=null){
+                if (seller != null) {
                     seller.setPos(bank.getPos());
                     sellerRepository.save(seller);
                 }
@@ -72,22 +70,22 @@ public class BankService {
             bank.setModificationDate(new Date());
             bank.setEnabled(true);
             bankRepository.save(bank);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Bank la pa ka aktyalize reeseye ankò");
         }
-        return  result;
+        return result;
     }
 
     public Result updateBank(Bank bank, Enterprise enterprise) {
         Result result = validateModel(bank);
-        if (!result.isValid()){
+        if (!result.isValid()) {
             return result;
         }
 
         Bank currentBank = bankRepository.findBankByIdAndEnterpriseId(bank.getId(), enterprise.getId());
-        if (bank.getSeller()!=null){
+        if (bank.getSeller() != null) {
             Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
-            if (seller!=null){
+            if (seller != null) {
                 seller.setPos(bank.getPos());
                 sellerRepository.save(seller);
             }
@@ -103,37 +101,36 @@ public class BankService {
         currentBank.getAddress().setStreet(bank.getAddress().getStreet());
         try {
             bankRepository.save(currentBank);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result.add("Bank la pa ka aktyalize reeseye ankò");
-        }
-        return  result;
-    }
-
-    public Page<Bank> findAllBankByState(int page, int itemPerPage, Boolean state, Long enterpriseId){
-        Pageable pageable = PageRequest.of(page - 1,itemPerPage);
-        if(state != null){
-            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(state, enterpriseId,pageable);
-        }
-        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId, pageable);
-    }
-
-    public Bank findBankById(Long id, Long enterpriseId){
-        return bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
-    }
-
-    public Result deleteBankById(Long id, Long enterpriseId){
-        Result result = new Result();
-        Bank bank = bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
-        if(bank == null) {
-            result.add("Bank sa ou bezwen elimine a pa egziste");
-            return result;
-        }
-        try{
-            bankRepository.deleteById(id);
-        }catch (Exception ex){
-            result.add("Bank la pa ka elimine reeseye ankò");
         }
         return result;
     }
 
+    public Page<Bank> findAllBankByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
+        Pageable pageable = PageRequest.of(page - 1, itemPerPage);
+        if (state != null) {
+            return bankRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(state, enterpriseId, pageable);
+        }
+        return bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterpriseId, pageable);
+    }
+
+    public Bank findBankById(Long id, Long enterpriseId) {
+        return bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
+    }
+
+    public Result deleteBankById(Long id, Long enterpriseId) {
+        Result result = new Result();
+        Bank bank = bankRepository.findBankByIdAndEnterpriseId(id, enterpriseId);
+        if (bank == null) {
+            result.add("Bank sa ou bezwen elimine a pa egziste");
+            return result;
+        }
+        try {
+            bankRepository.deleteById(id);
+        } catch (Exception ex) {
+            result.add("Bank la pa ka elimine reeseye ankò");
+        }
+        return result;
+    }
 }

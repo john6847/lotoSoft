@@ -10,21 +10,21 @@ import java.util.List;
 
 @Entity
 @Data
-public class Sale implements Serializable{
+public class Sale implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "shift_id")
     private Shift shift;
     private Date date;
     private int saleStatus;
     private double totalAmount;
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "sale_Sale_details",
-    joinColumns = {@JoinColumn(name = "sale_id",referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "saleDetails_id",referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "sale_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "saleDetails_id", referencedColumnName = "id")})
     private List<SaleDetail> saleDetails;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
@@ -38,7 +38,7 @@ public class Sale implements Serializable{
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
     @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
     private Seller seller;
     private boolean enabled;

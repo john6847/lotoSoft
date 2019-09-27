@@ -30,7 +30,7 @@ public class ApiService {
     @Autowired
     private Helper helper;
 
-    public Sale mapSale(SaleViewModel vm,Shift shift) {
+    public Sale mapSale(SaleViewModel vm, Shift shift) {
         Sale sale = new Sale();
         sale.setSaleDetails(new ArrayList<>());
         sale.setEnabled(false);
@@ -39,7 +39,7 @@ public class ApiService {
         sale.setSaleStatus(SaleSatus.SAVING.ordinal());
         Enterprise enterprise = enterpriseRepository.findEnterpriseById(vm.getEnterprise().getId());
         sale.setTotalAmount(vm.getTotalAmount());
-        for (SaleDetailViewModel saleDetailVM: vm.getSaleDetails()){
+        for (SaleDetailViewModel saleDetailVM : vm.getSaleDetails()) {
             SaleDetail saleDetail = new SaleDetail();
             saleDetail.setEnabled(true);
             Combination combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(saleDetailVM.getCombination(), saleDetailVM.getCombinationTypeId(), enterprise.getId());
@@ -52,7 +52,7 @@ public class ApiService {
         sale.setPos(posRepository.findPosByIdAndEnterpriseId(vm.getPos().getId(), enterprise.getId()));
         sale.setEnterprise(enterprise);
         sale.setSeller(sellerRepository.findSellerByIdAndEnterpriseId(vm.getSeller().getId(), enterprise.getId()));
-        Ticket ticket =  new Ticket();
+        Ticket ticket = new Ticket();
         ticket.setEnabled(true);
         ticket.setEmissionDate(new Date());
         ticket.setEnterprise(enterprise);
@@ -63,7 +63,7 @@ public class ApiService {
         Pair<String, Long> ticketSerial = helper.createNewTicketSerial(enterprise);
         ticket.setSerial(ticketSerial.getValue0());
         ticket.setSequence(ticketSerial.getValue1());
-         ticket.setShortSerial(helper.generateString(true, 10));
+        ticket.setShortSerial(helper.generateString(true, 10));
         sale.setTicket(ticket);
         return sale;
     }

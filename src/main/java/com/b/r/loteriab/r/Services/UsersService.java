@@ -191,4 +191,12 @@ public class UsersService {
     public List<Users> findAllUsersByEnabled(String name, boolean enabled, Long enterpriseId) {
         return usersRepository.selectUserByNameAndEnabledAndEnterpriseId(name, enabled, enterpriseId);
     }
+
+    public List<Users> findAllUserSuperAdmin() {
+        return usersRepository.selectListUserSuperAdminAndEnabled(Roles.ROLE_SUPER_ADMIN.name(), true);
+    }
+
+    public List<Users> findAllExceptSuperAdmin(Long enterpriseId) {
+        return usersRepository.selectUserExceptSuperAdminAndEnabledAndEnterpriseId( Roles.ROLE_SUPER_ADMIN.name(), Roles.ROLE_SUPER_MEGA_ADMIN.name(),true, enterpriseId);
+    }
 }

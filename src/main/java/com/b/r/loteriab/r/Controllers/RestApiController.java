@@ -305,15 +305,21 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
-        Duration duration = Duration.between(LocalDateTime.now(), sale.getDate().toInstant());
-        long diff = Math.abs(duration.toMinutes());
+        long diff = Math.abs(new Date().getTime() - sale.getDate().getTime());
 
-        if (diff >= 5) {
+        long diffMinutes = diff / (60 * 1000) % 60;
+
+        if (diffMinutes >= 5) {
             sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
+        for (SaleDetail saleDetail: sale.getSaleDetails()) {
+            Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());
+            combination.setSaleTotal(combination.getSaleTotal() - saleDetail.getPrice());
+            combinationRepository.save(combination);
+        }
         saleRepository.deleteSaleByTicketIdAndEnterpriseId(ticket.getId(), vm.getEnterprise().getId());
 
         sampleResponse.getBody().put("ok", true);

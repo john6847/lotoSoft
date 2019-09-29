@@ -13,7 +13,7 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
 
     $scope.enterpriseId = 0;
     fetchEnterprise();
-    $stomp.connect('http://lotosof.com:3200/live', {})
+    $stomp.connect('http://localhost:3200/live', {})
         .then(function (frame) {
             $stomp.subscribe('/topics/time',
                 function (payload, headers, res) {

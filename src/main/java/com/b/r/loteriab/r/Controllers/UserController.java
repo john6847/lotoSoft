@@ -5,7 +5,9 @@ import com.b.r.loteriab.r.Model.Enums.Roles;
 import com.b.r.loteriab.r.Model.Role;
 import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Model.ViewModel.PasswordResetViewModel;
 import com.b.r.loteriab.r.Repository.SellerRepository;
+import com.b.r.loteriab.r.Repository.UserRepository;
 import com.b.r.loteriab.r.Services.EnterpriseService;
 import com.b.r.loteriab.r.Services.RoleService;
 import com.b.r.loteriab.r.Services.SellerService;
@@ -13,6 +15,7 @@ import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,7 @@ public class UserController {
     private RoleService roleService;
 
     @Autowired
-    private SellerService sellerService;
+    private UserRepository  userRepository;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -63,6 +66,76 @@ public class UserController {
             return "/index/user.index";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade Itilizatè  ou yo");
+        return "access-denied";
+    }
+
+    @GetMapping("/{type}/password/reset")
+    public String changePassword(HttpServletRequest request, @PathVariable int type, Model model) {
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+
+            if (type <= 0) {
+                type = 1;
+            }
+
+            if (type > 1) {
+                model.addAttribute("users", usersService.findAllUserSuperAdmin());
+            } else {
+                model.addAttribute("users", usersService.findAllExceptSuperAdmin(enterprise.getId()));
+            }
+
+            model.addAttribute("type", type);
+            model.addAttribute("passwordResetViewModel", new PasswordResetViewModel());
+            return "/create/password-reset";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");
+        return "access-denied";
+    }
+
+    @RequestMapping("/password/reset")
+    public String saveUser(@ModelAttribute("passwordResetViewModel") PasswordResetViewModel vm,
+                           HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null) {
+            int type = Integer.parseInt(vm.getType());
+            if (type <= 1) {
+                type = 1;
+            }
+
+            if (vm.getUsers() == null) {
+                redirectAttributes.addFlashAttribute("error", "Ou dwe antre itilizate a.");
+                if (type > 1)
+                    return "redirect:/user/2/password/reset";
+                return "redirect:/user/1/password/reset";
+            }
+            if (!vm.getConfirmPassword().equals(vm.getPassword())) {
+                redirectAttributes.addFlashAttribute("error", "Modpas yo sipoze menm");
+                if (type > 1)
+                    return "redirect:/user/2/password/reset";
+                return "redirect:/user/1/password/reset";
+            }
+
+            Users savedUser = userRepository.findUsersById(vm.getUsers().getId());
+            if (savedUser == null) {
+                redirectAttributes.addFlashAttribute("error", "Ititilizatè sa pa egziste.");
+                if (type > 1)
+                    return "redirect:/user/2/password/reset";
+                return "redirect:/user/1/password/reset";
+            }
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+            savedUser.setPassword(bCryptPasswordEncoder.encode(vm.getPassword()));
+            userRepository.save(savedUser);
+
+            if (type > 1) {
+                return "redirect:/user/2";
+            }
+            return "redirect:/user/1";
+        }
+        model.addAttribute("error", "Ou pa ka chanje modpas itilizatè sa a koz itilizatè ou a pa fè pati de kliyan nou yo, ou pa gen aksè pou ou kreye itilizatè sa");
         return "access-denied";
     }
 

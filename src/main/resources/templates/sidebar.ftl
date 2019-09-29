@@ -76,6 +76,9 @@
                 <li>
                   <a class="" title="Li yon itilizatè" href="/user/1">Li Itilizatè</a>
                 </li>
+                <li>
+                  <a class="" title="Chanje Modpas" href="/user/1/password/reset">Chanje Modpas</a>
+                </li>
               </ul>
             </li>
             <li class="sub-menu">
@@ -140,6 +143,9 @@
                   </li>
                   <li>
                     <a href="/user/2">Gade Kliyan</a>
+                  </li>
+                  <li>
+                    <a class="" title="Chanje Modpas" href="/user/2/password/reset">Chanje Modpas</a>
                   </li>
                 </ul>
               </li>

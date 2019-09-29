@@ -2,6 +2,8 @@ package com.b.r.loteriab.r.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,8 +17,9 @@ public class SaleDetail implements Serializable {
     @Column(length = 36, nullable = false)
     private double price;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "combination_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Combination combination;
     @JsonIgnore
     @ManyToOne

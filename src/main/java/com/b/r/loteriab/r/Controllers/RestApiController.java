@@ -37,7 +37,7 @@ public class RestApiController {
 
     private static final String ACCEPT_TYPE = "application/json";
     @Autowired
-    private UsersService usersService;
+    private SaleDetailRepository saleDetailRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -309,16 +309,19 @@ public class RestApiController {
 
         long diffMinutes = diff / (60 * 1000) % 60;
 
-        if (diffMinutes >= 5) {
-            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
-            sampleResponse.getBody().put("ok", false);
-            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
-        }
+//        if (diffMinutes >= 5) {
+//            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+//            sampleResponse.getBody().put("ok", false);
+//            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+//        }
 
         for (SaleDetail saleDetail: sale.getSaleDetails()) {
             Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());
             combination.setSaleTotal(combination.getSaleTotal() - saleDetail.getPrice());
             combinationRepository.save(combination);
+            saleDetail.setCombination(null);
+            saleDetailRepository.save(saleDetail);
+
         }
         sale.setPos(null);
         sale.setSeller(null);

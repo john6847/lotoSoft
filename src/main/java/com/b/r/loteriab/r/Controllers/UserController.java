@@ -310,7 +310,7 @@ public class UserController {
         return "access-denied";
     }
 
-    @DeleteMapping("/{type}/delete/{id}")
+    @RequestMapping("/{type}/delete/{id}")
     public String deleteUser(HttpServletRequest request,
                              Model model,
                              @PathVariable("id") Long id,

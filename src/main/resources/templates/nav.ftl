@@ -287,7 +287,7 @@
             <#list user.roles as rol>
               <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
               <li>
-                <a href="/user/create"><i class="icon_mail_alt"></i>Kreye Itilizatè</a>
+                <a href="/user/1/create"><i class="icon_mail_alt"></i>Kreye Itilizatè</a>
               </li>
               </#if>
             </#list>

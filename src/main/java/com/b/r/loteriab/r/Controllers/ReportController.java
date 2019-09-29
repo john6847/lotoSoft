@@ -39,7 +39,7 @@ public class ReportController {
             Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
             model.addAttribute("user", user);
 
-            return "/report/report-sales.index";
+            return "/Report/report-sales.index";
         }
         model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou gade enfomasyon rapò sa");
         return "access-denied";

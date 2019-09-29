@@ -96,6 +96,7 @@
                                 data-none-results-text="Machin sa pa egziste"
                                 data-placeholder="Chwazi machin nan"
                                 data-none-selected-text="Chwazi Machin nan"
+                                ng-model="selectedPos"
                                 data-size="5"
                                 required>
                           <option ng-repeat="p in pos track by p.id" value="{{p.id}}">{{p.description}}</option>
@@ -184,6 +185,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
+                              ng-disabled="!selectedPos || !selectedSeller"
                               title="Anrejistre tout done bank la">
                         <i class="fa fa-save"></i>
                         Anrejistre

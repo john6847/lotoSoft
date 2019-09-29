@@ -217,6 +217,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
+                              ng-disabled="!selectedPos || !selectedSeller"
                               title="Anrejistre tout done bank la">
                         <i class="fa fa-save"></i>
                         Anrejistre

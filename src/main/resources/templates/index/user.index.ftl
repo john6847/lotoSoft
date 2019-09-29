@@ -67,7 +67,7 @@
                                   </a>
                               </td>
                               <td style="vertical-align: middle; text-align: center" data-title="'Elimine'">
-                                  <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete{{user.id}}">
+                                  <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete/{{user.id}}">
                                       <i class="fa fa-trash-o"></i> Elimine
                                   </a>
                               </td>

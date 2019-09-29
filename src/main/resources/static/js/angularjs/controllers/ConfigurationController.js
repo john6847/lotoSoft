@@ -245,7 +245,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
         CombinationTypeService.fetchAllCombinationTypes()
             .then(
                 function (d) {
-                    $scope.combinationGroupField.combinationTypes = d;
+                    $scope.combinationGroupField.combinationTypes = d.content;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

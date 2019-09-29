@@ -309,11 +309,11 @@ public class RestApiController {
 
         long diffMinutes = diff / (60 * 1000) % 60;
 
-//        if (diffMinutes >= 5) {
-//            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
-//            sampleResponse.getBody().put("ok", false);
-//            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
-//        }
+        if (diffMinutes >= 5) {
+            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
 
         for (SaleDetail saleDetail: sale.getSaleDetails()) {
             Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());

@@ -86,6 +86,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     void deleteSaleByIdAndEnterpriseId(Long id, Long enterpriseId);
 
+    void deleteById(Long id);
+
     @Query(value = q1, nativeQuery = true)
     List<Sale> selectAllSale(Long enterpriseId, Long shiftId, Date startDate, Date endDate); // TODO: Check query
 

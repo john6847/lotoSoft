@@ -320,7 +320,12 @@ public class RestApiController {
             combination.setSaleTotal(combination.getSaleTotal() - saleDetail.getPrice());
             combinationRepository.save(combination);
         }
-        saleRepository.deleteSaleByTicketIdAndEnterpriseId(ticket.getId(), vm.getEnterprise().getId());
+        sale.setPos(null);
+        sale.setSeller(null);
+        sale.setShift(null);
+        sale.setEnterprise(null);
+        saleRepository.save(sale);
+        saleRepository.deleteById(ticket.getId());
 
         sampleResponse.getBody().put("ok", true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);

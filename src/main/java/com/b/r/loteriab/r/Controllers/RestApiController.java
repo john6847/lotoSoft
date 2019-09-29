@@ -68,43 +68,48 @@ public class RestApiController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm) {
         SampleResponse sampleResponse = new SampleResponse();
-        Enterprise enterprise = enterpriseRepository.findEnterpriseByName(vm.getEnterpriseName());
-        Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseId(vm.getSerial(), true, enterprise.getId());
-//        TODO: obtener el serial del pos que no se hardcoded
-        if (pos == null) {
-            System.out.println("Pos null");
-            sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
-            sampleResponse.getBody().put("ok", false);
-            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
-        }
 
-        if (vm.getEnterpriseName() == null) {
+        if (vm.getEnterpriseName() == null || vm.getEnterpriseName().isEmpty()) {
             sampleResponse.setMessage("Ou sipoze voye non antrepriz la");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-        Enterprise savedEnterprise = enterpriseRepository.findEnterpriseByEnabledAndNameContainingIgnoreCase(true, vm.getEnterpriseName());
-        if (savedEnterprise == null) {
+        if (vm.getUsername() == null || vm.getUsername().isEmpty()) {
+            sampleResponse.setMessage("Ou sipoze antre non ititilizate ou a");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
+        }
+
+        if (vm.getPassword() == null || vm.getPassword().isEmpty()) {
+            sampleResponse.setMessage("Ou sipoze antre modpas ou a");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
+        }
+
+        Enterprise enterprise = enterpriseRepository.findEnterpriseByEnabledAndNameContainingIgnoreCase(true, vm.getEnterpriseName());
+        if (enterprise == null) {
             sampleResponse.setMessage("Non antrepriz la pa bon reeseye avek yon lot non pou ou ka konekte");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
-
-        Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(), enterprise.getId());
-        if (vm.getUsername().isEmpty() || vm.getPassword().isEmpty()) {
-            sampleResponse.setMessage("Itilizatè oubyen modpas la pa bon");
+        Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseIdAndDeletedFalse(vm.getSerial(), true, enterprise.getId());
+//        TODO: obtener el serial del pos que no se hardcoded
+        if (pos == null) {
+            sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
+
+        Users user = userRepository.findByUsernameAndEnterpriseId(vm.getUsername(), enterprise.getId());
         if (user == null) {
             sampleResponse.setMessage("Itilizatè sa pa egziste");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-        Seller seller = sellerRepository.findByUserIdAndEnterpriseId(user.getId(), enterprise.getId());
+        Seller seller = sellerRepository.findByUserIdAndDeletedFalseAndEnterpriseId(user.getId(), enterprise.getId());
         if (seller == null) {
             sampleResponse.setMessage("Vandè sa pa egziste");
             sampleResponse.getBody().put("ok", false);
@@ -285,7 +290,7 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
         }
 
-        Ticket ticket = ticketRepository.findTicketBySerialAndEnterpriseId(vm.getSerial(), vm.getEnterprise().getId());
+        Ticket ticket = ticketRepository.findTicketByShortSerialAndEnterpriseId(vm.getSerial(), vm.getEnterprise().getId());
 
         if (ticket == null) {
             sampleResponse.setMessage("Ticket sa pa egziste");

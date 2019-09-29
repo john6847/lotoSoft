@@ -63,7 +63,7 @@ public class SecurityServices implements UserDetailsService {
             admin.setModificationDate(new Date());
             userRepository.save(admin);
 
-            Enterprise currentEnterprise = enterpriseRepository.findEnterpriseByName("BR-tenant");
+            Enterprise currentEnterprise = enterpriseRepository.findEnterpriseByNameContainingIgnoreCase("BR-tenant");
             Users savedUser = userRepository.findByUsername("bradmin");
             savedUser.setEnterprise(currentEnterprise);
             savedUser.getRoles().get(0).setEnterprise(currentEnterprise);
@@ -80,7 +80,7 @@ public class SecurityServices implements UserDetailsService {
             throw new UsernameNotFoundException("Username and macAddress must be provided");
         }
 
-        Enterprise enterprise = enterpriseRepository.findEnterpriseByName(usernameAndEnterprise[1]);
+        Enterprise enterprise = enterpriseRepository.findEnterpriseByNameContainingIgnoreCase(usernameAndEnterprise[1]);
 
         if (!enterprise.isEnabled()) {
             throw new UsernameNotFoundException(

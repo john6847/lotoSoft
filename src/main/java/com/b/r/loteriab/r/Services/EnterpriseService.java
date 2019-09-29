@@ -36,7 +36,7 @@ public class EnterpriseService {
             return result;
         }
 
-        if (enterpriseRepository.findEnterpriseByName(enterprise.getName()) != null) {
+        if (enterpriseRepository.findEnterpriseByNameContainingIgnoreCase(enterprise.getName()) != null) {
             result.add("Antrepriz sa egziste deja");
             return result;
         }
@@ -107,7 +107,7 @@ public class EnterpriseService {
     }
 
     public Enterprise findEnterpriseByName(String name) {
-        return enterpriseRepository.findEnterpriseByName(name);
+        return enterpriseRepository.findEnterpriseByNameContainingIgnoreCase(name);
     }
 
     public Result deleteEnterpriseById(Long id) {

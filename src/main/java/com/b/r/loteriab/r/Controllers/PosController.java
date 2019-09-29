@@ -1,10 +1,11 @@
 package com.b.r.loteriab.r.Controllers;
 
 
-import com.b.r.loteriab.r.Model.Enterprise;
-import com.b.r.loteriab.r.Model.Pos;
-import com.b.r.loteriab.r.Model.Users;
+import com.b.r.loteriab.r.Model.*;
+import com.b.r.loteriab.r.Repository.BankRepository;
+import com.b.r.loteriab.r.Repository.SellerRepository;
 import com.b.r.loteriab.r.Services.PosService;
+import com.b.r.loteriab.r.Services.SellerService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class PosController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private BankRepository bankRepository;
+
+    @Autowired
+    private SellerRepository sellerRepository;
+
 
     @RequestMapping("")
     public String index(Model model, HttpServletRequest request) {
@@ -132,9 +140,31 @@ public class PosController {
             model.addAttribute("user", user);
 
             if (id <= 0) {
-                model.addAttribute("error", "Machin sa pa agziste, antre on lòt");
-                return "404";
+                model.addAttribute("error", "Nimewo machin sa pa egziste, antre on lòt");
+                return "redirect:/pos";
             }
+
+            Pos pos = posService.findPosById(id, enterprise.getId());
+
+            if (pos == null) {
+                model.addAttribute("error", "Machin sa pa egziste, antre on lòt");
+                return "redirect:/pos";
+            }
+
+            Seller seller = sellerRepository.findSellerByPosIdAndEnterpriseIdAndDeletedFalse(pos.getId(), enterprise.getId());
+
+            if (seller != null) {
+                seller.setPos(null);
+                sellerRepository.save(seller);
+            }
+
+            Bank bank = bankRepository.findBankByPosIdAndEnterpriseId(pos.getId(), enterprise.getId());
+
+            if (bank != null) {
+                bank.setPos(null);
+                bankRepository.save(bank);
+            }
+
             Result result = posService.deletePosById(id, enterprise.getId());
 
             if (!result.isValid()) {

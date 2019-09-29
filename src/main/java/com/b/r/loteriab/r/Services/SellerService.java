@@ -109,7 +109,7 @@ public class SellerService {
             return result;
         }
 
-        Seller currentSeller = sellerRepository.findSellerByIdAndEnterpriseId(seller.getId(), enterpriseId);
+        Seller currentSeller = sellerRepository.findSellerByIdAndEnterpriseIdAndDeletedFalse(seller.getId(), enterpriseId);
         currentSeller.setModificationDate(new Date());
         currentSeller.setLastPaymentDate(seller.getLastPaymentDate());
         currentSeller.setAmountCharged(seller.getAmountCharged());
@@ -125,20 +125,20 @@ public class SellerService {
     }
 
     public Seller findSellerById(Long id, Long enterpriseId) {
-        return sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
+        return sellerRepository.findSellerByIdAndEnterpriseIdAndDeletedFalse(id, enterpriseId);
     }
 
     public ArrayList<Seller> findAllSellersByEnterpriseId(Long enterpriseId) {
-        return (ArrayList<Seller>) sellerRepository.findAllByEnterpriseId(enterpriseId);
+        return (ArrayList<Seller>) sellerRepository.findAllByEnterpriseIdAndDeletedFalse(enterpriseId);
     }
 
     public ArrayList<Seller> findAllSellerByGroupsId(Long id, Long enterpriseId) {
-        return (ArrayList<Seller>) sellerRepository.findAllByGroupsIdAndEnterpriseId(id, enterpriseId);
+        return (ArrayList<Seller>) sellerRepository.findAllByGroupsIdAndEnterpriseIdAndDeletedFalse(id, enterpriseId);
     }
 
     public Result deleteSellerById(Long id, Long enterpriseId) {
         Result result = new Result();
-        Seller seller = sellerRepository.findSellerByIdAndEnterpriseId(id, enterpriseId);
+        Seller seller = sellerRepository.findSellerByIdAndEnterpriseIdAndDeletedFalse(id, enterpriseId);
         if (seller== null) {
             result.add("Vandè sa ou bezwen elimine a pa egziste");
             return result;
@@ -160,9 +160,9 @@ public class SellerService {
     public Page<Seller> findAllSellerByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
         Pageable pageable = PageRequest.of(page - 1, itemPerPage);
         if (state != null) {
-            return sellerRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
+            return sellerRepository.findAllByEnabledAndDeletedFalseAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
-        return sellerRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+        return sellerRepository.findAllByEnterpriseIdAndDeletedFalseOrderByIdDesc(pageable, enterpriseId);
     }
 
     public List<Seller> selectAllSellers(Long enterpriseId) {

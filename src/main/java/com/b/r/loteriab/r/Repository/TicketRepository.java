@@ -27,6 +27,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Ticket findTicketBySerialAndEnterpriseId(String serial, Long enterpriseId);
 
+    Ticket findTicketByShortSerialAndEnterpriseId(String shortSerial, Long enterpriseId);
+
     List<Ticket> findAllByEnterpriseId(long id);
 
     Page<Ticket> findAllByEnterpriseId(Pageable pageable, Long enterpriseId);

@@ -30,23 +30,21 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
 
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 6 + '/event',
                     function (payload, headers, res) {
-                        console.log(payload);
                         $scope.global.users = merge($scope.global.users, payload.body.users);
                         $scope.$apply($scope.global.users);
                     });
 
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 7 + '/event',
                     function (payload, headers, res) {
-                        console.log(payload);
                         $scope.global.topSoldCombinations = groupArrayByCombinationType(payload.body.combinations);
                         $scope.$apply($scope.global.topSoldCombinations);
+                        console.log($scope.global.topSoldCombinations)
                     });
 
                 $stomp.subscribe('/topics/' + $scope.enterpriseId + '/' + 0 + '/event',
                     function (payload, headers, res) {
                         $scope.global.blockedCombinations = payload.body.combination;
                         $scope.$apply($scope.global.blockedCombinations);
-                        console.log($scope.global.blockedCombinations);
                     });
             }
 
@@ -93,7 +91,6 @@ app.controller("appController", ['$http', '$scope','$stomp','Constants','Enterpr
             .then(
                 function (d) {
                     $scope.global.blockedCombinations = d;
-                    console.log($scope.global.blockedCombinations)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

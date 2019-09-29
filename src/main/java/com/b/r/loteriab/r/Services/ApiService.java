@@ -49,9 +49,9 @@ public class ApiService {
             saleDetail.setWon(false);
             sale.getSaleDetails().add(saleDetail);
         }
-        sale.setPos(posRepository.findPosByIdAndEnterpriseId(vm.getPos().getId(), enterprise.getId()));
+        sale.setPos(posRepository.findPosByIdAndEnterpriseIdAndDeletedFalse(vm.getPos().getId(), enterprise.getId()));
         sale.setEnterprise(enterprise);
-        sale.setSeller(sellerRepository.findSellerByIdAndEnterpriseId(vm.getSeller().getId(), enterprise.getId()));
+        sale.setSeller(sellerRepository.findSellerByIdAndEnterpriseIdAndDeletedFalse(vm.getSeller().getId(), enterprise.getId()));
         Ticket ticket = new Ticket();
         ticket.setEnabled(true);
         ticket.setEmissionDate(new Date());

@@ -17,30 +17,24 @@ import java.util.List;
 @Transactional
 public interface PosRepository extends JpaRepository<Pos, Long> {
 
-    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s where s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
+    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s where s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
     String q3 = "select * from pos p where p.id in (select s.pos_id from seller s where s.id=?1 and s.enterprise_id=?2)\n" +
-            "and p.enterprise_id=?2 and p.enabled = ?3";
-    String q4 = "SELECT * FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b where b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel where sel.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1";
+            "and p.enterprise_id=?2 and p.enabled = ?3 and p.deleted = false";
+    String q4 = "SELECT * FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b where b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel where sel.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
 
-    Pos findPosByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Pos findPosByIdAndEnterpriseIdAndDeletedFalse(Long id, Long enterpriseId);
 
-    Page<Pos> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean state, Long enterpriseId);
+    Page<Pos> findAllByEnabledAndDeletedFalseAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean state, Long enterpriseId);
 
-    Page<Pos> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
-
-    List<Pos> findAllByEnterpriseIdOrderByIdDesc(Long enterpriseId);
-
-    List<Pos> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Boolean enabled, Long enterpriseId);
-
-    void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Page<Pos> findAllByEnterpriseIdAndDeletedFalseOrderByIdDesc(Pageable pageable, Long enterpriseId);
 
     Pos save(Pos pos);
 
-    Pos findPosBySerialAndEnterpriseId(String serial, Long enterpriseId);
+    Pos findPosBySerialAndEnterpriseIdAndDeletedFalse(String serial, Long enterpriseId);
 
-    Pos findPosByDescriptionAndEnterpriseId(String description, Long enterpriseId);
+    Pos findPosByDescriptionAndEnterpriseIdAndDeletedFalse(String description, Long enterpriseId);
 
-    Pos findBySerialAndEnabledAndEnterpriseId(String serial, boolean enabled, Long enterpriseId);
+    Pos findBySerialAndEnabledAndEnterpriseIdAndDeletedFalse(String serial, boolean enabled, Long enterpriseId);
 
     @Query(value = q1, nativeQuery = true)
     List<Pos> selectAllFreeAndEnabledPosByEnterpriseId(boolean enabled, Long enterpriseId);

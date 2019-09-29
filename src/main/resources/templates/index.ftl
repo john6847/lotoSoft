@@ -104,28 +104,6 @@
             </#if>
               <!--/.info-box-->
           </div>
-            <!--/.col-->
-
-<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
-<#--              <div class="info-box brown-bg">-->
-<#--                <i class="fa fa-shopping-cart"></i>-->
-<#--                <div class="count">7.538</div>-->
-<#--                <div class="title">Purchased</div>-->
-<#--              </div>-->
-<#--              <!--/.info-box&ndash;&gt;-->
-<#--            </div>-->
-            <!--/.col-->
-
-
-<#--            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">-->
-<#--              <div class="info-box green-bg">-->
-<#--                <i class="fa fa-cubes"></i>-->
-<#--                <div class="count">1.426</div>-->
-<#--                <div class="title">Stock</div>-->
-<#--              </div>-->
-<#--              <!--/.info-box&ndash;&gt;-->
-<#--            </div>-->
-<#--            <!--/.col&ndash;&gt;-->
           </div>
           <!--/.row-->
             <#if user??>
@@ -158,7 +136,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['BOLET'] track by $index">
                                       <spap class="list-group-item-text">{{item.result_combination}}</spap>
-                                      <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                      <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -172,7 +150,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['MARYAJ'] track by $index">
                                         <span class="list-group-item-text">{{item.result_combination}}</span>
-                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -186,7 +164,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['LOTO_TWA_CHIF'] track by $index">
                                         <span class="list-group-item-text">{{item.result_combination}}</span>
-                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -202,7 +180,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['LOTO_KAT_CHIF'] track by $index">
                                         <span class="list-group-item-text">{{item.result_combination}}</span>
-                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -216,7 +194,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['EXTRA'] track by $index">
                                       <spap class="list-group-item-text">{{item.result_combination}}</spap>
-                                      <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                      <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>
@@ -230,7 +208,7 @@
                                       </a>
                                     <a href="#" class="list-group-item list-group-item-info" ng-repeat="item in global.topSoldCombinations['OPSYON'] track by $index">
                                         <span class="list-group-item-text">{{item.result_combination}}</span>
-                                        <span class="badge badge-success badge-pill"><small>{{item.max_price}} HTG</small></span>
+                                        <span class="badge badge-success badge-pill"><small>{{item.sale_total}} HTG</small></span>
                                     </a>
                                   </div>
                                 </div>

@@ -59,8 +59,11 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
         message: null
     };
 
-    $scope.init = function() {
-        fetchAllCombinationTypes();
+    $scope.init = function(conf) {
+        if (conf === 'shift')
+            fetchAllShifts();
+        if (conf === 'combination')
+            fetchAllCombinationTypes();
         $scope.selectType.type = $scope.selectType.types[0].id;
     };
 
@@ -97,16 +100,16 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
     $scope.shiftChange = function (){
         $scope.shiftField.message = null;
     };
-    fetchAllShifts();
+
     $scope.updateVm = function(){
-      for (var i = 0; i< $scope.shiftField.shifts.length; i++){
-          if($scope.shiftField.shifts[i].openTime != null){
-              $scope.shiftField.shifts[i].openTime = new Date($scope.shiftField.shifts[i].openTime);
+          for (var i = 0; i< $scope.shiftField.shifts.length; i++){
+              if($scope.shiftField.shifts[i].openTime != null){
+                  $scope.shiftField.shifts[i].openTime = new Date($scope.shiftField.shifts[i].openTime);
+              }
+              if($scope.shiftField.shifts[i].closeTime!= null){
+                  $scope.shiftField.shifts[i].closeTime = new Date($scope.shiftField.shifts[i].closeTime)
+              }
           }
-          if($scope.shiftField.shifts[i].closeTime!= null){
-              $scope.shiftField.shifts[i].closeTime = new Date($scope.shiftField.shifts[i].closeTime)
-          }
-      }
     };
 
     $scope.selectCombination = function (id){
@@ -212,7 +215,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
                     console.error(errorResponse);
                 })
 
-    };
+    }
 
     function updateCombinationConfiguration(combination) {
         ConfigurationService.updateCombinationConfiguration(combination)

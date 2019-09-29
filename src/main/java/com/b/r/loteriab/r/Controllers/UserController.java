@@ -267,9 +267,9 @@ public class UserController {
 
             Seller seller;
             if (type == 2)
-                seller = sellerRepository.findSellerByUserId(savedUser.getId());
+                seller = sellerRepository.findSellerByUserIdAndDeletedFalse(savedUser.getId());
             else
-                seller = sellerRepository.findSellerByUserIdAndEnterpriseId(savedUser.getId(), enterprise.getId());
+                seller = sellerRepository.findSellerByUserIdAndDeletedFalseAndEnterpriseId(savedUser.getId(), enterprise.getId());
 
             if(seller != null){
                 seller.setUser(null);

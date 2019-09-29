@@ -264,6 +264,13 @@ public class InitServices {
             for (Shifts shift : Shifts.values()) {
                 Shift newShift = new Shift();
                 newShift.setName(shift.name());
+                if (shift.name().equals(Shifts.New_York.name())){
+                    newShift.setCloseTime("01/01/1970, 07:45:00 PM");
+                    newShift.setOpenTime("01/01/1970, 12:00:00 PM");
+                } else {
+                    newShift.setCloseTime("01/01/1970, 11:45:00 AM");
+                    newShift.setOpenTime("01/01/1970, 08:00:00 PM");
+                }
                 newShift.setEnterprise(enterprise);
                 shiftRepository.save(newShift);
             }

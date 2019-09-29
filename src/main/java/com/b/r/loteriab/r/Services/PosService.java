@@ -37,7 +37,7 @@ public class PosService {
             result.add("Nimewo seri la pa ka vid", "serial");
         }
 
-        Pos savedPos = posRepository.findPosByDescriptionAndEnterpriseId(pos.getDescription(), pos.getEnterprise().getId());
+        Pos savedPos = posRepository.findPosByDescriptionAndEnterpriseIdAndDeletedFalse(pos.getDescription(), pos.getEnterprise().getId());
         if (savedPos != null) {
             if (pos.getId() == null || pos.getId() <= 0) {
                 result.add("Deskripsyon sa egziste deja pou yon lòt machin", "description");
@@ -48,7 +48,7 @@ public class PosService {
             }
         }
 
-        savedPos = posRepository.findPosBySerialAndEnterpriseId(pos.getSerial(), pos.getEnterprise().getId());
+        savedPos = posRepository.findPosBySerialAndEnterpriseIdAndDeletedFalse(pos.getSerial(), pos.getEnterprise().getId());
         if (savedPos != null) {
             if (pos.getId() == null || pos.getId() <= 0) {
                 result.add("Nimewo seri sa egziste deja pou yon lòt machin", "serial");
@@ -86,7 +86,7 @@ public class PosService {
             return result;
         }
 
-        Pos currentPos = posRepository.findPosByIdAndEnterpriseId(pos.getId(), enterprise.getId());
+        Pos currentPos = posRepository.findPosByIdAndEnterpriseIdAndDeletedFalse(pos.getId(), enterprise.getId());
         currentPos.setDescription(pos.getDescription());
         currentPos.setModificationDate(new Date());
         currentPos.setSerial(pos.getSerial());
@@ -101,13 +101,13 @@ public class PosService {
     public Page<Pos> findAllPosByState(int page, int itemPerPage, Boolean state, Long enterpriseId) {
         Pageable pageable = PageRequest.of(page - 1, itemPerPage);
         if (state != null) {
-            return posRepository.findAllByEnabledAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
+            return posRepository.findAllByEnabledAndDeletedFalseAndEnterpriseIdOrderByIdDesc(pageable, state, enterpriseId);
         }
-        return posRepository.findAllByEnterpriseIdOrderByIdDesc(pageable, enterpriseId);
+        return posRepository.findAllByEnterpriseIdAndDeletedFalseOrderByIdDesc(pageable, enterpriseId);
     }
 
     public Pos findPosById(Long id, Long enterpriseId) {
-        return posRepository.findPosByIdAndEnterpriseId(id, enterpriseId);
+        return posRepository.findPosByIdAndEnterpriseIdAndDeletedFalse(id, enterpriseId);
     }
 
     public List<Pos> findPosBySellerId(Long sellerId, Long enterpriseId, int updating) {
@@ -130,13 +130,10 @@ public class PosService {
 
     public Result deletePosById(Long id, Long enterpriseId) {
         Result result = new Result();
-        Pos pos = posRepository.findPosByIdAndEnterpriseId(id, enterpriseId);
-        if (pos == null) {
-            result.add("Machin sa ou bezwen elimine a, pa egziste");
-            return result;
-        }
+        Pos pos = posRepository.findPosByIdAndEnterpriseIdAndDeletedFalse(id, enterpriseId);
+        pos.setDeleted(true);
         try {
-            posRepository.deleteByIdAndEnterpriseId(id, enterpriseId);
+            posRepository.save(pos);
         } catch (Exception ex) {
             result.add("Machin lan pa ka elimine, reeseye ankò");
         }

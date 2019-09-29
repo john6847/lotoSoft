@@ -25,9 +25,9 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseByEnabledAndNameContainingIgnoreCase(boolean enabled, String enterpriseName);
 
-    Enterprise findEnterpriseByName(String name);
+    Enterprise findEnterpriseByNameContainingIgnoreCase(String name);
 
-    Enterprise findEnterpriseBySubDomain(String subdomain);
+    Enterprise findEnterpriseBySubDomain(String subDomain);
 
     Page<Enterprise> findAllByEnabledOrderByIdDesc(Pageable pageable, boolean state);
 

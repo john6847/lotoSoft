@@ -21,32 +21,34 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     String q1 = "SELECT * FROM seller s\n" +
             " WHERE s.groups_id Is NULL \n" +
             " AND s.id NOT IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.enterprise_id=?2)\n" +
-            " AND s.enabled =?1 AND s.enterprise_id=?2";
-    String q2 = "SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b  where b.enterprise_id=?2) and s.enterprise_id=?2 and s.enabled =?1";
+            " AND s.enabled =?1 AND s.deleted = false AND s.enterprise_id=?2";
+    String q2 = "SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b  where b.enterprise_id=?2) AND s.enterprise_id=?2 AND s.deleted = false AND s.enabled =?1";
     String q3 = "SELECT * FROM seller s\n" +
             " WHERE s.groups_id = ?1\n" +
             " AND s.id IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.enterprise_id=?3)\n" +
-            " AND s.enabled =?2 AND s.enterprise_id=?3";
+            " AND s.enabled =?2 AND s.enterprise_id=?3 AND s.deleted = false";
 
-    Seller findSellerByIdAndEnterpriseId(Long id, Long enterpriseId);
+    Seller findSellerByIdAndEnterpriseIdAndDeletedFalse(Long id, Long enterpriseId);
 
-    Seller findSellerByUserId(Long id);
+    Seller findSellerByPosIdAndEnterpriseIdAndDeletedFalse(Long posId, Long enterpriseId);
 
-    Seller findSellerByUserIdAndEnterpriseId(Long id, Long enterpriseId);
+    Seller findSellerByUserIdAndDeletedFalse(Long id);
 
-    Page<Seller> findAllByEnterpriseIdOrderByIdDesc(Pageable pageable, Long enterpriseId);
+    Seller findSellerByUserIdAndDeletedFalseAndEnterpriseId(Long id, Long enterpriseId);
 
-    Page<Seller> findAllByEnabledAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
+    Page<Seller> findAllByEnterpriseIdAndDeletedFalseOrderByIdDesc(Pageable pageable, Long enterpriseId);
+
+    Page<Seller> findAllByEnabledAndDeletedFalseAndEnterpriseIdOrderByIdDesc(Pageable pageable, boolean enabled, Long enterpriseId);
 
     List<Seller> findAllByEnabledAndEnterpriseId(boolean enabled, Long enterpriseId);
 
-    List<Seller> findAllByEnterpriseId(Long enterpriseId);
+    List<Seller> findAllByEnterpriseIdAndDeletedFalse(Long enterpriseId);
 
     Seller save(Seller seller);
 
-    Seller findByUserIdAndEnterpriseId(Long id, Long enterpriseId);
+    Seller findByUserIdAndDeletedFalseAndEnterpriseId(Long id, Long enterpriseId);
 
-    List<Seller> findAllByGroupsIdAndEnterpriseId(Long id, Long enterpriseId);
+    List<Seller> findAllByGroupsIdAndEnterpriseIdAndDeletedFalse(Long id, Long enterpriseId);
 
     void deleteSellerByIdAndEnterpriseId(Long id, Long enterpriseId);
 

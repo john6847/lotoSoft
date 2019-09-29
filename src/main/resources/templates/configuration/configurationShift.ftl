@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="configurationController">
-        <section class="wrapper">
+        <section class="wrapper" ng-init="init('shift')">
             <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="icon_cog"></i>Paj Pou Konfigirasyon Tip Tiraj</h3>
@@ -49,23 +49,18 @@
                         <header class="panel-heading">
                             Tip Tiraj
                         </header>
-                        <div class="panel-body">
+                        <div class="panel-body" ng-if="shiftField.shifts && shiftField.shifts.length > 0">
                             <form name="shiftForm" class="form-horizontal">
-
                                 <div class="form-group">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-md-offset-3 col-lg-offset-3">
-                                        <select class="form-control m-bot15 selectpicker"
+                                        <select class="form-control m-bot15"
                                                 name="shift"
                                                 id="shift"
-                                                data-size="5"
                                                 ng-change="shiftChange()"
                                                 ng-model="shiftField.selectedShift"
-                                                data-none-selected-text="Chwazi Tip Tiraj la"
-                                                ng-options="shift.name for shift in shiftField.shifts"
+                                                th:placeholder="Chwazi Tip Tiraj la"
+                                                ng-options="item.name for item in shiftField.shifts"
                                                 required>
-                                            <option ng-repeat="shift in shiftField.shifts track by shift.id"
-                                                    value="{{shift.id}}">
-                                            </option>
                                         </select>
                                     </div>
                                 </div>

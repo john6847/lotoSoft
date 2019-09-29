@@ -23,7 +23,7 @@
 
     <!--main content start-->
     <section id="main-content" ng-controller="configurationController"">
-      <section class="wrapper" ng-init="init()">
+      <section class="wrapper" ng-init="init('combination')">
         <div class="row">
           <div class="col-lg-12">
             <h3 class="page-header"><i class="icon_cog"></i>Paj Pou Konfigire Konbinezon</h3>

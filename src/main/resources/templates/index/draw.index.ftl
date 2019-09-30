@@ -143,6 +143,7 @@
                   if (result) {
                       responseCancel = true;
                       document.getElementById('cancel').click();
+                    $("#custom-loader").fadeIn();
                   }
               }
           });

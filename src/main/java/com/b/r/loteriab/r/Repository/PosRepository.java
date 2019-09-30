@@ -17,10 +17,13 @@ import java.util.List;
 @Transactional
 public interface PosRepository extends JpaRepository<Pos, Long> {
 
-    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s where s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
-    String q3 = "select * from pos p where p.id in (select s.pos_id from seller s where s.id=?1 and s.enterprise_id=?2)\n" +
+    String q1 = "SELECT * FROM pos p WHERE p.id NOT IN (SELECT s.pos_id FROM Seller s where s.pos_id is not null and s.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
+    String q3 = "select * from pos p where p.id in (select s.pos_id from seller s where s.pos_id is not null and s.id=?1 and s.enterprise_id=?2)\n" +
             "and p.enterprise_id=?2 and p.enabled = ?3 and p.deleted = false";
-    String q4 = "SELECT * FROM Pos p WHERE p.id NOT IN (SELECT b.pos_id FROM Bank b where b.enterprise_id=?2) and p.id NOT IN (SELECT sel.pos_id FROM Seller sel where sel.enterprise_id=?2) and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
+    String q4 = "SELECT * FROM Pos p WHERE p.id NOT IN\n" +
+            "(SELECT b.pos_id FROM Bank b where b.pos_id is not null and b.enterprise_id=?2) and p.id NOT IN\n" +
+            "(SELECT sel.pos_id FROM Seller sel where sel.pos_id is not null and sel.enterprise_id=?2)\n" +
+            "and p.enterprise_id=?2 and p.enabled =?1 and p.deleted = false";
 
     Pos findPosByIdAndEnterpriseIdAndDeletedFalse(Long id, Long enterpriseId);
 

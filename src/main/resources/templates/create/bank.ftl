@@ -41,7 +41,7 @@
           </div>
         </#if>
       <div class="row">
-        <form class="form-horizontal form-validate" id="bankForm" action="/bank/create" th:object="${bank}"
+        <form class="form-horizontal form-validate" id="bankForm" name="bankForm" action="/bank/create" th:object="${bank}"
               method="post">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="row">
@@ -68,7 +68,7 @@
                                 name="seller"
                                 id="seller"
                                 data-size="5"
-                                ng-model="selectedSeller"
+                                ng-model="global.selectedSeller"
                                 ng-change="sellerChange(0)"
                                 data-none-selected-text="Chwazi Vande a"
                                 data-allow-clear="true"
@@ -85,7 +85,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="form-group" ng-if="selectedSeller">
+                    <div class="form-group" ng-if="global.selectedSeller">
                       <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label" for="pos">Machin</label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <select class="form-control round-input"
@@ -96,11 +96,12 @@
                                 data-none-results-text="Machin sa pa egziste"
                                 data-placeholder="Chwazi machin nan"
                                 data-none-selected-text="Chwazi Machin nan"
-                                ng-model="selectedPos"
+                                ng-model="global.selectedPos"
                                 data-size="5"
                                 required>
                           <option ng-repeat="p in pos track by p.id" value="{{p.id}}">{{p.description}}</option>
                         </select>
+                        <span style="color: red;" ng-show="bankForm.pos.$dirty && !global.selectedPos">Ou dwe chwazi yon machin.</span>
                       </div>
                     </div>
                   </div>
@@ -153,7 +154,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" foe="street">Rout</label>
+                      <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="street">Rout</label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                         <input type="text"
                                class="form-control round-input"
@@ -185,7 +186,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
-                              ng-disabled="!selectedPos || !selectedSeller"
+                              ng-disabled="!global.selectedPos || !global.selectedSeller"
                               title="Anrejistre tout done bank la">
                         <i class="fa fa-save"></i>
                         Anrejistre

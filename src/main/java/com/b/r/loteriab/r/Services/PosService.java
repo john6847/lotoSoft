@@ -114,7 +114,7 @@ public class PosService {
         List<Pos> pos = posRepository.selectPosRelatedToSeller(sellerId, enterpriseId, true);
 
         if (updating <= 0) {
-            if (pos == null) {
+            if (pos.size() == 0) {
                 pos = posRepository.selectAllPosFreeFromBankAndByEnterpriseId(true, enterpriseId);
             }
         } else {

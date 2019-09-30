@@ -134,6 +134,7 @@
                 if (result){
                     responseDelete = true;
                     document.getElementById('delete').click();
+                    $("#custom-loader").fadeIn();
                 }
             }
         });
@@ -159,6 +160,7 @@
                 if (result){
                     responseBlock = true;
                     document.getElementById('block').click();
+                    $("#custom-loader").fadeIn();
                 }
             }
         });

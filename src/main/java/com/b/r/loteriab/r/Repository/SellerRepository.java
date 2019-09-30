@@ -20,12 +20,12 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
 
     String q1 = "SELECT * FROM seller s\n" +
             " WHERE s.groups_id Is NULL \n" +
-            " AND s.id NOT IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.enterprise_id=?2)\n" +
+            " AND s.id NOT IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.PARENT_SELLER_ID is not null and gr.enterprise_id=?2)\n" +
             " AND s.enabled =?1 AND s.deleted = false AND s.enterprise_id=?2";
-    String q2 = "SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b  where b.enterprise_id=?2) AND s.enterprise_id=?2 AND s.deleted = false AND s.enabled =?1";
+    String q2 = "SELECT * FROM seller s WHERE s.id NOT IN (SELECT b.seller_id FROM Bank b where b.seller_id is not null and b.enterprise_id=?2) AND s.enterprise_id=?2 AND s.deleted = false AND s.enabled =?1";
     String q3 = "SELECT * FROM seller s\n" +
             " WHERE s.groups_id = ?1\n" +
-            " AND s.id IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.enterprise_id=?3)\n" +
+            " AND s.id IN (SELECT gr.PARENT_SELLER_ID FROM groups gr where gr.PARENT_SELLER_ID is not null and gr.enterprise_id=?3)\n" +
             " AND s.enabled =?2 AND s.enterprise_id=?3 AND s.deleted = false";
 
     Seller findSellerByIdAndEnterpriseIdAndDeletedFalse(Long id, Long enterpriseId);

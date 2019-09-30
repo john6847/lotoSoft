@@ -131,6 +131,7 @@
                 if (result){
                     responseDelete = true;
                     document.getElementById('delete').click();
+                    $("#custom-loader").fadeIn();
                 }
             }
         });

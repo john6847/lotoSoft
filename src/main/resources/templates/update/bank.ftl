@@ -68,7 +68,7 @@
                                 name="seller"
                                 id="seller"
                                 data-size="5"
-                                ng-model="selectedSeller"
+                                ng-model="global.selectedSeller"
                                 ng-change="sellerChange(1)"
                                 data-none-selected-text="Chwazi Vande a"
                                 data-allow-clear="true"
@@ -116,7 +116,7 @@
                         <select class="form-control round-input"
                                 name="pos"
                                 id="pos"
-                                ng-model="selectedPos"
+                                ng-model="global.selectedPos"
                                 data-live-search="true"
                                 data-none-results-text="Machin sa pa egziste"
                                 data-placeholder="Chwazi machin nan"
@@ -200,7 +200,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-12">
             <div class="breadcrumb" style="height: auto;">
               <div class="form-group" style="margin-bottom: 10px;">
@@ -217,7 +216,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
-                              ng-disabled="!selectedPos || !selectedSeller"
+                              ng-disabled="!global.selectedPos || !global.selectedSeller"
                               title="Anrejistre tout done bank la">
                         <i class="fa fa-save"></i>
                         Anrejistre

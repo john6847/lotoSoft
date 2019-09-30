@@ -68,7 +68,6 @@
                                     </a>
                                 </td>
 
-                              therrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeeeeee Make block and delete button confirmation work
 
                             </tr>
                         </table>
@@ -130,6 +129,7 @@
                   if (result){
                       responseDelete = true;
                       document.getElementById('delete').click();
+                      $("#custom-loader").fadeIn();
                   }
               }
           });
@@ -137,7 +137,7 @@
 
 
       var responseBlock = false;
-      function onDelete (e) {
+      function onBlock(e) {
           if(!responseBlock)
               e.preventDefault();
           bootbox.confirm({
@@ -156,6 +156,7 @@
                   if (result){
                       responseBlock = true;
                       document.getElementById('block').click();
+                      $("#custom-loader").fadeIn();
                   }
               }
           });

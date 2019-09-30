@@ -5,12 +5,14 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosSer
     $scope.pos = [];
     $scope.global={
         tableParams: null,
+        selectedPos: null,
+        selectedSeller: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
         api:  $resource("/api/bank")
     };
     $scope.serial = '';
-    $scope.selectedSeller = null;
-    $scope.selectedPos = null;
+    // $scope.selectedSeller = null;
+    // $scope.selectedPos = null;
 
     $scope.init = function (reading) {
         if (reading){
@@ -42,8 +44,9 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosSer
 
 
     $scope.sellerChange = function (updating){
-        if ($scope.selectedSeller){
-            fetchPos($scope.selectedSeller, updating);
+        if ($scope.global.selectedSeller){
+        console.log('therrreee')
+            fetchPos($scope.global.selectedSeller, updating);
         }
     };
 
@@ -56,6 +59,7 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosSer
                     else{
                         $scope.pos = d;
                     }
+                    console.log(d)
                 },
                 function (errorResponse) {
                     console.error(errorResponse);

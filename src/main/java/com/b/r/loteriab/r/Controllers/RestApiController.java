@@ -87,7 +87,7 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
 
-        Enterprise enterprise = enterpriseRepository.findEnterpriseByEnabledAndNameContainingIgnoreCase(true, vm.getEnterpriseName());
+        Enterprise enterprise = enterpriseRepository.findEnterpriseByEnabledAndNameIgnoreCase(true, vm.getEnterpriseName());
         if (enterprise == null) {
             sampleResponse.setMessage("Non antrepriz la pa bon reeseye avek yon lot non pou ou ka konekte");
             sampleResponse.getBody().put("ok", false);

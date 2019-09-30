@@ -37,14 +37,19 @@ public class BankService {
     @Autowired
     private SellerRepository sellerRepository;
 
-    private Result validateModel(Bank pos) {
+    private Result validateModel(Bank bank) {
         Result result = new Result();
 
-        if (pos.getDescription().isEmpty()) {
+        if (bank.getDescription().isEmpty()) {
             result.add("Deskripsyon an pa ka vid", "description");
         }
 
-        if (pos.getSerial().isEmpty()) {
+        if (bankRepository.findBankByDescriptionIgnoreCaseAndEnterpriseId(bank.getDescription(), bank.getEnterprise().getId()) != null) {
+            result.add("Deskripsyon bank sa egziste deja");
+            return result;
+        }
+
+        if (bank.getSerial().isEmpty()) {
             result.add("Serial la pa ka vid", "serial");
         }
 
@@ -53,12 +58,12 @@ public class BankService {
 
     public Result saveBank(Bank bank, Enterprise enterprise) {
         bank.setSerial(helper.createBankSerial(enterprise));
+        bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
         Result result = validateModel(bank);
         if (!result.isValid()) {
             return result;
         }
         try {
-            bank.setEnterprise(enterpriseService.findEnterpriseByName(enterprise.getName()));
             if (bank.getSeller() != null) {
                 Seller seller = sellerService.findSellerById(bank.getSeller().getId(), enterprise.getId());
                 if (seller != null) {

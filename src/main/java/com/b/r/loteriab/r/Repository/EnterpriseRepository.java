@@ -23,7 +23,7 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Long> {
 
     Enterprise findEnterpriseById(Long id);
 
-    Enterprise findEnterpriseByEnabledAndNameContainingIgnoreCase(boolean enabled, String enterpriseName);
+    Enterprise findEnterpriseByEnabledAndNameIgnoreCase(boolean enabled, String enterpriseName);
 
     Enterprise findEnterpriseByNameContainingIgnoreCase(String name);
 

@@ -538,11 +538,11 @@ ul.sidebar-menu , ul.sidebar-menu li ul.sub{
 
 }
 
-ul.sidebar-menu {
+/*ul.sidebar-menu {*/
 
-    margin-top: 60px;
+/*    margin-top: 60px;*/
 
-}
+/*}*/
 
 #sidebar > ul > li > ul.sub {
 
@@ -1027,7 +1027,7 @@ ul.sidebar-menu li.active a i {
 
     display: inline-block;
 
-    margin-top: 60px;
+    /*margin-top: 60px;*/
 
     padding: 15px;
 

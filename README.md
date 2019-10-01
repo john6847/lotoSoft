@@ -4,11 +4,11 @@
 - ressource 'https://www.sma.im/how-to-run-your-java-springboot-app-jar-war-as-systemd-service-on-linux/'
 
 If you make some change to the myapp.service
-sudo systemctl enable myapp.service
-sudo service myapp start
-sudo service myapp stop
-sudo service myapp status
-journalctl -u myapp.service 
+-sudo systemctl enable myapp.service
+-sudo service myapp start
+-sudo service myapp stop
+-sudo service myapp status
+-journalctl -u myapp.service 
 
 
 # Quick Run

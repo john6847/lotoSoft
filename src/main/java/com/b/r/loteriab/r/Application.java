@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -36,6 +38,12 @@ public class Application {
 		// Setting Spring Boot SetTimeZone
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Port-au-Prince"));
 	}
-//	https://www.codota.com/code/java/methods/java.util.TimeZone/setDefault
+
+//	@Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//		return builder.sources(Application.class);
+//	}
+
+	//	https://www.codota.com/code/java/methods/java.util.TimeZone/setDefault
 //	https://howtodoinjava.com/java/date-time/convert-date-time-to-est-est5edt/
 }

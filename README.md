@@ -1,5 +1,6 @@
-#New route
-- http://178.128.148.98:3200/home
+# New way to deploy app
+- create jar with 'mvn package'
+- after that copy file to user bin 'sudo cp loteriab.r.jar /usr/local/bin'
 
 # Quick Run
 - http://appsdeveloperblog.com/run-spring-boot-app-from-a-command-line/

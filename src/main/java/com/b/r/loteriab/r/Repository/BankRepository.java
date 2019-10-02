@@ -4,6 +4,7 @@ import com.b.r.loteriab.r.Model.Bank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -15,6 +16,8 @@ import java.util.List;
 @Transactional
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
+
+    String q = "SELECT * FROM bank b WHERE b.name IN (select ba.NAME from bank ba where ba.id != ?1 and ba.name IN (?2)) and b.enterprise_id =?3 and b.enabled= true limit 1";
 
     Bank findBankByIdAndEnterpriseId(Long id, Long enterpriseId);
 
@@ -35,4 +38,11 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
     Bank save(Bank bank);
 
     Bank findTopByEnterpriseIdOrderByEnterpriseIdDesc(Long enterpriseId);
+
+    @Query(value = q, nativeQuery = true)
+    List<Bank> selectbankIfExist(Long bankId, String name, Long enterpriseId);
+//    SELECT * FROM bank b WHERE b.description IN
+//            (select ba.description from bank ba where ba.id != ?1 and ba.description IN ('Bank #1'))
+//    and b.enterprise_id =?3 and b.enabled= true limit 1
+//theeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrreee
 }

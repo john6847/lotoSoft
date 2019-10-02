@@ -74,7 +74,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                <button class="btn btn-primary form-control"
+                                                <button class="btn btn-primary form-control load"
                                                         type="submit" title="Anrejistre tout done machin sa">
                                                         <i class="fa fa-save"></i>
                                                         Anrejistre
@@ -85,9 +85,9 @@
                                 </div>
                             </form>
                         </div>
-
                     </section>
                 </div>
+            </div>
         </section>
         <!--main content end-->
         <div class="text-right">
@@ -102,15 +102,16 @@
             </div>
         </div>
     </section>
-
+</section>
     <#include "../loader.ftl">
 
     <script>
         $("#posForm").on("submit", function(){
             $("#custom-loader").fadeIn();
+        });
     </script>
 
-<#include "../scripts.ftl">
+    <#include "../scripts.ftl">
 
 </body>
 

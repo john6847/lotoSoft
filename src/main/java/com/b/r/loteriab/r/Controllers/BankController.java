@@ -3,6 +3,7 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.Bank;
 import com.b.r.loteriab.r.Model.Enterprise;
+import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Repository.AddressRepository;
 import com.b.r.loteriab.r.Repository.BankRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @ControllerAdvice
@@ -126,7 +128,13 @@ public class BankController {
             }
 
             model.addAttribute("bank", bank);
-            model.addAttribute("sellers", sellerService.findAllSellersByEnterpriseId(enterprise.getId()));
+            List<Seller> freeSellers = sellerRepository.selectAllSellersFreeFromBankByEnterpriseId(true, enterprise.getId());
+            Seller actualSeller = sellerRepository.findSellerByIdAndEnterpriseIdAndDeletedFalse(bank.getSeller().getId(), enterprise.getId());
+            if (actualSeller != null){
+                freeSellers.add(0, actualSeller);
+            }
+
+            model.addAttribute("sellers", freeSellers);
             model.addAttribute("pos", posService.findPosBySellerId(bank.getSeller().getId(), enterprise.getId(), 1));
             return "/update/bank";
         }

@@ -9,7 +9,7 @@
   </div>
 
   <!--logo start-->
-  <a href="index.ftl" class="logo">
+  <a href="/home" class="logo">
     <img src="/img/logo-big.png" width="25%" height="15%" alt="">
 <#--    <span>{{}}</span>-->
   </a>
@@ -274,7 +274,7 @@
         <li class="dropdown">
           <a data-toggle="dropdown" class="dropdown-toggle" href="#">
             <span class="profile-ava">
-              <img alt="" src="/img/avatar1_small.jpg" />
+              <img alt="" src="/img/avatar-mini2.jpg" />
             </span>
             <span class="username">${user.username}</span>
             <b class="caret"></b>
@@ -290,7 +290,7 @@
             <#list user.roles as rol>
               <#if rol.name=="ROLE_ADMIN" || rol.name=="ROLE_SUPER_ADMIN">
               <li>
-                <a href="/user/1/create"><i class="icon_mail_alt"></i>Kreye Itilizatè</a>
+                <a href="/user/1/create"><i class="icon_profile"></i>Kreye Itilizatè</a>
               </li>
               </#if>
             </#list>

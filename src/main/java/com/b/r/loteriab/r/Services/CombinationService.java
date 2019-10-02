@@ -56,10 +56,6 @@ public class CombinationService {
     }
 
 
-    public void deleteCombinationId(Long id) {
-        combinationRepository.deleteById(id);
-    }
-
     public List<Combination> findAllCombinations(String combination, Enterprise enterprise) {
         CombinationType combinationType = null;
         CombinationType secondCombinationType = null;

@@ -94,7 +94,7 @@
                                 ng-model="global.selectedPos"
                                 data-size="5"
                                 required>
-                          <option value="" selected disabled>- Chwazi yon bank -</option>
+                          <option value="" selected disabled>- Chwazi yon machin -</option>
                           <option ng-repeat="p in pos track by p.id" value="{{p.id}}">{{p.description}}</option>
                         </select>
                         <span style="color: red;" ng-show="bankForm.pos.$dirty && !global.selectedPos">Ou dwe chwazi yon machin.</span>
@@ -182,7 +182,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
-                              ng-disabled="!global.selectedPos || !global.selectedSeller"
+                              ng-disabled="bankForm.pos.$invalid || bankForm.seller.$invalid"
                               title="Anrejistre tout done bank la">
                         <i class="fa fa-save"></i>
                         Anrejistre

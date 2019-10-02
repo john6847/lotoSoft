@@ -6,6 +6,7 @@ import com.b.r.loteriab.r.Model.Seller;
 import com.b.r.loteriab.r.Model.ViewModel.Helper;
 import com.b.r.loteriab.r.Repository.BankRepository;
 import com.b.r.loteriab.r.Repository.SellerRepository;
+import com.b.r.loteriab.r.Validation.NumberHelper;
 import com.b.r.loteriab.r.Validation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,10 +45,15 @@ public class BankService {
             result.add("Deskripsyon an pa ka vid", "description");
         }
 
-        if (bankRepository.findBankByDescriptionIgnoreCaseAndEnterpriseId(bank.getDescription(), bank.getEnterprise().getId()) != null) {
-            result.add("Deskripsyon bank sa egziste deja");
-            return result;
+        if (Long.parseLong(NumberHelper.getNumericValue(bank .getId()).toString()) <= 0) {
+            if (bankRepository.findBankByDescriptionIgnoreCaseAndEnterpriseId(bank.getDescription(), bank.getEnterprise().getId()) != null) {
+                result.add("Deskripsyon bank sa egziste deja");
+                return result;
+            }
+        } else {
+
         }
+
 
         if (bank.getSerial().isEmpty()) {
             result.add("Serial la pa ka vid", "serial");

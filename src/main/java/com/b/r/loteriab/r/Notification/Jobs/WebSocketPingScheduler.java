@@ -90,7 +90,6 @@ public class WebSocketPingScheduler {
 
         for (Map.Entry<Long, List<Shift>> entry : mapShifts.entrySet()) {
             for (Shift shift : entry.getValue()) {
-                System.out.println("there");
                 if (shift.getName().equals(Shifts.Maten.name()) && shift.isEnabled()) {
                     if (!shift.getCloseTime().isEmpty()) {
                         Date date = Helper.getCloseDateTime(shift.getCloseTime(), new Date());

@@ -99,5 +99,8 @@
 <script src="/js/angularjs/controllers/BankController.js"></script>
 <script src="/js/angularjs/controllers/ReportController.js"></script>
 <script src="/js/angularjs/controllers/AppController.js"></script>
+<!-- ManyChat -->
+<script src="//widget.manychat.com/1964173997224528.js" async="async"></script>
+
 
 

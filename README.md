@@ -12,6 +12,10 @@ If you make some change to the myapp.service
 # Nginx
 - systemctl restart nginx
 
+# Config
+- sudo nano /etc/lotosoft/environmentfile
+- sudo nano /etc/systemd/system/myapp.service
+
 
 
 # Quick Run

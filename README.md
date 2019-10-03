@@ -9,6 +9,9 @@ If you make some change to the myapp.service
 - sudo service myapp stop
 - sudo service myapp status
 - journalctl -u myapp.service 
+# Nginx
+- systemctl restart nginx
+
 
 
 # Quick Run

@@ -1,11 +1,6 @@
 package com.b.r.loteriab.r;
 
 import com.b.r.loteriab.r.Services.InitServices;
-import com.corundumstudio.socketio.AuthorizationListener;
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.HandshakeData;
-import com.corundumstudio.socketio.SocketIOServer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -20,7 +15,6 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableWebMvc
 @EntityScan(basePackages = "com.b.r.loteriab.r")
 public class Application {
 

@@ -20,7 +20,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableWebMvc
+//@EnableWebMvc
 @EntityScan(basePackages = "com.b.r.loteriab.r")
 public class Application {
 

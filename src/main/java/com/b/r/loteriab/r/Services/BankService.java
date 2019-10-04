@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Dany on 04/05/2019.
@@ -51,7 +52,11 @@ public class BankService {
                 return result;
             }
         } else {
-
+            List<Bank> existedBank =  bankRepository.selectbankIfExist(bank.getId(), bank.getDescription(), bank.getEnterprise().getId());
+            if (existedBank != null && existedBank.size() > 0){
+                result.add("Deskripsyon bank sa egziste deja");
+                return result;
+            }
         }
 
 

@@ -69,16 +69,12 @@
                                                    for="seller">Vandè<span
                                                         class="required">*</span></label>
                                             <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                                <select class="form-control selectpicker"
+                                                <select class="form-control round-input"
                                                         name="seller"
                                                         id="seller"
                                                         data-size="5"
                                                         ng-model="global.selectedSeller"
-                                                        ng-change="sellerChange(1)"
-                                                        data-none-selected-text="Chwazi Vande a"
-                                                        data-allow-clear="true"
-                                                        data-none-results-text="Vande sa pa egziste"
-                                                        data-placeholder="Chwazi vande la">
+                                                        ng-change="sellerChange(1)">
                                                     <#if sellers??>
                                                         <#list sellers as seller>
                                                             <#if seller.id == bank.seller.id>

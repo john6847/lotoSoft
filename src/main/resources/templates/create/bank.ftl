@@ -64,7 +64,7 @@
                       <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="seller">Vandè<span
                                 class="required">*</span></label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <select class="form-control round-input selectpicker"
+                        <select class="form-control round-input"
                                 name="seller"
                                 id="seller"
                                 data-size="5"
@@ -88,7 +88,7 @@
                     <div class="form-group" ng-if="global.selectedSeller">
                       <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label" for="pos">Machin</label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <select class="form-control"
+                        <select class="form-control round-input"
                                 name="pos"
                                 id="pos"
                                 ng-model="global.selectedPos"

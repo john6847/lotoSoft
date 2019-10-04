@@ -12,4 +12,5 @@ import javax.transaction.Transactional;
 @Transactional
 @Repository
 public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long> {
+    SaleDetail findByEnterpriseIdAndId(Long enterpriseId, Long id);
 }

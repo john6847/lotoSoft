@@ -309,26 +309,26 @@ public class RestApiController {
 
         long diffMinutes = diff / (60 * 1000) % 60;
 
-        if (diffMinutes >= 5) {
-            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
-            sampleResponse.getBody().put("ok", false);
-            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
-        }
+//        if (diffMinutes >= 5) {
+//            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+//            sampleResponse.getBody().put("ok", false);
+//            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+//        }
 
         for (SaleDetail saleDetail: sale.getSaleDetails()) {
             Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());
             combination.setSaleTotal(combination.getSaleTotal() - saleDetail.getPrice());
             combinationRepository.save(combination);
-            saleDetail.setCombination(null);
-            saleDetailRepository.save(saleDetail);
-
+            SaleDetail savedSaleDetail = saleDetailRepository.findByEnterpriseIdAndId(vm.getEnterprise().getId(), saleDetail.getId());
+            savedSaleDetail.setCombination(null);
+            saleDetailRepository.save(savedSaleDetail);
         }
         sale.setPos(null);
         sale.setSeller(null);
         sale.setShift(null);
         sale.setEnterprise(null);
         saleRepository.save(sale);
-        saleRepository.deleteById(ticket.getId());
+        saleRepository.deleteById(sale.getId());
 
         sampleResponse.getBody().put("ok", true);
         return new ResponseEntity<>(sampleResponse, HttpStatus.OK);

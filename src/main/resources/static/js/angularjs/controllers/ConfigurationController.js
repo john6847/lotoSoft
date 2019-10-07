@@ -39,9 +39,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
         {
             type: 'Office',
             number: '(555) 314-1592',
-            // options: {
-            //     face : imagePath
-            // }
+
         },
         {
             type: 'Offset',

@@ -75,7 +75,7 @@ public class SecurityServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String[] usernameAndEnterprise = StringUtils.split(
-                username, String.valueOf(Character.LINE_SEPARATOR));
+                username, ";");
         if (usernameAndEnterprise == null || usernameAndEnterprise.length != 2) {
             throw new UsernameNotFoundException("Username and macAddress must be provided");
         }

@@ -20,7 +20,7 @@ public class SaleDetail implements Serializable {
 
     @Nullable
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "combination_id")
+    @JoinColumn(name = "combination_id", nullable=true)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Combination combination;
     @JsonIgnore

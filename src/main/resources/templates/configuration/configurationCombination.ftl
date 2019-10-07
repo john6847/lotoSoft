@@ -239,6 +239,36 @@
               </div>
             </section>
           </div>
+            <div class="col-lg-4">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Konbinezon Ki bloke yo
+                    </header>
+                    <div class="panel-body">
+                        <md-card md-theme-watch >
+                            <md-content>
+                                <md-card-title layout-align="start center">
+                                    <md-card-title-text >
+                                        <span class="md-headline">List Konbinezon ki bloke yo
+                                        </span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content layout="row">
+                                    <md-list flex>
+                                        <md-list-item class="md-2-line" ng-repeat="phone in phones">
+                                            <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
+                                                <h3> {{ phone.number }} </h3>
+                                                <p> {{ phone.type }} </p>
+                                            </div>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-card-content>
+                            </md-content>
+
+                        </md-card>
+                    </div>
+                </section>
+            </div>
         </div>
       </section>
     </section>

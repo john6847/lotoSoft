@@ -46,7 +46,7 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-{{combinationGroupField.blockCombinations.length > 0? '9': '12'}}">
             <section class="panel">
               <header class="panel-heading">
                 Konbinezon
@@ -239,35 +239,35 @@
               </div>
             </section>
           </div>
-            <div class="col-lg-4">
-                <section class="panel">
-                    <header class="panel-heading">
-                        Konbinezon Ki bloke yo
-                    </header>
-                    <div class="panel-body">
-                        <md-card md-theme-watch >
-                            <md-content>
-                                <md-card-title layout-align="start center">
-                                    <md-card-title-text >
-                                        <span class="md-headline">List Konbinezon ki bloke yo
+            <div class="col-lg-3" ng-if="combinationGroupField.blockCombinations && combinationGroupField.blockCombinations.length > 0">
+                <md-card md-theme-watch>
+                    <md-content>
+                        <md-card-title layout-align="start center">
+                            <md-card-title-text >
+                                <span class="md-headline">List Konbinezon ki bloke yo</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <div style="overflow-y:auto; max-height: 300px;" layout="row">
+                            <md-list flex>
+                                <md-list-item class="md-2-line" ng-repeat="item in combinationGroupField.blockCombinations">
+                                    <md-icon>
+                                        <span class="fa-stack">
+                                            <span class="fa fa-square-o fa-stack-2x">
+                                            </span>
+                                            <strong class="fa-stack-1x">
+                                                {{getOptions(item.combinationType.products.id).code}}
+                                            </strong>
                                         </span>
-                                    </md-card-title-text>
-                                </md-card-title>
-                                <md-card-content layout="row">
-                                    <md-list flex>
-                                        <md-list-item class="md-2-line" ng-repeat="phone in phones">
-                                            <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
-                                                <h3> {{ phone.number }} </h3>
-                                                <p> {{ phone.type }} </p>
-                                            </div>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-card-content>
-                            </md-content>
-
-                        </md-card>
-                    </div>
-                </section>
+                                    </md-icon>
+                                    <div class="md-list-item-text">
+                                        <span class="label label-{{getOptions(item.combinationType.products.id).color}}" style="font-size: 18px">{{item.resultCombination}}</span>
+                                        <p> {{getOptions(item.combinationType.products.id).name}} </p>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-content>
+                </md-card>
             </div>
         </div>
       </section>

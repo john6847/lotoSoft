@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("configurationController", ['$http', 'ConfigurationService','$scope', 'CombinationTypeService',function ($http, ConfigurationService, $scope, CombinationTypeService) {
+app.controller("configurationController", ['$http', 'ConfigurationService','$scope', 'CombinationTypeService', 'CombinationService',function ($http, ConfigurationService, $scope, CombinationTypeService, CombinationService) {
     $scope.itemsPerPage= 5;
 
     $scope.selectType = {
@@ -15,41 +15,9 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
             ],
         type: null,
         changeType: null
-
     };
 
 
-
-    $scope.phones = [
-        {
-            type: 'Home',
-            number: '(555) 251-1234',
-            options: {
-                icon: 'communication:phone'
-            }
-        },
-        {
-            type: 'Cell',
-            number: '(555) 786-9841',
-            options: {
-                icon: 'communication:phone',
-                avatarIcon: true
-            }
-        },
-        {
-            type: 'Office',
-            number: '(555) 314-1592',
-
-        },
-        {
-            type: 'Offset',
-            number: '(555) 192-2010',
-            options: {
-                offset: true,
-                actionIcon: 'communication:phone'
-            }
-        }
-    ];
 
     $scope.shiftField = {
         selectedShift: null,
@@ -65,6 +33,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
 
     $scope.combinationGroupField = {
         combinationTypes: null,
+        blockCombinations: [],
         selectedCombinationType: null,
         resultCombinationGroup: {
             maxPrice: 0,
@@ -92,11 +61,55 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
         message: null
     };
 
+    $scope.opptions = [
+        {
+            id: 1,
+            color: 'success',
+            code: 'Bo',
+            name: 'Bolèt'
+        }, {
+            id: 2,
+            color: 'danger',
+            code: 'L3',
+            name: 'Loto 3'
+        }, {
+            id: 3,
+            color: 'warning',
+            code: 'L4',
+            name: 'Loto 4'
+        }, {
+            id: 4,
+            color: 'warning',
+            code: 'Op',
+            name: 'Opsyon'
+        }, {
+            id: 5,
+            color: 'warning',
+            code: 'Ma',
+            name: 'Maryaj'
+        }, {
+            id: 6,
+            color: 'info',
+            code: 'Ex',
+            name: 'Extra'
+        },
+    ];
+
+    $scope.getOptions = function (productId) {
+        return $scope.opptions.find(function (item) {
+            return item.id === productId;
+        })
+    };
+
+
     $scope.init = function(conf) {
-        if (conf === 'shift')
+        if (conf === 'shift'){
             fetchAllShifts();
-        if (conf === 'combination')
+        }
+        if (conf === 'combination'){
             fetchAllCombinationTypes();
+            fetchAllBlockedCombination();
+        }
         $scope.selectType.type = $scope.selectType.types[0].id;
     };
 
@@ -256,6 +269,7 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
                 function (d) {
                     $scope.resetCombination();
                     $scope.combinationField.message = d;
+                    fetchAllBlockedCombination();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
@@ -310,5 +324,18 @@ app.controller("configurationController", ['$http', 'ConfigurationService','$sco
             $scope.combinationField.showList = false;
         }
     }
+
+    function fetchAllBlockedCombination() {
+        CombinationService.fetchAllBlockedCombination()
+            .then(
+                function (d) {
+                    $scope.combinationGroupField.blockCombinations = d;
+                    console.log(d)
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+    }
+
 
 }]);

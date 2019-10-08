@@ -323,12 +323,18 @@ public class RestApiController {
             saleDetail.setDeleted(true);
             saleDetailRepository.save(savedSaleDetail);
         }
+        // delete ticket
         ticket.setDeleted(true);
+        ticket.setShift(null);
+        ticket.setEnterprise(null);
         ticketRepository.save(ticket);
+
+        // delete sale
         sale.setPos(null);
         sale.setSeller(null);
         sale.setShift(null);
         sale.setEnterprise(null);
+        sale.setTicket(null);
         sale.setDeleted(true);
         saleRepository.save(sale);
 //        saleRepository.deleteById(sale.getId());

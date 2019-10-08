@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Where(clause = "deleted = false")
 public class Ticket implements Serializable {
     public long sequence;
     @Id
@@ -28,4 +30,5 @@ public class Ticket implements Serializable {
     private boolean won;
     private boolean enabled;
     private double amountWon;
+    private boolean deleted = false;
 }

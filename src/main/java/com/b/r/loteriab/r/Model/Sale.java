@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Where(clause = "deleted = false")
 public class Sale implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,7 @@ public class Sale implements Serializable {
     @JoinTable(name = "sale_Sale_details",
             joinColumns = {@JoinColumn(name = "sale_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "saleDetails_id", referencedColumnName = "id")})
+    @Where(clause = "deleted = false")
     private List<SaleDetail> saleDetails;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
@@ -42,4 +45,5 @@ public class Sale implements Serializable {
     @JoinColumn(name = "seller_id")
     private Seller seller;
     private boolean enabled;
+    private boolean deleted = false;
 }

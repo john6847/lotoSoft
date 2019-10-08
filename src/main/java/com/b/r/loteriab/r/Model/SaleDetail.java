@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Data
+@Where(clause = "deleted = false")
 public class SaleDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +35,5 @@ public class SaleDetail implements Serializable {
     private Enterprise enterprise;
     private boolean enabled;
     private boolean won;
+    private boolean deleted = false;
 }

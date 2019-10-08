@@ -196,9 +196,16 @@
                   </#if>
 
                 <div class="form-group">
-                  <div class="col-lg-3 col-md-9 col-sm-12 col-xs-12 col-lg-offset-9 col-md-offset-3 col-xs-12">
+                  <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12 col-lg-offset-6 col-md-offset-3 col-xs-12">
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <a href="/home"
+                           class="btn btn-warning form-control">
+                           <i class="fa fa-arrow-left"></i>
+                           Anile
+                        </a>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <button class="btn btn-danger form-control"
                                 type="reset"
                                 title="Efase tout done itilizatè sa">
@@ -206,7 +213,7 @@
                           Reyajiste
                         </button>
                       </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         <button class="btn btn-primary form-control"
                                 type="submit"
                                 ng-disabled="usernameExist"

@@ -69,16 +69,12 @@
                                                    for="seller">Vandè<span
                                                         class="required">*</span></label>
                                             <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                                                <select class="form-control selectpicker"
+                                                <select class="form-control round-input"
                                                         name="seller"
                                                         id="seller"
                                                         data-size="5"
                                                         ng-model="global.selectedSeller"
-                                                        ng-change="sellerChange(1)"
-                                                        data-none-selected-text="Chwazi Vande a"
-                                                        data-allow-clear="true"
-                                                        data-none-results-text="Vande sa pa egziste"
-                                                        data-placeholder="Chwazi vande la">
+                                                        ng-change="sellerChange(1)">
                                                     <#if sellers??>
                                                         <#list sellers as seller>
                                                             <#if seller.id == bank.seller.id>
@@ -215,9 +211,16 @@
                     <div class="col-lg-12">
                         <div class="breadcrumb" style="height: auto;">
                             <div class="form-group" style="margin-bottom: 10px;">
-                                <div class="col-lg-3 col-md-9 col-sm-12 col-xs-12 col-lg-offset-9 col-md-offset-3 col-xs-12">
+                                <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12 col-lg-offset-6 col-md-offset-3 col-xs-12">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                            <a href="/home"
+                                               class="btn btn-warning form-control">
+                                                <i class="fa fa-arrow-left"></i>
+                                                Anile
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <button type="reset"
                                                     class="btn btn-danger form-control"
                                                     title="Efase tout done bank lan">
@@ -225,7 +228,7 @@
                                                 Reyajiste
                                             </button>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <button class="btn btn-primary form-control"
                                                     type="submit"
                                                     ng-disabled="bankForm.pos.$invalid || bankForm.seller.$invalid"

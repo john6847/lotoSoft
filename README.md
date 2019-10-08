@@ -9,6 +9,13 @@ If you make some change to the myapp.service
 - sudo service myapp stop
 - sudo service myapp status
 - journalctl -u myapp.service 
+# Nginx
+- systemctl restart nginx
+
+# Config
+- sudo nano /etc/lotosoft/environmentfile
+- sudo nano /etc/systemd/system/myapp.service
+
 
 
 # Quick Run

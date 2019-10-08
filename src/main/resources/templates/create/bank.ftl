@@ -64,7 +64,7 @@
                       <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="seller">Vandè<span
                                 class="required">*</span></label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <select class="form-control round-input selectpicker"
+                        <select class="form-control round-input"
                                 name="seller"
                                 id="seller"
                                 data-size="5"
@@ -88,7 +88,7 @@
                     <div class="form-group" ng-if="global.selectedSeller">
                       <label class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label" for="pos">Machin</label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <select class="form-control"
+                        <select class="form-control round-input"
                                 name="pos"
                                 id="pos"
                                 ng-model="global.selectedPos"
@@ -168,10 +168,17 @@
 
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="breadcrumb" style="height: auto;">
-              <div class="form-group" style="margin-bottom: 10px;">
-                <div class="col-lg-3 col-md-9 col-sm-12 col-xs-12 col-lg-offset-9 col-md-offset-3 col-xs-12">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="row">
+                <div class="form-group" style="margin-bottom: 10px;">
+                  <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12 col-lg-offset-6 col-md-offset-3 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                      <a href="/home"
+                         class="btn btn-warning form-control">
+                         <i class="fa fa-arrow-left"></i>
+                         Anile
+                      </a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                       <button type="reset"
                               class="btn btn-danger form-control"
                               title="Efase tout done bank lan">
@@ -179,7 +186,7 @@
                         Reyajiste
                       </button>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                       <button class="btn btn-primary form-control"
                               type="submit"
                               ng-disabled="bankForm.pos.$invalid || bankForm.seller.$invalid"

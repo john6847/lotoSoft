@@ -17,7 +17,9 @@ import java.util.List;
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
 
-    String q = "SELECT * FROM bank b WHERE b.name IN (select ba.NAME from bank ba where ba.id != ?1 and ba.name IN (?2)) and b.enterprise_id =?3 and b.enabled= true limit 1";
+    String q = "SELECT * FROM bank b WHERE lower(b.description) IN\n" +
+            "(select lower(ba.description) from bank ba where ba.id != ?1 and lower(ba.description) IN (lower(?2)))\n" +
+            "and b.enterprise_id =?3 and b.enabled= true limit 1";
 
     Bank findBankByIdAndEnterpriseId(Long id, Long enterpriseId);
 
@@ -41,8 +43,6 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
 
     @Query(value = q, nativeQuery = true)
     List<Bank> selectbankIfExist(Long bankId, String name, Long enterpriseId);
-//    SELECT * FROM bank b WHERE b.description IN
-//            (select ba.description from bank ba where ba.id != ?1 and ba.description IN ('Bank #1'))
-//    and b.enterprise_id =?3 and b.enabled= true limit 1
-//theeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrreee
+
+
 }

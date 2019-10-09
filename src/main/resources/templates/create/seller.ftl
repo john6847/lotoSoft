@@ -6,7 +6,6 @@
 
 <head>
     <#include "../header.ftl">
-
 </head>
 
 <body ng-app="lottery" ng-cloak>

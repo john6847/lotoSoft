@@ -94,7 +94,6 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.NOT_FOUND);
         }
         Pos pos = posRepository.findBySerialAndEnabledAndEnterpriseIdAndDeletedFalse(vm.getSerial(), true, enterprise.getId());
-//        TODO: obtener el serial del pos que no se hardcoded
         if (pos == null) {
             sampleResponse.setMessage("Machin sa pa gen pèmisyon konekte");
             sampleResponse.getBody().put("ok", false);

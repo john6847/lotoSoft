@@ -188,7 +188,6 @@
             </div>
         </section>
     </section>
-
         <!-- container section end -->
 </section>
 <#include "../loader.ftl">

@@ -31,13 +31,13 @@
                   <h3 class="page-header"><i class="fa fa-file-text-o"></i>Fòm Pou Kreye Kliyan</h3>
                   <ol class="breadcrumb">
                     <li><i class="fa fa-home"></i><a href="/home">Paj Akèy</a></li>
-                    <li><i class="fa fa-edit">Kreye Kliyan</i></li>
+                    <li><i class="fa fa-file-text-o">Kreye Kliyan</i></li>
                   </ol>
                 <#else>
                   <h3 class="page-header"><i class="fa fa-file-text-o"></i>Fòm Pou Kreye Ititilizatè</h3>
                   <ol class="breadcrumb">
                     <li><i class="fa fa-home"></i><a href="/home">Paj Akèy</a></li>
-                    <li><i class="fa fa-edit">Kreye Ititilizatè</i></li>
+                    <li><i class="fa fa-file-text-o">Kreye Ititilizatè</i></li>
                   </ol>
                 </#if>
             </#if>

@@ -192,7 +192,6 @@
     </section>
   </section>
 
-    <#include "../loader.ftl">
 
 
   <!--main content end-->
@@ -209,7 +208,8 @@
   </div>
 </section>
 <!-- container section end -->
-<#include "../scripts.ftl">
+    <#include "../loader.ftl">
+    <#include "../scripts.ftl">
 
 <script>
     // $("#drawForm").on("submit", function(){

@@ -32,6 +32,8 @@ public interface CombinationRepository extends JpaRepository<Combination, Long> 
 
     Combination findCombinationById(Long id);
 
+    <T> List<T> findAllByEnterpriseIdAndSaleTotalGreaterThan(Long enterpriseId, double saleTotal,  Class<T> classType);
+
     <T> List<T> findAllByResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, Long combinationTypeId, Long enterpriseId, Class<T> classType); // bolet loto3 extra and maryaj when equal
 
     <T> List<T> findAllByResultCombinationOrResultCombinationAndCombinationTypeIdAndEnterpriseId(String resultCombination, String reverseResultCombination, Long combinationTypeId1, Long enterpriseId, Class<T> classType); //Maryaj

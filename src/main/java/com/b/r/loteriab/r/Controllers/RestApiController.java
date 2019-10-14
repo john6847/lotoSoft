@@ -188,6 +188,12 @@ public class RestApiController {
         for (int i = 0; i < vm.getSaleDetails().size(); i++) {
 
             Combination combination = null;
+            combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(vm.getSaleDetails().get(i).getCombination(), vm.getSaleDetails().get(i).getCombinationTypeId() ,vm.getEnterprise().getId());
+            if(combination != null && !combination.isEnabled()) {
+                sampleResponse.getMessages().add("Konbinezon " + vm.getSaleDetails().get(i).getCombination() + " an bloke retire li nan vant lan pou ou ka kontinye.");
+                sampleResponse.getBody().put("ok", false);
+                return new ResponseEntity<>(sampleResponse, HttpStatus.OK);
+            }
             if (vm.getSaleDetails().get(i).getProduct().equals(CombinationTypes.MARYAJ.name())) {
                 String[] arr = vm.getSaleDetails().get(i).getCombination().split("x");
                 combination = combinationRepository.findByResultCombinationAndCombinationTypeIdAndEnterpriseId(arr[0].trim() + "x" + arr[1].trim(), vm.getSaleDetails().get(i).getCombinationTypeId(), vm.getEnterprise().getId());
@@ -206,6 +212,7 @@ public class RestApiController {
                 last.setEnterpriseId(vm.getEnterprise().getId());
                 last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
+
 
                 sampleResponse.getBody().put("combination", combination.getResultCombination());
                 sampleResponse.getBody().put("type", combination.getCombinationType().getProducts().getName());
@@ -335,6 +342,7 @@ public class RestApiController {
         sale.setEnterprise(null);
         sale.setTicket(null);
         sale.setDeleted(true);
+        sale.setSaleDetails(null);
         saleRepository.save(sale);
 //        saleRepository.deleteById(sale.getId());
 

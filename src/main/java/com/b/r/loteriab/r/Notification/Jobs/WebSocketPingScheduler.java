@@ -46,6 +46,12 @@ public class WebSocketPingScheduler {
     @Autowired
     private EnterpriseRepository enterpriseRepository;
 
+    @Autowired
+    private  SaleDetailRepository saleDetailRepository;
+
+    @Autowired
+    private CombinationHistoryRepository combinationHistoryRepository;
+
     /**
      * Schedule to send notification to enable and disable shift every 10 seconds.
      *
@@ -97,14 +103,16 @@ public class WebSocketPingScheduler {
                         if (hour < 20) {
                             if (new Date().after(date)) {
                                 shift.setEnabled(false);
-                                //  deleteIncompleteSale(entry.getKey());
-                                deleteNotificationInList(shift.getId()); // Delete old (combination limit price) notification
-                                setSaleTotalBackToDefault(entry.getKey());
                                 shiftRepository.save(shift);
                                 Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.New_York.name(), entry.getKey());
                                 other.setEnabled(true);
                                 shiftRepository.save(other);
+                                // other configuration
+                                setSaleTotalBackToDefault(entry.getKey());
+                                deleteNotificationInList(shift.getId()); // Delete old (combination limit price) notification
+                                deleteIncompleteSale(entry.getKey());
                                 cleanLoggedInUser(entry.getKey());
+                                createCombinationHistory(entry.getKey(), shift.getId());
                             }
                         } else {
                             date = Helper.addDays(date, 1);
@@ -119,14 +127,16 @@ public class WebSocketPingScheduler {
                         Date date = Helper.getCloseDateTime(shift.getCloseTime(), new Date());
                         if (new Date().after(date)) {
                             shift.setEnabled(false);
-                            //deleteIncompleteSale(entry.getKey());
-                            setSaleTotalBackToDefault(entry.getKey()); // Delete old (combination limit price) notification
-                            deleteNotificationInList(shift.getId());
                             shiftRepository.save(shift);
                             Shift other = shiftRepository.findShiftByNameAndEnterpriseId(Shifts.Maten.name(), entry.getKey());
                             other.setEnabled(true);
                             shiftRepository.save(other);
+                            // other configuration
+                            deleteIncompleteSale(entry.getKey());
+                            setSaleTotalBackToDefault(entry.getKey()); // Delete old (combination limit price) notification
+                            deleteNotificationInList(shift.getId());
                             cleanLoggedInUser(entry.getKey());
+                            createCombinationHistory(entry.getKey(), shift.getId());
                         }
                         System.out.println("Close date " + date);
                         System.out.println("Actual date " + new Date());
@@ -238,23 +248,46 @@ public class WebSocketPingScheduler {
         List<Sale> sales = saleRepository.findAllByEnterpriseId(enterpriseId);
         for (Sale sale : sales) {
             if (sale.getSaleStatus() == SaleSatus.SAVING.ordinal()) {
-//               for (SaleDetail saleDetail: sale.getSaleDetails()){
-//                    saleDetailRepository.deleteByIdAndEnterpriseId(saleDetail.getId(), enterpriseId);
-//               }
                 sale.setEnterprise(null);
                 sale.setShift(null);
-                Long ticketId = sale.getTicket().getId();
-                sale.setSeller(null);
-                sale.setPos(null);
-                sale.setTicket(null);
-                saleRepository.save(sale);
-
-                Ticket ticket = ticketRepository.findTicketByIdAndEnterpriseId(ticketId, enterpriseId);
+                Ticket ticket = ticketRepository.findTicketByIdAndEnterpriseId(sale.getTicket().getId(), enterpriseId);
+                ticket.setDeleted(true);
+                ticket.setShift(null);
                 ticket.setEnterprise(null);
                 ticketRepository.save(ticket);
-                ticketRepository.deleteByIdAndEnterpriseId(enterpriseId, ticketId);
-                saleRepository.deleteSaleByIdAndEnterpriseId(sale.getId(), sale.getEnterprise().getId());
+                sale.setSeller(null);
+                sale.setPos(null);
+                sale.setDeleted(true);
+                sale.setTicket(null);
+                for (SaleDetail saleDetail: sale.getSaleDetails()) {
+                    Combination combination = combinationRepository.findCombinationById(saleDetail.getCombination().getId());
+                    combination.setSaleTotal(combination.getSaleTotal() - saleDetail.getPrice());
+                    combinationRepository.save(combination);
+                    SaleDetail savedSaleDetail = saleDetailRepository.findByEnterpriseIdAndId(enterpriseId,saleDetail.getId());
+                    saleDetail.setDeleted(true);
+                    saleDetailRepository.save(savedSaleDetail);
+                }
+                sale.setSaleDetails(null);
+                saleRepository.save(sale);
             }
+        }
+    }
+
+    private void createCombinationHistory(Long enterpriseId, Long shiftId) {
+        Enterprise enterprise = enterpriseRepository.findEnterpriseById(enterpriseId);
+        if (enterprise == null)
+            return;
+        Shift shift = shiftRepository.findShiftByIdAndEnterpriseId(shiftId, enterpriseId);
+        if (shift == null)
+            return;
+        List <Combination> combinations = combinationRepository.findAllByEnterpriseIdAndSaleTotalGreaterThan(enterpriseId, 0, Combination.class);
+        for (Combination combination : combinations){
+            CombinationHistory combinationHistory = new CombinationHistory();
+            combinationHistory.setSaleTotal(combination.getSaleTotal());
+            combinationHistory.setEnterprise(enterprise);
+            combinationHistory.setCombination(combination);
+            combinationHistory.setShift(shift);
+            combinationHistoryRepository.save(combinationHistory);
         }
     }
 }

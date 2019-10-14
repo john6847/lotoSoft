@@ -10,12 +10,6 @@ app.controller("notificationController", ['$http', '$scope','$stomp','Enterprise
     fetchEnterprise();
     $stomp.connect('http://localhost:3200/live', {})
         .then(function (frame) {
-            $stomp.subscribe('/topics/time',
-                function (payload, headers, res) {
-                    $scope.global.systemDate = new Date(payload);
-                    $scope.$apply($scope.global.systemDate);
-                });
-
             if($scope.enterpriseId > 0){
                 $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+xxxxx+'/event',
                     function (payload, headers, res) {

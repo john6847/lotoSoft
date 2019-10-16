@@ -108,6 +108,7 @@ public class GlobalConfigurationService {
     private GlobalConfiguration clearEntity (GlobalConfiguration globalConfiguration){
         if (!globalConfiguration.isLimitCombinationPrice()) {
             globalConfiguration.setMaxLimitCombinationPrice(0);
+            globalConfiguration.setNotifyLimitCombinationPrice(false);
         }
         if (!globalConfiguration.isNotifyLimitCombinationPrice()) {
             globalConfiguration.setMaxLimitCombinationPrice(0);

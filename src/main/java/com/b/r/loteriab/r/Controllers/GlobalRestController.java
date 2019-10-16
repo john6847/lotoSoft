@@ -59,6 +59,8 @@ public class GlobalRestController {
     private AuditEventService service;
     @Autowired
     private ReportService reportService;
+    @Autowired
+    private  GlobalConfigurationService globalConfigurationService;
 
     /**
      * Get All Draws
@@ -362,6 +364,23 @@ public class GlobalRestController {
             return new ResponseEntity<>(products, HttpStatus.OK);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+    }
+
+    /**
+     * Get global configuration
+     *
+     * @return globalConfiguration
+     */
+    @GetMapping(value = "/configuration/global", produces = ACCECPT_TYPE)
+    public ResponseEntity<GlobalConfiguration> getGlobalConfiguration(HttpServletRequest request) {
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null) {
+            GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(enterprise.getId());
+            if (globalConfiguration == null)
+                return new ResponseEntity<>(new GlobalConfiguration(), HttpStatus.OK);
+            return new ResponseEntity<>(globalConfiguration, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     /**

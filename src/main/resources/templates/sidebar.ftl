@@ -94,6 +94,9 @@
                 <li>
                   <a class="" title="Konfigire tip tiraj" href="/configuration/shift">Tip Tiraj</a>
                 </li>
+                <li>
+                  <a class="" title="Konfigirasyon jeneral" href="/configuration/global">Konfigirsyon jeneral</a>
+                </li>
               </ul>
             </li>
             <li class="sub-menu">

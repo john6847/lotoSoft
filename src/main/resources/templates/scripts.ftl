@@ -100,6 +100,7 @@
 <script src="/js/angularjs/controllers/ReportController.js"></script>
 <script src="/js/angularjs/controllers/AppController.js"></script>
 <script src="/js/angularjs/controllers/NotificationController.js"></script>
+<script src="/js/angularjs/controllers/GlobalConfigurationController.js"></script>
 
 
 

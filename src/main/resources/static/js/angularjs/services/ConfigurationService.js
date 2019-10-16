@@ -9,7 +9,8 @@ angular.module('lottery')
             updateCombinationConfiguration: updateCombinationConfiguration,
             fetchAllShifts: fetchAllShifts,
             updateShitConfiguration: updateShitConfiguration,
-            updateCombinationConfigurationGroup: updateCombinationConfigurationGroup
+            updateCombinationConfigurationGroup: updateCombinationConfigurationGroup,
+            fetchGlobalConfiguration: fetchGlobalConfiguration
         };
 
         function fetchAllCombination(combination) {
@@ -72,6 +73,20 @@ angular.module('lottery')
             var deferred = $q.defer();
 
             $http.get("/api/shift/")
+                .then(
+                    function (response) {
+                        deferred.resolve(response.data);
+                    }, function (errResponse) {
+                        console.error(errResponse);
+                        deferred.reject(errResponse);
+                    });
+            return deferred.promise;
+        }
+
+        function fetchGlobalConfiguration() {
+            var deferred = $q.defer();
+
+            $http.get("/api/configuration/global")
                 .then(
                     function (response) {
                         deferred.resolve(response.data);

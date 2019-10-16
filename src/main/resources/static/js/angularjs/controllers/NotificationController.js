@@ -11,7 +11,7 @@ app.controller("notificationController", ['$http', '$scope','$stomp','Enterprise
     $stomp.connect('http://localhost:3200/live', {})
         .then(function (frame) {
             if($scope.enterpriseId > 0){
-                $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+xxxxx+'/event',
+                $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+8+'/event',
                     function (payload, headers, res) {
                         $scope.global.notifcations.push({combination: payload.body.notifications, type: payload.body.type});
                         $scope.global.notifcations = merge($scope.global.notifcations, []);

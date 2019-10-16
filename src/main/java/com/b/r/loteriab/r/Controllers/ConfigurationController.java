@@ -325,4 +325,21 @@ public class ConfigurationController {
         return "access-denied";
     }
 
+    /**
+     * Route to configure shift (Change open and close date)
+     * * @return
+     */
+    @GetMapping("/global")
+    public String globalConfiguration(HttpServletRequest request, Model model) {
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null) {
+            String username = request.getSession().getAttribute("username").toString();
+            Users user = usersService.findUserByUsernameAndEnterpriseId(username, enterprise.getId());
+            model.addAttribute("user", user);
+
+            return "/configuration/globalConfiguration";
+        }
+        model.addAttribute("error", "Itilizatè sa pa fè pati de kliyan nou yo, ou pa gen aksè pou ou chanje tip tiraj la");
+        return "access-denied";
+    }
 }

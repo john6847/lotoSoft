@@ -18,10 +18,12 @@ app.controller("globalConfigurationController", ['ConfigurationService','$scope'
                 function (d) {
                     $scope.global.saving = false;
                     $scope.global.message = d;
+                    $scope.global.updating = false;
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                     $scope.global.saving = false;
+                    $scope.global.updating = true;
                 });
     };
 
@@ -30,7 +32,6 @@ app.controller("globalConfigurationController", ['ConfigurationService','$scope'
         ConfigurationService.fetchGlobalConfiguration()
             .then(
                 function (d) {
-                    $scope.global.updating = false;
                     if (d === null || d === undefined)
                         $scope.globalConfiguration = null;
                     else
@@ -38,7 +39,6 @@ app.controller("globalConfigurationController", ['ConfigurationService','$scope'
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
-                    $scope.global.updating = true;
                 })
 
     }

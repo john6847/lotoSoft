@@ -518,7 +518,7 @@ public class GlobalRestController {
             if (result.isValid()) {
                 map.put("saved", true);
                 map.put("message", "Konfigirasyon jeneral la anrejistre");
-                return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(map, HttpStatus.OK);
             }else {
                 map.put("saved", false);
                 map.put("message", "Konfigirasyon jeneral la pa ka anrejistre, verifye done yo epi retounen anrejsitre anko");

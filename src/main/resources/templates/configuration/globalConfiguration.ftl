@@ -55,7 +55,7 @@
                                         </md-card-title-text>
                                     </md-card-title>
 
-                                    <md-card-content layout-align="start center" ng-cloak ng-if="global.updating">
+                                    <md-card-content layout-align="start center" ng-cloak ng-if="global.updating === true">
                                         <div layout-gt-xs="row" style="margin-right: 10px;">
                                             <div layout="row">
                                                 <md-input-container class="md-block">
@@ -128,11 +128,11 @@
                                             <span class="alert alert-danger error"
                                                   ng-show="globalConfigurationForm.userTokenLifeTime.$dirty && globalConfigurationForm.userTokenLifeTime.$error.required">Rantre kantite lè a !</span>
                                             <span class="alert alert-danger error"
-                                                  ng-show="globalConfigurationForm.userTokenLifeTime.$dirty && globalConfigurationForm.userTokenLifeTime.$error.min">Kantite lè sa twòp piti!
+                                                  ng-show="globalConfigurationForm.userTokenLifeTime.$dirty && (globalConfigurationForm.userTokenLifeTime.$error.min || globalConfigurationForm.userTokenLifeTime.$error.max)">Kantite lè sa twòp piti! Rantre yon vale ant 1 a 8
                                             </span>
-                                            <span class="alert alert-danger error"
-                                                  ng-show="globalConfigurationForm.userTokenLifeTime.$dirty && globalConfigurationForm.userTokenLifeTime.$error.max">Kantite lè sa twòp!
-                                            </span>
+<#--                                            <span class="alert alert-danger error"-->
+<#--                                                  ng-show="globalConfigurationForm.userTokenLifeTime.$dirty && globalConfigurationForm.userTokenLifeTime.$error.max">Kantite lè sa twòp!-->
+<#--                                            </span>-->
                                         </div>
 
                                         <div layout-gt-xs="row" style="margin-right: 10px;">
@@ -174,14 +174,14 @@
 
                                     </md-card-content>
 
-                                    <md-card-content layout-align="start center" ng-cloak ng-if="!global.updating">
+                                    <md-card-content layout-align="start center" ng-cloak ng-if="global.updating === false">
                                         <table class="table">
                                             <tbody>
                                                 <tr>
                                                     <th scope="row">Limite pri konbinezon yo</th>
                                                     <td>
                                                         <span ng-if="globalConfiguration.limitCombinationPrice" class="label label-success">Wi</span>
-                                                        <span ng-if="!globalConfiguration.limitCombinationPrice" class="label label-danger"Non</span>
+                                                        <span ng-if="!globalConfiguration.limitCombinationPrice" class="label label-danger">Non</span>
                                                     </td>
                                                 </tr>
                                                 <tr ng-if="globalConfiguration.limitCombinationPrice">
@@ -194,7 +194,7 @@
                                                 <tr ng-if="globalConfiguration.limitCombinationPrice">
                                                     <th scope="row">Pri gwo pri yo kapab vann konbinezon an</th>
                                                     <td>
-                                                       {{globalConfiguration.maxLimitCombinationPrice | number}}
+                                                       {{globalConfiguration.maxLimitCombinationPrice | number: 2}}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -242,11 +242,11 @@
                                     </md-card-content>
 
                                     <md-card-actions layout="row" layout-align="end center">
-                                        <md-button ng-disabled="globalConfigurationForm.$invalid"
+                                        <md-button ng-disabled="globalConfigurationForm.$invalid || global.saving"
                                                    ng-if="global.updating"
                                                    ng-click="saveGlobalConfiguration()"
                                                    class="md-raised md-primary">
-                                                    <span ng-if="!global.saving">Anrejistre</span>
+                                                    <span>Anrejistre</span>
                                                     <i ng-if="global.saving" class="fa fa-spinner fa-spin"></i>
                                         </md-button>
                                         <md-button ng-disabled="globalConfigurationForm.$invalid"

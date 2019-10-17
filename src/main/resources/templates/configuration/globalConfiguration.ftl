@@ -34,12 +34,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12" ng-if="shiftField.message">
-                    <div class="alert alert-success" role="alert" ng-if="shiftField.message.saved">
-                        {{shiftField.message.message}}
+                <div class="col-lg-12 col-xs-12 col-xl-12 col-md-12 col-sm-12" ng-if="global.message">
+                    <div class="alert alert-success" role="alert" ng-if="global.message.saved">
+                        {{global.message.message}}
                     </div>
-                    <div class="alert alert-danger" role="alert" ng-if="!shiftField.message.saved">
-                        {{shiftField.message.message}}
+                    <div class="alert alert-danger" role="alert" ng-if="!global.message.saved">
+                        {{global.message.message}}
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                                         </md-card-title-text>
                                     </md-card-title>
 
-                                    <md-card-content layout-align="start center" ng-cloak>
+                                    <md-card-content layout-align="start center" ng-cloak ng-if="global.updating">
                                         <div layout-gt-xs="row" style="margin-right: 10px;">
                                             <div layout="row">
                                                 <md-input-container class="md-block">
@@ -75,7 +75,7 @@
                                             </div>
                                         </div>
                                         <div flex-gt-xs="row" ng-if="globalConfiguration.limitCombinationPrice">
-                                            <h4>Pri gwo pri yo kapab vann</h4>
+                                            <h4>Pri gwo pri yo kapab vann konbinezon an</h4>
                                             <div class="input-group">
                                                 <input id="maxLimitCombinationPrice"
                                                        class="form-control"
@@ -174,9 +174,85 @@
 
                                     </md-card-content>
 
+                                    <md-card-content layout-align="start center" ng-cloak ng-if="!global.updating">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Limite pri konbinezon yo</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.limitCombinationPrice" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.limitCombinationPrice" class="label label-danger"Non</span>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="globalConfiguration.limitCombinationPrice">
+                                                    <th scope="row">Voye notifikasyon lè konbinezon yo rive nan limit yo</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.notifyLimitCombinationPrice" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.notifyLimitCombinationPrice" class="label label-danger">Non</span>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="globalConfiguration.limitCombinationPrice">
+                                                    <th scope="row">Pri gwo pri yo kapab vann konbinezon an</th>
+                                                    <td>
+                                                       {{globalConfiguration.maxLimitCombinationPrice | number}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Pemèt sistèm nan transfere tikè a nan prochen tiraj la si bòlèt la fèmen</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.transferSaleToAnotherShift" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.transferSaleToAnotherShift" class="label label-danger">Non</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Pemèt sistèm nan elimine sesyon vandè a apre yon kantite èd tan</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.deleteUserTokenAfterAmountOfTime" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.deleteUserTokenAfterAmountOfTime" class="label label-danger">Non</span>
+                                                    </td>
+                                                </tr>
+                                                <tr  ng-if="globalConfiguration.deleteUserTokenAfterAmountOfTime">
+                                                    <th scope="row">Kantite èd tan sesyon an dwe dire</th>
+                                                    <td>
+                                                        {{globalConfiguration.userTokenLifeTime | number}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row"> Vandè a ka elimine tikè a.</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.canDeleteTicket" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.canDeleteTicket" class="label label-danger">Non</span>
+                                                    </td>
+                                                </tr>
+                                                <tr  ng-if="globalConfiguration.canDeleteTicket">
+                                                    <th scope="row">Kantite minit ki pa dwe pase pou elimine tikè a</th>
+                                                    <td>
+                                                        {{globalConfiguration.ticketLifeTime | number}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">  Vandè a ka revann tikè a.</th>
+                                                    <td>
+                                                        <span ng-if="globalConfiguration.canReplayTicket" class="label label-success">Wi</span>
+                                                        <span ng-if="!globalConfiguration.canReplayTicket" class="label label-danger">Non</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-card-content>
+
                                     <md-card-actions layout="row" layout-align="end center">
-                                        <md-button ng-disabled="globalConfigurationForm.$invalid" ng-click="saveGlobalCOnfiguration()"
-                                                   class="md-raised md-primary">Anrejistre
+                                        <md-button ng-disabled="globalConfigurationForm.$invalid"
+                                                   ng-if="global.updating"
+                                                   ng-click="saveGlobalConfiguration()"
+                                                   class="md-raised md-primary">
+                                                    <span ng-if="!global.saving">Anrejistre</span>
+                                                    <i ng-if="global.saving" class="fa fa-spinner fa-spin"></i>
+                                        </md-button>
+                                        <md-button ng-disabled="globalConfigurationForm.$invalid"
+                                                   ng-if="!global.updating"
+                                                   ng-click="global.updating = true"
+                                                   class="md-raised md-primary">Modifye</i>
                                         </md-button>
                                     </md-card-actions>
                                 </md-card>

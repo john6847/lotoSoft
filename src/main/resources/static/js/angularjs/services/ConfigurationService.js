@@ -10,7 +10,8 @@ angular.module('lottery')
             fetchAllShifts: fetchAllShifts,
             updateShitConfiguration: updateShitConfiguration,
             updateCombinationConfigurationGroup: updateCombinationConfigurationGroup,
-            fetchGlobalConfiguration: fetchGlobalConfiguration
+            fetchGlobalConfiguration: fetchGlobalConfiguration,
+            saveGlobalConfiguration: saveGlobalConfiguration
         };
 
         function fetchAllCombination(combination) {
@@ -87,6 +88,20 @@ angular.module('lottery')
             var deferred = $q.defer();
 
             $http.get("/api/configuration/global")
+                .then(
+                    function (response) {
+                        deferred.resolve(response.data);
+                    }, function (errResponse) {
+                        console.error(errResponse);
+                        deferred.reject(errResponse);
+                    });
+            return deferred.promise;
+        }
+
+        function saveGlobalConfiguration(data) {
+            var deferred = $q.defer();
+
+            $http.post('/api/combination/global/save', JSON.stringify(data))
                 .then(
                     function (response) {
                         deferred.resolve(response.data);

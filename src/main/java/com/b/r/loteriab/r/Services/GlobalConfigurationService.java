@@ -60,6 +60,9 @@ public class GlobalConfigurationService {
         if (!result.isValid()) {
             return result;
         }
+        globalConfiguration.setCreationDate(new Date());
+        globalConfiguration.setModificationDate(new Date());
+        globalConfiguration.setEnabled(true);
         try {
             globalConfigurationRepository.save(globalConfiguration);
         } catch (Exception ex) {
@@ -93,6 +96,7 @@ public class GlobalConfigurationService {
         savedGlobalConfiguration.setCanDeleteTicket(globalConfiguration.isCanDeleteTicket());
         savedGlobalConfiguration.setTicketLifeTime(globalConfiguration.getTicketLifeTime());
         savedGlobalConfiguration.setCanReplayTicket(globalConfiguration.isCanReplayTicket());
+        savedGlobalConfiguration.setModificationDate(new Date());
         try {
             globalConfigurationRepository.save(globalConfiguration);
         } catch (Exception ex) {
@@ -109,9 +113,6 @@ public class GlobalConfigurationService {
         if (!globalConfiguration.isLimitCombinationPrice()) {
             globalConfiguration.setMaxLimitCombinationPrice(0);
             globalConfiguration.setNotifyLimitCombinationPrice(false);
-        }
-        if (!globalConfiguration.isNotifyLimitCombinationPrice()) {
-            globalConfiguration.setMaxLimitCombinationPrice(0);
         }
 
         if (!globalConfiguration.isDeleteUserTokenAfterAmountOfTime()) {

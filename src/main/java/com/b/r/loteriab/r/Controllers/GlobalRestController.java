@@ -10,6 +10,7 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
 import com.b.r.loteriab.r.Services.*;
+import com.b.r.loteriab.r.Validation.NumberHelper;
 import com.b.r.loteriab.r.Validation.Result;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -494,6 +495,39 @@ public class GlobalRestController {
         }
         map.put("saved", false);
         map.put("message", "Ou pa gen akse pou ou modifye konbinezon yo");
+        return new ResponseEntity<>(map, HttpStatus.OK);//TODO: Sattus code
+    }
+
+    /**
+     * Update global Configuration
+     *
+     * @return result
+     * //
+     */
+    @RequestMapping(value = "/combination/global/save", produces = ACCECPT_TYPE)
+    public ResponseEntity<Map> updateGlobalConfiguration(@RequestBody GlobalConfiguration globalConfiguration, HttpServletRequest request) {
+        HashMap map = new HashMap();
+        Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
+        if (enterprise != null) {
+            Result result = null;
+            if (Long.parseLong(NumberHelper.getNumericValue(globalConfiguration.getId()).toString()) <= 0){
+                result = globalConfigurationService.saveGlobalConfiguration(globalConfiguration, enterprise);
+            } else {
+                result = globalConfigurationService.upadteGlobalConfiguration(globalConfiguration, enterprise);
+            }
+            if (result.isValid()) {
+                map.put("saved", true);
+                map.put("message", "Konfigirasyon jeneral la anrejistre");
+                return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+            }else {
+                map.put("saved", false);
+                map.put("message", "Konfigirasyon jeneral la pa ka anrejistre, verifye done yo epi retounen anrejsitre anko");
+            }
+
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+        map.put("saved", false);
+        map.put("message", "Ou pa gen akse pou ou modifye konfigirasyon jeneral la");
         return new ResponseEntity<>(map, HttpStatus.OK);//TODO: Sattus code
     }
 

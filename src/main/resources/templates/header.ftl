@@ -64,3 +64,5 @@
 
 
 <link rel="stylesheet" href="/dist/css/ng-table.min.css">
+<!-- ManyChat -->
+<script src="//widget.manychat.com/1964173997224528.js" async="async"></script>

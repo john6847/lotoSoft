@@ -59,3 +59,5 @@
 <link href="/css/bootstrap-toggle.min.css" rel="stylesheet" />
 <link href="/dist/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="/dist/css/ng-table.min.css">
+<!-- ManyChat -->
+<script src="//widget.manychat.com/1964173997224528.js" async="async"></script>

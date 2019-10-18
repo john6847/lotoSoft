@@ -55,12 +55,7 @@
 <link href="/css/jquery-ui-1.10.4.min.css" rel="stylesheet"/>
 <#--<script src="/dist/css/bootstrap-select.min.css"></script>-->
 <link rel="stylesheet" href="/dist/css/main.css">
-<link rel="stylesheet" href="/dist/angular-datatable/css/angular-datatables.css">
-<link href="/css/dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="/css/jquery.dataTables.css" rel="stylesheet" />
 <link href="/css/angular-material.css" rel="stylesheet" />
 <link href="/css/bootstrap-toggle.min.css" rel="stylesheet" />
 <link href="/dist/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
-
-
 <link rel="stylesheet" href="/dist/css/ng-table.min.css">

@@ -3,7 +3,7 @@
  */
 
 
-var app = angular.module("lottery", ["ngTable",'angularUtils.directives.dirPagination','ngMaterial','ngAnimate', 'datatables','datatables.columnfilter','datatables.bootstrap', 'ngResource', 'ui.bootstrap', 'ngStomp'])
+var app = angular.module("lottery", ["ngTable",'angularUtils.directives.dirPagination','ngMaterial','ngAnimate', 'ngResource', 'ui.bootstrap', 'ngStomp'])
     .filter('customUserDateFilter', function($filter) {
         return function(values, dateString) {
             var filtered = [];

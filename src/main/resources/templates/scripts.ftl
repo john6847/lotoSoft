@@ -19,7 +19,7 @@
 <!-- colorpicker -->
 
 <!-- bootstrap-wysiwyg -->
-<script type="text/javascript" src="/dist/jquery.dataTables.js"></script>
+
 <script type="text/javascript" src="/js/angular.js"></script>
 <script type="text/javascript" src="/js/ng-stomp/dist/ng-stomp.standalone.min.js"></script>
 <script src="/dist/js/ng-table.min.js"></script>
@@ -38,29 +38,17 @@
 <script src="/dist/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
 
 
-<#--switch toggle-->
-<script src="/js/bootstrap-toggle.min.js"></script>
+
 <script src="/js/select2.js"></script>
 
 <script type="text/javascript" src="/js/ui-bootstrap-tpls.min.js"></script>
 <script type="text/javascript" src="/js/angular-ui-utils.min.js"></script>
 
-<link rel="stylesheet" src="/dist/angular-datatable/css/angular-datatables.css"/>
-<script type="text/javascript" src="/dist/angular-datatable/angular-datatables.js"></script>
 <script type="text/javascript" src="/js/dataTables.columnFilter.js"></script>
 <script type="text/javascript" src="/dist/js/bootbox.js"></script>
 <script type="text/javascript" src="/dist/js/bootbox.locales.min.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/columnfilter/angular-datatables.columnfilter.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/fixedheader/angular-datatables.fixedheader.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/angular-resource/angular-resource.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/select/angular-datatables.select.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/utils/angular-datatables.util.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/scroller/angular-datatables.scroller.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/colreorder/angular-datatables.colreorder.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/tabletools/angular-datatables.tabletools.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/colvis/angular-datatables.colvis.js"></script>
-<script type="text/javascript" src="/dist/angular-datatable/plugins/fixedcolumns/angular-datatables.fixedcolumns.js"></script>
+
+<script type="text/javascript" src="/js/angular-resource.js"></script>
 
 <#--angular material-->
 <script src="/js/angular-material.js"></script>

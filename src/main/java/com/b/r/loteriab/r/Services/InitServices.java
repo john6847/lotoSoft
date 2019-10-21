@@ -213,7 +213,12 @@ public class InitServices {
         List<Role> roles = roleRepository.findAllByEnterpriseId(enterprise.getId());
         if (roles.size() <= 0) {
             for (Roles role : Roles.values()) {
-                if (role.name().equals(Roles.ROLE_SUPER_ADMIN.name())) {
+                if (role.name().equals(Roles.ROLE_PRE_VERIFICATION_USER.name())){
+                    Role newRole = new Role();
+                    newRole.setName(role.name());
+                    newRole.setEnterprise(enterprise);
+                    roleRepository.save(newRole);
+                } else if (role.name().equals(Roles.ROLE_SUPER_ADMIN.name())) {
                     if (superadmin.equals("on")) {
                         Role newRole = new Role();
                         newRole.setName(role.name());

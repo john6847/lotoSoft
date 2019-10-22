@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Dany on 22/04/2019.
@@ -32,6 +34,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) and u.enabled =?3 and u.enterprise_id=?4 ORDER BY u.id DESC";
 
     Users findByUsernameAndEnterpriseId(String username, Long enterpriseId);
+
+    Optional<Users> findUsersByUsernameAndEnterpriseId(String username, Long enterpriseId);
 
     Users findByUsernameAndEnterpriseName(String username, String enterprise);
 

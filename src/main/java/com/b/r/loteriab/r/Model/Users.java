@@ -23,6 +23,8 @@ public class Users implements Serializable {// extends User
     private String username;
     @Column(length = 128, nullable = false)
     private String password;
+    @Column(name = "phone")
+    private String phone;
     @Column(length = 28)
     private String token;
     private Date creationDate;

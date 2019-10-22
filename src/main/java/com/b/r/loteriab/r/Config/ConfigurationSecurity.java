@@ -56,7 +56,7 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/css/**", "/js/**").permitAll() //permitiendo llamadas a esas urls.
+                .antMatchers("/","/home","/css/**", "/js/**").permitAll() //permitiendo llamadas a esas urls.
                 .antMatchers("/dbconsole/**").permitAll()
                 .antMatchers("/draw/**", "/combinationType/**", "/seller/**", "/pos/**", "/configuration").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
@@ -98,6 +98,44 @@ public class ConfigurationSecurity extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/my-ws/**", "/deadRouteBR/**", "/img/**", "/assets/**", "/fonts/**", "/css/**", "/bootstrap-toggle/**", "/dist/**", "/js/**", "/img/**", "/mdb/**");
 
     }
+
+
+//
+//    @Autowired
+//    private TwoFactorAuthenticationSuccessHandler twoFactorAuthenticationSuccessHandler;
+//
+//    @Override
+//    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//        // Webjar resources
+//        httpSecurity.authorizeRequests().antMatchers("/webjars/**").permitAll()
+//                .and().formLogin().loginPage("/login").permitAll()
+//                .successHandler(twoFactorAuthenticationSuccessHandler)
+//                .and().logout().permitAll();
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

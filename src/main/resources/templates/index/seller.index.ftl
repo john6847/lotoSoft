@@ -70,23 +70,46 @@
                           <p style="display: none">{{seller.enabled? 'Wi' : 'Non' }}</p>
                         </td>
 
-                        <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
-                          <a class="btn btn-warning btn-xs load" href="/seller/update/{{seller.id}}">
-                            <i class="fa fa-edit"></i> Aktyalize
+<#--                        <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">-->
+<#--                          <a class="btn btn-warning btn-xs load" href="/seller/update/{{seller.id}}">-->
+<#--                            <i class="fa fa-edit"></i> Aktyalize-->
+<#--                          </a>-->
+<#--                        </td>-->
+<#--                        <td style="vertical-align: middle; text-align: center;" data-title="'Elimine'">-->
+<#--                          <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)"-->
+<#--                             href="/seller/delete/{{seller.id}}">-->
+<#--                            <i class="fa fa-trash-o"></i> Elimine-->
+<#--                          </a>-->
+<#--                        </td>-->
+<#--                        <td style="vertical-align: middle; text-align: center;" data-title="'Bloke/Debloke'">-->
+<#--                          <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" id="block"-->
+<#--                             onclick="onBlock(event)" href="/configuration/seller/{{seller.id}}">-->
+<#--                            <i class="fa fa-{{seller.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>-->
+<#--                            {{seller.enabled? 'Bloke' : 'Debloke'}}-->
+<#--                          </a>-->
+<#--                        </td>-->
+
+                        <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+
+                          <a class="btn btn-warning btn-xs load" title="Aktyalize" href="/seller/update/{{seller.id}}">
+                            <i class="fa fa-edit"></i>
                           </a>
-                        </td>
-                        <td style="vertical-align: middle; text-align: center;" data-title="'Elimine'">
-                          <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)"
+
+                          <a class="btn btn-danger btn-xs" id="delete" title="Elimine" onclick="onDelete(event)"
                              href="/seller/delete/{{seller.id}}">
-                            <i class="fa fa-trash-o"></i> Elimine
+                            <i class="fa fa-trash-o"></i>
                           </a>
-                        </td>
-                        <td style="vertical-align: middle; text-align: center;" data-title="'Bloke/Debloke'">
-                          <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" id="block"
+
+                          <a class="btn btn-{{seller.enabled? 'primary' : 'default' }} btn-xs" title="Bloke/Debloke" id="block"
                              onclick="onBlock(event)" href="/configuration/seller/{{seller.id}}">
                             <i class="fa fa-{{seller.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
-                            {{seller.enabled? 'Bloke' : 'Debloke'}}
+<#--                            {{seller.enabled? 'Bloke' : 'Debloke'}}-->
                           </a>
+
+                          <a class="btn btn-info btn-xs" href="javasript:;">
+                            <i class="fa fa-eye" aria-hidden="true" data-toggle="modal" href="#myModal3"></i>
+                          </a>
+
                         </td>
                       </tr>
                     </table>
@@ -103,6 +126,29 @@
                 </div>
               </div>
             </footer>
+
+            <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal Tittle</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    Body goes here...
+
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-danger" type="button"> Ok</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          </section>
         </div>
     </section>
   </section>

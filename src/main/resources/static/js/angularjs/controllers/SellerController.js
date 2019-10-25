@@ -5,7 +5,8 @@ app.controller("sellerController", ['ReadService','$resource', 'SellerService','
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],
-        api:  $resource("/api/seller")
+        api:  $resource("/api/seller"),
+        selectedSeller: null
     };
     $scope.haveUser = false;
     $scope.haveGroup = false;
@@ -29,6 +30,11 @@ app.controller("sellerController", ['ReadService','$resource', 'SellerService','
         if ($scope.username.sellerUsername !== ''){
             fetchUser($scope.username.sellerUsername);
         }
+    };
+
+    $scope.getVm = function (seller) {
+        console.log(seller);
+        $scope.global.selectedSeller = seller;
     };
 
     function fetchUser(username) {

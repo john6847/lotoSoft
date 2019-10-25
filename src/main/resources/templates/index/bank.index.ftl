@@ -55,7 +55,7 @@
                                                 <td style="vertical-align: middle;" data-title="'Adres'">{{row.address.address}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Vande'">{{row.seller.user.name}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Machin'">{{row.seller.pos.description}}</td>
-                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'">{{row.modificationDate | date: "dd/MM/yyyy hh:mm a"}}</td>
+                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'">{{row.modificationDate | dateFormat}}</td>
                                                 <td style="text-align: center; vertical-align: middle" data-title="'Actif'">
                                                     <i class="fa fa-{{row.enabled? 'check' : 'times' }}" style="color: {{row.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{row.enabled? 'Wi' : 'Non' }}</p> </td>
                                                 <td  style="vertical-align: middle;text-align: center;" data-title="'Aktyalize'">

@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("combinationTypeController", ['ReadService','NgTableParams', '$resource', '$http', 'Constants','CombinationTypeService','$scope',function (ReadService, NgTableParams, $resource, $http, Constants, CombinationTypeService, $scope) {
+app.controller("combinationTypeController", ['ReadService','NgTableParams', '$resource', '$http', 'Constants','CombinationTypeService','$scope',function (ReadService, NgTableParams ,$resource, $http, Constants, CombinationTypeService, $scope) {
     $scope.global = {
         tableParams: null,
         stateFilter: [{ id: 0, title: "Bloke"}, { id: 1, title: "Tout"}, { id: 2, title: "Actif"}],

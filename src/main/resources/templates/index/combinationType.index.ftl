@@ -64,10 +64,10 @@
                         <td style="vertical-align: middle; text-align: right" data-title="'Pri Peman (HTG)'"
                             ng-if="combinationType.products.id !== 1">{{combinationType.payedPrice}}
                         </td>
-                        <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{combinationType.creationDate | date :'short'}}
+                        <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{combinationType.creationDate | customDateFormat}}
                         </td>
                         <td style="vertical-align: middle" data-title="'Dat Modifikasyon'">
-                          {{combinationType.modificationDate | date : 'short'}}
+                          {{combinationType.modificationDate | customDateFormat}}
                         </td>
                         <td style="vertical-align: middle; text-align: center" data-title="'Aktyalize'">
                           <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}"><i

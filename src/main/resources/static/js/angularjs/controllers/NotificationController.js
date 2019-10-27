@@ -8,7 +8,7 @@ app.controller("notificationController", ['$http', '$scope','$stomp','Enterprise
 
     $scope.enterpriseId = 0;
     fetchEnterprise();
-    $stomp.connect('http://localhost:3200/live', {})
+    $stomp.connect('http://lotosof.com:3200/live', {})
         .then(function (frame) {
             if($scope.enterpriseId > 0){
                 $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+8+'/event',

@@ -23,9 +23,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/html/events").setViewName("html/events");
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedOrigins("*");
+//    }
 
 }

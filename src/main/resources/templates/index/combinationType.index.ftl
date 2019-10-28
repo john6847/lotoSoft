@@ -69,9 +69,10 @@
                         <td style="vertical-align: middle" data-title="'Dat Modifikasyon'">
                           {{combinationType.modificationDate | customDateFormat}}
                         </td>
-                        <td style="vertical-align: middle; text-align: center" data-title="'Aktyalize'">
-                          <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}"><i
-                                    class="fa fa-edit"></i> Aktyalize</a>
+                        <td style="vertical-align: middle; text-align: center" data-title="'Aksyon'">
+                          <a class="btn btn-warning btn-xs" href="/combinationType/update/{{combinationType.id}}">
+                            <i class="fa fa-edit"></i>
+                          </a>
                         </td>
                       </tr>
                     </table>

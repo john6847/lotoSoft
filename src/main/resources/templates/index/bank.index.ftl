@@ -55,23 +55,28 @@
                                                 <td style="vertical-align: middle;" data-title="'Adres'">{{row.address.address}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Vande'">{{row.seller.user.name}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Machin'">{{row.seller.pos.description}}</td>
-                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'">{{row.modificationDate | dateFormat}}</td>
+                                                <td style="vertical-align: middle;" data-title="'DatKreyasyon'">{{row.modificationDate | customDateFormat}}</td>
                                                 <td style="text-align: center; vertical-align: middle" data-title="'Actif'">
-                                                    <i class="fa fa-{{row.enabled? 'check' : 'times' }}" style="color: {{row.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{row.enabled? 'Wi' : 'Non' }}</p> </td>
-                                                <td  style="vertical-align: middle;text-align: center;" data-title="'Aktyalize'">
-                                                    <a class="btn btn-warning btn-xs load" href="/bank/update/{{row.id}}">
-                                                        <i class="fa fa-edit"></i> Aktyalize
-                                                    </a>
+                                                    <i class="fa fa-{{row.enabled? 'check' : 'times' }}" style="color: {{row.enabled? 'green' : 'red'}} ;"></i>
+                                                    <p style="display: none">{{row.enabled? 'Wi' : 'Non' }}</p>
                                                 </td>
-                                                <td  style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
-                                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/bank/delete/{{row.id}}">
-                                                        <i class="fa fa-trash-o"></i> Elimine
+                                                <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+
+                                                    <a class="btn btn-warning btn-xs load" title="Akyalize" href="/bank/update/{{row.id}}">
+                                                        <i class="fa fa-edit"></i>
                                                     </a>
-                                                </td>
-                                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
-                                                    <a class="btn btn-{{row.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/bank/{{row.id}}">
-                                                        <i class="fa fa-{{row.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{row.enabled? 'Bloke' : 'Debloke'}}
+
+                                                    <a class="btn btn-danger btn-xs delete" id="delete" title="Elimine" onclick="onDelete(event)" href="/bank/delete/{{row.id}}">
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
+
+                                                    <a class="btn btn-{{row.enabled? 'primary' : 'default' }} btn-xs" id="block" title="{{row.enabled? 'Bloke' : 'Debloke'}}" onclick="onBlock(event)" href="/configuration/bank/{{row.id}}">
+                                                        <i class="fa fa-{{row.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
+                                                    </a>
+
+<#--                                                    <a class="btn btn-info btn-xs" href="javasript:;">-->
+<#--                                                        <i class="fa fa-eye" ng-click="getVm(seller)" aria-hidden="true" data-toggle="modal" href="#myModal3"></i>-->
+<#--                                                    </a>-->
                                                 </td>
                                             </tr>
                                         </table>

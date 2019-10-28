@@ -1,6 +1,6 @@
 # New way to deploy app
 - create jar with 'mvn package'
-- after that copy file to user bin 'sudo cp loteriab.r.jar /usr/local/bin'
+- after that copy file to user bin 'sudo cp target/loteriab.r.jar /usr/local/bin'
 - ressource 'https://www.sma.im/how-to-run-your-java-springboot-app-jar-war-as-systemd-service-on-linux/'
 
 If you make some change to the myapp.service

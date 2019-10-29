@@ -48,7 +48,7 @@ public class TokenService {
         token.setToken(generatedToken);
         token.setCanBeDeleted(globalConfiguration.isDeleteUserTokenAfterAmountOfTime());
         if (globalConfiguration.isDeleteUserTokenAfterAmountOfTime()){
-            token.setLifetime(globalConfiguration.getUserTokenLifeTime());
+            token.setLifetime((globalConfiguration.getUserTokenLifeTime() * 60) * 60 * 1000);
         } else {
             token.setLifetime(120 * 60 * 1000);
         }

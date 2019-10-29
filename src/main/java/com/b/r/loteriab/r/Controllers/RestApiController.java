@@ -12,6 +12,7 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
+import com.b.r.loteriab.r.Services.GlobalConfigurationService;
 import com.b.r.loteriab.r.Services.TokenService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.GlobalHelper;
@@ -64,6 +65,8 @@ public class RestApiController {
     private GlobalHelper globalHelper;
     @Autowired
     private AuditEventService auditService;
+    @Autowired
+    private GlobalConfigurationService globalConfigurationService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm) {
@@ -311,6 +314,10 @@ public class RestApiController {
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(vm.getEnterprise().getId());
+        if (globalConfiguration.isCanReplayTicket()){
+
+        }
         long diff = Math.abs(new Date().getTime() - sale.getDate().getTime());
 
         long diffMinutes = diff / (60 * 1000) % 60;

@@ -309,21 +309,29 @@ public class RestApiController {
 
         Sale sale = saleRepository.findSaleByTicketIdAndEnterpriseIdAndSellerId(ticket.getId(), vm.getEnterprise().getId(), vm.getSeller().getId());
         if (sale == null) {
-            sampleResponse.setMessage("Ou pa otorize elimine Ticket sa anko");
+            sampleResponse.setMessage("Ou pa otorize elimine tikè sa anko");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(vm.getEnterprise().getId());
-        if (globalConfiguration.isCanReplayTicket()){
-
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Konfigirasyon sa poko egziste, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
+        if (!globalConfiguration.isCanDeleteTicket()){
+            sampleResponse.setMessage("Dezole nou pa otorize elimine okenn tikè");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
         long diff = Math.abs(new Date().getTime() - sale.getDate().getTime());
 
         long diffMinutes = diff / (60 * 1000) % 60;
 
-        if (diffMinutes >= 5) {
-            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+        if (diffMinutes >= globalConfiguration.getTicketLifeTime()) {
+            sampleResponse.setMessage(String.format("Ou pa ka elimine tikè sa ankò, paske ou kite {0} minit pase", globalConfiguration.getTicketLifeTime()));
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
@@ -373,6 +381,19 @@ public class RestApiController {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(enterpriseId);
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Konfigirasyon sa poko egziste, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        if (!globalConfiguration.isCanReplayTicket()){
+            sampleResponse.setMessage("Dezole nou pa otorize pou rejwe okenn tikè");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         Sale sale = saleRepository.findSaleByTicketShortSerialAndEnterpriseId(serial, enterpriseId);

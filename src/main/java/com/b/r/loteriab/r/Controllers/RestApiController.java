@@ -184,8 +184,21 @@ public class RestApiController {
 
         Shift shift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, vm.getShift().getEnterprise().getId());
 
-        if (shift != null && !shift.getId().equals(vm.getShift().getId())) {
-            sampleResponse.getMessages().add("Tiraj " + vm.getShift().getName() + " pa aktive kounya, vant sa ap pase pou tiraj " + shift.getName());
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(vm.getEnterprise().getId());
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Gen yon pwoblèm nan konfigirasyon vant yo pou lè sa wap eseye fe vant lan, kontakte met bòlèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        if (globalConfiguration.isTransferSaleToAnotherShift()){
+            if (shift != null && !shift.getId().equals(vm.getShift().getId())) {
+                sampleResponse.getMessages().add("Tiraj " + vm.getShift().getName() + " pa aktive kounya, vant sa ap pase pou tiraj " + shift.getName());
+            }
+        } else {
+            sampleResponse.setMessage("Ou pa otoriza fe vant nan lè sa paske bòlèt la femen, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         for (int i = 0; i < vm.getSaleDetails().size(); i++) {

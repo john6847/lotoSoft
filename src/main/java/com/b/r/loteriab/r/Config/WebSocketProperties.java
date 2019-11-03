@@ -24,6 +24,7 @@ public class WebSocketProperties {
     private String[] allowedOrigins = {
         "http://localhost:3200",
         "http://lotosof.com:3200",
+        "http://www.lotosof.com:3200/",
         "https://lotosof.com",
     };
 }

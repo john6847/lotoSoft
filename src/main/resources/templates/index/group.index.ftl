@@ -55,20 +55,18 @@
                                 <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{group.description}}</td>
                                 <td style="vertical-align: middle;" data-title="'Responsab'">{{group.parentSeller.user.name}}</td>
                                 <td style="vertical-align: middle;" data-title="'Adrès'">{{group.address.address}}</td>
-                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | date: 'dd/MM/yyyy'}}</td>
+                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{group.creationDate | customDateFormat}}</td>
                                 <td data-title="'Actif'" style="text-align: center; vertical-align: middle;"><i class="fa fa-{{group.enabled? 'check' : 'times' }}" style="color: {{group.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{group.enabled? 'Wi' : 'Non' }}</p> </td>
-                                <td style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
-                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/group/delete/{{group.id}}">
-                                        <i class="fa fa-trash-o"></i> Elimine
+
+                                <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+                                    <a class="btn btn-danger btn-xs delete" id="delete" title="Elimine" onclick="onDelete(event)" href="/group/delete/{{group.id}}">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+
+                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" id="block" title="{{group.enabled? 'Bloke' : 'Debloke'}}" onclick="onBlock(event)" href="/configuration/group/{{group.id}}">
+                                        <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
-                                    <a class="btn btn-{{group.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/group/{{group.id}}">
-                                        <i class="fa fa-{{group.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{group.enabled? 'Bloke' : 'Debloke'}}
-                                    </a>
-                                </td>
-
-
                             </tr>
                         </table>
                     </div>

@@ -10,6 +10,7 @@ public class Token {
     private String name;
     private Date createdAt;
     private int lifetime;
+    private boolean canBeDeleted = false;
     private String token;
     private Long enterpriseId;
 }

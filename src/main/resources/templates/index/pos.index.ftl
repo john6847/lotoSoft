@@ -51,21 +51,20 @@
                                                 <td style="vertical-align: middle;" data-title="'Id'">{{start+$index+1}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Deskripsyon'">{{pos.description}}</td>
                                                 <td style="vertical-align: middle;" data-title="'Serial'">{{pos.serial}}</td>
-                                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{pos.modificationDate | date}}</td>
+                                                <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{pos.modificationDate | customDateFormat}}</td>
                                                 <td style="vertical-align: middle; text-align: center;" data-title="'Actif'"><i class="fa fa-{{pos.enabled? 'check' : 'times' }}" style="color: {{pos.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{pos.enabled? 'Wi' : 'Non' }}</p> </td>
-                                                <td style="vertical-align: middle; text-align: center;" data-title="'Aktyalize'">
-                                                    <a class="btn btn-warning btn-xs load" href="/pos/update/{{pos.id}}">
-                                                        <i class="fa fa-edit"></i> Aktyalize
+
+                                                <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+                                                    <a class="btn btn-warning btn-xs load" title="Aktyalize" href="/pos/update/{{pos.id}}">
+                                                        <i class="fa fa-edit"></i>
                                                     </a>
-                                                </td>
-                                                <td  style="vertical-align: middle;text-align: center;" data-title="'Elimine'">
-                                                    <a class="btn btn-danger btn-xs delete" id="delete" onclick="onDelete(event)" href="/pos/delete/{{pos.id}}">
-                                                        <i class="fa fa-trash-o"></i> Elimine
+
+                                                    <a class="btn btn-danger btn-xs delete" title="Elimine" id="delete" onclick="onDelete(event)" href="/pos/delete/{{pos.id}}">
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
-                                                </td>
-                                                <td style="vertical-align: middle;text-align: center;" data-title="'Bloke/Debloke'">
-                                                    <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">
-                                                        <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{pos.enabled? 'Bloke' : 'Debloke'}}
+
+                                                    <a class="btn btn-{{pos.enabled? 'primary' : 'default' }} btn-xs" id="block" title="{{pos.enabled? 'Bloke' : 'Debloke'}}" onclick="onBlock(event)" href="/configuration/pos/{{pos.id}}">
+                                                        <i class="fa fa-{{pos.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
                                             </tr>

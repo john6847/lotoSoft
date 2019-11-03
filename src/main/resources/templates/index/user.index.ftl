@@ -59,23 +59,23 @@
                               <td style="vertical-align: middle;text-align: center" data-title="'Adm.'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_ADMIN')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_ADMIN')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_ADMIN')? 'Wi' : 'Non' }}</p></td>
                               <td style="vertical-align: middle;text-align: center" data-title="'Sipèvizè'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_SUPERVISOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_SUPERVISOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_SUPERVISOR')? 'Wi' : 'Non' }}</p></td>
                               <td style="vertical-align: middle;text-align: center" data-title="'Rekolektè'" style="text-align: center"><i class="fa fa-{{isRole(user.roles,'ROLE_COLLECTOR')? 'check' : 'times'}}" style="color: {{isRole(user.roles,'ROLE_COLLECTOR')? 'green' : 'red'}};"></i><p style="display: none">{{isRole(user.roles,'ROLE_COLLECTOR')? 'Wi' : 'Non' }}</p></td>
-                              <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{user.modificationDate | date: 'dd/MM/yyyy'}}</td>
+                              <td style="vertical-align: middle" data-title="'Dat Kreyasyon'">{{user.modificationDate | customDateFormat}}</td>
                               <td style="vertical-align: middle; text-align: center" data-title="'Actif'"><i class="fa fa-{{user.enabled? 'check' : 'times' }}" style="color: {{user.enabled? 'green' : 'red'}} ;"></i><p style="display: none">{{user.enabled? 'Wi' : 'Non' }}</p> </td>
-                              <td style="vertical-align: middle; text-align: center" data-title="'ktyalize'">
-                                  <a class="btn btn-warning btn-xs load" href="/user/1/update/{{user.id}}">
-                                      <i class="fa fa-edit"></i> Aktyalize
+
+                              <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+                                  <a class="btn btn-warning btn-xs load" title="Aktyalize" href="/user/1/update/{{user.id}}">
+                                      <i class="fa fa-edit"></i>
+                                  </a>
+
+                                  <a class="btn btn-danger btn-xs" id="delete" title="Elimine" onclick="onDelete(event)" href="/user/1/delete/{{user.id}}">
+                                      <i class="fa fa-trash-o"></i>
+                                  </a>
+
+                                  <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" title="{{user.enabled? 'Bloke' : 'Debloke'}}" id="block" onclick="onBlock(event)" href="/configuration/1/user/{{user.id}}">
+                                      <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
                                   </a>
                               </td>
-                              <td style="vertical-align: middle; text-align: center" data-title="'Elimine'">
-                                  <a class="btn btn-danger btn-xs" id="delete" onclick="onDelete(event)" href="/user/1/delete/{{user.id}}">
-                                      <i class="fa fa-trash-o"></i> Elimine
-                                  </a>
-                              </td>
-                              <td style="vertical-align: middle; text-align: center" data-title="'Bloke/Debloke'">
-                                  <a class="btn btn-{{user.enabled? 'primary' : 'default' }} btn-xs" id="block" onclick="onBlock(event)" href="/configuration/1/user/{{user.id}}">
-                                      <i class="fa fa-{{user.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i> {{user.enabled? 'Bloke' : 'Debloke'}}
-                                  </a>
-                              </td>
+
                           </tr>
                         </table>
                     </div>

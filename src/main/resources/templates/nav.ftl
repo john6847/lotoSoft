@@ -9,10 +9,13 @@
     </div>
 
   <!--logo start-->
-  <a href="/home" class="logo">
-    <img src="/img/logo-big.png" width="25%" height="15%" alt="">
-<#--    <span>{{}}</span>-->
-  </a>
+<#--  <a href="/home" class="logo">-->
+<#--&lt;#&ndash;    <img src="/img/logo-big.png" width="25%" height="15%" alt="">&ndash;&gt;-->
+<#--&lt;#&ndash;    <span>{{}}</span>&ndash;&gt;-->
+<#--  </a>-->
+    <!--logo end-->
+    <!--logo start-->
+    <a href="/home" class="logo"> <span class="lite">${(enterprise.name)! 'Nice Admin'} </span> </a>
     <!--logo end-->
 
     <div class="nav search-row" id="top_menu">

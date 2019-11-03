@@ -12,6 +12,7 @@ import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.*;
 import com.b.r.loteriab.r.Services.ApiService;
+import com.b.r.loteriab.r.Services.GlobalConfigurationService;
 import com.b.r.loteriab.r.Services.TokenService;
 import com.b.r.loteriab.r.Services.UsersService;
 import com.b.r.loteriab.r.Validation.GlobalHelper;
@@ -64,6 +65,8 @@ public class RestApiController {
     private GlobalHelper globalHelper;
     @Autowired
     private AuditEventService auditService;
+    @Autowired
+    private GlobalConfigurationService globalConfigurationService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm) {
@@ -181,8 +184,21 @@ public class RestApiController {
 
         Shift shift = shiftRepository.findShiftByEnabledAndEnterpriseId(true, vm.getShift().getEnterprise().getId());
 
-        if (shift != null && !shift.getId().equals(vm.getShift().getId())) {
-            sampleResponse.getMessages().add("Tiraj " + vm.getShift().getName() + " pa aktive kounya, vant sa ap pase pou tiraj " + shift.getName());
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(vm.getEnterprise().getId());
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Gen yon pwoblèm nan konfigirasyon vant yo pou lè sa wap eseye fe vant lan, kontakte met bòlèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        if (globalConfiguration.isTransferSaleToAnotherShift()){
+            if (shift != null && !shift.getId().equals(vm.getShift().getId())) {
+                sampleResponse.getMessages().add("Tiraj " + vm.getShift().getName() + " pa aktive kounya, vant sa ap pase pou tiraj " + shift.getName());
+            }
+        } else {
+            sampleResponse.setMessage("Ou pa otoriza fe vant nan lè sa paske bòlèt la femen, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         for (int i = 0; i < vm.getSaleDetails().size(); i++) {
@@ -306,7 +322,19 @@ public class RestApiController {
 
         Sale sale = saleRepository.findSaleByTicketIdAndEnterpriseIdAndSellerId(ticket.getId(), vm.getEnterprise().getId(), vm.getSeller().getId());
         if (sale == null) {
-            sampleResponse.setMessage("Ou pa otorize elimine Ticket sa anko");
+            sampleResponse.setMessage("Ou pa otorize elimine tikè sa anko");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(vm.getEnterprise().getId());
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Konfigirasyon sa poko egziste, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+        if (!globalConfiguration.isCanDeleteTicket()){
+            sampleResponse.setMessage("Dezole nou pa otorize elimine okenn tikè");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
@@ -315,8 +343,8 @@ public class RestApiController {
 
         long diffMinutes = diff / (60 * 1000) % 60;
 
-        if (diffMinutes >= 5) {
-            sampleResponse.setMessage("Ou pa ka elimine Ticket sa anko, paske ou kite 5 minit pase");
+        if (diffMinutes >= globalConfiguration.getTicketLifeTime()) {
+            sampleResponse.setMessage(String.format("Ou pa ka elimine tikè sa ankò, paske ou kite {0} minit pase", globalConfiguration.getTicketLifeTime()));
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
@@ -366,6 +394,19 @@ public class RestApiController {
             sampleResponse.setMessage("Ou pa otorize reyalize operasyon sa, reouvri sesyon an pou ou ka kontinye vann");
             sampleResponse.getBody().put("ok", false);
             return new ResponseEntity<>(sampleResponse, HttpStatus.UNAUTHORIZED);
+        }
+
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(enterpriseId);
+        if (globalConfiguration == null){
+            sampleResponse.setMessage("Konfigirasyon sa poko egziste, kontakte met bolèt la pou plis enfòmasyon");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        if (!globalConfiguration.isCanReplayTicket()){
+            sampleResponse.setMessage("Dezole nou pa otorize pou rejwe okenn tikè");
+            sampleResponse.getBody().put("ok", false);
+            return new ResponseEntity<>(sampleResponse, HttpStatus.BAD_REQUEST);
         }
 
         Sale sale = saleRepository.findSaleByTicketShortSerialAndEnterpriseId(serial, enterpriseId);

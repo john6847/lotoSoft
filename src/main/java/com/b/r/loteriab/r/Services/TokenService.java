@@ -1,5 +1,6 @@
 package com.b.r.loteriab.r.Services;
 
+import com.b.r.loteriab.r.Model.GlobalConfiguration;
 import com.b.r.loteriab.r.Model.Users;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
 import com.b.r.loteriab.r.Model.ViewModel.Token;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.javatuples.Pair;
+import sun.java2d.windows.GDIBlitLoops;
 
 import java.util.*;
 import java.util.stream.Collector;
@@ -24,10 +26,12 @@ public class TokenService {
     private static final int HALF_AN_HOUR_IN_MILLISECONDS = 30 * 60 * 1000;
     private static final Map<String, Token> activeTokens = new HashMap<>();
     private static AuditEventServiceImpl auditEventService;
+    private static GlobalConfigurationService globalConfigurationService;
 
     @Autowired
-    public TokenService(AuditEventServiceImpl auditEventService) {
+    public TokenService(AuditEventServiceImpl auditEventService, GlobalConfigurationService globalConfigurationService) {
         TokenService.auditEventService = auditEventService;
+        TokenService.globalConfigurationService = globalConfigurationService;
     }
 
     public static String createAndStoreToken(Users user, Long enterpriseId) {
@@ -35,13 +39,19 @@ public class TokenService {
         if (existed) {
             return TokenService.activeTokens.entrySet().stream().filter(o -> o.getValue().getUser().equals(user.getId())).findAny().get().getKey();
         }
+        GlobalConfiguration globalConfiguration = globalConfigurationService.findGlobalConfiguration(enterpriseId);
         Token token = new Token();
         String generatedToken = UUID.randomUUID().toString();
         token.setEnterpriseId(enterpriseId);
         token.setUser(user.getId());
         token.setName(user.getName());
         token.setToken(generatedToken);
-        token.setLifetime(120 * 60 * 1000);
+        token.setCanBeDeleted(globalConfiguration.isDeleteUserTokenAfterAmountOfTime());
+        if (globalConfiguration.isDeleteUserTokenAfterAmountOfTime()){
+            token.setLifetime((globalConfiguration.getUserTokenLifeTime() * 60) * 60 * 1000);
+        } else {
+            token.setLifetime(120 * 60 * 1000);
+        }
         if (contains(generatedToken)) {
             createAndStoreToken(user, enterpriseId);
         }

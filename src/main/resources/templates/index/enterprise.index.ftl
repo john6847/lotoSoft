@@ -54,30 +54,30 @@
                         <td style="vertical-align: middle;" data-title="'#'">{{start+$index+1}}</td>
                         <td style="vertical-align: middle;" data-title="'Non Antrepriz'">{{enterprise.name}}</td>
                         <td style="vertical-align: middle;" data-title="'Idantifikasyon'">{{enterprise.identifier}}</td>
-                        <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{enterprise.modificationDate |
-                          date: 'dd/MM/yyyy'}}
-                        </td>
-                        <td style="vertical-align: middle; text-align: center" data-title="'Actif'"><i
-                                  class="fa fa-{{enterprise.enabled? 'check' : 'times' }}"
-                                  style="color: {{enterprise.enabled? 'green' : 'red'}} ;"></i>
-                          <p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p></td>
+                        <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{enterprise.modificationDate | customDateFormat}}</td>
                         <td style="vertical-align: middle; text-align: center" data-title="'Actif'">
-                          <a class="btn btn-warning btn-xs load" href="/enterprise/update/{{enterprise.id}}">
-                            <i class="fa fa-edit"></i> Aktyalize
-                          </a>
+                          <i class="fa fa-{{enterprise.enabled? 'check' : 'times' }}"
+                             style="color: {{enterprise.enabled? 'green' : 'red'}} ;">
+                          </i>
+                          <p style="display: none">{{enterprise.enabled? 'Wi' : 'Non' }}</p>
                         </td>
-                        <td style="vertical-align: middle;text-align: center" data-title="'Elimine'">
-                          <a class="btn btn-danger btn-xs" href="/enterprise/delete/{{enterprise.id}}">
-                            <i class="fa fa-trash-o"></i> Elimine
+
+                        <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+                          <a class="btn btn-warning btn-xs load" title="Aktyalize" href="/enterprise/update/{{enterprise.id}}">
+                            <i class="fa fa-edit"></i>
                           </a>
-                        </td>
-                        <td style="vertical-align: middle;text-align: center" data-title="'Bloke/Debloke'">
+
+                          <a class="btn btn-danger btn-xs" title="Elimine" href="/enterprise/delete/{{enterprise.id}}">
+                            <i class="fa fa-trash-o"></i>
+                          </a>
+
                           <a class="btn btn-{{enterprise.enabled? 'primary' : 'default' }} btn-xs"
+                             title="{{enterprise.enabled? 'Bloke' : 'Debloke'}}"
                              href="/configuration/enterprise/{{enterprise.id}}">
                             <i class="fa fa-{{enterprise.enabled? 'lock' : 'unlock'}}" aria-hidden="true"></i>
-                            {{enterprise.enabled? 'Bloke' : 'Debloke'}}
                           </a>
                         </td>
+
                       </tr>
                     </table>
                   </div>

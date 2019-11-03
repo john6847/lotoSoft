@@ -53,7 +53,7 @@
 
                         <tr ng-repeat="draw in $data track by draw.id">
                           <td style="vertical-align: middle;" data-title="'#'">{{$index+1}}</td>
-                          <td style="vertical-align: middle;" data-title="'Dat Tiraj'">{{draw.drawDate |date:'dd/MM/yyyy'}}</td>
+                          <td style="vertical-align: middle;" data-title="'Dat Tiraj'">{{draw.drawDate | customDateFormat}}</td>
                           <td style="vertical-align: middle;" data-title="'Tip'">{{draw.shift.name}}</td>
                           <td style="vertical-align: middle;" data-title="'Loto 3'" class="text-center"><span
                                     class="badge bg-primary">{{draw.numberThreeDigits.numberInStringFormat}}</span></td>
@@ -62,20 +62,22 @@
                             <span class="badge bg-success">{{draw.secondDraw.numberInStringFormat}}</span>
                             <span class="badge bg-info">{{draw.thirdDraw.numberInStringFormat}}</span>
                           </td>
-                          <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{draw.modificationDate | date:'dd/MM/yyyy'}}
+                          <td style="vertical-align: middle;" data-title="'Dat Kreyasyon'">{{draw.modificationDate | customDateFormat}}
                           </td>
                           <td style="vertical-align: middle;text-align: center" data-title="'Aktif'">
                             <i class="fa fa-{{draw.enabled? 'check' : 'times' }}"
                                style="color: {{draw.enabled? 'green' : 'red'}} ;"></i>
                             <p style="display: none">{{draw.enabled? 'Wi' : 'Non' }}</p>
                           </td>
-                          <td style="vertical-align: middle;text-align: center" data-title="'Aktyalize'">
-                            <a class="btn btn-warning btn-xs load" href="/draw/update/{{draw.id}}"><i class="fa fa-edit"></i>
-                              Aktyalize</a>
-                          </td>
-                          <td style="vertical-align: middle;text-align: center" data-title="'Anile'">
-                            <a class="btn btn-danger btn-xs cancel" id="cancel" onclick="onCancel(event)"
-                               href="/draw/cancel/{{draw.id}}"><i class="fa fa-trash-o"></i> Anile</a>
+
+                          <td style="vertical-align: middle; text-align: center;" data-title="'Aksyon'">
+                            <a class="btn btn-warning btn-xs load" title="Aktyalize" href="/draw/update/{{draw.id}}">
+                              <i class="fa fa-edit"></i>
+                            </a>
+
+                            <a class="btn btn-danger btn-xs cancel" id="cancel" title="Anile" onclick="onCancel(event)"
+                               href="/draw/cancel/{{draw.id}}"><i class="fa fa-ban"></i>
+                            </a>
                           </td>
                         </tr>
                       </table>

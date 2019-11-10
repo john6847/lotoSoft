@@ -21,11 +21,13 @@ public class WebSocketProperties {
     /**
      * Allowed origins
      */
-    private String[] allowedOrigins = {
-        "http://localhost:3200",
-        "http://lotosof.com:3200",
-        "http://www.lotosof.com:3200/",
-        "https://lotosof.com",
-        "https://lotosof.com/",
-    };
+//    private String[] allowedOrigins = {
+//        "http://localhost:3200",
+//        "http://lotosof.com:3200",
+//        "http://www.lotosof.com:3200/",
+//        "https://lotosof.com",
+//        "https://lotosof.com/",
+//        "https://www.lotosof.com",
+//        "https://www.lotosof.com/",
+//    };
 }

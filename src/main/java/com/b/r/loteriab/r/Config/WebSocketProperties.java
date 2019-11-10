@@ -26,5 +26,6 @@ public class WebSocketProperties {
         "http://lotosof.com:3200",
         "http://www.lotosof.com:3200/",
         "https://lotosof.com",
+        "https://lotosof.com/",
     };
 }

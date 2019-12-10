@@ -30,7 +30,7 @@
       <!--  search form end -->
     </div>
 
-  <div class="top-nav notification-row" ng-controller="notificationController">
+  <div class="top-nav" ng-controller="notificationController">
     <!-- notificatoin dropdown start-->
     <ul class="nav pull-right top-menu">
       <!-- task notificatoin start -->

@@ -137,7 +137,7 @@
                         </td>
                       </tr>
                       <tr ng-if="global.selectedSeller.pos || global.selectedSeller.pos.description">
-                        <th scope="row">Gwoup</th>
+                        <th scope="row">Machin</th>
                         <td>
                           {{global.selectedSeller.pos.description}}
                         </td>

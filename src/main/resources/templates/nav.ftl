@@ -1,5 +1,5 @@
-  <header class="header dark-bg">
-    <div class="toggle-nav">
+  <header class="header dark-bg" id="header">
+    <div class="toggle-nav" style="margin-top:10px">
       <div
         class="icon-reorder tooltips"
         data-original-title="Toggle Navigation"
@@ -15,7 +15,7 @@
 <#--  </a>-->
     <!--logo end-->
     <!--logo start-->
-    <a href="/home" class="logo"> <span class="lite">${(enterprise.name)! 'Nice Admin'} </span> </a>
+    <a href="/home" class="logo" style="margin-top:10px"> <span class="lite">${(enterprise.name)! 'Nice Admin'} </span> </a>
     <!--logo end-->
 
     <div class="nav search-row" id="top_menu">

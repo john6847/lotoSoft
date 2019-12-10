@@ -30,6 +30,8 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) and u.enabled =?3 and u.enterprise_id=?4 ORDER BY u.id DESC, ?#{#pageable}";
     String q8 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id\n" +
             "WHERE r.NAME IN (select rol.NAME from role rol where rol.enterprise_id=?4 and rol.name NOT IN (?1, ?2)) and u.enabled =?3 and u.enterprise_id=?4 ORDER BY u.id DESC";
+    String q9 = "SELECT * FROM users u INNER JOIN  users_roles ur ON ur.users_id = u.id INNER JOIN ROLE r ON r.id = ur.roles_id \n" +
+            "WHERE r.name=?1 and rol.enterprise_id=?2 limit 1";
 
     Users findByUsernameAndEnterpriseId(String username, Long enterpriseId);
 
@@ -70,5 +72,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     @Query(value = q8, nativeQuery = true)
     List<Users> selectUserExceptSuperAdminAndEnabledAndEnterpriseId(String name, String name1, boolean state, Long enterpriseId);
 
-    void deleteByIdAndEnterpriseId(Long id, Long enterpriseId);
+    @Query(value = q9, nativeQuery = true)
+    List<Users> selectUserSuperAdminByEnterprise(String name, Long enterpriseId);
 }

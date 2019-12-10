@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
     <#include "../header.ftl">
@@ -51,11 +51,18 @@
                     Enfomasyon Bank lan
                   </header>
                   <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <span class="text-info" style="font-size: 16px;"><strong>Not: Pou Kreye yon Bank ou bezwen Vande ak Machin</strong></span>
+                      </div>
+                    </div>
+                    <hr>
+
                     <div class="form-group">
                       <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12"
                              for="description">Deskripsyon<span class="required">*</span></label>
                       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-                        <input type="text" class="form-control round-input" id="description" name="description"
+                        <input type="text" class="form-control round-input" placeholder="Antre deskripsyon bank lan" id="description" name="description"
                                minlength="2" required>
                       </div>
                     </div>

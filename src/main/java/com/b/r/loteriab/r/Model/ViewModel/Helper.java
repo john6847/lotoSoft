@@ -58,10 +58,10 @@ public class Helper {
 
     public String createBankSerial(Enterprise enterprise) {
         if (bankRepository.findAllByEnterpriseIdOrderByIdDesc(enterprise.getId()).size() <= 0) {
-            return "BR-" + enterprise.getName().substring(0, 2).toUpperCase() + "-" + enterprise.getId() + "-00000";
+            return "BR-" + enterprise.getName().substring(0, 2).toUpperCase() + "-" + enterprise.getId() + "-00001";
         }
         String zeros = "00000";
-        Bank bank = bankRepository.findTopByEnterpriseIdOrderByEnterpriseIdDesc(enterprise.getId());
+        Bank bank = bankRepository.findTopByEnterpriseIdOrderByIdDesc(enterprise.getId());
         int serialLength = bank.getSerial().length();
         int nextValue = Integer.valueOf(bank.getSerial().substring(serialLength - 5, serialLength)) + 1;
         return "BR-" + enterprise.getName().substring(0, 2).toUpperCase() + "-" + enterprise.getId() + "-" + zeros.substring(0, 5 - String.valueOf(nextValue).length()) + "" + nextValue;

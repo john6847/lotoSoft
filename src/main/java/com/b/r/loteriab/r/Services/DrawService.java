@@ -370,14 +370,36 @@ public class DrawService {
 
             } else if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())) {
                 drawViewModels.add(generateDrawViewModel(CombinationTypes.LOTO_KAT_CHIF.ordinal(), combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
-            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name())) {
+            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_2.name())) {
                 for (int i = 0; i < 3; i++) {
                     if (i == 0) {
-                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_2.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
                     } else if (i == 1) {
-                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_2.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
                     } else {
-                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON.ordinal(), combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_2.ordinal(), combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
+                    }
+                }
+
+            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_3.name())) {
+                for (int i = 0; i < 3; i++) {
+                    if (i == 0) {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_3.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
+                    } else if (i == 1) {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_3.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
+                    } else {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON1_3.ordinal(), combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
+                    }
+                }
+
+            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON2_3.name())) {
+                for (int i = 0; i < 3; i++) {
+                    if (i == 0) {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON2_3.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getSecondDraw(), true, draw));
+                    } else if (i == 1) {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON2_3.ordinal(), combinationType.getPayedPrice(), draw.getFirstDraw(), draw.getThirdDraw(), true, draw));
+                    } else {
+                        drawViewModels.add(generateDrawViewModel(CombinationTypes.OPSYON2_3.ordinal(), combinationType.getPayedPrice(), draw.getSecondDraw(), draw.getThirdDraw(), true, draw));
                     }
                 }
 
@@ -422,7 +444,10 @@ public class DrawService {
             } else if (type == CombinationTypes.EXTRA.ordinal()) {
                 drawViewModel.setCombination(draw.getNumberThreeDigits().getNumberInStringFormat() + " " + pos1.getNumberInStringFormat());
             }
-            if (type == CombinationTypes.OPSYON.ordinal() || type == CombinationTypes.LOTO_KAT_CHIF.ordinal()) {
+            if (type == CombinationTypes.OPSYON1_3.ordinal()
+                    || type == CombinationTypes.OPSYON1_2.ordinal()
+                    || type == CombinationTypes.OPSYON2_3.ordinal()
+                    || type == CombinationTypes.LOTO_KAT_CHIF.ordinal()) {
                 drawViewModel.setCombination(pos1.getNumberInStringFormat() + " " + pos2.getNumberInStringFormat());
             }
         }

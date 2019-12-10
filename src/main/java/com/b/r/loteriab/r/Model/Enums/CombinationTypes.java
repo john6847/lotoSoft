@@ -7,7 +7,9 @@ public enum CombinationTypes {
     BOLET,
     LOTO_TWA_CHIF,
     LOTO_KAT_CHIF,
-    OPSYON,
+    OPSYON1_2,
     MARYAJ,
     EXTRA,
+    OPSYON2_3,
+    OPSYON1_3,
 }

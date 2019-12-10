@@ -59,7 +59,6 @@ public class BankService {
             }
         }
 
-
         if (bank.getSerial().isEmpty()) {
             result.add("Serial la pa ka vid", "serial");
         }

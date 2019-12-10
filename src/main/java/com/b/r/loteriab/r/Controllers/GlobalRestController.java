@@ -9,6 +9,7 @@ import com.b.r.loteriab.r.Notification.Enums.NotificationType;
 import com.b.r.loteriab.r.Notification.Interface.AuditEventService;
 import com.b.r.loteriab.r.Notification.Model.LastNotification;
 import com.b.r.loteriab.r.Repository.CombinationRepository;
+import com.b.r.loteriab.r.Repository.NotificationRepository;
 import com.b.r.loteriab.r.Services.*;
 import com.b.r.loteriab.r.Validation.NumberHelper;
 import com.b.r.loteriab.r.Validation.Result;
@@ -62,7 +63,8 @@ public class GlobalRestController {
     private ReportService reportService;
     @Autowired
     private  GlobalConfigurationService globalConfigurationService;
-
+    @Autowired
+    private NotificationRepository notificationRepository;
     /**
      * Get All Draws
      *
@@ -355,14 +357,14 @@ public class GlobalRestController {
      *
      * @return products
      */
-    @GetMapping(value = "/combinationType/{enterpriseId}/find/products", produces = ACCECPT_TYPE)
-    public ResponseEntity<List<Products>> getAllProducts(@PathVariable("enterpriseId") Long enterpriseId, HttpServletRequest request) {
+    @GetMapping(value = "/notification", produces = ACCECPT_TYPE)
+    public ResponseEntity<List<Notification>> getAllNotifiation(HttpServletRequest request) {
         Enterprise enterprise = (Enterprise) request.getSession().getAttribute("enterprise");
         if (enterprise != null) {
-            List<Products> products = productsService.findAll();
-            if (products == null)
+            List<Notification> notifications = notificationRepository.findAllByEnterpriseIdAndReadFalse(enterprise.getId());
+            if (notifications == null)
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(products, HttpStatus.OK);
+            return new ResponseEntity<>(notifications, HttpStatus.OK);
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }

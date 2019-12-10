@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -43,10 +43,13 @@
       <div class="row">
         <div class="col-lg-12">
           <section class="panel">
-            <header class="panel-heading">
-              Vandè
-            </header>
             <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <span class="text-info" style="font-size: 16px;"><strong>Not: Pou Kreye yon vande ou bezwen Vande ou bezwen machin</strong></span>
+                </div>
+              </div>
+              <hr>
               <form name="sellerForm" id="sellerForm" class="form-horizontal" action="/seller/create"
                     th:object="${seller}" method="post">
                 <div class="form-group funkyradio">

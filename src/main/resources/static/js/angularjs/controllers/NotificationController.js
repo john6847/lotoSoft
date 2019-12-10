@@ -1,9 +1,9 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("notificationController", ['$http', '$scope','$stomp','EnterpriseService', function ($http, $scope, $stomp, EnterpriseService) {
+app.controller("notificationController", ['$http', '$scope','$stomp','EnterpriseService', 'NotificationService', function ($http, $scope, $stomp, EnterpriseService, NotificationService) {
     $scope.global = {
-        notifications: [{example: "231"}],
+        notifications: []
     };
 
     $scope.enterpriseId = 0;
@@ -11,11 +11,10 @@ app.controller("notificationController", ['$http', '$scope','$stomp','Enterprise
     $stomp.connect('http://lotosof.com:3200/live', {})
         .then(function (frame) {
             if($scope.enterpriseId > 0){
-                $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+8+'/event',
+                $stomp.subscribe('/topics/'+$scope.enterpriseId+'/'+5+'/event',
                     function (payload, headers, res) {
-                        $scope.global.notifcations.push({combination: payload.body.notifications, type: payload.body.type});
-                        $scope.global.notifcations = merge($scope.global.notifcations, []);
-                        $scope.$apply($scope.global.notifcations);
+                        $scope.global.users = merge($scope.global.notifications, payload.body.notifications);
+                        $scope.$apply($scope.global.notifications);
                     });
             }
 
@@ -36,21 +35,22 @@ app.controller("notificationController", ['$http', '$scope','$stomp','Enterprise
             .then(
                 function (d) {
                     $scope.enterpriseId = d;
+                    fetchAllNotifications();
                 },
                 function (errorResponse) {
                     console.error(errorResponse);
                 })
     }
 
-    // function fetchAllNotifications() {
-    //     UserService.fetchAllUsersLogged()
-    //         .then(
-    //             function (d) {
-    //                 $scope.global.users = d;
-    //             },
-    //             function (errorResponse) {
-    //                 console.error(errorResponse);
-    //             });
-    // }
+    function fetchAllNotifications() {
+        NotificationService.fetchAllNotifications()
+            .then(
+                function (d) {
+                    $scope.global.notifications = d;
+                },
+                function (errorResponse) {
+                    console.error(errorResponse);
+                });
+    }
 
 }]);

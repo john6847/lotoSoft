@@ -1,7 +1,7 @@
 /**
  * Created by Dany on 09/05/2019.
  */
-app.controller("reportController", ['$http', 'ReportService','SellerService', 'GroupService', 'ConfigurationService', '$scope', 'DTOptionsBuilder', function ($http, ReportService, SellerService, GroupService, ConfigurationService, $scope, DTOptionsBuilder) {
+app.controller("reportController", ['$http', 'ReportService','SellerService', 'GroupService', 'ConfigurationService', '$scope', function ($http, ReportService, SellerService, GroupService, ConfigurationService, $scope) {
     $scope.global = {
         sellers: [],
         selectedSeller: null,

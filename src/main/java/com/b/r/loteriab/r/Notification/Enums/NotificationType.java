@@ -9,4 +9,5 @@ public enum NotificationType {
     CombinationPriceLimit,
     UserConnected,
     TopSoldCombination,
+    Notification
 }

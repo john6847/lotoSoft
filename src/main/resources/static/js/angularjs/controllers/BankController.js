@@ -45,7 +45,6 @@ app.controller("bankController", ['NgTableParams', '$resource',  '$http','PosSer
 
     $scope.sellerChange = function (updating){
         if ($scope.global.selectedSeller){
-        console.log('therrreee')
             fetchPos($scope.global.selectedSeller, updating);
         }
     };

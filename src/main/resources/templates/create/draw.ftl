@@ -5,7 +5,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
-
     <#include "../header.ftl">
 </head>
 
@@ -48,7 +47,6 @@
               Tiraj
             </header>
             <div class="panel-body">
-
               <form class="form-horizontal" id="drawForm" action="/draw/create" th:object="${draw}" method="post">
                 <div class="form-group">
                   <label class="col-lg-2 col-md-2 col-sm-2 control-label col-xs-12" for="drawDate">Dat<span
@@ -57,7 +55,6 @@
                     <input type="date" name="drawDate" id="drawDate" class="form-control" required>
                   </div>
                 </div>
-
 
                 <div class="form-group">
                   <label class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-12" for="shift">Tip Tiraj<span

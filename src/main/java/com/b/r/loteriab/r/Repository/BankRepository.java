@@ -39,7 +39,7 @@ public interface BankRepository extends JpaRepository<Bank, Long> {
 
     Bank save(Bank bank);
 
-    Bank findTopByEnterpriseIdOrderByEnterpriseIdDesc(Long enterpriseId);
+    Bank findTopByEnterpriseIdOrderByIdDesc(Long enterpriseId);
 
     @Query(value = q, nativeQuery = true)
     List<Bank> selectbankIfExist(Long bankId, String name, Long enterpriseId);

@@ -67,25 +67,29 @@ body {
 
 .header {
     text-align: center;
-    border-bottom: solid 6px #FECEA8;
+    /*border-bottom: solid 6px #FECEA8;*/
     position: relative;
     background: #2A363B;
 }
 
-.header::before,
-.header::after {
-    bottom: -6px;
+#header {
+    position: fixed !important;
 }
 
-.header::before,
-.header::after {
-    content: "";
-    height: 6px;
-    width: 50%;
-    position: absolute;
-    left: 50%;
-    background: #99B898;
-}
+/*.header::before,*/
+/*.header::after {*/
+/*    bottom: -6px;*/
+/*}*/
+
+/*.header::before,*/
+/*.header::after {*/
+/*    content: "";*/
+/*    height: 6px;*/
+/*    width: 50%;*/
+/*    position: absolute;*/
+/*    left: 50%;*/
+/*    background: #99B898;*/
+/*}*/
 
 .header .container h1 {
     margin: 3px;
@@ -301,7 +305,7 @@ pre code {
     font-family: 'Ubuntu', san-serif;
     width: 200px;
     float: left;
-    position: absolute;
+    position: fixed;
     background-color: #f2f2f2;
     -webkit-transition: all .1s linear 0s;
     -moz-transition: all .1s linear 0s;
@@ -341,7 +345,7 @@ pre code {
 .sidebar .nav-list>li>a:hover:before {
     display: block;
     content: "";
-    position: absolute;
+    position: fixed;
     top: -1px;
     bottom: 0;
     left: 0;

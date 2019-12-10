@@ -110,7 +110,10 @@ public class InitServices {
                         } else {
                             continue;
                         }
-                    } else if (product.getName().equals(CombinationTypes.LOTO_KAT_CHIF.name()) || product.getName().equals(CombinationTypes.OPSYON.name())) {
+                    } else if (product.getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())
+                            || product.getName().equals(CombinationTypes.OPSYON1_2.name())
+                            || product.getName().equals(CombinationTypes.OPSYON1_3.name())
+                            || product.getName().equals(CombinationTypes.OPSYON2_3.name())) {
                         if (lotoKatChif.equals("on")) {
                             combinationType.setPayedPrice(5000);
                             combinationType.setPayedPriceFirstDraw(0);
@@ -295,8 +298,14 @@ public class InitServices {
             if (combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())) {
                 save4Chif(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise);
             }
-            if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name())) {
-                save4Chif(CombinationTypes.OPSYON.name(), enterprise);
+            if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_2.name())) {
+                save4Chif(CombinationTypes.OPSYON1_2.name(), enterprise);
+            }
+            if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON2_3.name())) {
+                save4Chif(CombinationTypes.OPSYON2_3.name(), enterprise);
+            }
+            if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_3.name())) {
+                save4Chif(CombinationTypes.OPSYON1_3.name(), enterprise);
             }
             if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())) {
                 save4Chif(CombinationTypes.MARYAJ.name(), enterprise);
@@ -354,8 +363,14 @@ public class InitServices {
         if (type.equals(CombinationTypes.LOTO_KAT_CHIF.name())) {
             combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
         }
-        if (type.equals(CombinationTypes.OPSYON.name())) {
-            combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
+        if (type.equals(CombinationTypes.OPSYON1_2.name())) {
+            combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_2.name(), enterprise.getId());
+        }
+        if (type.equals(CombinationTypes.OPSYON2_3.name())) {
+            combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.OPSYON2_3.name(), enterprise.getId());
+        }
+        if (type.equals(CombinationTypes.OPSYON1_3.name())) {
+            combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_3.name(), enterprise.getId());
         }
         if (type.equals(CombinationTypes.MARYAJ.name())) {
             combinations = combinationRepository.findAllByCombinationTypeProductsNameAndEnterpriseId(CombinationTypes.MARYAJ.name(), enterprise.getId());
@@ -367,12 +382,20 @@ public class InitServices {
                 sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_TWA_CHIF.name()).get(0).getSequence();
                 combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
             }
-            if (type.equals(CombinationTypes.OPSYON.name())) {
+            if (type.equals(CombinationTypes.OPSYON1_2.name())) {
                 sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_KAT_CHIF.name()).get(0).getSequence();
-                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
+                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_2.name(), enterprise.getId());
+            }
+            if (type.equals(CombinationTypes.OPSYON2_3.name())) {
+                sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_KAT_CHIF.name()).get(0).getSequence();
+                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON2_3.name(), enterprise.getId());
+            }
+            if (type.equals(CombinationTypes.OPSYON1_3.name())) {
+                sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.LOTO_KAT_CHIF.name()).get(0).getSequence();
+                combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_3.name(), enterprise.getId());
             }
             if (type.equals(CombinationTypes.MARYAJ.name())) {
-                sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.OPSYON.name()).get(0).getSequence();
+                sequence = combinationRepository.findByEnterpriseIdAndCombinationTypeProductsNameOrderBySequenceDesc(enterprise.getId(), CombinationTypes.OPSYON1_3.name()).get(0).getSequence();
                 combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.MARYAJ.name(), enterprise.getId());
             }
             List<NumberTwoDigits> numberTwoDigits = numberTwoDigitsRepository.findAll();
@@ -411,7 +434,10 @@ public class InitServices {
             combination.setNumberTwoDigits(Arrays.asList(Lists.get(0).get(Integer.parseInt(cur[0])), Lists.get(0).get(Integer.parseInt(cur[1]))));
             if (combinationType.getProducts().getName().equals(CombinationTypes.MARYAJ.name())) {
                 combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat() + "x" + Lists.get(0).get(Integer.parseInt(cur[1])).getNumberInStringFormat());
-            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON.name()) || combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())) {
+            } else if (combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_2.name())
+                    || combinationType.getProducts().getName().equals(CombinationTypes.OPSYON2_3.name())
+                    || combinationType.getProducts().getName().equals(CombinationTypes.OPSYON1_3.name())
+                    || combinationType.getProducts().getName().equals(CombinationTypes.LOTO_KAT_CHIF.name())) {
                 combination.setResultCombination(Lists.get(0).get(Integer.parseInt(cur[0])).getNumberInStringFormat() + " " + Lists.get(0).get(Integer.parseInt(cur[1])).getNumberInStringFormat());
             }
             combination.setSequence((sequence + 1));

@@ -2,6 +2,7 @@ package com.b.r.loteriab.r.Controllers;
 
 import com.b.r.loteriab.r.Model.*;
 import com.b.r.loteriab.r.Model.Enums.CombinationTypes;
+import com.b.r.loteriab.r.Model.Enums.Roles;
 import com.b.r.loteriab.r.Model.Enums.Shifts;
 import com.b.r.loteriab.r.Model.ViewModel.SaleViewModel;
 import com.b.r.loteriab.r.Model.ViewModel.SampleResponse;
@@ -28,6 +29,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Dany on 22/04/2019.
@@ -67,6 +69,8 @@ public class RestApiController {
     private AuditEventService auditService;
     @Autowired
     private GlobalConfigurationService globalConfigurationService;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = ACCEPT_TYPE, consumes = ACCEPT_TYPE)
     public ResponseEntity<Object> authenticate(@RequestBody UserViewModel vm) {
@@ -229,12 +233,26 @@ public class RestApiController {
                 last.setIdType(combination.getId());
                 last.setType(NotificationType.CombinationPriceLimit.ordinal());
 
-
                 sampleResponse.getBody().put("combination", combination.getResultCombination());
                 sampleResponse.getBody().put("type", combination.getCombinationType().getProducts().getName());
                 sampleResponse.getBody().put("date", new Date());
-
                 sampleResponse.getBody().put("shiftId", vm.getShift());
+
+                Notification notification = new Notification();
+                notification.setCreationDate(new Date());
+                notification.setMessage("Konbinezon " + vm.getSaleDetails().get(i).getCombination() + " an rive nan limit pri nou ka bay li.");
+                notification.setRead(false);
+                notification.setType(NotificationType.CombinationPriceLimit.ordinal());
+                notification.setLifetime(Long.valueOf(1440 * 60 * 1000));
+                List<Users> users = userRepository.selectUserSuperAdminByEnterprise(Roles.ROLE_SUPER_ADMIN.name(), vm.getEnterprise().getId());
+                if (users.size() > 0){
+                    notification.setUsers(users.get(0));
+                    notification.setEnterprise(enterpriseRepository.getOne(vm.getEnterprise().getId()));
+
+                    notificationRepository.save(notification);
+                    sampleResponse.getBody().put("notifications", notificationRepository.findAllByEnterpriseIdAndUsersIdAndReadFalse(vm.getEnterprise().getId(), users.get(0).getId()));
+                }
+
                 last.setSampleResponse(sampleResponse);
                 auditService.sendMessage(sampleResponse, vm.getEnterprise().getId(), last);
                 sampleResponse.getMessages().add("Konbinezon " + vm.getSaleDetails().get(i).getCombination() + " an rive nan limit pri nou ka bay li retirel pou ou ka kontinye vant lan.");

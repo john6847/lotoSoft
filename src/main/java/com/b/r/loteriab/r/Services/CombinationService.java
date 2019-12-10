@@ -58,7 +58,9 @@ public class CombinationService {
 
     public List<Combination> findAllCombinations(String combination, Enterprise enterprise) {
         CombinationType combinationType = null;
-        CombinationType secondCombinationType = null;
+        CombinationType secondCombinationTypeOpsyon1_2 = null;
+        CombinationType secondCombinationTypeOpsyon1_3 = null;
+        CombinationType secondCombinationTypeOpsyon2_3 = null;
         // borlet
         if (combination.matches("(^[0-9]{2}$)")) {
             combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.BOLET.name(), enterprise.getId());
@@ -76,18 +78,30 @@ public class CombinationService {
         }
 
 //        loto 4 and opsyon
-        if (combination.matches("(^[0-9]{4}$)")) {
+        if (combination.matches("(^[0-9]{4}$)") || combination.matches("^([0-9]{2})(\\s)([0-9]{2})$")) {
             combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
-            secondCombinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
-            if (combinationType != null && secondCombinationType != null) {
+            secondCombinationTypeOpsyon1_2 = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_2.name(), enterprise.getId());
+            secondCombinationTypeOpsyon1_3 = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON1_3.name(), enterprise.getId());
+            secondCombinationTypeOpsyon2_3 = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON2_3.name(), enterprise.getId());
+            if (combinationType != null && secondCombinationTypeOpsyon1_2 != null && secondCombinationTypeOpsyon1_3 != null && secondCombinationTypeOpsyon2_3 != null) {
                 String first = combination.substring(0, 2).trim();
                 String second = combination.substring(2, 4).trim();
                 if (first.equals(second)) {
-                    return findAllCombinationForLoto4AndOpsyon(first + " " + second, "", combinationType,
-                            secondCombinationType, enterprise);
+                    return findAllCombinationForLoto4AndOpsyon(first + " " + second,
+                            "",
+                            combinationType,
+                            secondCombinationTypeOpsyon1_2,
+                            secondCombinationTypeOpsyon2_3,
+                            secondCombinationTypeOpsyon1_3,
+                            enterprise);
                 }
-                return findAllCombinationForLoto4AndOpsyon(first + " " + second, second + " " + first, combinationType,
-                        secondCombinationType, enterprise);
+                return findAllCombinationForLoto4AndOpsyon(first + " " + second,
+                        second + " " + first,
+                        combinationType,
+                        secondCombinationTypeOpsyon1_2,
+                        secondCombinationTypeOpsyon2_3,
+                        secondCombinationTypeOpsyon1_3,
+                        enterprise);
             }
             return new ArrayList<>();
         }
@@ -99,20 +113,20 @@ public class CombinationService {
                 return findAllSimpleCombination(combination.substring(0, 3) + " " + combination.substring(3, 5), combinationType.getId(), enterprise.getId());
             return new ArrayList<>();
         }
-//      loto 4 and opsyon
-        if (combination.matches("^([0-9]{2})(\\s)([0-9]{2})$")) {
-            String[] arr = combination.split(" ");
-            combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
-            secondCombinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
-
-            if (combinationType != null && secondCombinationType != null) {
-                if (arr[0].equals(arr[1])) {
-                    return findAllCombinationForLoto4AndOpsyon(combination, "", combinationType, secondCombinationType, enterprise);
-                }
-                return findAllCombinationForLoto4AndOpsyon(combination, arr[1] + " " + arr[0], combinationType, secondCombinationType, enterprise);
-            }
-            return new ArrayList<>();
-        }
+////      loto 4 and opsyon
+//        if (combination.matches("^([0-9]{2})(\\s)([0-9]{2})$")) {
+//            String[] arr = combination.split(" ");
+//            combinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.LOTO_KAT_CHIF.name(), enterprise.getId());
+//            secondCombinationType = combinationTypeRepository.findByProductsNameAndEnterpriseId(CombinationTypes.OPSYON.name(), enterprise.getId());
+//
+//            if (combinationType != null && secondCombinationType != null) {
+//                if (arr[0].equals(arr[1])) {
+//                    return findAllCombinationForLoto4AndOpsyon(combination, "", combinationType, secondCombinationType, enterprise);
+//                }
+//                return findAllCombinationForLoto4AndOpsyon(combination, arr[1] + " " + arr[0], combinationType, secondCombinationType, enterprise);
+//            }
+//            return new ArrayList<>();
+//        }
 
 //        extra
         if (combination.matches("^([0-9]{3})(\\s)([0-9]{2})$")) {
@@ -169,7 +183,13 @@ public class CombinationService {
 
 //    Loto 4 and Opsyon
 
-    private List<Combination> findAllCombinationForLoto4AndOpsyon(String resultCombination, String reverseResultCombination, CombinationType combinationType1, CombinationType combinationType2, Enterprise enterprise) {
+    private List<Combination> findAllCombinationForLoto4AndOpsyon(String resultCombination,
+                                                                  String reverseResultCombination,
+                                                                  CombinationType combinationType1,
+                                                                  CombinationType combinationType2,
+                                                                  CombinationType combinationType3,
+                                                                  CombinationType combinationType4,
+                                                                  Enterprise enterprise) {
         if (reverseResultCombination.isEmpty()) {
             return combinationRepository
                     .findAllByResultCombinationAndCombinationTypeIdOrCombinationTypeIdAndEnterpriseId(resultCombination, combinationType1, combinationType2, enterprise, Combination.class);
